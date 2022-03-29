@@ -23,6 +23,12 @@ Currently in progress to implement.
 * Visual Studio 2022
 
   This project is worked on Visual Studio 2022, but We are sure of that will be built in lower version of VS, like 2019, 2017 
+  
+* Windows 10/11 SDK
+
+  If you not have it, can download in [this link](https://developer.microsoft.com/ko-kr/windows/downloads/sdk-archive/)
+
+  
 
 -TBA-
 
