@@ -15,6 +15,6 @@ namespace kepler{
 
 	void Application::Run()
 	{
-		printf("Hello Kepler");
+
 	}
 }

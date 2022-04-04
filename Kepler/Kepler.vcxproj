@@ -120,6 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>KEPLER_PLATFORM_WINDOWS;KEPLER_BUILD_DLL;KEPLER_PLATFORM_WINDOWS_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependeices\spdlog\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -134,6 +135,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>KEPLER_PLATFORM_WINDOWS;KEPLER_BUILD_DLL;KEPLER_PLATFORM_WINDOWSNDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependeices\spdlog\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -146,6 +148,7 @@
     <ClInclude Include="Core\Application.h" />
     <ClInclude Include="Core\Core.h" />
     <ClInclude Include="Core\EntryPoint.h" />
+    <ClInclude Include="Core\Log.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Kepler.h" />
     <ClInclude Include="Resource.h" />
@@ -153,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Application.cpp" />
+    <ClCompile Include="Core\Log.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kepler.rc" />

@@ -17,10 +17,3 @@ kepler::Application* kepler::CreateApplication()
 {
 	return new Client();
 }
-
-int main()
-{
-
-
-	return 0;
-}

@@ -1,0 +1,3 @@
+[submodule "Kepler/Dependeices/spdlog"]
+	path = Kepler/Dependeices/spdlog
+	url = https://github.com/gabime/spdlog.git
