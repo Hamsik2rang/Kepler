@@ -14,6 +14,8 @@ Currently in progress to implement.
 
 [ImGui](https://github.com/ocournut/imgui)
 
+[spdlog](https://github.com/gabime/spdlog)
+
 -TBA-
 
 ## Getting Started
