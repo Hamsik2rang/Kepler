@@ -148,6 +148,10 @@
     <ClInclude Include="Core\Application.h" />
     <ClInclude Include="Core\Core.h" />
     <ClInclude Include="Core\EntryPoint.h" />
+    <ClInclude Include="Core\Event\ApplicationEvent.hpp" />
+    <ClInclude Include="Core\Event\Event.hpp" />
+    <ClInclude Include="Core\Event\KeyEvent.hpp" />
+    <ClInclude Include="Core\Event\MouseEvent.hpp" />
     <ClInclude Include="Core\Log.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Kepler.h" />

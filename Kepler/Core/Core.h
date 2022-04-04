@@ -12,3 +12,6 @@
 #error Kepler Engine only support Windows.
 
 #endif
+
+// BIT(x) = 2^x
+#define BIT(x) (1 << (x))
