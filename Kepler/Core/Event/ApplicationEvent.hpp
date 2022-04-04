@@ -2,8 +2,6 @@
 
 #include "Event.hpp"
 
-#include <sstream>
-
 namespace kepler {
 
 	class KEPLER_API WindowResizeEvent : public Event

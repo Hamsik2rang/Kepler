@@ -2,9 +2,6 @@
 
 #include "../Core.h"
 
-#include <string>
-#include <functional>
-
 namespace kepler {
 	// 현재 사용은 불가능함.
 	enum class eEventType

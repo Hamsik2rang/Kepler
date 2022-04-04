@@ -120,7 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>KEPLER_PLATFORM_WINDOWS;KEPLER_PLATFORM_WINDOWS_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependeices\spdlog\include;$(SolutionDir)Kepler</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Kepler;$(SolutionDir)Kepler\Dependeices\spdlog\include;$(SolutionDir)Kepler</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,7 +135,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>KEPLER_PLATFORM_WINDOWS;KEPLER_PLATFORM_WINDOWSNDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependeices\spdlog\include;$(SolutionDir)Kepler</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Kepler;$(SolutionDir)Kepler\Dependeices\spdlog\include;$(SolutionDir)Kepler</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
