@@ -1,8 +1,9 @@
 #pragma once
-#include "../Core.h"
+
+#include "Core/Core.h"
 
 namespace kepler {
-	// 현재 사용은 불가능함.
+
 	enum class eEventType
 	{
 		NONE = 0,
@@ -20,10 +21,10 @@ namespace kepler {
 		KEY_PRESSED,
 		KEY_RELEASED,
 
-		MOUSE_BUTTON_PRESSED,
-		MOUSE_BUTTON_RELEASED,
 		MOUSE_MOVED,
 		MOUSE_SCROLLED,
+		MOUSE_BUTTON_PRESSED,
+		MOUSE_BUTTON_RELEASED,
 	};
 
 	enum eEventCategory
@@ -36,7 +37,7 @@ namespace kepler {
 		EVENT_CATEGORY_MOUSEBUTTON	= BIT(4),	// 0x00010000
 	};
 
-#define EVENT_CLASS_TYPE(type) static eEventType GetStaticType() { return eEventType::##type;}\
+#define EVENT_CLASS_TYPE(type) static eEventType GetStaticType() { return eEventType::##type; }\
 								virtual eEventType GetEventType() const override {return GetStaticType(); }\
 								virtual const char* GetName() const override { return #type; }
 

@@ -17,3 +17,6 @@
 #ifdef KEPLER_PLATFORM_WINDOWS
 #include <Windows.h>
 #endif
+#ifdef KEPLER_GRAPHICS_DIRECTX
+#include <d3d11.h>
+#endif
