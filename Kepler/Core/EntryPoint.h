@@ -16,7 +16,6 @@ int APIENTRY wWinMain(
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	//...
-	printf("Kepler Engine\n");
 	kepler::Log::Init();
 
 	int year = 2022;

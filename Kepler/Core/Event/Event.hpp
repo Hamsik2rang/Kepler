@@ -1,9 +1,12 @@
 #pragma once
 
+#include <functional>
+#include <string>
+
 #include "Core/Core.h"
 
 namespace kepler {
-
+	
 	enum class eEventType
 	{
 		NONE = 0,

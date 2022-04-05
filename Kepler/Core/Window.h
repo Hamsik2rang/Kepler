@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Core.h"
-
+#include "Core/Core.h"
 #include "Core/Log.h"
+
 #include "Core/Event/Event.hpp"
 
 namespace kepler {

@@ -42,6 +42,12 @@
     <ClInclude Include="Core\Event\Event.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="kepch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Core\Event\KeyEvent.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -49,12 +55,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\Event\ApplicationEvent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="kepch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

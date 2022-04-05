@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Event.hpp"
+#include <sstream>
+
+#include "Core\Event\Event.hpp"
 
 namespace kepler {
 

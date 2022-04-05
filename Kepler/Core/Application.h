@@ -3,7 +3,6 @@
 #include "Core.h"
 #include "Core/Window.h"
 
-
 namespace kepler {
 
 	class KEPLER_API Application
