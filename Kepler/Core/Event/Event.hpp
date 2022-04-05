@@ -2,42 +2,43 @@
 
 #include <functional>
 #include <string>
+#include <iostream>
 
-#include "Core/Core.h"
+#include "Core/Base.h"
 
 namespace kepler {
 	
 	enum class eEventType
 	{
-		NONE = 0,
+		None = 0,
 
-		WINDOW_CLOSE,
-		WINDOW_RESIZE,
-		WINDOW_FOCUS,
-		WINDOW_LOST_FOCUS,
-		WINDOW_MOVED,
+		WindowClosed,
+		WindowResize,
+		WindowFocus,
+		WindowLostFocus,
+		WindowMoved,
 
-		APP_TICK,
-		APP_UPDATE,
-		APP_RENDER,
+		AppTick,
+		AppUpdate,
+		AppRender,
 
-		KEY_PRESSED,
-		KEY_RELEASED,
+		KeyPressed,
+		KeyReleased,
 
-		MOUSE_MOVED,
-		MOUSE_SCROLLED,
-		MOUSE_BUTTON_PRESSED,
-		MOUSE_BUTTON_RELEASED,
+		MouseMoved,
+		MouseScrolled, 
+		MouseButtonPressed,
+		MouseButtonReleased,
 	};
 
 	enum eEventCategory
 	{
-		NONE						= 0,		// 0x00000000
-		EVENT_CATEGORY_APPLICATION	= BIT(0),	// 0x00000001
-		EVENT_CATEGORY_INPUT		= BIT(1),	// 0x00000010
-		EVENT_CATEGORY_KEYBOARD		= BIT(2),	// 0x00000100
-		EVENT_CATEGORY_MOUSE		= BIT(3),	// 0x00001000
-		EVENT_CATEGORY_MOUSEBUTTON	= BIT(4),	// 0x00010000
+		None						= 0,		// 0x00000000
+		EventCategoryApplication	= BIT(0),	// 0x00000001
+		EventCategoryInput			= BIT(1),	// 0x00000010
+		EventCategoryKeyboard		= BIT(2),	// 0x00000100
+		EventCategoryMouse			= BIT(3),	// 0x00001000
+		EventCategoryMouseButton	= BIT(4),	// 0x00010000
 	};
 
 #define EVENT_CLASS_TYPE(type) static eEventType GetStaticType() { return eEventType::##type; }\

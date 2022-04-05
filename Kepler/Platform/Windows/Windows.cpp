@@ -4,7 +4,9 @@
 
 namespace kepler {
 
-	IWindow* IWindow::Create(const WindowProps& props = WindowProps())
+	bool Windows::s_bIsInitialized = false;
+
+	IWindow* IWindow::Create(const WindowProps& props)
 	{
 		return new Windows(props);
 	}
@@ -60,10 +62,4 @@ namespace kepler {
 			// directx vsync ¼¼ÆÃ
 		}
 	}
-
-	bool Windows::IsVSync()
-	{
-		return m_data.bVSync;
-	}
-
 }

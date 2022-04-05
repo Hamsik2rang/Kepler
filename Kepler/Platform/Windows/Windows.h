@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Core/Base.h"
 #include "Core/Window.h"
 
 namespace kepler {

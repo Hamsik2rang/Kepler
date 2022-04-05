@@ -18,7 +18,7 @@ namespace kepler {
 	public:
 		inline int GetKeyCode() const { return m_keyCode; }
 		
-		EVENT_CLASS_CATEGORY(EVENT_CATEGORY_KEYBOARD | EVENT_CATEGORY_INPUT)
+		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 	};
 
 	class KEPLER_API KeyPressedEvent : public KeyEvent
@@ -36,12 +36,12 @@ namespace kepler {
 		virtual std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "KeyPressedEvent: " << m_keyCode << "(" << m_repeatCount << " repeats )";
+			ss << "KeyPressedEvent: " << m_keyCode << "(" << m_repeatCount << " repeats)";
 
 			return ss.str();
 		}
 		
-		EVENT_CLASS_TYPE(KEY_PRESSED)
+		EVENT_CLASS_TYPE(KeyPressed)
 	};
 
 	class KEPLER_API KeyReleasedEvent : public KeyEvent
@@ -59,6 +59,6 @@ namespace kepler {
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(KEY_RELEASED)
+		EVENT_CLASS_TYPE(KeyReleased)
 	};
 }

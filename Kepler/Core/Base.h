@@ -18,5 +18,8 @@
 	#define KEPLER_CORE_ASSERT(x, ...)
 #endif
 
+#include "Core/Log.h"
+
+
 // BIT(x) = 2^x
 #define BIT(x) (1 << (x))

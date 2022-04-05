@@ -28,8 +28,8 @@ namespace kepler {
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(MOUSE_MOVED)
-		EVENT_CLASS_CATEGORY(EVENT_CATEGORY_MOUSE | EVENT_CATEGORY_INPUT)
+		EVENT_CLASS_TYPE(MouseMoved)
+		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	};
 
 	class KEPLER_API MouseScrolledEvent : public Event
@@ -54,8 +54,8 @@ namespace kepler {
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(MOUSE_SCROLLED)
-		EVENT_CLASS_CATEGORY(EVENT_CATEGORY_MOUSE | EVENT_CATEGORY_INPUT)
+		EVENT_CLASS_TYPE(MouseScrolled)
+		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	};
 
 	class KEPLER_API MouseButtonEvent : public Event
@@ -69,7 +69,7 @@ namespace kepler {
 	public:
 		inline int GetMouseButton() const { return m_button; }
 
-		EVENT_CLASS_CATEGORY(EVENT_CATEGORY_MOUSEBUTTON | EVENT_CATEGORY_INPUT)
+		EVENT_CLASS_CATEGORY(EventCategoryMouseButton | EventCategoryInput)
 	};
 
 
@@ -88,7 +88,7 @@ namespace kepler {
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(MOUSE_BUTTON_PRESSED)
+		EVENT_CLASS_TYPE(MouseButtonPressed)
 	};
 
 	class KEPLER_API MouseButtonReleasedEvent : public MouseButtonEvent
@@ -106,6 +106,6 @@ namespace kepler {
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(MOUSE_BUTTON_RELEASED)
+		EVENT_CLASS_TYPE(MouseButtonReleased)
 	};
 }

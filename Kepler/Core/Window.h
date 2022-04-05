@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Core/Core.h"
-#include "Core/Log.h"
+#include "Core/Base.h"
 
 #include "Core/Event/Event.hpp"
 
@@ -15,8 +14,8 @@ namespace kepler {
 
 		WindowProps(const std::string& _title = "Kepler Engine", uint32_t _width = 1280, uint32_t _height = 720)
 			:title(_title),
-			width(_width),
-			height(_height)
+			 width(_width),
+			 height(_height)
 		{}
 	};
 	

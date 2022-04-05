@@ -152,7 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
-    <ClInclude Include="Core\Core.h" />
+    <ClInclude Include="Core\Base.h" />
     <ClInclude Include="Core\EntryPoint.h" />
     <ClInclude Include="Core\Event\ApplicationEvent.hpp" />
     <ClInclude Include="Core\Event\Event.hpp" />
@@ -163,6 +163,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="kepch.h" />
     <ClInclude Include="Kepler.h" />
+    <ClInclude Include="Platform\Windows\Windows.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -176,6 +177,7 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">kepch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Platform\Windows\Windows.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kepler.rc" />

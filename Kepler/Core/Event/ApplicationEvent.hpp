@@ -26,8 +26,8 @@ namespace kepler {
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(WINDOW_RESIZE)
-		EVENT_CLASS_CATEGORY(EVENT_CATEGORY_APPLICATION)
+		EVENT_CLASS_TYPE(WindowResize)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
 	class KEPLER_API WindowCloseEvent : public Event
@@ -35,8 +35,8 @@ namespace kepler {
 	public:
 		WindowCloseEvent() {}
 
-		EVENT_CLASS_TYPE(WINDOW_CLOSE)
-		EVENT_CLASS_CATEGORY(EVENT_CATEGORY_APPLICATION)
+		EVENT_CLASS_TYPE(WindowClosed)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
 	class KEPLER_API AppTickEvent : public Event
@@ -44,8 +44,8 @@ namespace kepler {
 	public:
 		AppTickEvent() {}
 
-		EVENT_CLASS_TYPE(APP_TICK)
-		EVENT_CLASS_CATEGORY(EVENT_CATEGORY_APPLICATION)
+		EVENT_CLASS_TYPE(AppTick)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
 	class KEPLER_API AppUpdateEvent : public Event
@@ -53,8 +53,8 @@ namespace kepler {
 	public:
 		AppUpdateEvent() {}
 
-		EVENT_CLASS_TYPE(APP_UPDATE)
-		EVENT_CLASS_CATEGORY(EVENT_CATEGORY_APPLICATION)
+		EVENT_CLASS_TYPE(AppUpdate)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
 	class KEPLER_API AppRenderEvent : public Event
@@ -62,7 +62,7 @@ namespace kepler {
 	public:
 		AppRenderEvent() {}
 
-		EVENT_CLASS_TYPE(APP_RENDER)
-		EVENT_CLASS_CATEGORY(EVENT_CATEGORY_APPLICATION)
+		EVENT_CLASS_TYPE(AppRender)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 }
