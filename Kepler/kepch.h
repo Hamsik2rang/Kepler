@@ -20,6 +20,10 @@
 // for Windows
 #ifdef KEPLER_PLATFORM_WINDOWS
 #include <Windows.h>
+
+#include "framework.h"
+#include "resource.h"
+
 #endif
 #ifdef KEPLER_GRAPHICS_API_DIRECTX
 #include <d3d11.h>

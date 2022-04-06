@@ -3,13 +3,17 @@
 #include "Core/Base.h"
 #include "Core/Window.h"
 
+#include "Platform/Windows/WinAPI.h"
+
+
 namespace kepler {
 
 	class KEPLER_API Windows : public IWindow
 	{
 	private:
-		HINSTANCE	m_hInst;
-		HWND		m_hWnd;
+		static HWND s_hMainWnd;
+		HWND		m_hWnd = nullptr;
+
 		struct WindowData
 		{
 			std::string title;
@@ -24,17 +28,19 @@ namespace kepler {
 		virtual void Shutdown();
 
 	public:
-		static bool s_bIsInitialized;
+		static int s_windowCount;
 
 		Windows(const WindowProps& props);
 		virtual ~Windows();
 
 		virtual void OnUpdate() override;
-		virtual inline uint32_t GetWidth() const override { return m_data.width; };
-		virtual inline uint32_t GetHeight() const override { return m_data.height; };
+		virtual inline uint32_t GetWidth() const override { return m_data.width; }
+		virtual inline uint32_t GetHeight() const override { return m_data.height; }
+
+		virtual void SetVSync(bool isEnabled) override;
+		virtual bool IsVSync() const override { return m_data.bVSync; }
+		virtual HWND GetWindowHandle() const override { return m_hWnd; }
 
 		virtual inline void SetEventCallback(const EventCallbackFunc& callback) override { m_data.eventCallback = callback; };
-		virtual void SetVSync(bool isEnabled) override;
-		virtual bool IsVSync() const override { return m_data.bVSync; };
 	};
 }

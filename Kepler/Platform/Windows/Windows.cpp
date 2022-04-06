@@ -3,8 +3,8 @@
 #include "Windows.h"
 
 namespace kepler {
-
-	bool Windows::s_bIsInitialized = false;
+	HWND Windows::s_hMainWnd = nullptr;
+	int Windows::s_windowCount = 0;
 
 	IWindow* IWindow::Create(const WindowProps& props)
 	{
@@ -27,15 +27,28 @@ namespace kepler {
 		m_data.width = props.width;
 		m_data.height = props.height;
 
-		KEPLER_CORE_INFO("Creating Window {0} ({1}, {2})", props.title, props.width, props.height);	
-		// TODO:윈도우 핸들 얻기
-
-		if (!s_bIsInitialized)
+		KEPLER_CORE_INFO("Creating Window {0} ({1}, {2})", props.title, props.width, props.height);
+		ATOM result = RegisterWindowClass(m_data.title, kepler::WndProc);
+		KEPLER_CORE_INFO("Register window result is {0}", result);
+		if (!result)
 		{
-			// Initialize Window handle
+			KEPLER_CORE_CRITICAL("CRITICAL: Can't Initialize Main Window");
+			throw;
 		}
-
-
+		m_hWnd = kepler::InitInstance(m_data.title, m_data.width, m_data.height);
+		if (m_hWnd)
+		{
+			s_windowCount++;
+		}
+		else
+		{
+			KEPLER_CORE_CRITICAL("CRITICAL: Can't Initialize Window Instance");
+		}
+		if (!s_hMainWnd)
+		{
+			s_hMainWnd = m_hWnd;
+		}
+		
 		SetVSync(true);
 	}
 
@@ -54,12 +67,12 @@ namespace kepler {
 		if (isEnabled)
 		{
 			m_data.bVSync = true;
-			// directx vsync 세팅
+			// TODO: directx vsync 세팅
 		}
 		else
 		{
 			m_data.bVSync = false;
-			// directx vsync 세팅
+			// TODO: directx vsync 세팅
 		}
 	}
 }

@@ -7,8 +7,9 @@ namespace kepler {
 
 	class KEPLER_API Application
 	{
-	private:
+	protected:
 		std::unique_ptr<IWindow> m_pWindow;
+		bool m_bIsRunning = true;
 
 	public:
 		Application();

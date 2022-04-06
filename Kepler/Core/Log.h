@@ -29,12 +29,12 @@ namespace kepler {
 #define KEPLER_CORE_WARNING(...)	::kepler::Log::GetCoreLogger()->warn(__VA_ARGS__)
 #define KEPLER_CORE_INFO(...)		::kepler::Log::GetCoreLogger()->info(__VA_ARGS__)
 #define KEPLER_CORE_TRACE(...)		::kepler::Log::GetCoreLogger()->trace(__VA_ARGS__)
-#define KEPLER_CORE_FATAL(...)		::kepler::Log::GetCoreLogger()->fatal(__VA_ARGS__)
+#define KEPLER_CORE_CRITICAL(...)	::kepler::Log::GetCoreLogger()->critical(__VA_ARGS__)
 
 // Client Log macros
 #define KEPLER_ERROR(...)	::kepler::Log::GetCoreLogger()->error(__VA_ARGS__)
 #define KEPLER_WARNING(...)	::kepler::Log::GetCoreLogger()->warn(__VA_ARGS__)
 #define KEPLER_INFO(...)		::kepler::Log::GetCoreLogger()->info(__VA_ARGS__)
 #define KEPLER_TRACE(...)	::kepler::Log::GetCoreLogger()->trace(__VA_ARGS__)
-#define KEPLER_FATAL(...)	::kepler::Log::GetCoreLogger()->fatal(__VA_ARGS__)
+#define KEPLER_CRITICAL(...)	::kepler::Log::GetCoreLogger()->critical(__VA_ARGS__)
 

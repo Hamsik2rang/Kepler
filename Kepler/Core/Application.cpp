@@ -18,15 +18,17 @@ namespace kepler{
 
 	void Application::Run()
 	{
-		WindowResizeEvent e(1280, 700);
-		if (e.IsInCategory(EventCategoryApplication))
+		printf("Hello\n");
+		KEPLER_CORE_INFO("RUNNING...");
+		MSG msg{};
+		while (msg.message != WM_QUIT)
 		{
-			KEPLER_TRACE(e);
+			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+			{
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
+			m_pWindow->OnUpdate();
 		}
-		if (e.IsInCategory(EventCategoryInput))
-		{
-			KEPLER_TRACE(e);
-		}
-		while (true);
 	}
 }
