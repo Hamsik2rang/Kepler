@@ -67,6 +67,8 @@ namespace kepler {
 
 	LRESULT WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
+		kepler::WindowData& data = ::GetWindowLongPtrW(hWnd, GWLP_USERDATA);
+
 		switch (msg)
 		{
 		case WM_COMMAND:
@@ -148,6 +150,16 @@ namespace kepler {
 			}
 			break;
 		case WM_KILLFOCUS:
+			{
+
+			}
+			break;
+		case WM_SIZE:
+			{
+				
+			}
+			break;
+		case WM_MOVE:
 			{
 
 			}

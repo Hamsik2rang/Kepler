@@ -8,21 +8,23 @@
 
 namespace kepler {
 
+	struct WindowData
+	{
+		std::string title;
+		uint32_t width;
+		uint32_t height;
+		bool bVSync;
+
+		IWindow::EventCallbackFunc eventCallback;
+	};
+
 	class KEPLER_API Windows : public IWindow
 	{
 	private:
 		static HWND s_hMainWnd;
 		HWND		m_hWnd = nullptr;
 
-		struct WindowData
-		{
-			std::string title;
-			uint32_t width;
-			uint32_t height;
-			bool bVSync;
-
-			EventCallbackFunc eventCallback;
-		} m_data;
+		WindowData	m_data;
 
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();

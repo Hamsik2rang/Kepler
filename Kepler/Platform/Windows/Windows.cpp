@@ -39,6 +39,14 @@ namespace kepler {
 		if (m_hWnd)
 		{
 			s_windowCount++;
+			if (!::SetWindowLongPtrW(m_hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(&m_data)))
+			{
+				if (::GetLastError() != 0)
+				{
+					MessageBox(nullptr, L"Can't set window handle data", L"Error", MB_OK);
+					KEPLER_ASSERT(false, __FILE__, __LINE__);
+				}
+			}
 		}
 		else
 		{
@@ -74,5 +82,30 @@ namespace kepler {
 			m_data.bVSync = false;
 			// TODO: directx vsync ¼¼ÆÃ
 		}
+	}
+
+
+	LRESULT WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	{
+		
+	}
+
+	INT_PTR CALLBACK About(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
+	{
+		UNREFERENCED_PARAMETER(lParam);
+		switch (msg)
+		{
+		case WM_INITDIALOG:
+			return (INT_PTR)TRUE;
+
+		case WM_COMMAND:
+			if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+			{
+				EndDialog(hDlg, LOWORD(wParam));
+				return (INT_PTR)TRUE;
+			}
+			break;
+		}
+		return (INT_PTR)FALSE;
 	}
 }
