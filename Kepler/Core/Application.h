@@ -15,6 +15,7 @@ namespace kepler {
 		Application();
 		~Application();
 
+		void OnEvent(Event& e);
 		void Run();
 	};
 

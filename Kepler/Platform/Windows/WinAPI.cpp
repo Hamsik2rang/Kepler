@@ -3,12 +3,14 @@
 #include "WinAPI.h"
 #include "Core/Log.h"
 
+#include "Core/Event/KeyEvent.hpp"
+#include "Core/Event/ApplicationEvent.hpp"
+#include "Core/Event/MouseEvent.hpp"
 
 namespace kepler {
 	
 	extern HINSTANCE g_hInst = nullptr;
 	extern int g_nCmdShow = SW_SHOWDEFAULT;
-
 
 	ATOM kepler::RegisterWindowClass(const std::string& title, WindowsCallback callback)
 	{
@@ -55,7 +57,7 @@ namespace kepler {
 			KEPLER_CORE_ASSERT(false, "");
 		}
 
-		ShowWindow(hWnd, g_nCmdShow);	//TODO: nCmdShow 가변 변수로 받을 수 있게 변경해야 함. 
+		ShowWindow(hWnd, g_nCmdShow);
 		UpdateWindow(hWnd);
 
 		HACCEL hAccelTable = LoadAccelerators(g_hInst, MAKEINTRESOURCE(IDC_KEPLER));
@@ -70,7 +72,6 @@ namespace kepler {
 		case WM_COMMAND:
 			{
 				int wmId = LOWORD(wParam);
-				// Parse the menu selections:
 				switch (wmId)
 				{
 				case IDM_ABOUT:
@@ -84,12 +85,71 @@ namespace kepler {
 				}
 			}
 			break;
-		case WM_PAINT:
+		// Keyboard Events
+		case WM_KEYDOWN:
 			{
-				PAINTSTRUCT ps;
-				HDC hdc = BeginPaint(hWnd, &ps);
-				// TODO: Add any drawing code that uses hdc here...
-				EndPaint(hWnd, &ps);
+
+			}
+			break;
+		case WM_KEYUP:
+			{
+
+			}
+			break;
+
+		// Mouse Events
+		case WM_MOUSEMOVE:
+			{
+
+			}
+			break;
+		case WM_MOUSEWHEEL:
+			{
+
+			}
+			break;
+
+		// Mouse Button Events
+		case WM_LBUTTONDOWN:
+			{
+
+			}
+			break;
+		case WM_LBUTTONUP:
+			{
+
+			}
+			break;
+		case WM_RBUTTONDOWN:
+			{
+
+			}
+			break;
+		case WM_RBUTTONUP:
+			{
+				
+			}
+			break;
+		case WM_MBUTTONDOWN:
+			{
+
+			}
+			break;
+		case WM_MBUTTONUP:
+			{
+
+			}
+			break;
+
+		// Application Events
+		case WM_SETFOCUS:
+			{
+
+			}
+			break;
+		case WM_KILLFOCUS:
+			{
+
 			}
 			break;
 		case WM_DESTROY:
@@ -119,7 +179,6 @@ namespace kepler {
 		}
 		return (INT_PTR)FALSE;
 	}
-
 
 	std::wstring kepler::StringToWString(const std::string& s)
 	{
