@@ -3,6 +3,7 @@
 #include "WinAPI.h"
 #include "Core/Log.h"
 
+#include "Platform/Windows/WindowsWindow.h"
 #include "Core/Event/KeyEvent.hpp"
 #include "Core/Event/ApplicationEvent.hpp"
 #include "Core/Event/MouseEvent.hpp"
@@ -67,7 +68,7 @@ namespace kepler {
 
 	LRESULT WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		kepler::WindowData& data = ::GetWindowLongPtrW(hWnd, GWLP_USERDATA);
+		kepler::WindowData& data = *reinterpret_cast<WindowData*>(::GetWindowLongPtrW(hWnd, GWLP_USERDATA));
 
 		switch (msg)
 		{
@@ -90,24 +91,30 @@ namespace kepler {
 		// Keyboard Events
 		case WM_KEYDOWN:
 			{
-
+				KeyPressedEvent lastEvent(wParam, 0);
+				data.eventCallback(lastEvent);
 			}
 			break;
 		case WM_KEYUP:
 			{
-
+				KeyReleasedEvent lastEvent(wParam);
+				data.eventCallback(lastEvent);
 			}
 			break;
 
 		// Mouse Events
 		case WM_MOUSEMOVE:
 			{
-
+				POINT cursorPos;
+				::GetCursorPos(&cursorPos);
+				MouseMovedEvent lastEvent(cursorPos.x, cursorPos.y);
+				data.eventCallback(lastEvent);
 			}
 			break;
 		case WM_MOUSEWHEEL:
 			{
-
+				short z = GET_WHEEL_DELTA_WPARAM(wParam);
+				MouseScrolledEvent(z);
 			}
 			break;
 

@@ -165,6 +165,7 @@
     <ClInclude Include="Kepler.h" />
     <ClInclude Include="Platform\Windows\WinAPI.h" />
     <ClInclude Include="Platform\Windows\Windows.h" />
+    <ClInclude Include="Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -180,6 +181,7 @@
     </ClCompile>
     <ClCompile Include="Platform\Windows\WinAPI.cpp" />
     <ClCompile Include="Platform\Windows\Windows.cpp" />
+    <ClCompile Include="Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kepler.rc" />

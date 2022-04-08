@@ -1,27 +1,27 @@
 #include "kepch.h"
 
-#include "Windows.h"
+#include "WindowsWindow.h"
 
 namespace kepler {
-	HWND Windows::s_hMainWnd = nullptr;
-	int Windows::s_windowCount = 0;
+	HWND WindowsWindow::s_hMainWnd = nullptr;
+	int WindowsWindow::s_windowCount = 0;
 
 	IWindow* IWindow::Create(const WindowProps& props)
 	{
-		return new Windows(props);
+		return new WindowsWindow(props);
 	}
 
-	Windows::Windows(const WindowProps& props)
+	WindowsWindow::WindowsWindow(const WindowProps& props)
 	{
 		Init(props);
 	}
 
-	Windows::~Windows()
+	WindowsWindow::~WindowsWindow()
 	{
 		Shutdown();
 	}
 
-	void Windows::Init(const WindowProps& props)
+	void WindowsWindow::Init(const WindowProps& props)
 	{
 		m_data.title = props.title;
 		m_data.width = props.width;
@@ -60,17 +60,17 @@ namespace kepler {
 		SetVSync(true);
 	}
 
-	void Windows::Shutdown()
+	void WindowsWindow::Shutdown()
 	{
 		// TODO:핸들 반납하기
 	}
 
-	void Windows::OnUpdate()
+	void WindowsWindow::OnUpdate()
 	{
 
 	}
 
-	void Windows::SetVSync(bool isEnabled)
+	void WindowsWindow::SetVSync(bool isEnabled)
 	{
 		if (isEnabled)
 		{
@@ -82,30 +82,5 @@ namespace kepler {
 			m_data.bVSync = false;
 			// TODO: directx vsync 세팅
 		}
-	}
-
-
-	LRESULT WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
-	{
-		
-	}
-
-	INT_PTR CALLBACK About(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
-	{
-		UNREFERENCED_PARAMETER(lParam);
-		switch (msg)
-		{
-		case WM_INITDIALOG:
-			return (INT_PTR)TRUE;
-
-		case WM_COMMAND:
-			if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-			{
-				EndDialog(hDlg, LOWORD(wParam));
-				return (INT_PTR)TRUE;
-			}
-			break;
-		}
-		return (INT_PTR)FALSE;
 	}
 }

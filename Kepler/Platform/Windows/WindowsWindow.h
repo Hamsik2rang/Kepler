@@ -18,7 +18,7 @@ namespace kepler {
 		IWindow::EventCallbackFunc eventCallback;
 	};
 
-	class KEPLER_API Windows : public IWindow
+	class KEPLER_API WindowsWindow : public IWindow
 	{
 	private:
 		static HWND s_hMainWnd;
@@ -32,8 +32,8 @@ namespace kepler {
 	public:
 		static int s_windowCount;
 
-		Windows(const WindowProps& props);
-		virtual ~Windows();
+		WindowsWindow(const WindowProps& props);
+		virtual ~WindowsWindow();
 
 		virtual void OnUpdate() override;
 		virtual inline uint32_t GetWidth() const override { return m_data.width; }
