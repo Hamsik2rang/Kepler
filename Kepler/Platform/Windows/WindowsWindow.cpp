@@ -3,6 +3,9 @@
 #include "WindowsWindow.h"
 
 namespace kepler {
+	extern HINSTANCE	g_hInst;
+	extern int			g_nCmdShow;
+
 	HWND WindowsWindow::s_hMainWnd = nullptr;
 	int WindowsWindow::s_windowCount = 0;
 
@@ -35,18 +38,10 @@ namespace kepler {
 			KEPLER_CORE_CRITICAL("CRITICAL: Can't Initialize Main Window");
 			throw;
 		}
-		m_hWnd = kepler::InitInstance(m_data.title, m_data.width, m_data.height);
+		m_hWnd = kepler::InitInstance(m_data.title, m_data.width, m_data.height, reinterpret_cast<LONG_PTR>(&m_data));
 		if (m_hWnd)
 		{
 			s_windowCount++;
-			if (!::SetWindowLongPtrW(m_hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(&m_data)))
-			{
-				if (::GetLastError() != 0)
-				{
-					MessageBox(nullptr, L"Can't set window handle data", L"Error", MB_OK);
-					KEPLER_ASSERT(false, __FILE__, __LINE__);
-				}
-			}
 		}
 		else
 		{

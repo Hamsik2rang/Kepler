@@ -8,7 +8,7 @@
 
 namespace kepler {
 
-	struct WindowData
+	struct KEPLER_API WindowData
 	{
 		std::string title;
 		uint32_t width;
@@ -24,7 +24,7 @@ namespace kepler {
 		static HWND s_hMainWnd;
 		HWND		m_hWnd = nullptr;
 
-		WindowData	m_data;
+		WindowData	m_data{};
 
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();

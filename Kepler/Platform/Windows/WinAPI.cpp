@@ -23,7 +23,7 @@ namespace kepler {
 		wcex.style = CS_HREDRAW | CS_VREDRAW;
 		wcex.lpfnWndProc = callback;
 		wcex.cbClsExtra = 0;
-		wcex.cbWndExtra = 0;
+		wcex.cbWndExtra = sizeof(LONG_PTR);
 		wcex.hInstance = g_hInst;
 		wcex.hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_KEPLER));
 		wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
@@ -35,7 +35,7 @@ namespace kepler {
 		return ::RegisterClassExW(&wcex);
 	}
 
-	HWND kepler::InitInstance(const std::string& title, uint32_t width, uint32_t height)
+	HWND kepler::InitInstance(const std::string& title, uint32_t width, uint32_t height, LONG_PTR pUserData)
 	{
 		auto wTitle = StringToWString(title);
 		DWORD dwStyle = WS_OVERLAPPEDWINDOW;
@@ -60,15 +60,17 @@ namespace kepler {
 
 		ShowWindow(hWnd, g_nCmdShow);
 		UpdateWindow(hWnd);
-
+		
 		HACCEL hAccelTable = LoadAccelerators(g_hInst, MAKEINTRESOURCE(IDC_KEPLER));
+
+		::SetWindowLongPtr(hWnd, GWLP_USERDATA, pUserData);
 
 		return hWnd;
 	}
 
 	LRESULT WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		kepler::WindowData& data = *reinterpret_cast<WindowData*>(::GetWindowLongPtrW(hWnd, GWLP_USERDATA));
+		kepler::WindowData& data = *reinterpret_cast<WindowData*>(::GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
 		switch (msg)
 		{
@@ -114,7 +116,7 @@ namespace kepler {
 		case WM_MOUSEWHEEL:
 			{
 				short z = GET_WHEEL_DELTA_WPARAM(wParam);
-				MouseScrolledEvent(z);
+				//....
 			}
 			break;
 
