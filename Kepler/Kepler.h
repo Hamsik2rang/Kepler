@@ -9,7 +9,7 @@
 
 //----- Platform --------------------------
 #include "Platform/Windows/WinAPI.h"
-#include "Platform/Windows/Windows.h"
+#include "Platform/Windows/WindowsWindow.h"
 //-----------------------------------------
 
 //----- Global Variables-------------------
