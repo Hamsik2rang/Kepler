@@ -116,39 +116,46 @@ namespace kepler {
 		case WM_MOUSEWHEEL:
 			{
 				short z = GET_WHEEL_DELTA_WPARAM(wParam);
-				//....
+				MouseScrolledEvent lastEvent(z);
+				data.eventCallback(lastEvent);
 			}
 			break;
 
 		// Mouse Button Events
 		case WM_LBUTTONDOWN:
 			{
-
+				MouseButtonPressedEvent lastEvent(-1);
+				data.eventCallback(lastEvent);
 			}
 			break;
 		case WM_LBUTTONUP:
 			{
-
+				MouseButtonReleasedEvent lastEvent(-1);
+				data.eventCallback(lastEvent);
 			}
 			break;
 		case WM_RBUTTONDOWN:
 			{
-
+				MouseButtonPressedEvent lastEvent(1);
+				data.eventCallback(lastEvent);
 			}
 			break;
 		case WM_RBUTTONUP:
 			{
-				
+				MouseButtonReleasedEvent lastEvent(1);
+				data.eventCallback(lastEvent);
 			}
 			break;
 		case WM_MBUTTONDOWN:
 			{
-
+				MouseButtonPressedEvent lastEvent(0);
+				data.eventCallback(lastEvent);
 			}
 			break;
 		case WM_MBUTTONUP:
 			{
-
+				MouseButtonReleasedEvent lastEvent(0);
+				data.eventCallback(lastEvent);
 			}
 			break;
 

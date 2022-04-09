@@ -14,7 +14,8 @@ namespace kepler {
 
 	public:
 		MouseMovedEvent(float x, float y)
-			:m_xPos(x), m_yPos(y)
+			:m_xPos(x),
+			m_yPos(y)
 		{}
 
 		inline float GetX() const { return m_xPos; }
@@ -35,21 +36,19 @@ namespace kepler {
 	class KEPLER_API MouseScrolledEvent : public Event
 	{
 	private:
-		float m_xOffset;
-		float m_yOffset;
+		float m_zOffset;
 
 	public:
-		MouseScrolledEvent(float xOffset, float yOffset)
-			:m_xOffset(xOffset), m_yOffset(yOffset)
+		MouseScrolledEvent(float zOffset)
+			:m_zOffset(zOffset)
 		{}
 
-		inline float GetXOffset() const { return m_xOffset; }
-		inline float GetYOffset() const { return m_yOffset; }
+		inline float GetZOffset() const { return m_zOffset; }
 
 		virtual std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseScrolledEvent: " << m_xOffset << ", " << m_yOffset;
+			ss << "MouseScrolledEvent: " << m_zOffset;
 
 			return ss.str();
 		}
