@@ -60,6 +60,7 @@ namespace kepler {
 		virtual int GetCategoryFlags() const = 0;
 		virtual std::string ToString() const { return std::string(GetName()); }
 
+		inline bool IsHandled() const { return m_bIsHandled; };
 		inline bool IsInCategory(eEventCategory category) { return GetCategoryFlags() & category; }
 	};
 

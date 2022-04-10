@@ -5,6 +5,7 @@
 #include "Core/Log.h"
 #include "Core/Application.h"
 #include "Core/Event/Event.hpp"
+#include "Core/Layer.hpp"
 //-----------------------------------------
 
 //----- Platform --------------------------

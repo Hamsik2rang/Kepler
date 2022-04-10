@@ -21,13 +21,33 @@ namespace kepler{
 
 	void Application::OnEvent(Event& e)
 	{
-		KEPLER_CORE_TRACE("{0}", e);
+		for (auto it = m_layerStack.end(); it != m_layerStack.begin();)
+		{
+			// 가장 상위 레이어부터 시작해서 이벤트 처리
+			// 각각의 레이어가 자신이 처리할 이벤트가 아니라면 그냥 무시합니다.
+			(*(--it))->OnEvent(e);
+			// 이벤트가 만약 임의의 레이어에 의해 처리되었다면 그 이벤트는 소멸한 것과 마찬가지이므로 더 이상 하위(후순위) 레이어에게 이벤트를 전달하면 안 됩니다.
+			if (e.IsHandled())
+			{
+				break;
+			}
+		}
+	}
+
+	void Application::PushLayer(Layer* layer)
+	{
+		m_layerStack.PushLayer(layer);
+	}
+
+	void Application::PushOverlay(Layer* overlay)
+	{
+		m_layerStack.PushOverlay(overlay);
 	}
 
 	void Application::Run()
 	{
-		printf("Hello!\n");
 		KEPLER_CORE_INFO("Kepler is RUNNING...");
+
 		MSG msg{};
 		while (msg.message != WM_QUIT)
 		{
@@ -36,6 +56,13 @@ namespace kepler{
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
+
+			// Update whole layers
+			for (Layer* layer : m_layerStack)
+			{
+				layer->OnUpdate();
+			}
+
 			m_pWindow->OnUpdate();
 		}
 	}
