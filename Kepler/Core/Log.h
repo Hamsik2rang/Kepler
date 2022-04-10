@@ -3,13 +3,16 @@
 #include <memory>
 
 #include "Core/Base.h"
+// 외부 오픈소스 라이브러리 spdlog를 이용합니다. 로깅 시스템의 추가 구현을 위한 자세한 설명과 사용법은 아래 링크를 참조하세요.
+// https://github.com/gabime/spdlog
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/fmt/ostr.h"
 
 
 namespace kepler {
-
+	// Logger Class
+	// 인스턴스 없이 전역 사용을 위해 전부 static으로 선언합니다.
 	class KEPLER_API Log
 	{
 	private:

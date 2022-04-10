@@ -26,5 +26,6 @@ namespace kepler {
 #else
 	#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 #endif
+// NOTICE: 반드시 가장 마지막에 선언해야 합니다!!
 #include "Core/EntryPoint.h"
 //-----------------------------------------

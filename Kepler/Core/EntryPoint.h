@@ -1,3 +1,4 @@
+// Entry Point
 #pragma once
 
 #ifdef KEPLER_PLATFORM_WINDOWS

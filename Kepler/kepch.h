@@ -1,3 +1,7 @@
+// Kepler Precompiled header
+// 프로젝트 안에서 사용되는 모든 stl이나 외부 API들은 여기 선언합니다.
+// 모든 .cpp 파일에서 최상단에 #include "kepch.h"를 작성해 pch를 참조하도록 합시다.
+
 #pragma once
 
 #include <iostream>
@@ -25,6 +29,7 @@
 #include "resource.h"
 
 #endif
+// for DirectX
 #ifdef KEPLER_GRAPHICS_API_DIRECTX
 #include <d3d11.h>
 #endif

@@ -7,7 +7,7 @@
 
 
 namespace kepler {
-
+	// Window의 현재 속성들과 콜백 함수를 담습니다. Init에서 초기화되고 WinAPI.cpp의 WndProc에서 이벤트가 핸들링될 때 마다 수정됩니다.
 	struct KEPLER_API WindowData
 	{
 		std::string title;

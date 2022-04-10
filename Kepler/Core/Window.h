@@ -6,13 +6,14 @@
 
 namespace kepler {
 
+	// Window Properties
 	struct WindowProps
 	{
 		std::string title;
 		uint32_t width;
 		uint32_t height;
 
-		WindowProps(const std::string& _title = "Kepler Engine", uint32_t _width = 1280, uint32_t _height = 720)
+		WindowProps(const std::string& _title = "Kepler Engine", uint32_t _width = 1600, uint32_t _height = 900)
 			:title(_title),
 			 width(_width),
 			 height(_height)

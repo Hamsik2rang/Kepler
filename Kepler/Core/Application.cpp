@@ -26,8 +26,8 @@ namespace kepler{
 
 	void Application::Run()
 	{
-		printf("Hello\n");
-		KEPLER_CORE_INFO("RUNNING...");
+		printf("Hello!\n");
+		KEPLER_CORE_INFO("Kepler is RUNNING...");
 		MSG msg{};
 		while (msg.message != WM_QUIT)
 		{

@@ -4,12 +4,11 @@
 #include "Core/Window.h"
 
 namespace kepler {
-
+	// Window Application
 	class KEPLER_API Application
 	{
 	protected:
 		std::unique_ptr<IWindow> m_pWindow;
-		bool m_bIsRunning = true;
 
 	public:
 		Application();
@@ -18,6 +17,6 @@ namespace kepler {
 		void OnEvent(Event& e);
 		void Run();
 	};
-
+	// Defined in Client
 	Application* CreateApplication();
 }

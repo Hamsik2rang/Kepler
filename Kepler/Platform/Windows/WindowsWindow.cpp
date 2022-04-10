@@ -36,7 +36,7 @@ namespace kepler {
 		if (!result)
 		{
 			KEPLER_CORE_CRITICAL("CRITICAL: Can't Initialize Main Window");
-			throw;
+			KEPLER_ASSERT(false, "Can't Initialize Main Window");
 		}
 		m_hWnd = kepler::InitInstance(m_data.title, m_data.width, m_data.height, reinterpret_cast<LONG_PTR>(&m_data));
 		if (m_hWnd)
@@ -46,6 +46,7 @@ namespace kepler {
 		else
 		{
 			KEPLER_CORE_CRITICAL("CRITICAL: Can't Initialize Window Instance");
+			KEPLER_ASSERT(false, "Can't Initialize Window Instance");
 		}
 		if (!s_hMainWnd)
 		{
@@ -62,7 +63,7 @@ namespace kepler {
 
 	void WindowsWindow::OnUpdate()
 	{
-
+		// TODO: Update Loop마다 해야할 작업들 작성
 	}
 
 	void WindowsWindow::SetVSync(bool isEnabled)
