@@ -158,6 +158,8 @@
     <ClInclude Include="Core\Event\Event.hpp" />
     <ClInclude Include="Core\Event\KeyEvent.hpp" />
     <ClInclude Include="Core\Event\MouseEvent.hpp" />
+    <ClInclude Include="Core\Layer.hpp" />
+    <ClInclude Include="Core\LayerStack.h" />
     <ClInclude Include="Core\Log.h" />
     <ClInclude Include="Core\Window.h" />
     <ClInclude Include="framework.h" />
@@ -170,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Application.cpp" />
+    <ClCompile Include="Core\LayerStack.cpp" />
     <ClCompile Include="Core\Log.cpp" />
     <ClCompile Include="kepch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

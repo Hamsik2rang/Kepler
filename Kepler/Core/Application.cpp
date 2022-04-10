@@ -21,7 +21,7 @@ namespace kepler{
 
 	void Application::OnEvent(Event& e)
 	{
-		KEPLER_INFO("{0}", e);
+		KEPLER_CORE_TRACE("{0}", e);
 	}
 
 	void Application::Run()
