@@ -1,3 +1,6 @@
-[submodule "Kepler/Dependeices/spdlog"]
-	path = Kepler/Dependeices/spdlog
+[submodule "Kepler/Dependencies/spdlog"]
+	path = Kepler/Dependencies/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "Kepler/Dependencies/ImGui"]
+	path = Kepler/Dependencies/ImGui
+	url = https://github.com/ocornut/imgui
