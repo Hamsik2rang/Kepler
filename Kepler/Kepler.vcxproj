@@ -163,7 +163,8 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="kepch.h" />
     <ClInclude Include="Kepler.h" />
-    <ClInclude Include="Platform\Windows\Windows.h" />
+    <ClInclude Include="Platform\Windows\WinAPI.h" />
+    <ClInclude Include="Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -177,7 +178,8 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">kepch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="Platform\Windows\Windows.cpp" />
+    <ClCompile Include="Platform\Windows\WinAPI.cpp" />
+    <ClCompile Include="Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kepler.rc" />

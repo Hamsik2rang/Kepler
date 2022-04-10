@@ -57,7 +57,10 @@
     <ClInclude Include="Core\Event\ApplicationEvent.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Platform\Windows\Windows.h">
+    <ClInclude Include="Platform\Windows\WinAPI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\Windows\WindowsWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -71,7 +74,10 @@
     <ClCompile Include="kepch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Platform\Windows\Windows.cpp">
+    <ClCompile Include="Platform\Windows\WinAPI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform\Windows\WindowsWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

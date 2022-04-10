@@ -1,3 +1,4 @@
+// Entry Point
 #pragma once
 
 #ifdef KEPLER_PLATFORM_WINDOWS
@@ -6,6 +7,7 @@ extern kepler::Application* kepler::CreateApplication();
 
 #ifdef KEPLER_GRAPHICS_API_DIRECTX
 #include <Windows.h>
+
 int APIENTRY wWinMain(
 	_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -15,7 +17,9 @@ int APIENTRY wWinMain(
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	//...
+
+	kepler::g_hInst = hInstance;
+	kepler::g_nCmdShow = nCmdShow;
 	kepler::Log::Init();
 
 	int year = 2022;

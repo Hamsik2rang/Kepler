@@ -36,9 +36,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_KEPLER));
 
-    auto app = kepler::CreateApplication();
-    app->Run();
-
     MSG msg{};
 
     // Main message loop:

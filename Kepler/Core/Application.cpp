@@ -9,6 +9,9 @@ namespace kepler{
 	Application::Application()
 	{
 		m_pWindow = std::unique_ptr<IWindow>(IWindow::Create());
+		
+		// bind this->OnEvent
+		m_pWindow->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 	}
 
 	Application::~Application()
@@ -16,17 +19,24 @@ namespace kepler{
 
 	}
 
+	void Application::OnEvent(Event& e)
+	{
+		KEPLER_INFO("{0}", e);
+	}
+
 	void Application::Run()
 	{
-		WindowResizeEvent e(1280, 700);
-		if (e.IsInCategory(EventCategoryApplication))
+		printf("Hello!\n");
+		KEPLER_CORE_INFO("Kepler is RUNNING...");
+		MSG msg{};
+		while (msg.message != WM_QUIT)
 		{
-			KEPLER_TRACE(e);
+			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+			{
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
+			m_pWindow->OnUpdate();
 		}
-		if (e.IsInCategory(EventCategoryInput))
-		{
-			KEPLER_TRACE(e);
-		}
-		while (true);
 	}
 }
