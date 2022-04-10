@@ -31,6 +31,7 @@ namespace kepler {
 		m_data.height = props.height;
 
 		KEPLER_CORE_INFO("Creating Window {0} ({1}, {2})", props.title, props.width, props.height);
+		// 윈도우 클래스 등록
 		ATOM result = RegisterWindowClass(m_data.title, kepler::WndProc);
 		KEPLER_CORE_INFO("Register window result is {0}", result);
 		if (!result)
@@ -38,6 +39,7 @@ namespace kepler {
 			KEPLER_CORE_CRITICAL("CRITICAL: Can't Initialize Main Window");
 			KEPLER_ASSERT(false, "Can't Initialize Main Window");
 		}
+		// 윈도우 클래스 초기화 및 이벤트 핸들링을 위한 유저 데이터 등록
 		m_hWnd = kepler::InitInstance(m_data.title, m_data.width, m_data.height, reinterpret_cast<LONG_PTR>(&m_data));
 		if (m_hWnd)
 		{
@@ -58,7 +60,7 @@ namespace kepler {
 
 	void WindowsWindow::Shutdown()
 	{
-		// TODO:핸들 반납하기
+		// TODO: 해제해야 할 윈도우 리소스가 있다면 이 곳에서 해제합니다.
 	}
 
 	void WindowsWindow::OnUpdate()
@@ -70,13 +72,12 @@ namespace kepler {
 	{
 		if (isEnabled)
 		{
-			m_data.bVSync = true;
 			// TODO: directx vsync 세팅
 		}
 		else
 		{
-			m_data.bVSync = false;
 			// TODO: directx vsync 세팅
 		}
+		m_data.bVSync = isEnabled;
 	}
 }
