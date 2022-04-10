@@ -118,6 +118,8 @@ namespace kepler {
 			{
 				POINT cursorPos;
 				::GetCursorPos(&cursorPos);
+				::ScreenToClient(hWnd, &cursorPos); // Screen(모니터)상의 좌표를 실제 Client(엔진 창)상의 좌표로 바꿉니다.
+
 				MouseMovedEvent lastEvent(cursorPos.x, cursorPos.y);
 				data->eventCallback(lastEvent);
 			}
@@ -185,6 +187,9 @@ namespace kepler {
 			{
 				RECT rcWinRect{};
 				::GetClientRect(hWnd, &rcWinRect);
+				// Screen상의 좌표를 Client상의 좌표로 변환합니다.
+				::ScreenToClient(hWnd, (POINT*)&rcWinRect.left);
+				::ScreenToClient(hWnd, (POINT*)&rcWinRect.right);
 				WindowResizeEvent lastEvent(rcWinRect.right - rcWinRect.left, rcWinRect.bottom - rcWinRect.top);
 				data->eventCallback(lastEvent);
 			}
@@ -200,7 +205,8 @@ namespace kepler {
 				data->eventCallback(lastEvent);
 			}
 			// 추후에 WM_CLOSE 메시지 이후에 바로 윈도우를 Destroy하지 않고 무언가를 처리해야 한다면 fallthrough 로직을 없애고 break를 합시다!
-			[[fallthrough]]	
+			// C++17 이전 버전에서 작동하지 않습니다..
+			[[fallthrough]]
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			break;
