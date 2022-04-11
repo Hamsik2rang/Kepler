@@ -158,6 +158,7 @@
     <ClInclude Include="Core\Event\Event.hpp" />
     <ClInclude Include="Core\Event\KeyEvent.hpp" />
     <ClInclude Include="Core\Event\MouseEvent.hpp" />
+    <ClInclude Include="Core\GUI\ImGuiLayer.h" />
     <ClInclude Include="Core\Layer.hpp" />
     <ClInclude Include="Core\LayerStack.h" />
     <ClInclude Include="Core\Log.h" />
@@ -172,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Application.cpp" />
+    <ClCompile Include="Core\GUI\ImGuiLayer.cpp" />
     <ClCompile Include="Core\LayerStack.cpp" />
     <ClCompile Include="Core\Log.cpp" />
     <ClCompile Include="kepch.cpp">
