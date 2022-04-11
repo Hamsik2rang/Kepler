@@ -46,4 +46,4 @@ Therefore, **just Clone this repository to your local workspace using git comman
 git clone https://github.com/Hamsik2rang/Kepler.git --recursive
 ```
 
-and.. you'll be ready to go!
+then.. you'll be ready to go!
