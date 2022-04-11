@@ -120,7 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>KEPLER_ASSERTION_ENABLE;KEPLER_GRAPHICS_API_DIRECTX;KEPLER_PLATFORM_WINDOWS;KEPLER_BUILD_DLL;KEPLER_PLATFORM_WINDOWS_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies\;$(SolutionDir)Kepler\;$(SolutionDir)Kepler\Dependencies\spdlog\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies\ImGui;$(SolutionDir)Kepler\;$(SolutionDir)Kepler\Dependencies\spdlog\include</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>kepch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
@@ -138,7 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>KEPLER_ASSERTION_ENABLE;KEPLER_GRAPHICS_API_DIRECTX;KEPLER_PLATFORM_WINDOWS;KEPLER_BUILD_DLL;KEPLER_PLATFORM_WINDOWSNDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies\;$(SolutionDir)Kepler\;$(SolutionDir)Kepler\Dependeices\spdlog\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies\ImGui;$(SolutionDir)Kepler\;$(SolutionDir)Kepler\Dependeices\spdlog\include</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>kepch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
@@ -166,6 +166,8 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="kepch.h" />
     <ClInclude Include="Kepler.h" />
+    <ClInclude Include="Platform\DirectX\ImGuiDX11Renderer.h" />
+    <ClInclude Include="Platform\DirectX\ImGuiWin32Renderer.h" />
     <ClInclude Include="Platform\Windows\WinAPI.h" />
     <ClInclude Include="Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Resource.h" />
@@ -174,6 +176,11 @@
   <ItemGroup>
     <ClCompile Include="Core\Application.cpp" />
     <ClCompile Include="Core\GUI\ImGuiLayer.cpp" />
+    <ClCompile Include="Core\GUI\ImGuiSource\imgui.cpp" />
+    <ClCompile Include="Core\GUI\ImGuiSource\imgui_demo.cpp" />
+    <ClCompile Include="Core\GUI\ImGuiSource\imgui_draw.cpp" />
+    <ClCompile Include="Core\GUI\ImGuiSource\imgui_tables.cpp" />
+    <ClCompile Include="Core\GUI\ImGuiSource\imgui_widgets.cpp" />
     <ClCompile Include="Core\LayerStack.cpp" />
     <ClCompile Include="Core\Log.cpp" />
     <ClCompile Include="kepch.cpp">
@@ -183,6 +190,8 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">kepch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Platform\DirectX\ImGuiDX11Renderer.cpp" />
+    <ClCompile Include="Platform\DirectX\ImGuiWin32Renderer.cpp" />
     <ClCompile Include="Platform\Windows\WinAPI.cpp" />
     <ClCompile Include="Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
