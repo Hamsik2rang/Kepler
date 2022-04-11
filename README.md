@@ -36,5 +36,14 @@ Currently in progress to implement.
 
 ### Installation
 
--TBA-
+Currently, Kepler only supprot Windows. so you just need `*.sln` to open and build this project.
 
+Solution file is included in this repository. 
+
+Therefore, **just Clone this repository to your local workspace using git command below:**
+
+```bash
+git clone https://github.com/Hamsik2rang/Kepler.git --recursive
+```
+
+and.. you'll be ready to go!
