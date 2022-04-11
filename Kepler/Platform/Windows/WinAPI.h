@@ -16,5 +16,3 @@ namespace kepler {
 	INT_PTR CALLBACK About(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 	std::wstring StringToWString(const std::string& s);
 }
-
-#define WINDOWS_CALLBACK_LAMBDA [](HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) -> LRESULT
