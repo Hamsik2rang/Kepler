@@ -17,13 +17,13 @@ namespace kepler {
 		}
 	}
 
-	void LayerStack::PushLayer(const Layer* layer)
+	void LayerStack::PushLayer(Layer* layer)
 	{
 		// 일반 Layer는 스택처럼 쌓여야 함
 		m_lastPushedLayer = m_pLayers.emplace(m_lastPushedLayer, layer);
 	}
 
-	void LayerStack::PushOverlay(const Layer* overlay)
+	void LayerStack::PushOverlay(Layer* overlay)
 	{
 		// 오버레이는 어떤 다른 일반 레이어보다 위에 존재해야 함
 		m_pLayers.emplace_back(overlay);

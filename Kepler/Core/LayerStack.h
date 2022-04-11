@@ -16,8 +16,8 @@ namespace kepler {
 		LayerStack();
 		~LayerStack();
 
-		void PushLayer(const Layer* layer);
-		void PushOverlay(const Layer* overlay);
+		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* overlay);
 		void PopLayer(Layer* layer);
 		void PopOverlay(Layer* overlay);
 		

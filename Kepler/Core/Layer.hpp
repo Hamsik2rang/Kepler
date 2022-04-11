@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Core/Base.h"
 #include <string>
+
+#include "Core/Base.h"
+#include "Core/Event/Event.hpp"
 
 namespace kepler {
 
