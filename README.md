@@ -12,7 +12,7 @@ Currently in progress to implement.
 
 ### Libraries
 
-[ImGui](https://github.com/ocournut/imgui)
+[ImGui](https://github.com/ocornut/imgui)
 
 [spdlog](https://github.com/gabime/spdlog)
 
