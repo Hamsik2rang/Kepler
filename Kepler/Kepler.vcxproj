@@ -158,12 +158,12 @@
     <ClInclude Include="Core\Event\Event.hpp" />
     <ClInclude Include="Core\Event\KeyEvent.hpp" />
     <ClInclude Include="Core\Event\MouseEvent.hpp" />
-    <ClInclude Include="Core\GUI\ImGuiLayer.h" />
     <ClInclude Include="Core\Layer.hpp" />
     <ClInclude Include="Core\LayerStack.h" />
     <ClInclude Include="Core\Log.h" />
     <ClInclude Include="Core\Window.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="ImGui\ImGuiLayer.h" />
     <ClInclude Include="kepch.h" />
     <ClInclude Include="Kepler.h" />
     <ClInclude Include="ImGui\ImGuiSource\ImGuiDX11Renderer.h" />
@@ -176,7 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Application.cpp" />
-    <ClCompile Include="Core\GUI\ImGuiLayer.cpp" />
+    <ClCompile Include="ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="ImGui\ImGuiSource\imgui.cpp" />
     <ClCompile Include="ImGui\ImGuiSource\imgui_demo.cpp" />
     <ClCompile Include="ImGui\ImGuiSource\imgui_draw.cpp" />

@@ -9,12 +9,12 @@ namespace kepler {
 	HWND WindowsWindow::s_hMainWnd = nullptr;
 	int WindowsWindow::s_windowCount = 0;
 
-	IWindow* IWindow::Create(const WindowProps& props)
+	IWindow* IWindow::Create(const WindowProperty& props)
 	{
 		return new WindowsWindow(props);
 	}
 
-	WindowsWindow::WindowsWindow(const WindowProps& props)
+	WindowsWindow::WindowsWindow(const WindowProperty& props)
 	{
 		Init(props);
 	}
@@ -24,7 +24,7 @@ namespace kepler {
 		Shutdown();
 	}
 
-	void WindowsWindow::Init(const WindowProps& props)
+	void WindowsWindow::Init(const WindowProperty& props)
 	{
 		m_data.title = props.title;
 		m_data.width = props.width;

@@ -27,13 +27,13 @@ namespace kepler {
 
 		WindowData	m_data{};
 
-		virtual void Init(const WindowProps& props);
+		virtual void Init(const WindowProperty& props);
 		virtual void Shutdown();
 
 	public:
 		static int s_windowCount;
 
-		WindowsWindow(const WindowProps& props);
+		WindowsWindow(const WindowProperty& props);
 		virtual ~WindowsWindow();
 
 		virtual void OnUpdate() override;
