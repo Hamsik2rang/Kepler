@@ -4,3 +4,4 @@
 [submodule "Kepler/Dependencies/ImGui"]
 	path = Kepler/Dependencies/ImGui
 	url = https://github.com/ocornut/imgui
+	branch = docking

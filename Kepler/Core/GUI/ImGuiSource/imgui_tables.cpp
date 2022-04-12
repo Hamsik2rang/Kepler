@@ -183,11 +183,11 @@ Index of this file:
 //-----------------------------------------------------------------------------
 // [SECTION] Header mess
 //-----------------------------------------------------------------------------
-#include "kepch.h"
 
 #if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_WARNINGS)
 #define _CRT_SECURE_NO_WARNINGS
 #endif
+#include "kepch.h"
 
 #include "imgui.h"
 #ifndef IMGUI_DISABLE
