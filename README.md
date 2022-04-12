@@ -12,6 +12,8 @@ Currently in progress to implement.
 
 ### Libraries
 
+DirectX11
+
 [ImGui](https://github.com/ocornut/imgui)
 
 [spdlog](https://github.com/gabime/spdlog)
