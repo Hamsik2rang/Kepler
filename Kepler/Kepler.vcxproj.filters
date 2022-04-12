@@ -57,7 +57,7 @@
     <ClInclude Include="Core\Event\ApplicationEvent.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Platform\Windows\WinAPI.h">
+    <ClInclude Include="Platform\Win32\WinAPI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Platform\Windows\WindowsWindow.h">
@@ -72,10 +72,13 @@
     <ClInclude Include="Core\GUI\ImGuiLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Platform\DirectX\ImGuiDX11Renderer.h">
+    <ClInclude Include="ImGui\ImGuiSource\ImGuiDX11Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Platform\DirectX\ImGuiWin32Renderer.h">
+    <ClInclude Include="ImGui\ImGuiSource\ImGuiWin32Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\DirectX\DirectXAPI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -89,7 +92,7 @@
     <ClCompile Include="kepch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Platform\Windows\WinAPI.cpp">
+    <ClCompile Include="Platform\Win32\WinAPI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Platform\Windows\WindowsWindow.cpp">
@@ -101,25 +104,28 @@
     <ClCompile Include="Core\GUI\ImGuiLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Platform\DirectX\ImGuiDX11Renderer.cpp">
+    <ClCompile Include="ImGui\ImGuiSource\ImGuiDX11Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Platform\DirectX\ImGuiWin32Renderer.cpp">
+    <ClCompile Include="ImGui\ImGuiSource\ImGuiWin32Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Core\GUI\ImGuiSource\imgui.cpp">
+    <ClCompile Include="ImGui\ImGuiSource\imgui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Core\GUI\ImGuiSource\imgui_demo.cpp">
+    <ClCompile Include="ImGui\ImGuiSource\imgui_demo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Core\GUI\ImGuiSource\imgui_draw.cpp">
+    <ClCompile Include="ImGui\ImGuiSource\imgui_draw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Core\GUI\ImGuiSource\imgui_tables.cpp">
+    <ClCompile Include="ImGui\ImGuiSource\imgui_tables.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Core\GUI\ImGuiSource\imgui_widgets.cpp">
+    <ClCompile Include="ImGui\ImGuiSource\imgui_widgets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform\DirectX\DirectXAPI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
