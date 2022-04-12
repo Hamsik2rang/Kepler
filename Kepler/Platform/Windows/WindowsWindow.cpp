@@ -41,15 +41,18 @@ namespace kepler {
 		}
 		// 윈도우 클래스 초기화 및 이벤트 핸들링을 위한 유저 데이터 등록
 		m_hWnd = kepler::InitInstance(m_data.title, m_data.width, m_data.height, reinterpret_cast<LONG_PTR>(&m_data));
-		if (m_hWnd)
+		if (!m_hWnd)
 		{
-			s_windowCount++;
+			KEPLER_CORE_CRITICAL("CRITICAL: Can't Initialize Window Instance - {0} {1}", __FILE__, __LINE__);
+			KEPLER_ASSERT(false, "Can't Initialize Window Instance - See CORE Log for more info.");
 		}
-		else
-		{
-			KEPLER_CORE_CRITICAL("CRITICAL: Can't Initialize Window Instance");
-			KEPLER_ASSERT(false, "Can't Initialize Window Instance");
-		}
+		
+		kepler::ShowWindow(m_hWnd);
+		
+
+		::SetWindowLongPtr(m_hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(&m_data));
+			
+		s_windowCount++;
 		if (!s_hMainWnd)
 		{
 			s_hMainWnd = m_hWnd;

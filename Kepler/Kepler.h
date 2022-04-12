@@ -9,7 +9,7 @@
 //-----------------------------------------
 
 //----- Platform --------------------------
-#include "Platform/Windows/WinAPI.h"
+#include "Platform/Win32/WinAPI.h"
 #include "Platform/Windows/WindowsWindow.h"
 //-----------------------------------------
 

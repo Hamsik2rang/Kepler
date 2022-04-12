@@ -42,7 +42,8 @@ namespace kepler {
 		auto wTitle = StringToWString(title);
 		DWORD dwStyle = WS_OVERLAPPEDWINDOW;
 		
-		HWND hWnd = CreateWindowW(wTitle.c_str(),
+		HWND hWnd = nullptr;
+		hWnd = CreateWindowW(wTitle.c_str(),
 			wTitle.c_str(), 
 			WS_OVERLAPPEDWINDOW,
 			CW_USEDEFAULT, 
@@ -53,19 +54,8 @@ namespace kepler {
 			nullptr, 
 			g_hInst,
 			0);
-
-		if (!hWnd)
-		{
-			KEPLER_CORE_CRITICAL("Window can't instantiate");
-			KEPLER_CORE_ASSERT(false, "");
-		}
-
-		ShowWindow(hWnd, g_nCmdShow);
-		UpdateWindow(hWnd);
 		
 		HACCEL hAccelTable = LoadAccelerators(g_hInst, MAKEINTRESOURCE(IDC_KEPLER));
-
-		::SetWindowLongPtr(hWnd, GWLP_USERDATA, pUserData);
 
 		return hWnd;
 	}

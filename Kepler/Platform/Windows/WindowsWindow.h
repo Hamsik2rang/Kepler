@@ -3,7 +3,8 @@
 #include "Core/Base.h"
 #include "Core/Window.h"
 
-#include "Platform/Windows/WinAPI.h"
+#include "Platform/Win32/WinAPI.h"
+#include "Platform/DirectX/DirectXAPI.h"
 
 
 namespace kepler {
