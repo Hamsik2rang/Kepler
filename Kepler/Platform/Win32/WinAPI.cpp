@@ -9,9 +9,9 @@
 #include "Core/Event/MouseEvent.hpp"
 
 namespace kepler {
-	
+
 	extern HINSTANCE g_hInst = nullptr;
-	extern int g_nCmdShow = SW_SHOWDEFAULT;
+	extern int		 g_nCmdShow = SW_SHOWDEFAULT;
 
 	ATOM kepler::RegisterWindowClass(const std::string& title, WindowsCallback callback)
 	{
@@ -58,6 +58,12 @@ namespace kepler {
 		HACCEL hAccelTable = LoadAccelerators(g_hInst, MAKEINTRESOURCE(IDC_KEPLER));
 
 		return hWnd;
+	}
+
+	void kepler::ShowWindow(HWND hWnd) 
+	{ 
+		::ShowWindow(hWnd, g_nCmdShow);
+		::UpdateWindow(hWnd);
 	}
 
 	LRESULT WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -180,7 +186,13 @@ namespace kepler {
 				// Screen상의 좌표를 Client상의 좌표로 변환합니다.
 				::ScreenToClient(hWnd, (POINT*)&rcWinRect.left);
 				::ScreenToClient(hWnd, (POINT*)&rcWinRect.right);
-				WindowResizeEvent lastEvent(rcWinRect.right - rcWinRect.left, rcWinRect.bottom - rcWinRect.top);
+				
+				uint32_t width = rcWinRect.right - rcWinRect.left;
+				uint32_t height = rcWinRect.bottom - rcWinRect.top;
+				
+				WindowResizeEvent lastEvent(width, height);
+				data->width = width;
+				data->height = height;
 				data->eventCallback(lastEvent);
 			}
 			break;

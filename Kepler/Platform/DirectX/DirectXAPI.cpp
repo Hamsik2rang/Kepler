@@ -1,9 +1,12 @@
+#include "kepch.h"
 
 #include "DirectXAPI.h"
 
-#include "kepch.h"
-
-bool kepler::CreateDeviceD3D(HWND hWnd)
+bool kepler::CreateD3DDevice(HWND hWnd, 
+                             ID3D11Device** pDevice, 
+                             ID3D11DeviceContext** pImmediateContext, 
+                             IDXGISwapChain** pSwapChain, 
+                             ID3D11RenderTargetView** pRenderTargetView)
 {
     // Setup swap chain
     DXGI_SWAP_CHAIN_DESC sd;
@@ -22,24 +25,67 @@ bool kepler::CreateDeviceD3D(HWND hWnd)
     sd.Windowed = TRUE;
     sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
+    D3D_DRIVER_TYPE driverTypes[]
+    {
+        D3D_DRIVER_TYPE_HARDWARE,
+        D3D_DRIVER_TYPE_WARP,
+        D3D_DRIVER_TYPE_REFERENCE
+    };
+
     UINT createDeviceFlags = 0;
     //createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
     D3D_FEATURE_LEVEL featureLevel;
-    const D3D_FEATURE_LEVEL featureLevelArray[2] = { D3D_FEATURE_LEVEL_11_0, D3D_FEATURE_LEVEL_10_0, };
-    if (D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, createDeviceFlags, featureLevelArray, 2, D3D11_SDK_VERSION, &sd, &g_pSwapChain, &g_pd3dDevice, &featureLevel, &g_pd3dDeviceContext) != S_OK)
-        return false;
+    const D3D_FEATURE_LEVEL featureLevels[]
+    { 
+        D3D_FEATURE_LEVEL_11_0, 
+        D3D_FEATURE_LEVEL_10_1,
+        D3D_FEATURE_LEVEL_10_0 
+    };
 
-    CreateRenderTarget();
+    UINT driverTypeCount = ARRAYSIZE(driverTypes);
+    UINT featureLevelCount = ARRAYSIZE(featureLevels);
+
+    HRESULT hr;
+    for (UINT driverTypeIndex = 0; driverTypeIndex < driverTypeCount; driverTypeIndex++)
+    {
+        hr = D3D11CreateDeviceAndSwapChain(
+            nullptr,
+            driverTypes[driverTypeIndex],
+            nullptr,
+            createDeviceFlags,
+            featureLevels,
+            featureLevelCount,
+            D3D11_SDK_VERSION,
+            &sd,
+            pSwapChain,
+            pDevice,
+            &featureLevel,
+            pImmediateContext);
+
+        if (SUCCEEDED(hr))
+        {
+            break;
+        }
+    }
+
+    if (FAILED(hr))
+    {
+        return false;
+    }
+
+    ID3D11Texture2D* pBackBuffer = nullptr;
+    hr = (*pSwapChain)->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+    if (FAILED(hr))
+    {
+        return false;
+    }
+
+    hr = (*pDevice)->CreateRenderTargetView(pBackBuffer, nullptr, pRenderTargetView);
+    pBackBuffer->Release();
+    if (FAILED(hr))
+    {
+        return false;
+    }
+
     return true;
 }
-
-void kepler::CleanupDeviceD3D()
-{
-    
-}
-
-void kepler::CreateRenderTarget()
-{}
-
-void kepler::CleanupRenderTarget()
-{}

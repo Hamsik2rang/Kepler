@@ -44,14 +44,19 @@ namespace kepler {
 		if (!m_hWnd)
 		{
 			KEPLER_CORE_CRITICAL("CRITICAL: Can't Initialize Window Instance - {0} {1}", __FILE__, __LINE__);
-			KEPLER_ASSERT(false, "Can't Initialize Window Instance - See CORE Log for more info.");
+			KEPLER_ASSERT(false, "Can't Initialize Window Instance - See Core Log for more info.");
 		}
-		
-		kepler::ShowWindow(m_hWnd);
-		
+		// D3D Device 생성
+		if (!CreateD3DDevice(m_hWnd, &m_pDevice, &m_pImmediateContext, &m_pSwapChain, &m_pRenderTargetView))
+		{
+			CleanupD3DDevice();
+			KEPLER_CORE_CRITICAL("CRITICAL: Can't Initialize DirectX Device - {0} {1}", __FILE__, __LINE__);
+			KEPLER_ASSERT(false, "Can't Initialize Window Instance - See Core Log for more info.");
+		}
 
+		kepler::ShowWindow(m_hWnd);
 		::SetWindowLongPtr(m_hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(&m_data));
-			
+		
 		s_windowCount++;
 		if (!s_hMainWnd)
 		{
@@ -64,23 +69,27 @@ namespace kepler {
 	void WindowsWindow::Shutdown()
 	{
 		// TODO: 해제해야 할 윈도우 리소스가 있다면 이 곳에서 해제합니다.
+		CleanupD3DDevice();
+	}
+
+	void WindowsWindow::CleanupD3DDevice()
+	{
+		if (m_pRenderTargetView)	{ m_pRenderTargetView->Release(); m_pRenderTargetView = nullptr; }
+		if (m_pSwapChain)			{ m_pSwapChain->Release(); m_pSwapChain = nullptr; }
+		if (m_pImmediateContext)	{ m_pImmediateContext->Release(); m_pImmediateContext = nullptr; }
+		if (m_pDevice)				{ m_pDevice->Release(); m_pDevice = nullptr; }
 	}
 
 	void WindowsWindow::OnUpdate()
 	{
 		// TODO: Update Loop마다 해야할 작업들 작성
+		m_pSwapChain->Present((m_data.bVSync ? 1 : 0), 0);
 	}
 
-	void WindowsWindow::SetVSync(bool isEnabled)
+	void WindowsWindow::ClearRender()
 	{
-		if (isEnabled)
-		{
-			// TODO: directx vsync 세팅
-		}
-		else
-		{
-			// TODO: directx vsync 세팅
-		}
-		m_data.bVSync = isEnabled;
+		static const float clearColor[]{ 0.1f, 0.1f, 0.1f, 1.0f };
+		m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, nullptr);
+		m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, clearColor);
 	}
 }

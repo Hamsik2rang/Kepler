@@ -11,6 +11,7 @@
 //----- Platform --------------------------
 #include "Platform/Win32/WinAPI.h"
 #include "Platform/Windows/WindowsWindow.h"
+#include "ImGui/ImGuiLayer.h"
 //-----------------------------------------
 
 //----- Global Variables-------------------

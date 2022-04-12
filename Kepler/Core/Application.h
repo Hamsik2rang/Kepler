@@ -9,13 +9,18 @@ namespace kepler {
 	// Window Application
 	class KEPLER_API Application
 	{
-	protected:
-		std::unique_ptr<IWindow> m_pWindow;
-		LayerStack m_layerStack;
+	private:
+		static	Application*		s_pInstance;
+
+		std::unique_ptr<IWindow>	m_pWindow;
+		LayerStack					m_layerStack;
 
 	public:
 		Application();
 		~Application();
+
+		static Application* Get();
+		inline IWindow& GetWindow() { return *m_pWindow; }
 
 		void OnEvent(Event& e);
 

@@ -12,9 +12,9 @@ namespace kepler {
 	struct WindowData
 	{
 		std::string title;
-		uint32_t width;
-		uint32_t height;
-		bool bVSync;
+		uint32_t	width;
+		uint32_t	height;
+		bool		bVSync;
 
 		IWindow::EventCallbackFunc eventCallback;
 	};
@@ -25,10 +25,19 @@ namespace kepler {
 		static HWND s_hMainWnd;
 		HWND		m_hWnd = nullptr;
 
+		// 임시. 추후에 렌더러가 생기면 그 땐 렌더러 디바이스로 변경할 수 있음
+		ID3D11Device*			m_pDevice = nullptr;
+		ID3D11DeviceContext*	m_pImmediateContext = nullptr;
+		ID3D11RenderTargetView* m_pRenderTargetView = nullptr;
+		IDXGISwapChain*			m_pSwapChain = nullptr;
+
 		WindowData	m_data{};
 
 		virtual void Init(const WindowProperty& props);
 		virtual void Shutdown();
+		
+		// 마찬가지로 임시
+		void CleanupD3DDevice();
 
 	public:
 		static int s_windowCount;
@@ -37,13 +46,18 @@ namespace kepler {
 		virtual ~WindowsWindow();
 
 		virtual void OnUpdate() override;
+		virtual void ClearRender() override;
+		
 		virtual inline uint32_t GetWidth() const override { return m_data.width; }
 		virtual inline uint32_t GetHeight() const override { return m_data.height; }
 
-		virtual void SetVSync(bool isEnabled) override;
-		virtual bool IsVSync() const override { return m_data.bVSync; }
-		virtual HWND GetWindowHandle() const override { return m_hWnd; }
+		virtual inline void SetVSync(bool isEnabled) override { m_data.bVSync = isEnabled; };
+		virtual inline bool IsVSync() const override { return m_data.bVSync; }
+		inline HWND GetWindowHandle() const { return m_hWnd; }
+		inline ID3D11Device* GetD3DDevice() { return m_pDevice; }
+		inline ID3D11DeviceContext* GetD3DDeviceContext() { return m_pImmediateContext; }
 
 		virtual inline void SetEventCallback(const EventCallbackFunc& callback) override { m_data.eventCallback = callback; };
+		
 	};
 }

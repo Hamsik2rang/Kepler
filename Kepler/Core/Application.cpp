@@ -6,12 +6,21 @@
 
 namespace kepler{
 
+	Application* Application::s_pInstance = nullptr;
+
 	Application::Application()
 	{
 		m_pWindow = std::unique_ptr<IWindow>(IWindow::Create());
 		
 		// bind this->OnEvent
 		m_pWindow->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+		s_pInstance = this;
+	}
+
+	Application* Application::Get()
+	{
+		KEPLER_ASSERT(s_pInstance, "Application not constructed!");
+		return s_pInstance;
 	}
 
 	Application::~Application()
@@ -56,6 +65,8 @@ namespace kepler{
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
+
+			m_pWindow->ClearRender();
 
 			// Update whole layers
 			for (Layer* layer : m_layerStack)

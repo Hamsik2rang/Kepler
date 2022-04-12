@@ -7,15 +7,14 @@
 #include <string>
 
 namespace kepler {
-
+	
 	using WindowsCallback = WNDPROC;
 
-	
 	ATOM RegisterWindowClass(const std::string& title, WindowsCallback callback);
 	HWND InitInstance(const std::string& title, uint32_t width, uint32_t height, LONG_PTR pUserData);
 	LRESULT WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	INT_PTR CALLBACK About(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
-	inline void ShowWindow(HWND hWnd) { ::ShowWindow(hWnd, g_nCmdShow); ::UpdateWindow(hWnd); }
+	void ShowWindow(HWND hWnd);
 	std::wstring StringToWString(const std::string& s);
 	
 }

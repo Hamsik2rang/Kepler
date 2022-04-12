@@ -35,7 +35,7 @@ namespace kepler {
 		virtual void SetVSync(bool isEnabled) = 0;
 		virtual bool IsVSync() const = 0;
 
-		virtual HWND GetWindowHandle() const = 0;
+		virtual void ClearRender() = 0;
 
 		static IWindow* Create(const WindowProperty& props = WindowProperty());
 	};

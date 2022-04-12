@@ -5,9 +5,9 @@
 
 namespace kepler {
 
-	bool CreateDeviceD3D(HWND hWnd);
-	void CleanupDeviceD3D();
-	void CreateRenderTarget();
-	void CleanupRenderTarget();
-
+	bool CreateD3DDevice(HWND hWnd, 
+						ID3D11Device** pDevice, 
+						ID3D11DeviceContext** pImmediateContext, 
+						IDXGISwapChain** pSwapChain, 
+						ID3D11RenderTargetView** pRenderTargetView);
 }

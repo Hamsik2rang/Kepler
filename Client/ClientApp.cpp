@@ -36,6 +36,7 @@ public:
 	Client()
 	{
 		PushLayer(new TestLayer());
+		PushOverlay(new kepler::ImGuiLayer());
 	}
 	~Client()
 	{
