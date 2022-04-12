@@ -36,7 +36,7 @@ namespace kepler {
 		}
 
 		// TODO: 이거 언젠가 꼭 바꿔야됩니다..
-		HWND hWnd = ((WindowsWindow*) & Application::Get()->GetWindow())->GetWindowHandle();
+		HWND hWnd = ((WindowsWindow*)&Application::Get()->GetWindow())->GetWindowHandle();
 		ImGui_ImplDX11_Init(
 			((WindowsWindow*)&Application::Get()->GetWindow())->GetD3DDevice(), 
 			((WindowsWindow*)&Application::Get()->GetWindow())->GetD3DDeviceContext());
@@ -108,6 +108,52 @@ namespace kepler {
 	void ImGuiLayer::OnEvent(Event& e)
 	{
 		// TODO: 이벤트를 카테고리에 맞게 처리(Dispatcher이용?)
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<KeyPressedEvent>(std::bind(&OnKeyPressedEvent, this, std::placeholders::_1));
+		dispatcher.Dispatch<KeyReleasedEvent>(std::bind(&OnKeyReleasedEvent, this, std::placeholders::_1));
+		dispatcher.Dispatch<MouseMovedEvent>(std::bind(&OnMouseMovedEvent, this, std::placeholders::_1));
+		dispatcher.Dispatch<MouseScrolledEvent>(std::bind(&OnMouseScrolledEvent, this, std::placeholders::_1));
+		dispatcher.Dispatch<MouseButtonReleasedEvent>(std::bind(&OnMouseButtonReleasedEvent, this, std::placeholders::_1));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(std::bind(&OnMouseButtonPressedEvent, this, std::placeholders::_1));
+		dispatcher.Dispatch<WindowResizeEvent>(std::bind(&OnWindowResizeEvent, this, std::placeholders::_1));
 	}
+
+	bool ImGuiLayer::OnKeyPressedEvent(KeyPressedEvent& e)
+	{
+		return false;
+	}
+
+	bool ImGuiLayer::OnKeyReleasedEvent(KeyReleasedEvent& e)
+	{
+		return false;
+	}
+
+	bool ImGuiLayer::OnMouseMovedEvent(MouseMovedEvent& e)
+	{
+		ImGui::GetIO().MousePos = ImVec2(e.GetX(), e.GetY());
+
+		return false;
+	}
+
+	bool ImGuiLayer::OnMouseScrolledEvent(MouseScrolledEvent& e)
+	{
+		return false;
+	}
+
+	bool ImGuiLayer::OnMouseButtonPressedEvent(MouseButtonPressedEvent& e)
+	{
+		return false;
+	}
+
+	bool ImGuiLayer::OnMouseButtonReleasedEvent(MouseButtonEvent& e)
+	{
+		return false;
+	}
+
+	bool ImGuiLayer::OnWindowResizeEvent(WindowResizeEvent& e)
+	{
+		return false;
+	}
+
 
 }

@@ -13,6 +13,13 @@ namespace kepler {
 	class KEPLER_API ImGuiLayer : public Layer
 	{
 	private:
+		bool OnKeyPressedEvent(KeyPressedEvent& e);
+		bool OnKeyReleasedEvent(KeyReleasedEvent& e);
+		bool OnMouseMovedEvent(MouseMovedEvent& e);
+		bool OnMouseScrolledEvent(MouseScrolledEvent& e);
+		bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& e);
+		bool OnMouseButtonReleasedEvent(MouseButtonEvent& e);
+		bool OnWindowResizeEvent(WindowResizeEvent& e);
 
 	public:
 		ImGuiLayer();

@@ -12,6 +12,14 @@ namespace kepler {
 	{
 		None = 0,
 
+		KeyPressed,
+		KeyReleased,
+
+		MouseMoved,
+		MouseScrolled,
+		MouseButtonPressed,
+		MouseButtonReleased,
+
 		WindowClosed,
 		WindowResize,
 		WindowFocus,
@@ -21,14 +29,6 @@ namespace kepler {
 		AppTick,
 		AppUpdate,
 		AppRender,
-
-		KeyPressed,
-		KeyReleased,
-
-		MouseMoved,
-		MouseScrolled, 
-		MouseButtonPressed,
-		MouseButtonReleased,
 	};
 
 	enum eEventCategory
