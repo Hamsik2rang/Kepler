@@ -1,5 +1,9 @@
 #include "kepch.h"
 
+#include "Resource.h"
+#include "framework.h"
+#include "targetver.h"
+
 #include "WinAPI.h"
 #include "Core/Log.h"
 
@@ -7,6 +11,8 @@
 #include "Core/Event/KeyEvent.hpp"
 #include "Core/Event/ApplicationEvent.hpp"
 #include "Core/Event/MouseEvent.hpp"
+
+#include "ImGui/ImGuiLayer.h"
 
 namespace kepler {
 
@@ -20,7 +26,7 @@ namespace kepler {
 		std::wstring wTitle = kepler::StringToWString(title);
 
 		wcex.cbSize = sizeof(WNDCLASSEXW);
-		wcex.style = CS_HREDRAW | CS_VREDRAW;
+		wcex.style = CS_CLASSDC;
 		wcex.lpfnWndProc = callback;
 		wcex.cbClsExtra = 0;
 		// 이벤트 핸들링을 위한 Userdata를 등록하기 위해 LONG_PTR 하나 만큼의 여분 메모리를 지정합니다.
@@ -55,15 +61,16 @@ namespace kepler {
 			g_hInst,
 			0);
 		
-		HACCEL hAccelTable = LoadAccelerators(g_hInst, MAKEINTRESOURCE(IDC_KEPLER));
-
 		return hWnd;
 	}
 
 	void kepler::ShowWindow(HWND hWnd) 
 	{ 
+
 		::ShowWindow(hWnd, g_nCmdShow);
 		::UpdateWindow(hWnd);
+
+		HACCEL hAccelTable = LoadAccelerators(g_hInst, MAKEINTRESOURCE(IDC_KEPLER));
 	}
 
 	LRESULT WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -75,6 +82,11 @@ namespace kepler {
 		if (nullptr == data)
 		{
 			return DefWindowProc(hWnd, msg, wParam, lParam);
+		}
+
+		if (ImGuiLayer::ImGuiEventHandler(hWnd, msg, wParam, lParam))
+		{
+			return true;
 		}
 
 		switch (msg)
@@ -123,48 +135,35 @@ namespace kepler {
 		case WM_MOUSEWHEEL:
 			{
 				short z = GET_WHEEL_DELTA_WPARAM(wParam);
-				MouseScrolledEvent lastEvent(z);
+				MouseScrolledEvent lastEvent(z, 0.0f);
 				data->eventCallback(lastEvent);
 			}
 			break;
 
 		// Mouse Button Events
-		// 마우스 클릭 버튼을 좌/중간(휠)/우 에 따라 각각 -1, 0, 1의 정수를 매핑했습니다.
+		// 임시로 마우스 클릭 버튼을 좌/중간(휠)/우 에 따라 각각 0, 1, 2의 정수를 매핑했습니다.
 		// MK_LBUTTON, MK_RBUTTON, MK_MBUTTON으로 매핑하는 것도 괜찮을 것 같은데.. 나중에 고민해 봅시다.
 		case WM_LBUTTONDOWN:
+		case WM_MBUTTONDOWN:
+		case WM_RBUTTONDOWN:
 			{
-				MouseButtonPressedEvent lastEvent(-1);
+				int pressedButton = 0;
+				if (msg == WM_LBUTTONDOWN) { pressedButton = 0; }
+				if (msg == WM_MBUTTONDOWN) { pressedButton = 1; }
+				if (msg == WM_RBUTTONDOWN) { pressedButton = 2; }
+				MouseButtonPressedEvent lastEvent(pressedButton);
 				data->eventCallback(lastEvent);
 			}
 			break;
 		case WM_LBUTTONUP:
-			{
-				MouseButtonReleasedEvent lastEvent(-1);
-				data->eventCallback(lastEvent);
-			}
-			break;
-		case WM_RBUTTONDOWN:
-			{
-				MouseButtonPressedEvent lastEvent(1);
-				data->eventCallback(lastEvent);
-			}
-			break;
+		case WM_MBUTTONUP:
 		case WM_RBUTTONUP:
 			{
-				MouseButtonReleasedEvent lastEvent(1);
-				data->eventCallback(lastEvent);
-			}
-			break;
-		case WM_MBUTTONDOWN:
-			{
-				MouseButtonPressedEvent lastEvent(0);
-				data->eventCallback(lastEvent);
-			}
-			break;
-		case WM_MBUTTONUP:
-			{
-				MouseButtonReleasedEvent lastEvent(0);
-				data->eventCallback(lastEvent);
+				int releasedButton = 0;
+				if (msg == WM_LBUTTONUP) { releasedButton = 0; }
+				if (msg == WM_MBUTTONUP) { releasedButton = 1; }
+				if (msg == WM_RBUTTONUP) { releasedButton = 2; }
+				MouseButtonReleasedEvent laseEvent(releasedButton);
 			}
 			break;
 

@@ -4,6 +4,9 @@
 
 #include "Core/Event/Event.hpp"
 
+struct ID3D11Device;
+struct ID3D11DeviceContext;
+
 namespace kepler {
 
 	// Window Properties
@@ -34,6 +37,9 @@ namespace kepler {
 		virtual void SetEventCallback(const EventCallbackFunc& callback) = 0;
 		virtual void SetVSync(bool isEnabled) = 0;
 		virtual bool IsVSync() const = 0;
+		virtual HWND GetWindowHandle() const = 0;
+		virtual ID3D11Device* GetD3DDevice() const = 0;
+		virtual ID3D11DeviceContext* GetD3DDeviceContext() const = 0;
 
 		virtual void ClearRender() = 0;
 

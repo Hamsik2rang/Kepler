@@ -74,10 +74,26 @@ namespace kepler {
 
 	void WindowsWindow::CleanupD3DDevice()
 	{
-		if (m_pRenderTargetView)	{ m_pRenderTargetView->Release(); m_pRenderTargetView = nullptr; }
-		if (m_pSwapChain)			{ m_pSwapChain->Release(); m_pSwapChain = nullptr; }
-		if (m_pImmediateContext)	{ m_pImmediateContext->Release(); m_pImmediateContext = nullptr; }
-		if (m_pDevice)				{ m_pDevice->Release(); m_pDevice = nullptr; }
+		if (m_pRenderTargetView)
+		{ 
+			m_pRenderTargetView->Release(); 
+			m_pRenderTargetView = nullptr; 
+		}
+		if (m_pSwapChain) 
+		{ 
+			m_pSwapChain->Release();
+			m_pSwapChain = nullptr; 
+		}
+		if (m_pImmediateContext) 
+		{ 
+			m_pImmediateContext->Release(); 
+			m_pImmediateContext = nullptr; 
+		}
+		if (m_pDevice)
+		{ 
+			m_pDevice->Release();
+			m_pDevice = nullptr; 
+		}
 	}
 
 	void WindowsWindow::OnUpdate()

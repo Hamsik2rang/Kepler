@@ -8,7 +8,6 @@ bool kepler::CreateD3DDevice(HWND hWnd,
                              IDXGISwapChain** pSwapChain, 
                              ID3D11RenderTargetView** pRenderTargetView)
 {
-    // Setup swap chain
     DXGI_SWAP_CHAIN_DESC sd;
     ZeroMemory(&sd, sizeof(sd));
     sd.BufferCount = 2;
@@ -25,12 +24,6 @@ bool kepler::CreateD3DDevice(HWND hWnd,
     sd.Windowed = TRUE;
     sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
-    D3D_DRIVER_TYPE driverTypes[]
-    {
-        D3D_DRIVER_TYPE_HARDWARE,
-        D3D_DRIVER_TYPE_WARP,
-        D3D_DRIVER_TYPE_REFERENCE
-    };
 
     UINT createDeviceFlags = 0;
     //createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
@@ -38,35 +31,25 @@ bool kepler::CreateD3DDevice(HWND hWnd,
     const D3D_FEATURE_LEVEL featureLevels[]
     { 
         D3D_FEATURE_LEVEL_11_0, 
-        D3D_FEATURE_LEVEL_10_1,
         D3D_FEATURE_LEVEL_10_0 
     };
 
-    UINT driverTypeCount = ARRAYSIZE(driverTypes);
     UINT featureLevelCount = ARRAYSIZE(featureLevels);
 
     HRESULT hr;
-    for (UINT driverTypeIndex = 0; driverTypeIndex < driverTypeCount; driverTypeIndex++)
-    {
-        hr = D3D11CreateDeviceAndSwapChain(
-            nullptr,
-            driverTypes[driverTypeIndex],
-            nullptr,
-            createDeviceFlags,
-            featureLevels,
-            featureLevelCount,
-            D3D11_SDK_VERSION,
-            &sd,
-            pSwapChain,
-            pDevice,
-            &featureLevel,
-            pImmediateContext);
-
-        if (SUCCEEDED(hr))
-        {
-            break;
-        }
-    }
+    hr = D3D11CreateDeviceAndSwapChain(
+        nullptr,
+        D3D_DRIVER_TYPE_HARDWARE,
+        nullptr,
+        createDeviceFlags,
+        featureLevels,
+        featureLevelCount,
+        D3D11_SDK_VERSION,
+        &sd,
+        pSwapChain,
+        pDevice,
+        &featureLevel,
+        pImmediateContext);
 
     if (FAILED(hr))
     {

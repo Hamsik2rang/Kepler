@@ -166,8 +166,6 @@
     <ClInclude Include="ImGui\ImGuiLayer.h" />
     <ClInclude Include="kepch.h" />
     <ClInclude Include="Kepler.h" />
-    <ClInclude Include="ImGui\ImGuiSource\ImGuiDX11Renderer.h" />
-    <ClInclude Include="ImGui\ImGuiSource\ImGuiWin32Renderer.h" />
     <ClInclude Include="Platform\DirectX\DirectXAPI.h" />
     <ClInclude Include="Platform\Win32\WinAPI.h" />
     <ClInclude Include="Platform\Windows\WindowsWindow.h" />
@@ -180,6 +178,8 @@
     <ClCompile Include="ImGui\ImGuiSource\imgui.cpp" />
     <ClCompile Include="ImGui\ImGuiSource\imgui_demo.cpp" />
     <ClCompile Include="ImGui\ImGuiSource\imgui_draw.cpp" />
+    <ClCompile Include="ImGui\ImGuiSource\imgui_impl_dx11.cpp" />
+    <ClCompile Include="ImGui\ImGuiSource\imgui_impl_win32.cpp" />
     <ClCompile Include="ImGui\ImGuiSource\imgui_tables.cpp" />
     <ClCompile Include="ImGui\ImGuiSource\imgui_widgets.cpp" />
     <ClCompile Include="Core\LayerStack.cpp" />
@@ -191,8 +191,6 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">kepch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="ImGui\ImGuiSource\ImGuiDX11Renderer.cpp" />
-    <ClCompile Include="ImGui\ImGuiSource\ImGuiWin32Renderer.cpp" />
     <ClCompile Include="Platform\DirectX\DirectXAPI.cpp" />
     <ClCompile Include="Platform\Win32\WinAPI.cpp" />
     <ClCompile Include="Platform\Windows\WindowsWindow.cpp" />

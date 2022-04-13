@@ -23,8 +23,12 @@ namespace kepler {
 
 	void LayerStack::PushLayer(Layer* layer)
 	{
+		// TODO: 임시 코드. 나중에 리팩토링 해야합니다.
+		if (m_lastLayerIterator == m_pLayers.end())
+		{
+			m_lastLayerIterator = m_pLayers.begin();
+		}
 		// 일반 Layer는 스택처럼 쌓여야 함
-		//m_pLayers.emplace(m_pLayers.begin() + m_lastLayerIndex, layer);
 		if (!m_pLayers.empty())
 		{
 			m_lastLayerIterator++;

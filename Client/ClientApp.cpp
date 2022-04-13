@@ -21,7 +21,7 @@ public:
 
 	virtual void OnUpdate() override
 	{
-		KEPLER_INFO("TestLayer Updated");
+		//KEPLER_INFO("TestLayer Updated");
 	}
 
 	virtual void OnEvent(kepler::Event& e) override

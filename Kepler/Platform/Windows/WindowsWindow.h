@@ -22,7 +22,6 @@ namespace kepler {
 	class KEPLER_API WindowsWindow : public IWindow
 	{
 	private:
-		static HWND s_hMainWnd;
 		HWND		m_hWnd = nullptr;
 
 		// 임시. 추후에 렌더러가 생기면 그 땐 렌더러 디바이스로 변경할 수 있음
@@ -40,6 +39,7 @@ namespace kepler {
 		void CleanupD3DDevice();
 
 	public:
+		static HWND s_hMainWnd;
 		static int s_windowCount;
 
 		WindowsWindow(const WindowProperty& props);
@@ -53,9 +53,9 @@ namespace kepler {
 
 		virtual inline void SetVSync(bool isEnabled) override { m_data.bVSync = isEnabled; };
 		virtual inline bool IsVSync() const override { return m_data.bVSync; }
-		inline HWND GetWindowHandle() const { return m_hWnd; }
-		inline ID3D11Device* GetD3DDevice() { return m_pDevice; }
-		inline ID3D11DeviceContext* GetD3DDeviceContext() { return m_pImmediateContext; }
+		inline virtual HWND GetWindowHandle() const override { return m_hWnd; }
+		inline ID3D11Device* GetD3DDevice() const override{ return m_pDevice; }
+		inline ID3D11DeviceContext* GetD3DDeviceContext() const override{ return m_pImmediateContext; }
 
 		virtual inline void SetEventCallback(const EventCallbackFunc& callback) override { m_data.eventCallback = callback; };
 		
