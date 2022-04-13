@@ -1,0 +1,7 @@
+[submodule "Kepler/Dependencies/ImGui"]
+	path = Kepler/Dependencies/ImGui
+	url = https://github.com/Hamsik2rang/ImGui
+	branch = docking
+[submodule "Kepler/Dependencies/spdlog"]
+	path = Kepler/Dependencies/spdlog
+	url = https://github.com/Hamsik2rang/spdlog
