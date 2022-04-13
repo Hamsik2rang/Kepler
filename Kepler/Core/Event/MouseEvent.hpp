@@ -36,19 +36,23 @@ namespace kepler {
 	class KEPLER_API MouseScrolledEvent : public Event
 	{
 	private:
-		float m_zOffset;
+		float m_vOffset;	// vertical
+		float m_hOffset;	// horizontal. Most users don't have a mouse with an horizontal wheel.
 
 	public:
-		MouseScrolledEvent(float zOffset)
-			:m_zOffset(zOffset)
+		// Horizontal Scroll(hOffset)은 일반적인 마우스 조작의 경우 입력되지 않습니다.
+		MouseScrolledEvent(float vOffset, float hOffset = 0.0f)
+			:m_vOffset(vOffset), 
+			m_hOffset(hOffset)
 		{}
 
-		inline float GetZOffset() const { return m_zOffset; }
-
+		inline float GetVOffset() const { return m_vOffset; }
+		inline float GetHOffset() const { return m_hOffset; }
+		
 		virtual std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseScrolledEvent: " << m_zOffset;
+			ss << "MouseScrolledEvent: " << m_vOffset;
 
 			return ss.str();
 		}

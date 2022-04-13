@@ -4,16 +4,19 @@
 
 #include "Core/Event/Event.hpp"
 
+struct ID3D11Device;
+struct ID3D11DeviceContext;
+
 namespace kepler {
 
 	// Window Properties
-	struct WindowProps
+	struct WindowProperty
 	{
 		std::string title;
 		uint32_t width;
 		uint32_t height;
 
-		WindowProps(const std::string& _title = "Kepler Engine", uint32_t _width = 1280, uint32_t _height = 720)
+		WindowProperty(const std::string& _title = "Kepler Engine", uint32_t _width = 1280, uint32_t _height = 720)
 			:title(_title),
 			 width(_width),
 			 height(_height)
@@ -34,10 +37,13 @@ namespace kepler {
 		virtual void SetEventCallback(const EventCallbackFunc& callback) = 0;
 		virtual void SetVSync(bool isEnabled) = 0;
 		virtual bool IsVSync() const = 0;
-
 		virtual HWND GetWindowHandle() const = 0;
+		virtual ID3D11Device* GetD3DDevice() const = 0;
+		virtual ID3D11DeviceContext* GetD3DDeviceContext() const = 0;
 
-		static IWindow* Create(const WindowProps& props = WindowProps());
+		virtual void ClearRender() = 0;
+
+		static IWindow* Create(const WindowProperty& props = WindowProperty());
 	};
 
 }

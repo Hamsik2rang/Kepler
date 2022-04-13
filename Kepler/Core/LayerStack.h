@@ -1,25 +1,29 @@
 #pragma once
 
-#include <vector>
+#include <list>
 
 #include "Core/Layer.hpp"
 
 namespace kepler {
 
-	class LayerStack
+	class KEPLER_API LayerStack
 	{
 	private:
-		std::vector<Layer*> m_pLayers;
-		std::vector<Layer*>::iterator m_lastPushedLayer;
-
+		std::list<Layer*>			m_pLayers;
+		std::list<Layer*>::iterator m_lastLayerIterator;
 	public:
 		LayerStack();
 		~LayerStack();
 
-		void PushLayer(const Layer* layer);
-		void PushOverlay(const Layer* overlay);
+		// NOTICE: Layer, Overlay Push 시 new 키워드를 이용해 생성자를 직접 전달해야 합니다!
+		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* overlay);
 		void PopLayer(Layer* layer);
 		void PopOverlay(Layer* overlay);
+		
+		// LayerStack 순회를 위한 Iterator 구현
+		inline std::list<Layer*>::iterator begin() { return m_pLayers.begin(); }
+		inline std::list<Layer*>::iterator end() { return m_pLayers.end(); }
 	};
 
 }

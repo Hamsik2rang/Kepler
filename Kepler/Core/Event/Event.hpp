@@ -12,6 +12,14 @@ namespace kepler {
 	{
 		None = 0,
 
+		KeyPressed,
+		KeyReleased,
+
+		MouseMoved,
+		MouseScrolled,
+		MouseButtonPressed,
+		MouseButtonReleased,
+
 		WindowClosed,
 		WindowResize,
 		WindowFocus,
@@ -21,14 +29,6 @@ namespace kepler {
 		AppTick,
 		AppUpdate,
 		AppRender,
-
-		KeyPressed,
-		KeyReleased,
-
-		MouseMoved,
-		MouseScrolled, 
-		MouseButtonPressed,
-		MouseButtonReleased,
 	};
 
 	enum eEventCategory
@@ -60,6 +60,7 @@ namespace kepler {
 		virtual int GetCategoryFlags() const = 0;
 		virtual std::string ToString() const { return std::string(GetName()); }
 
+		inline bool IsHandled() const { return m_bIsHandled; };
 		inline bool IsInCategory(eEventCategory category) { return GetCategoryFlags() & category; }
 	};
 
