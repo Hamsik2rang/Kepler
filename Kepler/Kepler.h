@@ -6,6 +6,8 @@
 #include "Core/Application.h"
 #include "Core/Event/Event.hpp"
 #include "Core/Layer.hpp"
+#include "Core/Input.h"
+#include "Core/InputCode.h"
 //-----------------------------------------
 
 //----- Platform --------------------------
