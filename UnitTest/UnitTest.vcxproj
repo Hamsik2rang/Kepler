@@ -41,6 +41,7 @@
     <IntDir>$(SolutionDir)\bin-int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemGroup>
+    <ClInclude Include="InputManagerTest.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
