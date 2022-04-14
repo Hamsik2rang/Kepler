@@ -13,6 +13,7 @@
 #include "Core/Event/MouseEvent.hpp"
 
 #include "ImGui/ImGuiLayer.h"
+#include "Core/Input.h"
 
 namespace kepler {
 
@@ -112,12 +113,14 @@ namespace kepler {
 			{
 				int repeatCount = LOWORD(lParam);
 				KeyPressedEvent lastEvent(wParam, repeatCount);
+				Input::SetButtonDown(wParam);
 				data->eventCallback(lastEvent);
 			}
 			break;
 		case WM_KEYUP:
 			{
 				KeyReleasedEvent lastEvent(wParam);
+				Input::SetButtonUp(wParam);
 				data->eventCallback(lastEvent);
 			}
 			break;
@@ -148,11 +151,12 @@ namespace kepler {
 		case WM_MBUTTONDOWN:
 		case WM_RBUTTONDOWN:
 			{
-				int pressedButton = 0;
-				if (msg == WM_LBUTTONDOWN) { pressedButton = 0; }
-				if (msg == WM_MBUTTONDOWN) { pressedButton = 1; }
-				if (msg == WM_RBUTTONDOWN) { pressedButton = 2; }
+				int pressedButton = wParam;
+				if (msg == WM_LBUTTONDOWN) { pressedButton = mouse::Left; }
+				if (msg == WM_MBUTTONDOWN) { pressedButton = mouse::Middle; }
+				if (msg == WM_RBUTTONDOWN) { pressedButton = mouse::Right; }
 				MouseButtonPressedEvent lastEvent(pressedButton);
+				Input::SetButtonDown(pressedButton);
 				data->eventCallback(lastEvent);
 			}
 			break;
@@ -160,11 +164,13 @@ namespace kepler {
 		case WM_MBUTTONUP:
 		case WM_RBUTTONUP:
 			{
-				int releasedButton = 0;
-				if (msg == WM_LBUTTONUP) { releasedButton = 0; }
-				if (msg == WM_MBUTTONUP) { releasedButton = 1; }
-				if (msg == WM_RBUTTONUP) { releasedButton = 2; }
+				int releasedButton = wParam;
+				if (msg == WM_LBUTTONUP) { releasedButton = mouse::Left; }
+				if (msg == WM_MBUTTONUP) { releasedButton = mouse::Middle; }
+				if (msg == WM_RBUTTONUP) { releasedButton = mouse::Right; }
 				MouseButtonReleasedEvent laseEvent(releasedButton);
+				Input::SetButtonDown(releasedButton);
+				data->eventCallback(laseEvent);
 			}
 			break;
 
