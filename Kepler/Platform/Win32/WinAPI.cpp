@@ -110,7 +110,8 @@ namespace kepler {
 		// Keyboard Events
 		case WM_KEYDOWN:
 			{
-				KeyPressedEvent lastEvent(wParam, 0);
+				int repeatCount = LOWORD(lParam);
+				KeyPressedEvent lastEvent(wParam, repeatCount);
 				data->eventCallback(lastEvent);
 			}
 			break;
