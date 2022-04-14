@@ -120,10 +120,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>KEPLER_ASSERTION_ENABLE;KEPLER_GRAPHICS_API_DIRECTX;KEPLER_PLATFORM_WINDOWS;KEPLER_BUILD_DLL;KEPLER_PLATFORM_WINDOWS_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\;$(SolutionDir)Kepler\Dependeices\spdlog\include</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>kepch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -138,10 +138,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>KEPLER_ASSERTION_ENABLE;KEPLER_GRAPHICS_API_DIRECTX;KEPLER_PLATFORM_WINDOWS;KEPLER_BUILD_DLL;KEPLER_PLATFORM_WINDOWSNDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\;$(SolutionDir)Kepler\Dependeices\spdlog\include</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>kepch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -158,18 +158,34 @@
     <ClInclude Include="Core\Event\Event.hpp" />
     <ClInclude Include="Core\Event\KeyEvent.hpp" />
     <ClInclude Include="Core\Event\MouseEvent.hpp" />
+    <ClInclude Include="Core\Input.h" />
+    <ClInclude Include="Core\InputCode.h" />
+    <ClInclude Include="Core\Layer.hpp" />
+    <ClInclude Include="Core\LayerStack.h" />
     <ClInclude Include="Core\Log.h" />
     <ClInclude Include="Core\Window.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="ImGui\ImGuiLayer.h" />
     <ClInclude Include="kepch.h" />
     <ClInclude Include="Kepler.h" />
-    <ClInclude Include="Platform\Windows\WinAPI.h" />
+    <ClInclude Include="Platform\DirectX\DirectXAPI.h" />
+    <ClInclude Include="Platform\Win32\WinAPI.h" />
     <ClInclude Include="Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Application.cpp" />
+    <ClCompile Include="Core\Input.cpp" />
+    <ClCompile Include="ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="ImGui\ImGuiSource\imgui.cpp" />
+    <ClCompile Include="ImGui\ImGuiSource\imgui_demo.cpp" />
+    <ClCompile Include="ImGui\ImGuiSource\imgui_draw.cpp" />
+    <ClCompile Include="ImGui\ImGuiSource\imgui_impl_dx11.cpp" />
+    <ClCompile Include="ImGui\ImGuiSource\imgui_impl_win32.cpp" />
+    <ClCompile Include="ImGui\ImGuiSource\imgui_tables.cpp" />
+    <ClCompile Include="ImGui\ImGuiSource\imgui_widgets.cpp" />
+    <ClCompile Include="Core\LayerStack.cpp" />
     <ClCompile Include="Core\Log.cpp" />
     <ClCompile Include="kepch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -178,7 +194,8 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">kepch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="Platform\Windows\WinAPI.cpp" />
+    <ClCompile Include="Platform\DirectX\DirectXAPI.cpp" />
+    <ClCompile Include="Platform\Win32\WinAPI.cpp" />
     <ClCompile Include="Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
   <ItemGroup>

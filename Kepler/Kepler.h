@@ -5,11 +5,15 @@
 #include "Core/Log.h"
 #include "Core/Application.h"
 #include "Core/Event/Event.hpp"
+#include "Core/Layer.hpp"
+#include "Core/Input.h"
+#include "Core/InputCode.h"
 //-----------------------------------------
 
 //----- Platform --------------------------
-#include "Platform/Windows/WinAPI.h"
+#include "Platform/Win32/WinAPI.h"
 #include "Platform/Windows/WindowsWindow.h"
+#include "ImGui/ImGuiLayer.h"
 //-----------------------------------------
 
 //----- Global Variables-------------------
@@ -27,5 +31,7 @@ namespace kepler {
 	#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 #endif
 // NOTICE: 반드시 가장 마지막에 선언해야 합니다!!
+#ifndef KEPLER_UNITTEST
 #include "Core/EntryPoint.h"
+#endif
 //-----------------------------------------
