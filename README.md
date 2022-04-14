@@ -14,6 +14,8 @@ Currently in progress to implement.
 
 DirectX11
 
+GoogleTest
+
 [ImGui](https://github.com/ocornut/imgui)
 
 [spdlog](https://github.com/gabime/spdlog)
