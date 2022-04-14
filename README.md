@@ -11,14 +11,10 @@ Currently in progress to implement.
 -TBA-
 
 ### Libraries
-
-DirectX11
-
-GoogleTest
-
-[ImGui](https://github.com/ocornut/imgui)
-
-[spdlog](https://github.com/gabime/spdlog)
+* DirectX11 - Graphics API for Rendering
+* [GoogleTest](https://github.com/google/googletest) - for Unit Test
+* [ImGui](https://github.com/ocornut/imgui) - for GUI
+* [spdlog](https://github.com/gabime/spdlog) - for Logging System
 
 -TBA-
 
