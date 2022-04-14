@@ -61,7 +61,6 @@ namespace kepler {
 		// ImGui 초기화
 		ImGui_ImplWin32_Init(hWnd);
 		ImGui_ImplDX11_Init(pDevice, pDeviceContext);
-		KEPLER_CORE_INFO("OnAttach: {0}", (int)io.ConfigFlags);
 	}
 
 	void ImGuiLayer::OnDetach()
@@ -75,7 +74,6 @@ namespace kepler {
 	void ImGuiLayer::OnUpdate()
 	{
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		KEPLER_CORE_INFO("OnUpdate: {0}", (int)io.ConfigFlags);
 
 		// ImGui 새 프레임 생성
 		ImGui_ImplDX11_NewFrame();
