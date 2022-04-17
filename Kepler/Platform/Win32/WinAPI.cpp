@@ -121,6 +121,7 @@ namespace kepler {
 			{
 				KeyReleasedEvent lastEvent(wParam);
 				Input::SetButtonUp(wParam);
+				
 				data->eventCallback(lastEvent);
 			}
 			break;
