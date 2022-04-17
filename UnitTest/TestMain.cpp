@@ -1,7 +1,7 @@
 #include "kepch.h"
 #include "pch.h"
 
-#include "InputManagerTest.h"
+#include "./Testcase/Vector2DTest.h"
 
 // Example: 
 //TEST(TestCaseName, TestName)
@@ -15,6 +15,5 @@
 int main(int argc, char** argv)
 {
 	::testing::InitGoogleTest(&argc, argv);
-
 	return RUN_ALL_TESTS();
 }

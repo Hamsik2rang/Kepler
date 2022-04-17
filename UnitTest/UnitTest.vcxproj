@@ -41,8 +41,9 @@
     <IntDir>$(SolutionDir)\bin-int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemGroup>
-    <ClInclude Include="InputManagerTest.h" />
+    <ClInclude Include="Testcase\InputManagerTest.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Testcase\Vector2DTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TestMain.cpp" />
