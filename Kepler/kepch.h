@@ -4,8 +4,6 @@
 
 #pragma once
 
-#pragma comment(lib, "d3d11.lib")
-
 #include <iostream>
 #include <algorithm>
 #include <utility>
@@ -33,5 +31,6 @@
 #endif
 // for DirectX
 #ifdef KEPLER_GRAPHICS_API_DIRECTX
+#pragma comment(lib, "d3d11.lib")
 #include <d3d11.h>
 #endif

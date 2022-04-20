@@ -1,6 +1,8 @@
 #include "kepch.h"
 #include "pch.h"
 
+#include "./Testcase/Vector4DTest.h"
+#include "./Testcase/Vector3DTest.h"
 #include "./Testcase/Vector2DTest.h"
 
 // Example: 

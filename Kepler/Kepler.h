@@ -10,6 +10,11 @@
 #include "Core/InputCode.h"
 //-----------------------------------------
 
+//----- Math ------------------------------
+#include "Math/Vector.h"
+
+//-----------------------------------------
+
 //----- Platform --------------------------
 #include "Platform/Win32/WinAPI.h"
 #include "Platform/Windows/WindowsWindow.h"
