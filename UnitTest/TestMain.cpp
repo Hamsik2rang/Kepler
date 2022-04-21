@@ -5,7 +5,7 @@
 //#include "./Testcase/Vector3DTest.h"
 //#include "./Testcase/Vector2DTest.h"
 
-#include "./Testcase/Matrix22Test.h"
+#include "./Testcase/Matrix33Test.h"
 
 
 int main(int argc, char** argv)

@@ -44,6 +44,8 @@
     <ClInclude Include="Testcase\InputManagerTest.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Testcase\Matrix22Test.h" />
+    <ClInclude Include="Testcase\Matrix33Test.h" />
+    <ClInclude Include="Testcase\Matrix44Test.h" />
     <ClInclude Include="Testcase\Vector2DTest.h" />
     <ClInclude Include="Testcase\Vector3DTest.h" />
     <ClInclude Include="Testcase\Vector4DTest.h" />

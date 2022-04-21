@@ -6,6 +6,7 @@
 
 namespace kepler {
 	namespace math {
+
 		template <typename T> struct Vector2D;
 		template <typename T> struct Vector3D;
 		template <typename T> struct Vector4D;
@@ -95,7 +96,7 @@ namespace kepler {
 		};
 
 		template <typename T>
-		const T Dot(const Vector4D<T>& lv, const Vector4D<T>& rv) { return lv.x * rv.x + lv.y * rv.y + lv.z * rv.z + lv.w * rv.w; }
+		inline const T Dot(const Vector4D<T>& lv, const Vector4D<T>& rv) { return lv.x * rv.x + lv.y * rv.y + lv.z * rv.z + lv.w * rv.w; }
 		
 
 		template <typename T> const Vector4D<T> Vector4D<T>::Zero	= Vector4D<T>(0, 0, 0, 0);

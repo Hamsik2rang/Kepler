@@ -10,8 +10,8 @@
 #include "Core/Base.h"
 
 namespace kepler {
-
 	namespace math {
+
 		template <typename T> struct Vector2D;
 		template <typename T> struct Vector3D;
 		template <typename T> struct Vector4D;
@@ -74,7 +74,7 @@ namespace kepler {
 
 			// Operator Overloading
 			const Vector2D<T>	operator+() const { return *this; }
-			const Vector2D<T>	operator-() const { return Vector2D<T>(-1 * x, -1 * y);  }
+			const Vector2D<T>	operator-() const { return Vector2D<T>(-x, -y);  }
 
 			Vector2D<T>&		operator=(Vector2D<T>&& v) = default;
 			Vector2D<T>&		operator=(const Vector2D<T>& v) { x = v.x; y = v.y; return *this; }

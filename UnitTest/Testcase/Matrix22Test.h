@@ -1,20 +1,21 @@
 #pragma once
-#include "pch.h"
 
-#include <vector>
+#include "gtest/gtest.h"
+
 #include "Math/Matrix22.hpp"
 
-using namespace kepler::math;
 
 // Test cases
 // pre. 비교연산(없으면 테스트 자체가 불가)
-// 1. 단항연산
+// 1. 단항연산(부호연산, 인덱서)
 // 2. static 변수에 값 정확히 들어있는지
 // 3. 사칙연산(+, -, *, /(only scalar))
 // 4. Transpose
 
 TEST(Unary_Operator_Test, Matrix22Test)
 {
+	using namespace kepler::math;
+
 	Mat22f a = { 3.0f, 4.0f, 2.0f, 3.0f };
 	Mat22f b = { {-3.0f, -4.0f}, {-2.0f, -3.0f} };
 
@@ -23,8 +24,21 @@ TEST(Unary_Operator_Test, Matrix22Test)
 	EXPECT_EQ(b, +b);
 }
 
+TEST(Indexer_Test, Matrix22Test)
+{
+	using namespace kepler::math;
+
+	Mat22f a{ {3.0f, 5.0f, 999.0f, -8824.4f} };
+	EXPECT_EQ(a[0][0], 3.0f);
+	EXPECT_EQ(a[0][1], 5.0f);
+	EXPECT_EQ(a[1][0], 999.0f);
+	EXPECT_EQ(a[1][1], -8824.4f);
+}
+
 TEST(Assign_Operator_Test, Matrix22Test)
 {
+	using namespace kepler::math;
+
 	Mat22f a;
 	Mat22f b = Mat22f::Identity;
 	a = b;
@@ -33,6 +47,8 @@ TEST(Assign_Operator_Test, Matrix22Test)
 
 TEST(Static_Variable_Test, Matrix22Test)
 {
+	using namespace kepler::math;
+
 	Mat22f zero = { 0.0f,0.0f, 0.0f, 0.0f };
 	Mat22f identity = { {1.0f, 0.0f}, {0.0f, 1.0f} };
 
@@ -42,6 +58,8 @@ TEST(Static_Variable_Test, Matrix22Test)
 
 TEST(Plus_Operator_Test, Matrix22Test)
 {
+	using namespace kepler::math;
+	
 	Mat22f a{ {3.0f, 2.0f}, {2.0f, 1.0f} };
 	Mat22f b{ {4.0f, 3.0f}, {3.0f, 2.0f} };
 	Mat22f c{ {7.0f, 5.0f}, {5.0f, 3.0f} };
@@ -54,6 +72,8 @@ TEST(Plus_Operator_Test, Matrix22Test)
 
 TEST(Minus_Operator_Test, Matrix22Test)
 {
+	using namespace kepler::math;
+
 	Mat22f a{ {3.0f, 2.0f}, {2.0f, 1.0f} };
 	Mat22f b{ {4.0f, 3.0f}, {3.0f, 2.0f} };
 	Mat22f c{ {-1.0f, -1.0f}, {-1.0f, -1.0f} };
@@ -66,6 +86,8 @@ TEST(Minus_Operator_Test, Matrix22Test)
 
 TEST(Multiply_Operator_Test, Matrix22Test)
 {
+	using namespace kepler::math;
+
 	// with matrix
 	Mat22f a{ {1.0f, 0.0f}, {3.0f, 1.0f} };
 	Mat22f b{ {3.0f, 2.0f}, {2.0f, 1.0f} };
@@ -93,6 +115,8 @@ TEST(Multiply_Operator_Test, Matrix22Test)
 
 TEST(Divide_Operator_Test, Matrix22Test)
 {
+	using namespace kepler::math;
+
 	Mat22f a{ {3.0f, 5.0f, 999.0f, -8824.4f} };
 	float f = 3.0f;
 
@@ -103,6 +127,8 @@ TEST(Divide_Operator_Test, Matrix22Test)
 
 TEST(Transpose_Test, Matrix22Test)
 {
+	using namespace kepler::math;
+
 	Mat22f identity = Mat22f::Identity;
 
 	EXPECT_EQ(identity.Transpose(), identity);

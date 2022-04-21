@@ -23,6 +23,7 @@ namespace kepler {
 			{
 				struct { Vector2D<T> v0; Vector2D<T> v1; };
 				struct { T r0[2]; T r1[2]; };
+				struct { T r[2][2]; };
 				T elem[4];
 			};
 
@@ -39,15 +40,21 @@ namespace kepler {
 			{}
 
 			Matrix22(const T(&_elem)[4])
-				:elem{_elem[0], _elem[1], _elem[2], _elem[3]}
+				:elem{
+				_elem[0], _elem[1], 
+				_elem[2], _elem[3]}
 			{}
 
 			Matrix22(const T e00, const T e01, const T e10, const T e11)
-				:elem{e00, e01, e10, e11}
+				:elem{
+				e00, e01,
+				e10, e11}
 			{}
 
 			Matrix22(const T(&r0)[2], const T(&r1)[2])
-				:elem{r0[0], r0[1], r1[0], r1[1]}
+				:elem{
+				r0[0], r0[1], 
+				r1[0], r1[1]}
 			{}
 
 			Matrix22(const Matrix22& m) = default;
@@ -57,11 +64,11 @@ namespace kepler {
 			const Matrix22<T> Transpose() const { return Matrix22<T>(r0[0], r1[0], r0[1], r1[1]); }
 
 			// Operator Overloading
-			const Matrix22<T> operator+() const { return *this; }
-			const Matrix22<T> operator-() const { return Matrix22<T>(-elem[0], -elem[1], -elem[2], -elem[3]); }
+			const Matrix22<T>	operator+() const { return *this; }
+			const Matrix22<T>	operator-() const { return Matrix22<T>(-elem[0], -elem[1], -elem[2], -elem[3]); }
 
-			Matrix22<T>& operator=(const Matrix22<T>& m) { ::memcpy_s(elem, sizeof(T) * 4, m.elem, sizeof(T) * 4); return *this; }
-			Matrix22<T>& operator[](int index) { KEPLER_ASSERT(index >= 0 && index < 4, "index out of bound"); return elem[index]; }
+			Matrix22<T>&		operator=(const Matrix22<T>& m) { ::memcpy_s(elem, sizeof(T) * 4, m.elem, sizeof(T) * 4); return *this; }
+			T*					operator[](int index) { KEPLER_ASSERT(index >= 0 && index < 2, "index out of bound"); return r[index]; }
 			
 			const Matrix22<T> operator+(const Matrix22<T>& m) const
 			{
@@ -159,8 +166,13 @@ namespace kepler {
 		};
 
 		template <typename T>
-		const Matrix22<T> Matrix22<T>::Identity = Matrix22<T>(1.0f, 0.0f, 0.0f, 1.0f);
+		const Matrix22<T> Matrix22<T>::Identity = Matrix22<T>{
+			1.0f, 0.0f,
+			0.0f, 1.0f };
+
 		template <typename T>
-		const Matrix22<T> Matrix22<T>::Zero = Matrix22<T>(0.0f, 0.0f, 0.0f, 0.0f);
+		const Matrix22<T> Matrix22<T>::Zero = Matrix22<T>{
+			0.0f, 0.0f,
+			0.0f, 0.0f };
 	}
 }
