@@ -27,6 +27,14 @@ namespace kepler {
 				T elem[3];
 			};
 
+			static const Vector3D<T> Zero;
+			static const Vector3D<T> Up;
+			static const Vector3D<T> Down;
+			static const Vector3D<T> Right;
+			static const Vector3D<T> Left;
+			static const Vector3D<T> Front;
+			static const Vector3D<T> Back;
+
 			Vector3D()
 				:x(T(0))
 				,y(T(0))
@@ -58,14 +66,6 @@ namespace kepler {
 			{}
 			
 			Vector3D(const Vector3D& v) = default;
-
-			static const Vector3D<T> Zero;
-			static const Vector3D<T> Up;
-			static const Vector3D<T> Down;
-			static const Vector3D<T> Right;
-			static const Vector3D<T> Left;
-			static const Vector3D<T> Front;
-			static const Vector3D<T> Back;
 			
 			T*					GetData() { return &x; }
 			const float			Length() const { return std::sqrtf(x * x + y * y + z * z); }

@@ -24,6 +24,7 @@ namespace kepler {
 		template <typename T>
 		struct /*alignas(16)*/ Vector2D
 		{
+			
 			union
 			{
 				struct { T x; T y; };
@@ -31,6 +32,12 @@ namespace kepler {
 				T elem[2];
 			};
 
+			static const Vector2D<T> Zero;
+			static const Vector2D<T> Up;
+			static const Vector2D<T> Down;
+			static const Vector2D<T> Right;
+			static const Vector2D<T> Left;
+			
 			// Constructor
 			Vector2D()
 				:x(T(0))
@@ -59,11 +66,6 @@ namespace kepler {
 
 			Vector2D(const Vector2D& v) = default;
 
-			static const Vector2D<T> Zero;
-			static const Vector2D<T> Up;
-			static const Vector2D<T> Down;
-			static const Vector2D<T> Right;
-			static const Vector2D<T> Left;
 
 			T*					GetData() { return &x; }
 			const float			Length() const { return std::sqrtf(x * x + y * y); }

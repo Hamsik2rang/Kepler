@@ -172,6 +172,7 @@
     <ClInclude Include="ImGui\ImGuiLayer.h" />
     <ClInclude Include="kepch.h" />
     <ClInclude Include="Kepler.h" />
+    <ClInclude Include="Math\Matrix22.hpp" />
     <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="Math\Vector2D.hpp" />
     <ClInclude Include="Math\Vector3D.hpp" />

@@ -25,6 +25,14 @@ namespace kepler {
 				T elem[4];
 			};
 
+			static const Vector4D<T> Zero;
+			static const Vector4D<T> Up;
+			static const Vector4D<T> Down;
+			static const Vector4D<T> Right;
+			static const Vector4D<T> Left;
+			static const Vector4D<T> Front;
+			static const Vector4D<T> Back;
+
 			// Constructor
 			explicit Vector4D(float _x, float _y, float _z, float _a)
 				:x(_x)
@@ -56,15 +64,6 @@ namespace kepler {
 
 			Vector4D(const Vector4D& v) = default;
 			Vector4D(Vector4D&& v) = default;
-
-			static const Vector4D<T> Zero;
-			static const Vector4D<T> Up;
-			static const Vector4D<T> Down;				
-			static const Vector4D<T> Right;
-			static const Vector4D<T> Left;
-			static const Vector4D<T> Front;				
-			static const Vector4D<T> Back;
-
 
 			T*					GetData() { return &x; }
 			const float			Length() const { return ::sqrtf(x * x + y * y + z * z); }
