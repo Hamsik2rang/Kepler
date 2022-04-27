@@ -18,8 +18,8 @@
 
 namespace kepler {
 
-	extern HINSTANCE g_hInst = nullptr;
-	extern int		 g_nCmdShow = SW_SHOWDEFAULT;
+	HINSTANCE g_hInst = nullptr;
+	int		 g_nCmdShow = SW_SHOWDEFAULT;
 
 	ATOM kepler::RegisterWindowClass(const std::string& title, WindowsCallback callback)
 	{

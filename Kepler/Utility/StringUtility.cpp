@@ -19,12 +19,12 @@ std::wstring kepler::utility::StringToWstring(const std::string& str)
 
 std::string kepler::utility::WstringToString(const std::wstring& wstr)
 {
-	int len = ::WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), wstr.length(), nullptr, 0, nullptr, false);
+	int len = ::WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), wstr.length(), nullptr, 0, nullptr, nullptr);
 	// std wstring을 c_style로 캐스팅할 경우 마지막에 '\0'이 추가되어야 하므로
 	// 문자형 단위(char) 1만큼의 추가 공간이 필요합니다.
 	auto buf = new char[len + 1];
 	buf[len] = '\0';
-	::WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), wstr.length(), buf, len + 1, nullptr, false);
+	::WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), wstr.length(), buf, len + 1, nullptr, nullptr);
 	std::string str{ buf };
 	delete[] buf;
 	
