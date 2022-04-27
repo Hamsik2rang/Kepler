@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Core\Application.h" />
+    <ClInclude Include="Core\Assertion.h" />
     <ClInclude Include="Core\Base.h" />
     <ClInclude Include="Core\EntryPoint.h" />
     <ClInclude Include="Core\Event\ApplicationEvent.hpp" />
