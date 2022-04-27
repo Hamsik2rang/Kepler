@@ -8,12 +8,13 @@
 
 namespace kepler {
 	// Window Application
-	class KEPLER_API Application
+	class Application
 	{
 	private:
 		static	Application*		s_pInstance;
 
 		std::unique_ptr<IWindow>	m_pWindow;
+		std::unique_ptr<ImGuiLayer> m_pGUILayer;
 		LayerStack					m_layerStack;
 
 	public:

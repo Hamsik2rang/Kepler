@@ -19,7 +19,7 @@ namespace kepler {
 		IWindow::EventCallbackFunc eventCallback;
 	};
 
-	class KEPLER_API WindowsWindow : public IWindow
+	class WindowsWindow : public IWindow
 	{
 	private:
 		HWND		m_hWnd = nullptr;

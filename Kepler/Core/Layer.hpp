@@ -7,7 +7,7 @@
 
 namespace kepler {
 
-	class KEPLER_API Layer
+	class Layer
 	{
 	protected:
 		std::string m_name;

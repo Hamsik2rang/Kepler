@@ -40,13 +40,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -118,16 +118,18 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>KEPLER_ASSERTION_ENABLE;KEPLER_GRAPHICS_API_DIRECTX;KEPLER_PLATFORM_WINDOWS;KEPLER_BUILD_DLL;KEPLER_PLATFORM_WINDOWS_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>KEPLER_ASSERTION_ENABLE;KEPLER_GRAPHICS_API_DIRECTX;KEPLER_PLATFORM_WINDOWS;KEPLER_PLATFORM_WINDOWS_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>kepch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -136,18 +138,20 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>KEPLER_ASSERTION_ENABLE;KEPLER_GRAPHICS_API_DIRECTX;KEPLER_PLATFORM_WINDOWS;KEPLER_BUILD_DLL;KEPLER_PLATFORM_WINDOWSNDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>KEPLER_ASSERTION_ENABLE;KEPLER_GRAPHICS_API_DIRECTX;KEPLER_PLATFORM_WINDOWS;KEPLER_PLATFORM_WINDOWSNDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>kepch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -168,11 +172,20 @@
     <ClInclude Include="ImGui\ImGuiLayer.h" />
     <ClInclude Include="kepch.h" />
     <ClInclude Include="Kepler.h" />
+    <ClInclude Include="Math\Matrix.h" />
+    <ClInclude Include="Math\Matrix22.hpp" />
+    <ClInclude Include="Math\Matrix33.hpp" />
+    <ClInclude Include="Math\Matrix44.hpp" />
+    <ClInclude Include="Math\Vector.h" />
+    <ClInclude Include="Math\Vector2D.hpp" />
+    <ClInclude Include="Math\Vector3D.hpp" />
+    <ClInclude Include="Math\Vector4D.hpp" />
     <ClInclude Include="Platform\DirectX\DirectXAPI.h" />
     <ClInclude Include="Platform\Win32\WinAPI.h" />
     <ClInclude Include="Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Utility\StringUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Application.cpp" />
@@ -197,6 +210,7 @@
     <ClCompile Include="Platform\DirectX\DirectXAPI.cpp" />
     <ClCompile Include="Platform\Win32\WinAPI.cpp" />
     <ClCompile Include="Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="Utility\StringUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kepler.rc" />
@@ -205,7 +219,19 @@
     <Image Include="Kepler.ico" />
     <Image Include="small.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\Microsoft.XAudio2.Redist.1.2.8\build\native\Microsoft.XAudio2.Redist.targets" Condition="Exists('..\packages\Microsoft.XAudio2.Redist.1.2.8\build\native\Microsoft.XAudio2.Redist.targets')" />
+    <Import Project="..\packages\directxtk_desktop_2017.2022.3.24.2\build\native\directxtk_desktop_2017.targets" Condition="Exists('..\packages\directxtk_desktop_2017.2022.3.24.2\build\native\directxtk_desktop_2017.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.XAudio2.Redist.1.2.8\build\native\Microsoft.XAudio2.Redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.XAudio2.Redist.1.2.8\build\native\Microsoft.XAudio2.Redist.targets'))" />
+    <Error Condition="!Exists('..\packages\directxtk_desktop_2017.2022.3.24.2\build\native\directxtk_desktop_2017.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtk_desktop_2017.2022.3.24.2\build\native\directxtk_desktop_2017.targets'))" />
+  </Target>
 </Project>

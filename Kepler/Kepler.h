@@ -10,6 +10,11 @@
 #include "Core/InputCode.h"
 //-----------------------------------------
 
+//----- Math ------------------------------
+#include "Math/Vector.h"
+
+//-----------------------------------------
+
 //----- Platform --------------------------
 #include "Platform/Win32/WinAPI.h"
 #include "Platform/Windows/WindowsWindow.h"
@@ -18,8 +23,8 @@
 
 //----- Global Variables-------------------
 namespace kepler {
-	HINSTANCE	g_hInst;
-	int			g_nCmdShow;
+	extern HINSTANCE	g_hInst;
+	extern int			g_nCmdShow;
 }
 //-----------------------------------------
 

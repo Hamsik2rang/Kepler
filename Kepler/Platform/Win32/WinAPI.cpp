@@ -13,17 +13,19 @@
 #include "Core/Event/MouseEvent.hpp"
 
 #include "ImGui/ImGuiLayer.h"
+#include "Core/Input.h"
+#include "Utility\StringUtility.h"
 
 namespace kepler {
 
-	extern HINSTANCE g_hInst = nullptr;
-	extern int		 g_nCmdShow = SW_SHOWDEFAULT;
+	HINSTANCE g_hInst = nullptr;
+	int		 g_nCmdShow = SW_SHOWDEFAULT;
 
 	ATOM kepler::RegisterWindowClass(const std::string& title, WindowsCallback callback)
 	{
 		WNDCLASSEXW wcex;
 
-		std::wstring wTitle = kepler::StringToWString(title);
+		std::wstring wTitle = utility::StringToWstring(title);
 
 		wcex.cbSize = sizeof(WNDCLASSEXW);
 		wcex.style = CS_CLASSDC;
@@ -45,7 +47,7 @@ namespace kepler {
 
 	HWND kepler::InitInstance(const std::string& title, uint32_t width, uint32_t height, LONG_PTR pUserData)
 	{
-		auto wTitle = StringToWString(title);
+		auto wTitle = utility::StringToWstring(title);
 		DWORD dwStyle = WS_OVERLAPPEDWINDOW;
 		
 		HWND hWnd = nullptr;
@@ -111,13 +113,16 @@ namespace kepler {
 		case WM_KEYDOWN:
 			{
 				int repeatCount = LOWORD(lParam);
-				KeyPressedEvent lastEvent(wParam, repeatCount);
+				KeyPressedEvent lastEvent(static_cast<int>(wParam), repeatCount);
+				Input::SetButtonDown(static_cast<kepler::MouseCode>(wParam));
 				data->eventCallback(lastEvent);
 			}
 			break;
 		case WM_KEYUP:
 			{
-				KeyReleasedEvent lastEvent(wParam);
+				KeyReleasedEvent lastEvent(static_cast<int>(wParam));
+				Input::SetButtonUp(static_cast<kepler::MouseCode>(wParam));
+				
 				data->eventCallback(lastEvent);
 			}
 			break;
@@ -129,7 +134,7 @@ namespace kepler {
 				::GetCursorPos(&cursorPos);
 				::ScreenToClient(hWnd, &cursorPos); // Screen(모니터)상의 좌표를 실제 Client(엔진 창)상의 좌표로 바꿉니다.
 
-				MouseMovedEvent lastEvent(cursorPos.x, cursorPos.y);
+				MouseMovedEvent lastEvent(static_cast<float>(cursorPos.x), static_cast<float>(cursorPos.y));
 				data->eventCallback(lastEvent);
 			}
 			break;
@@ -148,11 +153,12 @@ namespace kepler {
 		case WM_MBUTTONDOWN:
 		case WM_RBUTTONDOWN:
 			{
-				int pressedButton = 0;
-				if (msg == WM_LBUTTONDOWN) { pressedButton = 0; }
-				if (msg == WM_MBUTTONDOWN) { pressedButton = 1; }
-				if (msg == WM_RBUTTONDOWN) { pressedButton = 2; }
+				int pressedButton = static_cast<int>(wParam);
+				if (msg == WM_LBUTTONDOWN) { pressedButton = mouse::Left; }
+				if (msg == WM_MBUTTONDOWN) { pressedButton = mouse::Middle; }
+				if (msg == WM_RBUTTONDOWN) { pressedButton = mouse::Right; }
 				MouseButtonPressedEvent lastEvent(pressedButton);
+				Input::SetButtonDown(pressedButton);
 				data->eventCallback(lastEvent);
 			}
 			break;
@@ -160,11 +166,13 @@ namespace kepler {
 		case WM_MBUTTONUP:
 		case WM_RBUTTONUP:
 			{
-				int releasedButton = 0;
-				if (msg == WM_LBUTTONUP) { releasedButton = 0; }
-				if (msg == WM_MBUTTONUP) { releasedButton = 1; }
-				if (msg == WM_RBUTTONUP) { releasedButton = 2; }
+				int releasedButton = static_cast<int>(wParam);
+				if (msg == WM_LBUTTONUP) { releasedButton = mouse::Left; }
+				if (msg == WM_MBUTTONUP) { releasedButton = mouse::Middle; }
+				if (msg == WM_RBUTTONUP) { releasedButton = mouse::Right; }
 				MouseButtonReleasedEvent laseEvent(releasedButton);
+				Input::SetButtonDown(releasedButton);
+				data->eventCallback(laseEvent);
 			}
 			break;
 
@@ -208,7 +216,7 @@ namespace kepler {
 			}
 			// 추후에 WM_CLOSE 메시지 이후에 바로 윈도우를 Destroy하지 않고 무언가를 처리해야 한다면 fallthrough 로직을 없애고 break를 합시다!
 			// C++17 이전 버전에서 작동하지 않습니다..
-			[[fallthrough]]
+			[[fallthrough]];
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			break;
@@ -236,22 +244,4 @@ namespace kepler {
 		}
 		return (INT_PTR)FALSE;
 	}
-
-	// std::string을 std::wstring으로 변환하는 함수
-	std::wstring kepler::StringToWString(const std::string& s)
-	{
-		int len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), s.length(), 0, 0);
-		// stl string을 c-style로 캐스팅할 경우 마지막에 '\0'이 추가되어야 하므로 
-		// 문자형 단위 1만큼의 추가 공간이 필요합니다.(wchar문자열은 wchar_t 1개 만큼)
-		auto buf = new wchar_t[len + sizeof(wchar_t)];	
-		buf[len] = '\0';
-		MultiByteToWideChar(CP_ACP, 0, s.c_str(), s.length(), buf, len + 1);
-		// buf(LPWSTR)을 그대로 리턴해도 되지만 이 경우 함수 바깥에서 delete를 해 줘야만 하므로 mem leak 가능성이 있습니다.
-		// 따라서 wstring을 리턴하는 함수로 설계했습니다.
-		auto ws = std::wstring(buf);
-		delete[] buf;
-
-		return ws;
-	}
-
 }

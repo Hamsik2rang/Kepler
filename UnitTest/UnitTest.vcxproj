@@ -41,8 +41,14 @@
     <IntDir>$(SolutionDir)\bin-int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemGroup>
-    <ClInclude Include="InputManagerTest.h" />
+    <ClInclude Include="Testcase\InputManagerTest.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Testcase\Matrix22Test.h" />
+    <ClInclude Include="Testcase\Matrix33Test.h" />
+    <ClInclude Include="Testcase\Matrix44Test.h" />
+    <ClInclude Include="Testcase\Vector2DTest.h" />
+    <ClInclude Include="Testcase\Vector3DTest.h" />
+    <ClInclude Include="Testcase\Vector4DTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TestMain.cpp" />
@@ -90,7 +96,8 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDIr)UnitTest\;$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -122,6 +129,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

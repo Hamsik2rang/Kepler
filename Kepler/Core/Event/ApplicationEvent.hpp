@@ -6,7 +6,7 @@
 
 namespace kepler {
 
-	class KEPLER_API WindowResizeEvent : public Event
+	class WindowResizeEvent : public Event
 	{
 	private:
 		uint32_t m_width;
@@ -30,7 +30,7 @@ namespace kepler {
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class KEPLER_API WindowCloseEvent : public Event
+	class WindowCloseEvent : public Event
 	{
 	public:
 		WindowCloseEvent() {}
@@ -39,7 +39,7 @@ namespace kepler {
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class KEPLER_API AppTickEvent : public Event
+	class AppTickEvent : public Event
 	{
 	public:
 		AppTickEvent() {}
@@ -48,7 +48,7 @@ namespace kepler {
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class KEPLER_API AppUpdateEvent : public Event
+	class AppUpdateEvent : public Event
 	{
 	public:
 		AppUpdateEvent() {}
@@ -57,7 +57,7 @@ namespace kepler {
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class KEPLER_API AppRenderEvent : public Event
+	class AppRenderEvent : public Event
 	{
 	public:
 		AppRenderEvent() {}

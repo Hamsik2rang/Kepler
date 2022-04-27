@@ -21,7 +21,7 @@ public:
 
 	virtual void OnUpdate() override
 	{
-		//KEPLER_INFO("TestLayer Updated");
+
 	}
 
 	virtual void OnEvent(kepler::Event& e) override
@@ -36,7 +36,7 @@ public:
 	Client()
 	{
 		PushLayer(new TestLayer());
-		PushOverlay(new kepler::ImGuiLayer());
+		//PushOverlay(new kepler::ImGuiLayer());
 	}
 	~Client()
 	{

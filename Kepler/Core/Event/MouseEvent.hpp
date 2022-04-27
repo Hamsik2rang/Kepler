@@ -6,7 +6,7 @@
 
 namespace kepler {
 
-	class KEPLER_API MouseMovedEvent : public Event
+	class MouseMovedEvent : public Event
 	{
 	private:
 		float m_xPos;
@@ -33,7 +33,7 @@ namespace kepler {
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	};
 
-	class KEPLER_API MouseScrolledEvent : public Event
+	class MouseScrolledEvent : public Event
 	{
 	private:
 		float m_vOffset;	// vertical
@@ -61,7 +61,7 @@ namespace kepler {
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	};
 
-	class KEPLER_API MouseButtonEvent : public Event
+	class MouseButtonEvent : public Event
 	{
 	protected:
 		int m_button;
@@ -76,7 +76,7 @@ namespace kepler {
 	};
 
 
-	class KEPLER_API MouseButtonPressedEvent : public MouseButtonEvent
+	class MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonPressedEvent(int button)
@@ -94,7 +94,7 @@ namespace kepler {
 		EVENT_CLASS_TYPE(MouseButtonPressed)
 	};
 
-	class KEPLER_API MouseButtonReleasedEvent : public MouseButtonEvent
+	class MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonReleasedEvent(int button)
