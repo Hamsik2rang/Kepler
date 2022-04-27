@@ -21,7 +21,7 @@ namespace kepler {
 	ImGuiLayer::ImGuiLayer()
 		:Layer("ImGuiLayer")
 	{
-		
+
 	}
 
 	ImGuiLayer::~ImGuiLayer()
@@ -53,11 +53,11 @@ namespace kepler {
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
 
+		// TODO: 이거 언젠가 꼭 바꿔야됩니다..
 		Application* pApp = Application::Get();
 		HWND hWnd = pApp->GetWindow().GetWindowHandle();
 		ID3D11Device* pDevice = pApp->GetWindow().GetD3DDevice();
 		ID3D11DeviceContext* pDeviceContext = pApp->GetWindow().GetD3DDeviceContext();
-		// TODO: 이거 언젠가 꼭 바꿔야됩니다..
 		// ImGui 초기화
 		ImGui_ImplWin32_Init(hWnd);
 		ImGui_ImplDX11_Init(pDevice, pDeviceContext);

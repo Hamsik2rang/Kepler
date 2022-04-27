@@ -15,6 +15,9 @@ namespace kepler{
 		// bind this->OnEvent
 		m_pWindow->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 		s_pInstance = this;
+
+		m_pGUILayer = std::make_unique<ImGuiLayer>();
+		m_pGUILayer->OnAttach();
 	}
 
 	Application* Application::Get()
@@ -69,13 +72,14 @@ namespace kepler{
 			}
 
 			m_pWindow->ClearRender();
-
-			// Update whole layers
+			// Update all layer(and overlay)s
 			for (Layer* layer : m_layerStack)
 			{
 				layer->OnUpdate();
 			}
-
+			// GUI Update
+			m_pGUILayer->OnUpdate();
+			// Window Update
 			m_pWindow->OnUpdate();
 		}
 	}

@@ -80,7 +80,7 @@ namespace kepler {
 			const Vector4D<T>	operator+(const Vector4D<T>& v) const { return Vector4D<T>(x + v.x, y + v.y, z + v.z, w + v.w); }
 			const Vector4D<T>	operator-(const Vector4D<T>& v) const { return Vector4D<T>(x - v.x, y - v.y, z - v.z, w - v.w); }
 			const Vector4D<T>	operator*(const T scalar) const { return Vector4D<T>(x * scalar, y * scalar, z * scalar, w * scalar); }
-			const Vector4D<T>	operator/(const T saclar) const { return Vector4D<T>(x / scalar, y / scalar, z / scalar, w / scalar); }
+			const Vector4D<T>	operator/(const T scalar) const { return Vector4D<T>(x / scalar, y / scalar, z / scalar, w / scalar); }
 
 			Vector4D<T>&		operator+=(const Vector4D<T>& v) { x += v.x; y += v.y; z += v.z; w += v.w; return *this; }
 			Vector4D<T>&		operator-=(const Vector4D<T>& v) { x -= v.x; y -= v.y; z -= v.z; w -= v.w; return *this; }

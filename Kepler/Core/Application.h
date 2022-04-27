@@ -14,6 +14,7 @@ namespace kepler {
 		static	Application*		s_pInstance;
 
 		std::unique_ptr<IWindow>	m_pWindow;
+		std::unique_ptr<ImGuiLayer> m_pGUILayer;
 		LayerStack					m_layerStack;
 
 	public:

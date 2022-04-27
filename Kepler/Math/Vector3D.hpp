@@ -75,7 +75,7 @@ namespace kepler {
 			
 			// Operator Overloading
 			const Vector3D<T>	operator+() const { return *this; }
-			const Vector3D<T>	operator-() const { return Vector3D<T> ret(-x, -y, -z); }
+			const Vector3D<T>	operator-() const { return Vector3D<T>(-x, -y, -z); }
 
 			Vector3D<T>&		operator=(Vector3D<T>&& v) = default;
 			Vector3D<T>&		operator=(const Vector3D<T>& v) { x = v.x; y = v.y; z = v.z; return *this; }
