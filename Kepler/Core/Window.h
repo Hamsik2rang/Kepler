@@ -24,7 +24,7 @@ namespace kepler {
 	};
 	
 	// Interface for platform window abstraction
-	class KEPLER_API IWindow
+	class IWindow
 	{
 	public:
 		using EventCallbackFunc = std::function<void(Event&)>;

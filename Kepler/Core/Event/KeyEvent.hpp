@@ -6,7 +6,7 @@
 
 namespace kepler {
 	
-	class KEPLER_API KeyEvent : public Event
+	class KeyEvent : public Event
 	{
 	protected:
 		int m_keyCode;
@@ -21,7 +21,7 @@ namespace kepler {
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 	};
 
-	class KEPLER_API KeyPressedEvent : public KeyEvent
+	class KeyPressedEvent : public KeyEvent
 	{
 	private:
 		int m_repeatCount;
@@ -44,7 +44,7 @@ namespace kepler {
 		EVENT_CLASS_TYPE(KeyPressed)
 	};
 
-	class KEPLER_API KeyReleasedEvent : public KeyEvent
+	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(int keyCode)

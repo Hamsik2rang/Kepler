@@ -8,7 +8,7 @@
 
 namespace kepler {
 	// Window Application
-	class KEPLER_API Application
+	class Application
 	{
 	private:
 		static	Application*		s_pInstance;

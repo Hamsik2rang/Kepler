@@ -114,7 +114,7 @@ namespace kepler {
 			{
 				int repeatCount = LOWORD(lParam);
 				KeyPressedEvent lastEvent(static_cast<int>(wParam), repeatCount);
-				Input::SetButtonDown(wParam);
+				Input::SetButtonDown(static_cast<kepler::MouseCode>(wParam));
 				data->eventCallback(lastEvent);
 			}
 			break;

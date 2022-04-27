@@ -5,13 +5,13 @@
 
 namespace kepler {
 
-	struct KEPLER_API Axis
+	struct Axis
 	{
 		int horizontal = 0;
 		int vertical = 0;
 	};
 
-	class KEPLER_API Input
+	class Input
 	{
 	private:
 		static Axis m_axis;

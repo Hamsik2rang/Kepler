@@ -14,6 +14,6 @@
 
 
 // BIT(x) = 2^x
-#define BIT(x) (1 << (x))
+#define BIT(x) (static_cast<uint64_t>(1) << (x))
 
 #include "Core/Log.h"

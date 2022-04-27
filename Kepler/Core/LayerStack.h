@@ -6,7 +6,7 @@
 
 namespace kepler {
 
-	class KEPLER_API LayerStack
+	class LayerStack
 	{
 	private:
 		std::list<Layer*>			m_pLayers;
