@@ -66,7 +66,7 @@
     <ClInclude Include="Core\LayerStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Platform\DirectX\DirectXAPI.h">
+    <ClInclude Include="Platform\DirectX11\DirectXAPI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\ImGuiLayer.h">
@@ -111,6 +111,15 @@
     <ClInclude Include="Core\Assertion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer\GraphicsContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Timer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\DirectX11\DX11Context.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Application.cpp">
@@ -146,7 +155,7 @@
     <ClCompile Include="ImGui\ImGuiSource\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Platform\DirectX\DirectXAPI.cpp">
+    <ClCompile Include="Platform\DirectX11\DirectXAPI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\ImGuiLayer.cpp">
@@ -162,6 +171,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utility\StringUtility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform\DirectX11\DX11Context.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

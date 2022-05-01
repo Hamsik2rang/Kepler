@@ -4,7 +4,7 @@
 #include "Core/Window.h"
 
 #include "Platform/Win32/WinAPI.h"
-#include "Platform/DirectX/DirectXAPI.h"
+#include "Platform/DirectX11/DirectXAPI.h"
 
 
 namespace kepler {
