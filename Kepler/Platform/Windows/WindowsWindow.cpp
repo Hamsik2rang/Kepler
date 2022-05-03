@@ -47,9 +47,10 @@ namespace kepler {
 			KEPLER_ASSERT(false, "Can't Initialize Window Instance - See Core Log for more info.");
 		}
 		// D3D Device 생성
-		if (!CreateD3DDevice(m_hWnd, &m_pDevice, &m_pImmediateContext, &m_pSwapChain, &m_pRenderTargetView))
+		m_pContext = new DX11Context(m_hWnd);
+		if (!m_pContext->Init())
 		{
-			CleanupD3DDevice();
+			m_pContext->Cleanup();
 			KEPLER_CORE_CRITICAL("CRITICAL: Can't Initialize DirectX Device - {0} {1}", __FILE__, __LINE__);
 			KEPLER_ASSERT(false, "Can't Initialize Window Instance - See Core Log for more info.");
 		}
@@ -69,37 +70,13 @@ namespace kepler {
 	void WindowsWindow::Shutdown()
 	{
 		// TODO: 해제해야 할 윈도우 리소스가 있다면 이 곳에서 해제합니다.
-		CleanupD3DDevice();
 	}
 
-	void WindowsWindow::CleanupD3DDevice()
-	{
-		if (m_pRenderTargetView)
-		{ 
-			m_pRenderTargetView->Release(); 
-			m_pRenderTargetView = nullptr; 
-		}
-		if (m_pSwapChain) 
-		{ 
-			m_pSwapChain->Release();
-			m_pSwapChain = nullptr; 
-		}
-		if (m_pImmediateContext) 
-		{ 
-			m_pImmediateContext->Release(); 
-			m_pImmediateContext = nullptr; 
-		}
-		if (m_pDevice)
-		{ 
-			m_pDevice->Release();
-			m_pDevice = nullptr; 
-		}
-	}
 
 	void WindowsWindow::OnUpdate()
 	{
 		// TODO: Update Loop마다 해야할 작업들 작성
-		m_pSwapChain->Present((m_data.bVSync ? 1 : 0), 0);
+		m_pContext->SwapBuffer();
 	}
 
 	void WindowsWindow::ClearRender()

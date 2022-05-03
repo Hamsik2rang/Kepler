@@ -170,20 +170,12 @@
     <ClInclude Include="Core\Log.h" />
     <ClInclude Include="Platform\DirectX11\DX11Context.h" />
     <ClInclude Include="Renderer\GraphicsContext.h" />
+    <ClInclude Include="Renderer\RenderAPI.h" />
     <ClInclude Include="Core\Window.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImGui\ImGuiLayer.h" />
     <ClInclude Include="kepch.h" />
     <ClInclude Include="Kepler.h" />
-    <ClInclude Include="Math\Matrix.h" />
-    <ClInclude Include="Math\Matrix22.hpp" />
-    <ClInclude Include="Math\Matrix33.hpp" />
-    <ClInclude Include="Math\Matrix44.hpp" />
-    <ClInclude Include="Math\Vector.h" />
-    <ClInclude Include="Math\Vector2D.hpp" />
-    <ClInclude Include="Math\Vector3D.hpp" />
-    <ClInclude Include="Math\Vector4D.hpp" />
-    <ClInclude Include="Platform\DirectX11\DirectXAPI.h" />
     <ClInclude Include="Platform\Win32\WinAPI.h" />
     <ClInclude Include="Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Resource.h" />
@@ -211,7 +203,6 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">kepch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="Platform\DirectX11\DirectXAPI.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Context.cpp" />
     <ClCompile Include="Platform\Win32\WinAPI.cpp" />
     <ClCompile Include="Platform\Windows\WindowsWindow.cpp" />

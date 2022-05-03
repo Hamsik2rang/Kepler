@@ -17,8 +17,10 @@ namespace kepler {
 		std::unique_ptr<ImGuiLayer> m_pGUILayer;
 		LayerStack					m_layerStack;
 
-	public:
+	protected:
 		Application();
+
+	public:
 		~Application();
 
 		static Application* Get();
