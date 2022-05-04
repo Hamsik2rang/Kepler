@@ -8,6 +8,12 @@
 #include "Core/Layer.hpp"
 #include "Core/Input.h"
 #include "Core/InputCode.h"
+
+//-----------------------------------------
+
+//----- Renderer --------------------------
+#include "Renderer/Renderer.h"
+
 //-----------------------------------------
 
 //----- Math ------------------------------
@@ -19,6 +25,7 @@
 #include "Platform/Win32/WinAPI.h"
 #include "Platform/Windows/WindowsWindow.h"
 #include "ImGui/ImGuiLayer.h"
+
 //-----------------------------------------
 
 //----- Global Variables-------------------

@@ -5,6 +5,7 @@
 
 #include "Core/LayerStack.h"
 #include "ImGui/ImGuiLayer.h"
+#include "Renderer/GraphicsAPI.h"
 
 namespace kepler {
 	// Window Application
@@ -17,12 +18,14 @@ namespace kepler {
 		std::unique_ptr<ImGuiLayer> m_pGUILayer;
 		LayerStack					m_layerStack;
 
+	protected:
+		Application(eGraphicsAPI api);
+
 	public:
-		Application();
 		~Application();
 
 		static Application* Get();
-		inline IWindow& GetWindow() { return *m_pWindow; }
+		inline IWindow* GetWindow() { return m_pWindow.get(); }
 
 		void OnEvent(Event& e);
 

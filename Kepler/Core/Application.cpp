@@ -3,18 +3,22 @@
 #include "Application.h"
 #include "Core/Log.h"
 #include "Core/Event/ApplicationEvent.hpp"
+#include "Renderer/Renderer.h"
 
 namespace kepler{
 
 	Application* Application::s_pInstance = nullptr;
 
-	Application::Application()
+	Application::Application(eGraphicsAPI api)
 	{
+		IGraphicsAPI::SetAPI(api);
 		m_pWindow = std::unique_ptr<IWindow>(IWindow::Create());
-		
+
 		// bind this->OnEvent
 		m_pWindow->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 		s_pInstance = this;
+		
+		Renderer::Init();
 
 		m_pGUILayer = std::make_unique<ImGuiLayer>();
 		m_pGUILayer->OnAttach();
@@ -71,7 +75,7 @@ namespace kepler{
 				DispatchMessage(&msg);
 			}
 
-			m_pWindow->ClearRender();
+			Renderer::Get()->ClearColor();
 			// Update all layer(and overlay)s
 			for (Layer* layer : m_layerStack)
 			{
