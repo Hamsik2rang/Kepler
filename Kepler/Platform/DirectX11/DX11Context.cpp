@@ -1,13 +1,6 @@
 #include "kepch.h"
 #include "DX11Context.h"
 
-kepler::DX11Context* kepler::DX11Context::s_pInstance = nullptr;
-
-kepler::GraphicsContext* kepler::GraphicsContext::Create(HWND hWnd)
-{
-    return new DX11Context(hWnd);
-}
-
 kepler::DX11Context::DX11Context(const HWND hWnd)
     :m_hWnd{hWnd}
     ,m_bVSync{false}
@@ -16,7 +9,7 @@ kepler::DX11Context::DX11Context(const HWND hWnd)
     ,m_pSwapChain{nullptr}
     ,m_pRenderTargetView{nullptr}
 {
-    s_pInstance = this;
+
 }
 
 void kepler::DX11Context::Cleanup()
@@ -32,14 +25,16 @@ kepler::DX11Context::~DX11Context()
     Cleanup();
 }
 
-bool kepler::DX11Context::Init()
+bool kepler::DX11Context::Init(const WindowData& data)
 {
+    m_bVSync = data.bVSync;
+
     DXGI_SWAP_CHAIN_DESC scDesc{};
     scDesc.BufferCount = 2;
-    scDesc.BufferDesc.Width = 0;
-    scDesc.BufferDesc.Height = 0;
+    scDesc.BufferDesc.Width = data.width;
+    scDesc.BufferDesc.Height = data.height;
     scDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-    scDesc.BufferDesc.RefreshRate.Numerator = 60;
+    scDesc.BufferDesc.RefreshRate.Numerator = 0;
     scDesc.BufferDesc.RefreshRate.Denominator = 1;
     scDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
     scDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
@@ -52,11 +47,10 @@ bool kepler::DX11Context::Init()
     UINT createDeviceFlags = 0;
     // Debug 모드일 때만 디버그 디바이스 플래그 세팅
 #ifdef _DEBUG
-    createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+    //createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
     // 추후 feature level 11.1 까지 지원할 것
-    D3D_FEATURE_LEVEL featureLevel;
     const D3D_FEATURE_LEVEL featureLevels[]{
         /*D3D_FEATURE_LEVEL_11_1,*/
         D3D_FEATURE_LEVEL_11_0,
@@ -77,7 +71,7 @@ bool kepler::DX11Context::Init()
         &scDesc,
         &m_pSwapChain, 
         &m_pDevice, 
-        &featureLevel, 
+        &m_featureLevel, 
         &m_pImmediateContext);
 
     if (FAILED(hr))
@@ -85,6 +79,7 @@ bool kepler::DX11Context::Init()
         KEPLER_ASSERT(false, "Fail to Initialize DirectX11 API");
         return false;
     }
+
 
     ID3D11Texture2D* pBackBuffer = nullptr;
     hr = m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
@@ -100,11 +95,12 @@ bool kepler::DX11Context::Init()
         KEPLER_CORE_ASSERT(false, "Fail to Create RenderTarget View");
         return false;
     }
+    pBackBuffer->Release();
 
     return true;
 }
 
-void kepler::DX11Context::SwapBuffer(bool bVSync)
+void kepler::DX11Context::SwapBuffer()
 {
-    m_pSwapChain->Present((bVSync ? 1 : 0), 0);
+    m_pSwapChain->Present((m_bVSync ? 1 : 0), 0);
 }

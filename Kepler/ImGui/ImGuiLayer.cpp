@@ -10,6 +10,7 @@
 #include "ImGuiLayer.h"
 #include "Core/Application.h"
 #include "Platform/Windows/WindowsWindow.h"
+#include "Renderer/GraphicsContext.h"
 
 
 	// Forward declare message handler from imgui_impl_win32.cpp
@@ -52,11 +53,11 @@ namespace kepler {
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
 
-		// TODO: 이거 언젠가 꼭 바꿔야됩니다..
 		Application* pApp = Application::Get();
-		HWND hWnd = pApp->GetWindow().GetWindowHandle();
-		ID3D11Device* pDevice = pApp->GetWindow().GetD3DDevice();
-		ID3D11DeviceContext* pDeviceContext = pApp->GetWindow().GetD3DDeviceContext();
+		HWND hWnd = pApp->GetWindow()->GetWindowHandle();
+
+		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+		ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 		// ImGui 초기화
 		ImGui_ImplWin32_Init(hWnd);
 		ImGui_ImplDX11_Init(pDevice, pDeviceContext);

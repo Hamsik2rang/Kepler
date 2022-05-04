@@ -1,13 +1,11 @@
 #include "kepch.h"
 
 #include "WindowsWindow.h"
+#include "Renderer/GraphicsContext.h"
 
 namespace kepler {
 	extern HINSTANCE	g_hInst;
 	extern int			g_nCmdShow;
-
-	HWND WindowsWindow::s_hMainWnd = nullptr;
-	int WindowsWindow::s_windowCount = 0;
 
 	IWindow* IWindow::Create(const WindowProperty& props)
 	{
@@ -29,6 +27,7 @@ namespace kepler {
 		m_data.title = props.title;
 		m_data.width = props.width;
 		m_data.height = props.height;
+		m_data.bVSync = true;
 
 		KEPLER_CORE_INFO("Creating Window {0} ({1}, {2})", props.title, props.width, props.height);
 		// 윈도우 클래스 등록
@@ -47,10 +46,10 @@ namespace kepler {
 			KEPLER_ASSERT(false, "Can't Initialize Window Instance - See Core Log for more info.");
 		}
 		// D3D Device 생성
-		m_pContext = new DX11Context(m_hWnd);
-		if (!m_pContext->Init())
+		IGraphicsContext::Create(&m_hWnd);
+		if (!IGraphicsContext::Get()->Init(m_data))
 		{
-			m_pContext->Cleanup();
+			IGraphicsContext::Get()->Cleanup();
 			KEPLER_CORE_CRITICAL("CRITICAL: Can't Initialize DirectX Device - {0} {1}", __FILE__, __LINE__);
 			KEPLER_ASSERT(false, "Can't Initialize Window Instance - See Core Log for more info.");
 		}
@@ -58,31 +57,18 @@ namespace kepler {
 		kepler::ShowWindow(m_hWnd);
 		::SetWindowLongPtr(m_hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(&m_data));
 		
-		s_windowCount++;
-		if (!s_hMainWnd)
-		{
-			s_hMainWnd = m_hWnd;
-		}
-		
 		SetVSync(true);
 	}
 
 	void WindowsWindow::Shutdown()
 	{
 		// TODO: 해제해야 할 윈도우 리소스가 있다면 이 곳에서 해제합니다.
+		IGraphicsContext::Get()->Cleanup();
 	}
-
 
 	void WindowsWindow::OnUpdate()
 	{
 		// TODO: Update Loop마다 해야할 작업들 작성
-		m_pContext->SwapBuffer();
-	}
-
-	void WindowsWindow::ClearRender()
-	{
-		static const float clearColor[]{ 0.1f, 0.1f, 0.1f, 1.0f };
-		m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, nullptr);
-		m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, clearColor);
+		IGraphicsContext::Get()->SwapBuffer();
 	}
 }

@@ -7,30 +7,31 @@
 
 namespace kepler {
 
-	class DX11Context : public GraphicsContext
+	class DX11Context : public IGraphicsContext
 	{
 	private:
-		static DX11Context*		s_pInstance;
 		ID3D11Device*			m_pDevice;
 		ID3D11DeviceContext*	m_pImmediateContext;
-		ID3D11RenderTargetView* m_pRenderTargetView;
 		IDXGISwapChain*			m_pSwapChain;
+		ID3D11RenderTargetView* m_pRenderTargetView;
+
+		D3D_FEATURE_LEVEL		m_featureLevel;
 
 		HWND m_hWnd;
 		bool m_bVSync;
+
 	public:
 		DX11Context(const HWND hWnd);
 
-		// Inherited via IRenderer
-		~DX11Context();
-		virtual bool Init() override;
-		virtual void Cleanup() override;
-		virtual void SwapBuffer(bool bVSync) override;
-
-		inline static DX11Context* Get() { return s_pInstance; }
 		inline ID3D11Device* GetDevice() { return m_pDevice; }
 		inline ID3D11DeviceContext* GetDeviceContext() { return m_pImmediateContext; }
 		inline ID3D11RenderTargetView* GetRenderTargetView() { return m_pRenderTargetView; }
 		inline IDXGISwapChain* GetSwapChain() { return m_pSwapChain; }
+
+		// Inherited via IRenderer
+		~DX11Context();
+		virtual bool Init(const WindowData& data) override;
+		virtual void Cleanup() override;
+		virtual void SwapBuffer() override;
 	};
 }

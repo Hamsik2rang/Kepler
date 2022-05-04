@@ -214,8 +214,7 @@ namespace kepler {
 				WindowCloseEvent lastEvent;
 				data->eventCallback(lastEvent);
 			}
-			// 추후에 WM_CLOSE 메시지 이후에 바로 윈도우를 Destroy하지 않고 무언가를 처리해야 한다면 fallthrough 로직을 없애고 break를 합시다!
-			// C++17 이전 버전에서 작동하지 않습니다..
+			// C++17 이전 버전에서 작동하지 않습니다.
 			[[fallthrough]];
 		case WM_DESTROY:
 			PostQuitMessage(0);

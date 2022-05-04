@@ -5,6 +5,7 @@
 
 #include "Core/LayerStack.h"
 #include "ImGui/ImGuiLayer.h"
+#include "Renderer/GraphicsAPI.h"
 
 namespace kepler {
 	// Window Application
@@ -18,13 +19,13 @@ namespace kepler {
 		LayerStack					m_layerStack;
 
 	protected:
-		Application();
+		Application(eGraphicsAPI api);
 
 	public:
 		~Application();
 
 		static Application* Get();
-		inline IWindow& GetWindow() { return *m_pWindow; }
+		inline IWindow* GetWindow() { return m_pWindow.get(); }
 
 		void OnEvent(Event& e);
 

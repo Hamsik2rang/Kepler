@@ -4,7 +4,6 @@
 #include "Core/Window.h"
 
 #include "Platform/Win32/WinAPI.h"
-#include "Platform/DirectX11/DX11Context.h"
 
 
 namespace kepler {
@@ -22,31 +21,23 @@ namespace kepler {
 	class WindowsWindow : public IWindow
 	{
 	private:
-		HWND		m_hWnd = nullptr;
-		WindowData	m_data{};
-		// 임시. 추후에 렌더러가 생기면 그 땐 렌더러 디바이스로 변경할 수 있음
-		GraphicsContext* m_pGraphicsContext;
+		HWND				m_hWnd = nullptr;
+		WindowData			m_data{};
 
 		virtual void Init(const WindowProperty& props);
 		virtual void Shutdown();
 	public:
-		static HWND s_hMainWnd;
-		static int s_windowCount;
-
 		WindowsWindow(const WindowProperty& props);
 		virtual ~WindowsWindow();
 
 		virtual void OnUpdate() override;
-		virtual void ClearRender() override;
-		
 		virtual inline uint32_t GetWidth() const override { return m_data.width; }
 		virtual inline uint32_t GetHeight() const override { return m_data.height; }
 
 		virtual inline void SetVSync(bool isEnabled) override { m_data.bVSync = isEnabled; };
 		virtual inline bool IsVSync() const override { return m_data.bVSync; }
 		inline virtual HWND GetWindowHandle() const override { return m_hWnd; }
-
-		virtual inline void SetEventCallback(const EventCallbackFunc& callback) override { m_data.eventCallback = callback; };
 		
+		virtual inline void SetEventCallback(const EventCallbackFunc& callback) override { m_data.eventCallback = callback; };
 	};
 }

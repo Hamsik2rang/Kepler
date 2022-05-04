@@ -34,6 +34,7 @@ class Client : public kepler::Application
 {
 public:
 	Client()
+		:Application(kepler::eGraphicsAPI::DirectX11)
 	{
 		PushLayer(new TestLayer());
 		//PushOverlay(new kepler::ImGuiLayer());
