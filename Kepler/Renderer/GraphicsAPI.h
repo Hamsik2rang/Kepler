@@ -19,7 +19,7 @@ namespace kepler {
 		virtual void Init() = 0;
 
 		virtual void ClearColor() = 0;
-		virtual void SetColor() = 0;
+		virtual void SetColor(const float color[4]) = 0;
 		virtual void SetViewport() = 0;
 		virtual void Resize(uint32_t width, uint32_t height) = 0;
 		// TODO: should be going to get buffer(vertex, index) params
