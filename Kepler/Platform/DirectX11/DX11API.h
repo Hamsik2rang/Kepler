@@ -6,6 +6,7 @@ namespace kepler {
 
 	class DX11API : public IGraphicsAPI
 	{
+	public:
 		// Inherited via IGraphicsAPI
 		virtual void Init() override;
 		virtual void ClearColor() override;

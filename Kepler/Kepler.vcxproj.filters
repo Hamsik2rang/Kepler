@@ -102,6 +102,9 @@
     <ClInclude Include="Renderer\GraphicsAPI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Platform\DirectX11\DX11Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Application.cpp">
@@ -165,6 +168,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Platform\DirectX11\DX11API.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform\DirectX11\DX11Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
