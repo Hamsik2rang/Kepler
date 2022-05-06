@@ -20,8 +20,8 @@ namespace kepler{
 		
 		Renderer::Init();
 
-		m_pGUILayer = std::make_unique<ImGuiLayer>();
-		m_pGUILayer->OnAttach();
+		m_pImGuiLayer = std::make_unique<ImGuiLayer>();
+		m_pImGuiLayer->OnAttach();
 	}
 
 	Application* Application::Get()
@@ -82,7 +82,16 @@ namespace kepler{
 				layer->OnUpdate();
 			}
 			// GUI Update
-			m_pGUILayer->OnUpdate();
+			m_pImGuiLayer->Begin();
+			for (Layer* layer : m_layerStack)
+			{
+			    layer->OnRender();
+			}
+			
+			// TODO: 추후에 Editor Layer가 구현되어 LayerStack안에 들어가면 제거 
+			m_pImGuiLayer->OnRender();
+
+			m_pImGuiLayer->End();
 			// Window Update
 			m_pWindow->OnUpdate();
 		}

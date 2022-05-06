@@ -73,19 +73,47 @@ namespace kepler {
 
 	void ImGuiLayer::OnUpdate()
 	{
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-		// ImGui 새 프레임 생성
+	}
+
+	void ImGuiLayer::OnEvent(Event& e)
+	{
+
+	}
+
+	void ImGuiLayer::Begin()
+	{
+		//현재 프레임에 대한 ImGui 컨텍스트 초기화
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
+	}
+
+	void ImGuiLayer::End()
+	{
+		// 현재 프레임 ImGui 컨텍스트 안에 그려진 모든 레이어들 그리기
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
+		ImGuiIO& io = ImGui::GetIO();
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			ImGui::UpdatePlatformWindows();
+			ImGui::RenderPlatformWindowsDefault();
+		}
+	}
+
+	void ImGuiLayer::OnRender()
+	{
+		// 그리기. 추후 에디터 레이어가 추가되면 ImGuiLayer는 OnRender를 가질 필요가 없음.
+		ImGuiIO& io = ImGui::GetIO();
 
 		static bool bIsShownDemo = true;
 		if (bIsShownDemo)
 		{
 			ImGui::ShowDemoWindow(&bIsShownDemo);
 		}
-		
+
 		static float f = 0.0f;
 
 		ImGui::Begin("Hello Kepler!");
@@ -106,20 +134,6 @@ namespace kepler {
 
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 		ImGui::End();
-
-		ImGui::Render();
-		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-		}
-	}
-
-	void ImGuiLayer::OnEvent(Event& e)
-	{
-
 	}
 
 	LRESULT ImGuiLayer::ImGuiEventHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
