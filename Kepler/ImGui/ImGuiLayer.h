@@ -21,6 +21,12 @@ namespace kepler {
 		virtual void OnUpdate() override;
 		virtual void OnEvent(Event& e) override;
 
+		virtual void Begin() override;
+		virtual void End() override;
+
+		// Temporary
+		virtual void OnRender() override;
+
 		static LRESULT ImGuiEventHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	};
 }

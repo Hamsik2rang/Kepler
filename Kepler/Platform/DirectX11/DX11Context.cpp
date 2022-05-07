@@ -39,8 +39,8 @@ bool kepler::DX11Context::Init(const WindowData& data)
 
     DXGI_SWAP_CHAIN_DESC scDesc{};
     scDesc.BufferCount = 2;
-    scDesc.BufferDesc.Width = data.width;
-    scDesc.BufferDesc.Height = data.height;
+    scDesc.BufferDesc.Width = 0;
+    scDesc.BufferDesc.Height = 0;
     scDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     scDesc.BufferDesc.RefreshRate.Numerator = 0;
     scDesc.BufferDesc.RefreshRate.Denominator = 1;
