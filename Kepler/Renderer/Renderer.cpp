@@ -31,15 +31,27 @@ namespace kepler {
 		:m_pGraphicsAPI{ nullptr }
 	{
 		m_pGraphicsAPI = IGraphicsAPI::Create();
+		m_pCamera = new DX11Camera;
 	}
 
-	bool Renderer::Render(float rotation)
+	Renderer::~Renderer()
+	{
+		delete m_pCamera;
+	}
+
+	bool Renderer::Render()
 	{
 		DX11Context* pContext = (DX11Context*)IGraphicsContext::Get();
-		DX11API* pAPI = (DX11API*)IGraphicsAPI::GetAPI();
+		DX11API* pAPI = (DX11API*)m_pGraphicsAPI;
 
 		// 씬을 그리기 위해 버퍼를 지웁니다
 		pAPI->ClearColor();
+
+#ifndef DEBUG
+		// 디버그용 코드 (뷰포트를 흰색으로 만듭니다.)
+		float color[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		pAPI->SetColor(color);
+#endif // DEBUG
 
 		// 카메라 및 d3d 객체에서 월드, 뷰 및 투영 행렬을 가져옵니다
 		XMMATRIX worldMatrix, viewMatrix, projectionMatrix, orthoMatrix;
@@ -57,20 +69,6 @@ namespace kepler {
 		// 2D 렌더링 종료 시 Z 버퍼를 켭니다.
 		pContext->TurnZBufferOn();
 		return true;
-	}
-
-	bool Renderer::Init(const WindowData& data)
-	{
-		if (!IGraphicsContext::Get()->Init(data))
-		{
-			KEPLER_CORE_CRITICAL("CRITICAL: Can't Initialize IGraphicsContext");
-			KEPLER_ASSERT(false, "Can't Initialize IGraphicsContext");
-		}
-		return true;
-	}
-
-	void Renderer::Shutdown()
-	{
 	}
 
 	void Renderer::ClearColor()

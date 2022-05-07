@@ -5,29 +5,26 @@
 
 namespace kepler {
 
-	struct WindowData;
+	class WindowsWindow;
 	class DX11Camera;
 
 	class Renderer
 	{
 	private:
+		static Renderer* s_pInstance;
 		IGraphicsAPI* m_pGraphicsAPI = nullptr;
-		static Renderer* s_pInstance = nullptr;
 		DX11Camera* m_pCamera = nullptr;
 
 		Renderer();
+		~Renderer();
 	public:
 		static Renderer* Get();
 		static void Init();
 		
 		inline eGraphicsAPI GetAPI() const { return m_pGraphicsAPI->GetAPI(); }
 		
-		// ·»´õ¸µ °´Ã¼¸¦ ÃÊ±âÈ­ÇÕ´Ï´Ù.
-		bool Init(const WindowData& data);
-		// ·»´õ¸µ °´Ã¼¸¦ ¹ÝÈ¯ÇÕ´Ï´Ù.
-		void Shutdown();
-		// °´Ã¼¸¦ ·»´õ¸µÇÕ´Ï´Ù.
-		bool Render(float rotation);
+		// ·»´õ¸µÇÕ´Ï´Ù.
+		bool Render();
 
 		void ClearColor();
 		void SetColor();
