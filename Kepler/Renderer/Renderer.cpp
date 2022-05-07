@@ -6,6 +6,7 @@
 #include "Platform/DirectX11/DX11Context.h"
 #include "Platform/DirectX11/DX11API.h"
 #include "Platform/DirectX11/DX11Camera.h"
+#include "Platform/DirectX11/DX11Model.h"
 
 namespace kepler {
 	Renderer* Renderer::s_pInstance = nullptr;
@@ -31,11 +32,26 @@ namespace kepler {
 		:m_pGraphicsAPI{ nullptr }
 	{
 		m_pGraphicsAPI = IGraphicsAPI::Create();
-		m_pCamera = new DX11Camera;
+		m_pCamera = new DX11Camera();
+		m_pModel = new DX11Model();
+
+		m_pCamera->SetPosition(0.0f, 0.0f, -5.0f);
+
+		/*
+		// 정점 배열에 데이터를 설정합니다
+		VertexType* vertices = new VertexType[3]; // m_pModel에서 delete
+		vertices[0].position = XMFLOAT3(-1.0f, -1.0f, 0.0f);  // Bottom left.
+		vertices[1].position = XMFLOAT3(0.0f, 1.0f, 0.0f);  // Top middle.
+		vertices[2].position = XMFLOAT3(1.0f, -1.0f, 0.0f);  // Bottom right.
+
+		m_pModel->Init(((DX11Context*)IGraphicsContext::Get())->GetDevice(), vertices, 3, L"8k_earth_daymap.dds");
+		*/
 	}
 
 	Renderer::~Renderer()
 	{
+		m_pModel->Shutdown();
+		delete m_pModel;
 		delete m_pCamera;
 	}
 
@@ -48,9 +64,10 @@ namespace kepler {
 		pAPI->ClearColor();
 
 #ifndef DEBUG
-		// 디버그용 코드 (뷰포트를 흰색으로 만듭니다.)
 		float color[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		pAPI->SetColor(color);
+		m_pModel->Render(pContext->GetDeviceContext());
+
 #endif // DEBUG
 
 		// 카메라 및 d3d 객체에서 월드, 뷰 및 투영 행렬을 가져옵니다

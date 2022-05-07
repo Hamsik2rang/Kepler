@@ -7,6 +7,7 @@ namespace kepler {
 
 	class WindowsWindow;
 	class DX11Camera;
+	class DX11Model;
 
 	class Renderer
 	{
@@ -14,6 +15,8 @@ namespace kepler {
 		static Renderer* s_pInstance;
 		IGraphicsAPI* m_pGraphicsAPI = nullptr;
 		DX11Camera* m_pCamera = nullptr;
+
+		DX11Model* m_pModel = nullptr;
 
 		Renderer();
 		~Renderer();
