@@ -45,7 +45,7 @@ namespace kepler {
 
 		// Inherited via IRenderer
 		~DX11Context();
-		virtual bool Init(const WindowsWindow& data) override;
+		virtual bool Init(const WindowData& data) override;
 		virtual void Cleanup() override;
 		virtual void SwapBuffer() override;
 		// 2D 렌더링을 시작을 위해 ZBuffer를 켭니다.

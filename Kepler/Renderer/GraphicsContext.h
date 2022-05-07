@@ -17,7 +17,7 @@ namespace kepler {
 		
 	public:
 		virtual ~IGraphicsContext();
-		virtual bool Init(const WindowsWindow& data) = 0;
+		virtual bool Init(const WindowData& data) = 0;
 		virtual void Cleanup() = 0;
 		virtual void SwapBuffer() = 0;
 

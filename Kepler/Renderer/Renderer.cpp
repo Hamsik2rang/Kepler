@@ -62,14 +62,6 @@ namespace kepler {
 
 		// 씬을 그리기 위해 버퍼를 지웁니다
 		pAPI->ClearColor();
-
-#ifndef DEBUG
-		float color[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		pAPI->SetColor(color);
-		m_pModel->Render(pContext->GetDeviceContext());
-
-#endif // DEBUG
-
 		// 카메라 및 d3d 객체에서 월드, 뷰 및 투영 행렬을 가져옵니다
 		XMMATRIX worldMatrix, viewMatrix, projectionMatrix, orthoMatrix;
 		m_pCamera->Render();

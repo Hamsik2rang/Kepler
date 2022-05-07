@@ -1,5 +1,8 @@
 #pragma once
 
+#include "DX11Texture.h"
+
+
 namespace kepler {
 	class DX11Texture
 	{

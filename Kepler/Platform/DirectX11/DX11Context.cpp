@@ -8,6 +8,8 @@ kepler::DX11Context::DX11Context(const HWND hWnd)
     ,m_pImmediateContext{nullptr}
     ,m_pSwapChain{nullptr}
     ,m_pRenderTargetView{nullptr}
+    , m_featureLevel{ D3D_FEATURE_LEVEL_11_0 }
+    ,m_pDepthDisabledStencilState{nullptr}
 {
 
 }
@@ -33,9 +35,9 @@ kepler::DX11Context::~DX11Context()
     Cleanup();
 }
 
-bool kepler::DX11Context::Init(const WindowsWindow& data)
+bool kepler::DX11Context::Init(const WindowData& data)
 {
-    m_bVSync = data.IsVSync();
+    m_bVSync = data.bVSync;
 
     DXGI_SWAP_CHAIN_DESC scDesc{};
     scDesc.BufferCount = 2;
@@ -110,8 +112,8 @@ bool kepler::DX11Context::Init(const WindowsWindow& data)
     ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
     // 깊이 버퍼 구조체를 작성합니다
-    depthBufferDesc.Width = data.GetWidth();
-    depthBufferDesc.Height = data.GetHeight();
+    depthBufferDesc.Width = data.width;
+    depthBufferDesc.Height = data.height;
     depthBufferDesc.MipLevels = 1;
     depthBufferDesc.ArraySize = 1;
     depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -207,8 +209,8 @@ bool kepler::DX11Context::Init(const WindowsWindow& data)
 
     // 렌더링을 위해 뷰포트를 설정합니다
     D3D11_VIEWPORT viewport;
-    viewport.Width = data.GetWidth();
-    viewport.Height = data.GetHeight();
+    viewport.Width = data.width;
+    viewport.Height = data.height;
     viewport.MinDepth = 0.0f;
     viewport.MaxDepth = 1.0f;
     viewport.TopLeftX = 0.0f;
@@ -219,7 +221,7 @@ bool kepler::DX11Context::Init(const WindowsWindow& data)
 
     // 투영 행렬을 설정합니다
     float fieldOfView = XM_PI / 4.0f;
-    float screenAspect = data.GetWidth() / data.GetHeight();
+    float screenAspect = data.width / data.height;
 
     // 3D 렌더링을위한 투영 행렬을 만듭니다
     float screenNear = 1000.0f;
@@ -230,7 +232,7 @@ bool kepler::DX11Context::Init(const WindowsWindow& data)
     m_worldMatrix = XMMatrixIdentity();
 
     // 2D 렌더링을위한 직교 투영 행렬을 만듭니다
-    m_orthoMatrix = XMMatrixOrthographicLH(data.GetWidth(), data.GetHeight(), screenNear, screenDepth);
+    m_orthoMatrix = XMMatrixOrthographicLH(data.width, data.height, screenNear, screenDepth);
 
     // 이제 2D 렌더링을위한 Z 버퍼를 끄는 두 번째 깊이 스텐실 상태를 만듭니다. 유일한 차이점은
     // DepthEnable을 false로 설정하면 다른 모든 매개 변수는 다른 깊이 스텐실 상태와 동일합니다.
