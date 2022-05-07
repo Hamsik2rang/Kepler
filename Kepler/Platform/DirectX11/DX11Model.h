@@ -31,10 +31,8 @@ namespace kepler {
 		void Render(ID3D11DeviceContext* deviceContext);
 	private:
 		bool InitBuffers(ID3D11Device* pDivice);
-
 		bool LoadVertices(const char* pFilename);
 		bool LoadTexture(ID3D11Device* pDevice, const WCHAR* pFilename);
-
 	private:
 		// 정점 데이터
 		VertexType* m_pVertices = nullptr;
@@ -47,5 +45,8 @@ namespace kepler {
 		int m_vertexCount = 0;
 		int m_indexCount = 0;
 		//Texture* m_pTexture = nullptr;
+	public:
+		inline int GetIndexCount() { return m_indexCount; }
+		ID3D11ShaderResourceView* GetTexture();
 	};
 }

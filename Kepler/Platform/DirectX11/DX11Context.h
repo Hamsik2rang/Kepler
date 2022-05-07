@@ -13,17 +13,17 @@ namespace kepler {
 	class DX11Context : public IGraphicsContext
 	{
 	private:
-		ID3D11Device*			m_pDevice;
-		ID3D11DeviceContext*	m_pImmediateContext;
-		IDXGISwapChain*			m_pSwapChain;
-		ID3D11RenderTargetView* m_pRenderTargetView;
-		ID3D11Texture2D* m_pDepthStencilBuffer = nullptr;
-		ID3D11DepthStencilState* m_pDepthStencilState = nullptr;
-		ID3D11DepthStencilView* m_pDepthStencilView = nullptr;
-		ID3D11DepthStencilState* m_pDepthDisabledStencilState = nullptr;
-		ID3D11RasterizerState* m_pRasterState = nullptr;
+		ID3D11Device*				m_pDevice;
+		ID3D11DeviceContext*		m_pImmediateContext;
+		IDXGISwapChain*				m_pSwapChain;
+		ID3D11RenderTargetView*		m_pRenderTargetView;
+		ID3D11Texture2D*			m_pDepthStencilBuffer = nullptr;
+		ID3D11DepthStencilState*	m_pDepthStencilState = nullptr;
+		ID3D11DepthStencilView*		m_pDepthStencilView = nullptr;
+		ID3D11DepthStencilState*	m_pDepthDisabledStencilState = nullptr;
+		ID3D11RasterizerState*		m_pRasterState = nullptr;
 
-		D3D_FEATURE_LEVEL		m_featureLevel;
+		D3D_FEATURE_LEVEL			m_featureLevel;
 
 		HWND m_hWnd;
 		bool m_bVSync;

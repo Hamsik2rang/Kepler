@@ -23,6 +23,7 @@ namespace kepler {
 		// 정점 데이터를 받습니다.
 		m_pVertices = pVertices;
 		m_vertexCount = vertex_count;
+		m_indexCount = m_vertexCount;
 
 		// 정점 및 인덱스 버퍼를 초기화합니다.
 		if (!InitBuffers(pDevice))
@@ -207,5 +208,9 @@ namespace kepler {
 
 		// 텍스처 오브젝트를 초기화한다.
 		return m_pTexture->Init(pDevice, pFilename);
+	}
+	ID3D11ShaderResourceView* DX11Model::GetTexture()
+	{
+		return m_pTexture->GetTexture();
 	}
 }
