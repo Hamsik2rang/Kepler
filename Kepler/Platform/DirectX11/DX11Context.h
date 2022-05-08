@@ -48,6 +48,8 @@ namespace kepler {
 		virtual bool Init(const WindowData& data) override;
 		// 깊이 버퍼를 초기화합니다.
 		bool InitDepthBuffer(const WindowData& data);
+		// 깊이 스텐실을 초기화합니다.
+		bool InitDepthStencil(const WindowData& data);
 		virtual void Cleanup() override;
 		virtual void SwapBuffer() override;
 		// 2D 렌더링을 시작을 위해 ZBuffer를 켭니다.

@@ -113,6 +113,16 @@ bool kepler::DX11Context::Init(const WindowData& data)
         return false;
     }
 
+    // 깊이 버퍼를 초기화합니다.
+    if (!InitDepthStencil(data))
+    {
+        KEPLER_CORE_ASSERT(false, "Fail to Initialize Depth Stencil");
+        return false;
+    }
+
+    // 렌더링 대상 뷰와 깊이 스텐실 버퍼를 출력 렌더 파이프 라인에 바인딩합니다
+    GetDeviceContext()->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
+
     // 그려지는 폴리곤과 방법을 결정할 래스터 구조체를 설정합니다
     D3D11_RASTERIZER_DESC rasterDesc{};
     rasterDesc.AntialiasedLineEnable = false;
@@ -194,6 +204,11 @@ bool kepler::DX11Context::InitDepthBuffer(const WindowData& data)
         return false;
     }
 
+    return true;
+}
+
+bool kepler::DX11Context::InitDepthStencil(const WindowData& data)
+{
     // 스텐실 상태 구조체를 초기화합니다
     D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
     ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
@@ -271,10 +286,8 @@ bool kepler::DX11Context::InitDepthBuffer(const WindowData& data)
         return false;
     }
 
-    // 렌더링 대상 뷰와 깊이 스텐실 버퍼를 출력 렌더 파이프 라인에 바인딩합니다
-    GetDeviceContext()->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
-
     return true;
+
 }
 
 void kepler::DX11Context::SwapBuffer()

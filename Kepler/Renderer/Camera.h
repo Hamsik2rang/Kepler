@@ -6,7 +6,7 @@ namespace kepler {
 
 	using namespace DirectX;
 
-	class DX11Camera
+	class Camera
 	{
 	private:
 		XMFLOAT3 m_position{};
@@ -18,9 +18,9 @@ namespace kepler {
 		inline XMFLOAT3 GetRotation() const { return m_rotation; };
 		inline void GetViewMatrix(XMMATRIX& viewMatrix) { viewMatrix = m_viewMatrix; };
 
-		DX11Camera();
-		DX11Camera(const DX11Camera& other);
-		~DX11Camera();
+		Camera();
+		Camera(const Camera& other);
+		~Camera();
 
 		// 카메라의 위치를 설정합니다.
 		void SetPosition(float x, float y, float z);

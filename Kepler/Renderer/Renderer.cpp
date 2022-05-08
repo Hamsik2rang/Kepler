@@ -5,9 +5,9 @@
 #include "Platform/Windows/WindowsWindow.h"
 #include "Platform/DirectX11/DX11Context.h"
 #include "Platform/DirectX11/DX11API.h"
-#include "Platform/DirectX11/DX11Camera.h"
 #include "Platform/DirectX11/DX11Model.h"
 #include "Platform/DirectX11/DX11TextureShader.h"
+#include "Renderer/Camera.h"
 
 namespace kepler {
 	Renderer* Renderer::s_pInstance = nullptr;
@@ -33,7 +33,7 @@ namespace kepler {
 		:m_pGraphicsAPI{ nullptr }
 	{
 		m_pGraphicsAPI = IGraphicsAPI::Create();
-		m_pCamera = new DX11Camera();
+		m_pCamera = new Camera();
 		m_pModel = new DX11Model();
 		m_pTextureShader = new DX11TextureShader();
 
