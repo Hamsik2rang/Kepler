@@ -28,10 +28,6 @@ namespace kepler {
 		HWND m_hWnd;
 		bool m_bVSync;
 
-		XMMATRIX m_projectionMatrix{};
-		XMMATRIX m_worldMatrix{};
-		XMMATRIX m_orthoMatrix{};
-
 	public:
 		DX11Context(const HWND hWnd);
 
@@ -39,9 +35,6 @@ namespace kepler {
 		inline ID3D11DeviceContext* GetDeviceContext() { return m_pImmediateContext; }
 		inline ID3D11RenderTargetView* GetRenderTargetView() { return m_pRenderTargetView; }
 		inline IDXGISwapChain* GetSwapChain() { return m_pSwapChain; }
-		inline void GetProjectionMatrix(XMMATRIX& projectionMatrix) { projectionMatrix = m_projectionMatrix; };
-		inline void GetWorldMatrix(XMMATRIX& worldMatrix) { worldMatrix = m_worldMatrix; };
-		inline void GetOrthoMatrix(XMMATRIX& orthoMatrix) { orthoMatrix = m_orthoMatrix; };
 
 		// Inherited via IRenderer
 		~DX11Context();

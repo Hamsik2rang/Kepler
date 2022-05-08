@@ -3,12 +3,17 @@
 #include "Core/Base.h"
 #include "Renderer/GraphicsAPI.h"
 
+#include <DirectXMath.h>
+
+using namespace DirectX;
+
 namespace kepler {
 
 	class WindowsWindow;
 	class Camera;
 	class DX11Model;
 	class DX11TextureShader;
+
 	class Renderer
 	{
 	private:
@@ -19,6 +24,11 @@ namespace kepler {
 		DX11TextureShader* m_pTextureShader = nullptr;
 		DX11Model* m_pModel = nullptr;
 
+		XMMATRIX m_worldMatrix{};
+		XMMATRIX m_projectionMatrix{};
+		XMMATRIX m_orthoMatrix{};
+		XMMATRIX m_viewMatrix{};
+
 		Renderer();
 		~Renderer();
 	public:
@@ -28,7 +38,7 @@ namespace kepler {
 		inline eGraphicsAPI GetAPI() const { return m_pGraphicsAPI->GetAPI(); }
 		
 		// 렌더링합니다.
-		bool Render(HWND hWnd);
+		bool Render(WindowsWindow* pWWnd);
 
 		void ClearColor();
 		void SetColor();

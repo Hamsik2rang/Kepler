@@ -158,21 +158,6 @@ bool kepler::DX11Context::Init(const WindowData& data)
     // 뷰포트를 생성합니다
     GetDeviceContext()->RSSetViewports(1, &viewport);
 
-    // 투영 행렬을 설정합니다
-    float fieldOfView = XM_PI / 4.0f;
-    float screenAspect = (float)data.width / (float)data.height;
-    float screenNear = 1000.0f;
-    float screenDepth = 0.1f;
-
-    // 3D 렌더링을위한 투영 행렬을 만듭니다
-    m_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
-
-    // 세계 행렬을 항등 행렬로 초기화합니다
-    m_worldMatrix = XMMatrixIdentity();
-
-    // 2D 렌더링을위한 직교 투영 행렬을 만듭니다
-    m_orthoMatrix = XMMatrixOrthographicLH((float)data.width, (float)data.height, screenNear, screenDepth);
-
     return true;
 }
 

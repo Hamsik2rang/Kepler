@@ -40,11 +40,10 @@ namespace kepler {
 		DX11Texture* m_pTexture = nullptr;
 		// 정점 버퍼
 		ID3D11Buffer* m_pVertexBuffer = nullptr;
+		int m_vertexCount = 0;
 		// 인덱스 버퍼
 		ID3D11Buffer* m_pIndexBuffer = nullptr;
-		int m_vertexCount = 0;
 		int m_indexCount = 0;
-		//Texture* m_pTexture = nullptr;
 	public:
 		inline int GetIndexCount() { return m_indexCount; }
 		ID3D11ShaderResourceView* GetTexture();
