@@ -2,6 +2,7 @@
 
 #include "DX11API.h"
 #include "Renderer/GraphicsContext.h"
+#include "Platform/DirectX11/DX11Context.h"
 
 void kepler::DX11API::Init()
 {
@@ -25,8 +26,8 @@ void kepler::DX11API::SetColor(const float color[4])
 
 void kepler::DX11API::SetViewport()
 {
-	float screenWidth = 800;
-	float screenHeight = 600;
+	uint32_t screenWidth = 800;
+	uint32_t screenHeight = 600;
 	Resize(screenWidth, screenHeight);
 }
 
@@ -34,8 +35,8 @@ void kepler::DX11API::Resize(uint32_t width, uint32_t height)
 {
 	// D3D11_VIEWPORT를 설정합니다
 	D3D11_VIEWPORT viewport{};
-	viewport.Width = width;
-	viewport.Height = height;
+	viewport.Width = (FLOAT)width;
+	viewport.Height = (FLOAT)height;
 	viewport.MinDepth = 0.0f;
 	viewport.MaxDepth = 1.0f;
 	viewport.TopLeftX = 0.0f;

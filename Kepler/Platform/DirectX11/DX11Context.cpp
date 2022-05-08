@@ -69,8 +69,7 @@ bool kepler::DX11Context::Init(const WindowData& data)
     };
     UINT featureLevelCount = ARRAYSIZE(featureLevels);
 
-    HRESULT hr;
-    hr = D3D11CreateDeviceAndSwapChain(
+    HRESULT hr = D3D11CreateDeviceAndSwapChain(
         nullptr, 
         D3D_DRIVER_TYPE_HARDWARE, 
         nullptr, 
@@ -106,6 +105,70 @@ bool kepler::DX11Context::Init(const WindowData& data)
     }
     pBackBuffer->Release();
     pBackBuffer = nullptr;
+
+    // 깊이 버퍼를 초기화합니다.
+    if (!InitDepthBuffer(data))
+    {
+        KEPLER_CORE_ASSERT(false, "Fail to Initialize Depth Buffer");
+        return false;
+    }
+
+    // 그려지는 폴리곤과 방법을 결정할 래스터 구조체를 설정합니다
+    D3D11_RASTERIZER_DESC rasterDesc{};
+    rasterDesc.AntialiasedLineEnable = false;
+    rasterDesc.CullMode = D3D11_CULL_BACK;
+    rasterDesc.DepthBias = 0;
+    rasterDesc.DepthBiasClamp = 0.0f;
+    rasterDesc.DepthClipEnable = true;
+    rasterDesc.FillMode = D3D11_FILL_SOLID;
+    rasterDesc.FrontCounterClockwise = false;
+    rasterDesc.MultisampleEnable = false;
+    rasterDesc.ScissorEnable = false;
+    rasterDesc.SlopeScaledDepthBias = 0.0f;
+
+    // 래스터 구조체에서 래스터 라이저 상태를 만듭니다
+    if (FAILED(GetDevice()->CreateRasterizerState(&rasterDesc, &m_pRasterState)))
+    {
+        KEPLER_CORE_ASSERT(false, "Fail to Create Raster State");
+        return false;
+    }
+
+    // 이제 래스터 라이저 상태를 설정합니다
+    GetDeviceContext()->RSSetState(m_pRasterState);
+
+    // 렌더링을 위해 뷰포트를 설정합니다
+    D3D11_VIEWPORT viewport{};
+    viewport.Width = (FLOAT)data.width;
+    viewport.Height = (FLOAT)data.height;
+    viewport.MinDepth = 0.0f;
+    viewport.MaxDepth = 1.0f;
+    viewport.TopLeftX = 0.0f;
+    viewport.TopLeftY = 0.0f;
+
+    // 뷰포트를 생성합니다
+    GetDeviceContext()->RSSetViewports(1, &viewport);
+
+    // 투영 행렬을 설정합니다
+    float fieldOfView = XM_PI / 4.0f;
+    float screenAspect = (float)data.width / (float)data.height;
+    float screenNear = 1000.0f;
+    float screenDepth = 0.1f;
+
+    // 3D 렌더링을위한 투영 행렬을 만듭니다
+    m_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
+
+    // 세계 행렬을 항등 행렬로 초기화합니다
+    m_worldMatrix = XMMatrixIdentity();
+
+    // 2D 렌더링을위한 직교 투영 행렬을 만듭니다
+    m_orthoMatrix = XMMatrixOrthographicLH((float)data.width, (float)data.height, screenNear, screenDepth);
+
+    return true;
+}
+
+
+bool kepler::DX11Context::InitDepthBuffer(const WindowData& data)
+{
 
     // 깊이 버퍼 구조체를 초기화합니다
     D3D11_TEXTURE2D_DESC depthBufferDesc;
@@ -181,60 +244,7 @@ bool kepler::DX11Context::Init(const WindowData& data)
         return false;
     }
 
-    // 렌더링 대상 뷰와 깊이 스텐실 버퍼를 출력 렌더 파이프 라인에 바인딩합니다
-    GetDeviceContext()->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
-
-    // 그려지는 폴리곤과 방법을 결정할 래스터 구조체를 설정합니다
-    D3D11_RASTERIZER_DESC rasterDesc;
-    rasterDesc.AntialiasedLineEnable = false;
-    rasterDesc.CullMode = D3D11_CULL_BACK;
-    rasterDesc.DepthBias = 0;
-    rasterDesc.DepthBiasClamp = 0.0f;
-    rasterDesc.DepthClipEnable = true;
-    rasterDesc.FillMode = D3D11_FILL_SOLID;
-    rasterDesc.FrontCounterClockwise = false;
-    rasterDesc.MultisampleEnable = false;
-    rasterDesc.ScissorEnable = false;
-    rasterDesc.SlopeScaledDepthBias = 0.0f;
-
-    // 래스터 구조체에서 래스터 라이저 상태를 만듭니다
-    if (FAILED(GetDevice()->CreateRasterizerState(&rasterDesc, &m_pRasterState)))
-    {
-        KEPLER_CORE_ASSERT(false, "Fail to Create Raster State");
-        return false;
-    }
-
-    // 이제 래스터 라이저 상태를 설정합니다
-    GetDeviceContext()->RSSetState(m_pRasterState);
-
-    // 렌더링을 위해 뷰포트를 설정합니다
-    D3D11_VIEWPORT viewport;
-    viewport.Width = data.width;
-    viewport.Height = data.height;
-    viewport.MinDepth = 0.0f;
-    viewport.MaxDepth = 1.0f;
-    viewport.TopLeftX = 0.0f;
-    viewport.TopLeftY = 0.0f;
-
-    // 뷰포트를 생성합니다
-    GetDeviceContext()->RSSetViewports(1, &viewport);
-
-    // 투영 행렬을 설정합니다
-    float fieldOfView = XM_PI / 4.0f;
-    float screenAspect = data.width / data.height;
-
-    // 3D 렌더링을위한 투영 행렬을 만듭니다
-    float screenNear = 1000.0f;
-    float screenDepth = 0.1f;
-    m_projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
-
-    // 세계 행렬을 항등 행렬로 초기화합니다
-    m_worldMatrix = XMMatrixIdentity();
-
-    // 2D 렌더링을위한 직교 투영 행렬을 만듭니다
-    m_orthoMatrix = XMMatrixOrthographicLH(data.width, data.height, screenNear, screenDepth);
-
-    // 이제 2D 렌더링을위한 Z 버퍼를 끄는 두 번째 깊이 스텐실 상태를 만듭니다. 유일한 차이점은
+    // 2D 렌더링을위한 Z 버퍼를 끄는 두 번째 깊이 스텐실 상태를 만듭니다.
     // DepthEnable을 false로 설정하면 다른 모든 매개 변수는 다른 깊이 스텐실 상태와 동일합니다.
     D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
     ZeroMemory(&depthDisabledStencilDesc, sizeof(depthDisabledStencilDesc));
@@ -261,6 +271,9 @@ bool kepler::DX11Context::Init(const WindowData& data)
         return false;
     }
 
+    // 렌더링 대상 뷰와 깊이 스텐실 버퍼를 출력 렌더 파이프 라인에 바인딩합니다
+    GetDeviceContext()->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
+
     return true;
 }
 
@@ -268,6 +281,7 @@ void kepler::DX11Context::SwapBuffer()
 {
     m_pSwapChain->Present((m_bVSync ? 1 : 0), 0);
 }
+
 
 void kepler::DX11Context::TurnZBufferOn()
 {

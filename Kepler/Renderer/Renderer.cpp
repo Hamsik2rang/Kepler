@@ -41,14 +41,20 @@ namespace kepler {
 
 		
 		// 정점 배열에 데이터를 설정합니다
-		VertexType* vertices = new VertexType[3]; // m_pModel에서 delete
+		VertexType* vertices = new VertexType[6]; // m_pModel에서 delete
 		vertices[0].position = XMFLOAT3(-1.0f, -1.0f, 0.0f);  // Bottom left.
 		vertices[0].texture = XMFLOAT2(0.0f, 1.0f);
-		vertices[1].position = XMFLOAT3(0.0f, 1.0f, 0.0f);  // Top middle.
-		vertices[1].texture = XMFLOAT2(0.5f, 0.0f);
+		vertices[1].position = XMFLOAT3(-1.0f, 1.0f, 0.0f);  // Top left.
+		vertices[1].texture = XMFLOAT2(0.0f, 0.0f);
 		vertices[2].position = XMFLOAT3(1.0f, -1.0f, 0.0f);  // Bottom right.
 		vertices[2].texture = XMFLOAT2(1.0f, 1.0f);
-		m_pModel->Init(((DX11Context*)IGraphicsContext::Get())->GetDevice(), vertices, 3, L"../8k_earth_daymap.dds");
+		vertices[3].position = XMFLOAT3(1.0f, -1.0f, 0.0f);  // Bottom right.
+		vertices[3].texture = XMFLOAT2(1.0f, 1.0f);
+		vertices[4].position = XMFLOAT3(-1.0f, 1.0f, 0.0f);  // Top left.
+		vertices[4].texture = XMFLOAT2(0.0f, 0.0f);
+		vertices[5].position = XMFLOAT3(1.0f, 1.0f, 0.0f);  // Top right.
+		vertices[5].texture = XMFLOAT2(1.0f, 0.0f);
+		m_pModel->Init(((DX11Context*)IGraphicsContext::Get())->GetDevice(), vertices, 6, L"../8k_earth_daymap.dds");
 	}
 
 	Renderer::~Renderer()
