@@ -22,8 +22,6 @@ namespace kepler {
 		IGraphicsAPI* m_pGraphicsAPI = nullptr;
 		Camera* m_pCamera = nullptr;
 		DX11TextureShader* m_pTextureShader = nullptr;
-		DX11Model* m_pModel = nullptr;
-
 		XMMATRIX m_worldMatrix{};
 		XMMATRIX m_projectionMatrix{};
 		XMMATRIX m_orthoMatrix{};
@@ -38,7 +36,7 @@ namespace kepler {
 		inline eGraphicsAPI GetAPI() const { return m_pGraphicsAPI->GetAPI(); }
 		
 		// 렌더링합니다.
-		bool Render();
+		bool Render(DX11Model** ppModel, int modelCount);
 
 		void ClearColor();
 		void SetColor();

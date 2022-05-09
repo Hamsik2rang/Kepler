@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ClientApp.cpp" />
+    <ClCompile Include="TestLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kepler\Kepler.vcxproj">
@@ -158,6 +159,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TestLayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

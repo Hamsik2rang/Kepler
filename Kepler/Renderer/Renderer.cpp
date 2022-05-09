@@ -35,36 +35,17 @@ namespace kepler {
 	{
 		m_pGraphicsAPI = IGraphicsAPI::Create();
 		m_pCamera = new Camera();
-		m_pModel = new DX11Model();
 		m_pTextureShader = new DX11TextureShader();
 
 		m_pCamera->SetPosition(0.0f, 0.0f, -5.0f);
-
-		// 정점 배열에 데이터를 설정합니다
-		VertexType* vertices = new VertexType[6]; // m_pModel에서 delete
-		vertices[0].position = XMFLOAT3(-1.0f, -1.0f, 0.0f);  // Bottom left.
-		vertices[0].texture = XMFLOAT2(0.0f, 1.0f);
-		vertices[1].position = XMFLOAT3(-1.0f, 1.0f, 0.0f);  // Top left.
-		vertices[1].texture = XMFLOAT2(0.0f, 0.0f);
-		vertices[2].position = XMFLOAT3(1.0f, -1.0f, 0.0f);  // Bottom right.
-		vertices[2].texture = XMFLOAT2(1.0f, 1.0f);
-		vertices[3].position = XMFLOAT3(1.0f, -1.0f, 0.0f);  // Bottom right.
-		vertices[3].texture = XMFLOAT2(1.0f, 1.0f);
-		vertices[4].position = XMFLOAT3(-1.0f, 1.0f, 0.0f);  // Top left.
-		vertices[4].texture = XMFLOAT2(0.0f, 0.0f);
-		vertices[5].position = XMFLOAT3(1.0f, 1.0f, 0.0f);  // Top right.
-		vertices[5].texture = XMFLOAT2(1.0f, 0.0f);
-		m_pModel->Init(((DX11Context*)IGraphicsContext::Get())->GetDevice(), vertices, 6, L"../8k_earth_daymap.dds");
 	}
 
 	Renderer::~Renderer()
 	{
-		m_pModel->Shutdown();
-		delete m_pModel;
 		delete m_pCamera;
 	}
 
-	bool Renderer::Render()
+	bool Renderer::Render(DX11Model** ppModel, int modelCount)
 	{
 		WindowsWindow* pWWnd = (WindowsWindow*)Application::Get()->GetWindow();
 		DX11Context* pContext = (DX11Context*)IGraphicsContext::Get();
@@ -92,26 +73,24 @@ namespace kepler {
 		m_pCamera->Render();
 		m_pCamera->GetViewMatrix(m_viewMatrix);
 
-		// 2D 렌더링 시작 시 Z 버퍼를 끕니다.
-		pContext->TurnZBufferOff();
 
 		// TODO: 렌더링 코드를 작성하세요...
-		m_pModel->Render(pContext->GetDeviceContext());
-
 		if (!m_pTextureShader->Init(IGraphicsContext::Get()->GetDevice(), m_hWnd))
 		{
 			MessageBox(m_hWnd, L"Could not initialize Texture Shader.", L"Error", MB_OK);
 			return false;
 		}
 
-		if (!m_pTextureShader->Render(pContext->GetDeviceContext(), m_pModel->GetIndexCount(), m_worldMatrix,
-			m_viewMatrix, m_projectionMatrix, m_pModel->GetTexture()))
+		for (int i = 0; i < modelCount; i++)
 		{
-			return false;
+			ppModel[i]->Render(pContext->GetDeviceContext());
+			if (!m_pTextureShader->Render(pContext->GetDeviceContext(), ppModel[i]->GetIndexCount(), m_worldMatrix,
+				m_viewMatrix, m_projectionMatrix, ppModel[i]->GetTexture()))
+			{
+				return false;
+			}
 		}
 
-		// 2D 렌더링 종료 시 Z 버퍼를 켭니다.
-		pContext->TurnZBufferOn();
 		return true;
 	}
 
