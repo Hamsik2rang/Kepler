@@ -70,7 +70,7 @@ namespace kepler {
 	void WindowsWindow::OnUpdate()
 	{
 		// TODO: Update Loop마다 해야할 작업들 작성
-		if (!Renderer::Get()->Render(this))
+		if (!Renderer::Get()->Render())
 		{
 			KEPLER_CORE_CRITICAL("CRITICAL: Can't Rendering - {0} {1}", __FILE__, __LINE__);
 			return;

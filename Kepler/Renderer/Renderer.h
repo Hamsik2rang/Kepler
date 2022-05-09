@@ -38,7 +38,7 @@ namespace kepler {
 		inline eGraphicsAPI GetAPI() const { return m_pGraphicsAPI->GetAPI(); }
 		
 		// 렌더링합니다.
-		bool Render(WindowsWindow* pWWnd);
+		bool Render();
 
 		void ClearColor();
 		void SetColor();

@@ -2,6 +2,7 @@
 
 #include "Renderer.h"
 #include "GraphicsContext.h"
+#include "Core/Application.h"
 #include "Platform/Windows/WindowsWindow.h"
 #include "Platform/DirectX11/DX11Context.h"
 #include "Platform/DirectX11/DX11API.h"
@@ -63,8 +64,9 @@ namespace kepler {
 		delete m_pCamera;
 	}
 
-	bool Renderer::Render(WindowsWindow* pWWnd)
+	bool Renderer::Render()
 	{
+		WindowsWindow* pWWnd = (WindowsWindow*)Application::Get()->GetWindow();
 		DX11Context* pContext = (DX11Context*)IGraphicsContext::Get();
 		DX11API* pAPI = (DX11API*)m_pGraphicsAPI;
 
