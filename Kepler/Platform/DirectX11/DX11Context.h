@@ -50,4 +50,13 @@ namespace kepler {
 		// 2D 렌더링을 종료 후 ZBuffer를 끕니다.
 		void TurnZBufferOff();
 	};
+
+	// DX11 조작에 필요한 장치 디바이스와 디바이스컨텍스트를 얻는 함수입니다.
+	// 함수가 호출되면 Out 파라미터들에 해당 장치들의 메모리 주소가 저장됩니다.
+	inline void GetDX11DeviceAndDeviceContext(ID3D11Device** ppOutDevice, ID3D11DeviceContext** ppOutDeviceContext)
+	{
+		DX11Context* pContext = reinterpret_cast<DX11Context*>(IGraphicsContext::Get());
+		*ppOutDevice = pContext->GetDevice();
+		*ppOutDeviceContext = pContext->GetDeviceContext();
+	}
 }

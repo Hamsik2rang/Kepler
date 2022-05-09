@@ -168,11 +168,14 @@
     <ClInclude Include="Core\Layer.hpp" />
     <ClInclude Include="Core\LayerStack.h" />
     <ClInclude Include="Core\Log.h" />
+    <ClInclude Include="Platform\DirectX11\DX11Buffer.h" />
     <ClInclude Include="Platform\DirectX11\DX11Context.h" />
     <ClInclude Include="Platform\DirectX11\DX11API.h" />
     <ClInclude Include="Platform\DirectX11\DX11Model.h" />
     <ClInclude Include="Platform\DirectX11\DX11Texture.h" />
     <ClInclude Include="Platform\DirectX11\DX11TextureShader.h" />
+    <ClInclude Include="Platform\DirectX11\DX11VertexArray.h" />
+    <ClInclude Include="Renderer\Buffer.h" />
     <ClInclude Include="Renderer\Camera.h" />
     <ClInclude Include="Renderer\GraphicsAPI.h" />
     <ClInclude Include="Renderer\GraphicsContext.h" />
@@ -184,6 +187,7 @@
     <ClInclude Include="Platform\Win32\WinAPI.h" />
     <ClInclude Include="Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Renderer\Renderer.h" />
+    <ClInclude Include="Renderer\VertexArray.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Utility\StringUtility.h" />
@@ -210,16 +214,20 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">kepch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="Platform\DirectX11\DX11API.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11Buffer.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Context.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Model.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Texture.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11TextureShader.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11VertexArray.cpp" />
     <ClCompile Include="Platform\Win32\WinAPI.cpp" />
     <ClCompile Include="Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="Renderer\Buffer.cpp" />
     <ClCompile Include="Renderer\Camera.cpp" />
     <ClCompile Include="Renderer\GraphicsContext.cpp" />
     <ClCompile Include="Renderer\GraphicsAPI.cpp" />
     <ClCompile Include="Renderer\Renderer.cpp" />
+    <ClCompile Include="Renderer\VertexArray.cpp" />
     <ClCompile Include="Utility\StringUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
