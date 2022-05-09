@@ -22,7 +22,12 @@ public:
 
 	virtual void OnUpdate() override
 	{
-
+		// TODO: Update Loop마다 해야할 작업들 작성
+		if (!kepler::Renderer::Get()->Render())
+		{
+			KEPLER_CORE_CRITICAL("CRITICAL: Can't Rendering - {0} {1}", __FILE__, __LINE__);
+			return;
+		}
 	}
 
 	virtual void OnEvent(kepler::Event& e) override

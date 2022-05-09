@@ -69,13 +69,6 @@ namespace kepler {
 
 	void WindowsWindow::OnUpdate()
 	{
-		// TODO: Update Loop마다 해야할 작업들 작성
-		if (!Renderer::Get()->Render())
-		{
-			KEPLER_CORE_CRITICAL("CRITICAL: Can't Rendering - {0} {1}", __FILE__, __LINE__);
-			return;
-		}
-
 		// 렌더링이 완료되었으므로 화면에 백 버퍼를 표시합니다.
 		IGraphicsContext::Get()->SwapBuffer();
 	}
