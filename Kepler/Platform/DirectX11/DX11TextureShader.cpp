@@ -20,7 +20,7 @@ namespace kepler {
     bool DX11TextureShader::Init(ID3D11Device* device, HWND hwnd)
     {
         // 정점 및 픽셀 쉐이더를 초기화합니다.
-        return InitShader(device, hwnd, (WCHAR*)L"../Kepler/Platform/DirectX11/texture.vs", (WCHAR*)L"../Kepler/Platform/DirectX11/texture.ps");
+        return InitShader(device, hwnd, (WCHAR*)L"../Kepler/Resources/Shaders/HLSL/SimpleVertexShader.hlsl", (WCHAR*)L"../Kepler/Resources/Shaders/HLSL/SimplePixelShader.hlsl");
     }
 
     void DX11TextureShader::Shutdown()
