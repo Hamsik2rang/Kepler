@@ -15,6 +15,7 @@ Currently in progress to implement.
 * [GoogleTest](https://github.com/google/googletest) - for Unit Test
 * [ImGui](https://github.com/ocornut/imgui) - for GUI
 * [spdlog](https://github.com/gabime/spdlog) - for Logging System
+* [DirectXTK](https://github.com/microsoft/DirectXTK)
 
 -TBA-
 
