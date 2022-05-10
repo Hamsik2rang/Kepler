@@ -94,7 +94,7 @@ namespace kepler {
 		std::vector<InputElement> m_elements;
 		uint32_t m_stride;
 
-		void CalcOffsetAndStride()
+		inline void CalcOffsetAndStride()
 		{
 			size_t offset = 0u;
 			m_stride = 0;
