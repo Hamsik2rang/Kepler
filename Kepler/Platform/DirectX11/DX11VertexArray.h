@@ -3,7 +3,7 @@
 #include "Renderer/VertexArray.h"
 
 namespace kepler {
-	// DX11 Vertex Array는 OpenGL의 VAO과 달리 그냥 하나의 VertexBuffer와 IndexBuffer를 함께 관리해 주는 객체로 여길 것.
+
 	class DX11VertexArray : public IVertexArray
 	{
 	private:
@@ -20,10 +20,5 @@ namespace kepler {
 		
 		inline virtual const std::shared_ptr<IVertexBuffer>& GetVertexBuffer() const override { return m_pVertexBuffer; }
 		inline virtual const std::shared_ptr<IIndexBuffer>& GetIndexBuffer() const override { return m_pIndexBuffer; }
-		
-		inline virtual const std::vector<std::shared_ptr<IVertexBuffer>>& GetVertexBuffers() const override 
-		{
-			return std::vector<std::shared_ptr<IVertexBuffer>>(1, m_pVertexBuffer); 
-		}
 	};
 }
