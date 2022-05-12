@@ -1,0 +1,1 @@
+SamplerState g_LinearWrapSampler;
