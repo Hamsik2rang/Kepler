@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Base.h"
+#include "Renderer/VertexArray.h"
 
 namespace kepler {
 
@@ -23,7 +24,7 @@ namespace kepler {
 		virtual void SetViewport() = 0;
 		virtual void Resize(uint32_t width, uint32_t height) = 0;
 		// TODO: should be going to get buffer(vertex, index) params
-		virtual void DrawIndexed() = 0;
+		virtual void DrawIndexed(std::shared_ptr<IVertexArray>& pVertexArray) = 0;
 
 		inline static void SetAPI(eGraphicsAPI api) { s_API = api; }
 		inline static eGraphicsAPI GetAPI() { return s_API; }

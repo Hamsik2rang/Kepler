@@ -1,8 +1,10 @@
 #pragma once
 
 #include "Core/Base.h"
+#include "Core/Window.h"
 #include "Renderer/GraphicsAPI.h"
-
+#include "Renderer/VertexArray.h"
+#include "Renderer/Shader.h"
 #include <DirectXMath.h>
 
 using namespace DirectX;
@@ -38,14 +40,17 @@ namespace kepler {
 		inline eGraphicsAPI GetAPI() const { return m_pGraphicsAPI->GetAPI(); }
 		
 		// 렌더링합니다.
-		bool Render(WindowsWindow* pWWnd);
+		bool Render(IWindow* pWWnd);
 
 		void ClearColor();
 		void SetColor();
 		void SetViewport();
 		void Resize(uint32_t width, uint32_t height);
+		
 		// TODO: should be going to get buffer(vertex, index) params
-		void DrawIndexed();
+		void BeginScene();
+		void Submit(std::shared_ptr<IVertexArray>& pVertexArray);
+		void EndScene();
 	};
 
 }

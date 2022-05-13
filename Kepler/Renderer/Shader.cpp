@@ -96,4 +96,8 @@ namespace kepler {
 		KEPLER_ASSERT(false, "Shader not exist");
 		return nullptr;
 	}
+	std::shared_ptr<IShader> ShaderCache::GetBoundShader()
+	{
+		return s_pCurBoundShader;
+	}
 }

@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <string>
 #include "Core/Base.h"
+#include "DirectXMath.h"
 
 namespace kepler {
 
@@ -25,7 +26,7 @@ namespace kepler {
 
 		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
-
+		
 		// 추후 커스텀 수학 라이브러리로 수정할 예정이기 때문에 지금은 DXMATH로 사용합니다.
 		virtual void SetInt(const std::string& paramName, int value) = 0;
 		virtual void SetFloat(const std::string& paramName, float value) = 0;
@@ -48,6 +49,7 @@ namespace kepler {
 	{
 	private:
 		static std::unordered_map<std::string, std::shared_ptr<IShader>> s_shaderTable;
+		static std::shared_ptr<IShader> s_pCurBoundShader;
 
 	public:
 		static void Add(const std::string& name, const std::shared_ptr<IShader>& shader);
@@ -58,5 +60,6 @@ namespace kepler {
 
 		static bool IsLoaded(const std::string& name);
 		static std::shared_ptr<IShader> GetShader(const std::string& name);
+		static std::shared_ptr<IShader> GetBoundShader();
 	};
 }

@@ -6,13 +6,19 @@ namespace kepler {
 	
 	void DX11VertexArray::Bind()
 	{
-		m_pVertexBuffer->Bind();
+		for (auto& vb : m_pVertexBuffers)
+		{
+			vb->Bind();
+		}
 		m_pIndexBuffer->Bind();
 	}
 
 	void DX11VertexArray::Unbind()
 	{
-		m_pVertexBuffer->Unbind();
+		for (auto& vb : m_pVertexBuffers)
+		{
+			vb->Unbind();
+		}
 		m_pIndexBuffer->Unbind();
 	}
 }

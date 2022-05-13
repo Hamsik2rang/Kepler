@@ -26,11 +26,11 @@ namespace kepler {
         return DXGI_FORMAT_UNKNOWN;
     }
 
-
     /////////// VertexBuffer Member Functions ///////////
-    DX11VertexBuffer::DX11VertexBuffer(uint32_t size)
-        : m_layout{}
-        , m_pBuffer{nullptr}
+    DX11VertexBuffer::DX11VertexBuffer(const uint32_t size, eBufferUsage usage)
+		: m_layout{}
+		, m_pBuffer{ nullptr }
+		, m_pInputLayout{ nullptr }
     {
         ID3D11Device* pDevice;
         ID3D11DeviceContext* pDeviceContext;
@@ -41,7 +41,7 @@ namespace kepler {
         bufferDesc.ByteWidth = size;
         bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
-
+        
         D3D11_SUBRESOURCE_DATA initData{};
         initData.pSysMem = nullptr;
         HRESULT hr = pDevice->CreateBuffer(&bufferDesc, &initData, &m_pBuffer);
@@ -51,19 +51,39 @@ namespace kepler {
         }
     }
 
-    DX11VertexBuffer::DX11VertexBuffer(float* vertices, uint32_t size)
+    DX11VertexBuffer::DX11VertexBuffer(const float* const vertices, const uint32_t size, eBufferUsage usage)
         : m_layout{}
         , m_pBuffer{ nullptr }
+		, m_pInputLayout{ nullptr }
     {
         ID3D11Device* pDevice;
         ID3D11DeviceContext* pDeviceContext;
         GetDX11DeviceAndDeviceContext(&pDevice, &pDeviceContext);
 
         D3D11_BUFFER_DESC bufferDesc{};
-        bufferDesc.Usage = D3D11_USAGE_DEFAULT;
         bufferDesc.ByteWidth = size;
         bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         bufferDesc.CPUAccessFlags = 0;
+        switch (usage)
+        {
+		case eBufferUsage::Default:
+        case eBufferUsage::Static:
+				bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+                bufferDesc.CPUAccessFlags = 0;
+                break;
+            case eBufferUsage::Immutable: 
+                bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
+                bufferDesc.CPUAccessFlags = 0;
+                break;
+            case eBufferUsage::Dynamic:
+                bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+                bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+                break;
+            case eBufferUsage::Staging:
+                bufferDesc.Usage = D3D11_USAGE_STAGING;
+                bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
+                break;
+        }
 
         D3D11_SUBRESOURCE_DATA initData{};
         initData.pSysMem = vertices;
@@ -81,7 +101,7 @@ namespace kepler {
         ID3D11DeviceContext* pDeviceContext;
         GetDX11DeviceAndDeviceContext(&pDevice, &pDeviceContext);
 
-        KEPLER_CORE_ASSERT(m_layout.GetElementCount(), "Vertex Buffer has no layout.");
+        KEPLER_CORE_ASSERT(m_pInputLayout, "Vertex Buffer has no layout.");
 
         UINT offset = 0;
         UINT stride = static_cast<UINT>(m_layout.GetStride());
@@ -108,8 +128,13 @@ namespace kepler {
         // TODO: 추후 마저 구현
     }
 
+    void DX11VertexBuffer::SetLayout(const BufferLayout& layout)
+    {
+        m_layout = layout;
+    }
+
     /////////// IndexBuffer Member Functions ///////////
-    DX11IndexBuffer::DX11IndexBuffer(const uint32_t* const indices, uint32_t size)
+    DX11IndexBuffer::DX11IndexBuffer(const uint32_t* const indices, const uint32_t size)
         : m_size{size}
         , m_pBuffer{ nullptr }
     {

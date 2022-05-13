@@ -46,7 +46,8 @@ void kepler::DX11API::Resize(uint32_t width, uint32_t height)
 	pImmediateContext->RSSetViewports(1, &viewport);
 }
 
-void kepler::DX11API::DrawIndexed()
+void kepler::DX11API::DrawIndexed(std::shared_ptr<IVertexArray>& pVertexArray)
 {
-
+	ID3D11DeviceContext* pImmediateContext = IGraphicsContext::Get()->GetDeviceContext();
+	pImmediateContext->DrawIndexed(pVertexArray->GetIndexBuffer()->GetSize(), 0, 0);
 }

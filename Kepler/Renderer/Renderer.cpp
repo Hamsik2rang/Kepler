@@ -9,6 +9,8 @@
 #include "Platform/DirectX11/DX11TextureShader.h"
 #include "Renderer/Camera.h"
 
+#include "Renderer/Shader.h"
+
 namespace kepler {
 	Renderer* Renderer::s_pInstance = nullptr;
 
@@ -23,10 +25,15 @@ namespace kepler {
 
 	void Renderer::Init()
 	{
-		if (!s_pInstance)
+		if (s_pInstance)
 		{
-			s_pInstance = new Renderer;
+			return;
 		}
+		s_pInstance = new Renderer;
+
+		// Temporary
+		ShaderCache::Load(eShaderType::Vertex, "VSTexture",  "Resources/Shaders/HLSL/VSTexture.hlsl");
+		ShaderCache::Load(eShaderType::Pixel, "PSTexture", "Redources/Shaders/HLSL/PSTexture.hlsl");
 	}
 
 	Renderer::Renderer()
@@ -63,7 +70,7 @@ namespace kepler {
 		delete m_pCamera;
 	}
 
-	bool Renderer::Render(WindowsWindow* pWWnd)
+	bool Renderer::Render(IWindow* pWWnd)
 	{
 		DX11Context* pContext = (DX11Context*)IGraphicsContext::Get();
 		DX11API* pAPI = (DX11API*)m_pGraphicsAPI;
@@ -133,8 +140,9 @@ namespace kepler {
 
 	}
 
-	void Renderer::DrawIndexed()
+	void Renderer::Submit(std::shared_ptr<IVertexArray>& pVertexArray)
 	{
-
+		m_pGraphicsAPI->DrawIndexed(pVertexArray);
 	}
+
 }

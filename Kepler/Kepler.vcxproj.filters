@@ -132,6 +132,12 @@
     <ClInclude Include="Renderer\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Platform\DirectX11\DX11Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\stbimage\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Application.cpp">
@@ -227,6 +233,9 @@
     <ClCompile Include="Renderer\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Platform\DirectX11\DX11Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kepler.rc">
@@ -243,5 +252,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\Shaders\HLSL\Global\VSGlobal.hlsli" />
+    <None Include="Resources\Shaders\HLSL\Global\PSGlobal.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shaders\HLSL\VSTexture.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\PSTexture.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\VSSolid.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\PSSolid.hlsl" />
   </ItemGroup>
 </Project>

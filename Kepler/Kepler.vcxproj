@@ -168,10 +168,12 @@
     <ClInclude Include="Core\Layer.hpp" />
     <ClInclude Include="Core\LayerStack.h" />
     <ClInclude Include="Core\Log.h" />
+    <ClInclude Include="Dependencies\stbimage\stb_image.h" />
     <ClInclude Include="Platform\DirectX11\DX11Buffer.h" />
     <ClInclude Include="Platform\DirectX11\DX11Context.h" />
     <ClInclude Include="Platform\DirectX11\DX11API.h" />
     <ClInclude Include="Platform\DirectX11\DX11Model.h" />
+    <ClInclude Include="Platform\DirectX11\DX11Shader.h" />
     <ClInclude Include="Platform\DirectX11\DX11Texture.h" />
     <ClInclude Include="Platform\DirectX11\DX11TextureShader.h" />
     <ClInclude Include="Platform\DirectX11\DX11VertexArray.h" />
@@ -219,6 +221,7 @@
     <ClCompile Include="Platform\DirectX11\DX11Buffer.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Context.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Model.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11Shader.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Texture.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11TextureShader.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11VertexArray.cpp" />
@@ -243,6 +246,38 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\Shaders\HLSL\Global\PSGlobal.hlsli" />
+    <None Include="Resources\Shaders\HLSL\Global\VSGlobal.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shaders\HLSL\PSSolid.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\HLSL\PSTexture.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\HLSL\VSSolid.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\HLSL\VSTexture.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

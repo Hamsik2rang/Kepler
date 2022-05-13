@@ -2,6 +2,7 @@
 
 #include "Renderer/GraphicsAPI.h"
 
+
 namespace kepler {
 
 	class DX11API : public IGraphicsAPI
@@ -13,7 +14,7 @@ namespace kepler {
 		virtual void SetColor(const float color[4]) override;
 		virtual void SetViewport() override;
 		virtual void Resize(uint32_t width, uint32_t height) override;
-		virtual void DrawIndexed() override;
+		virtual void DrawIndexed(std::shared_ptr<IVertexArray>& pVertexArray) override;
 	};
 
 }

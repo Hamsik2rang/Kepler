@@ -17,13 +17,22 @@ namespace kepler {
 			ID3D11ComputeShader*	m_pComputeShader;
 			void*					m_pVoidShader;
 		};
-		ID3DBlob*			m_pBlob;
+		ID3D11ShaderReflection*		m_pReflection;
+		ID3DBlob*					m_pBlob;
+		uint32_t					m_cBufferCount;
+		
+		ID3D11Buffer**				m_ppConstantBuffers;
+		std::vector<char*>			m_pBufferBytes;
+
 		std::string			m_name;
 		const eShaderType	m_type;
 
 		void Compile(const std::string& filepath, const std::string& entryPointName = "main");
 		void Create();
-
+		void InitConstantBuffer();
+		
+		bool GetConstantBufferDataInfo(const std::string& inParamName, int& outIndex, int& outOffset);
+		void UpdateConstantBuffer(const int index);
 	public:
 		DX11Shader(const eShaderType& type, const std::string& filepath);
 		DX11Shader(const eShaderType& type, const std::string& name, const std::string& filepath);
