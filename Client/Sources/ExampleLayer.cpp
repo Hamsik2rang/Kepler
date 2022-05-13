@@ -1,5 +1,6 @@
 #include "ExampleLayer.h"
 
+
 using namespace kepler;
 
 void ExampleLayer::OnAttach()
@@ -13,7 +14,7 @@ void ExampleLayer::OnAttach()
 	
 	std::shared_ptr<IVertexBuffer>pVertex = IVertexBuffer::Create(vertices, sizeof(vertices), eBufferUsage::Default);
 	BufferLayout layout = { 
-		{"POSITION", 0, eShaderDataType::Float3, 0, sizeof(float) * 3}
+		{"POSITION", 0, kepler::eShaderDataType::Float3, 0, sizeof(float) * 3}
 	};
 	pVertex->SetLayout(layout);
 
@@ -47,7 +48,7 @@ void ExampleLayer::OnDetach()
 
 void ExampleLayer::OnUpdate() 
 {
-	auto window = kepler::Application::Get()->GetWindow();
+	auto window = Application::Get()->GetWindow();
 	//kepler::Renderer::Get()->Render(window);
 
 	XMMATRIX viewProjection = XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV4, 1280 / 720, 0.01f, 100.0f)
@@ -59,12 +60,12 @@ void ExampleLayer::OnUpdate()
 	ShaderCache::GetShader("VSTexture")->Bind();
 	ShaderCache::GetShader("PSTexture")->Bind();
 
-	m_pVertexArray.get()->Bind();
+	m_pVertexArray->Bind();
 	Renderer::Get()->Submit(m_pVertexArray);
 
 }
 
-void ExampleLayer::OnEvent(kepler::Event& e)
+void ExampleLayer::OnEvent(Event& e)
 {
 	KEPLER_TRACE("{0}", e);
 }

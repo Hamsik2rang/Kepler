@@ -1,12 +1,14 @@
 #pragma once
-#include <Kepler.h>
 
+#include <Kepler.h>
+#include <memory>
+#include <vector>
 
 class ExampleLayer: public kepler::Layer
 {
 private:
-	std::shared_ptr<IVertexArray> m_pVertexArray;
-	std::vector<std::shared_ptr<IShader>> v;
+	std::shared_ptr<kepler::IVertexArray> m_pVertexArray;
+	std::vector<std::shared_ptr<kepler::IShader>> v;
 public:
 	ExampleLayer()
 		:Layer("Example")
