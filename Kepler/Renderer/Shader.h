@@ -38,6 +38,7 @@ namespace kepler {
 		virtual void SetName(const std::string& name) = 0;
 		virtual std::string GetName() const = 0;
 		virtual eShaderType GetType() const = 0;
+		virtual void* GetRawProgram() const = 0;
 
 		static std::shared_ptr<IShader> Create(const eShaderType& type, const std::string& filepath);
 		static std::shared_ptr<IShader> Create(const eShaderType& type, const std::string& name, const std::string& filepath);

@@ -32,8 +32,12 @@ namespace kepler {
 		s_pInstance = new Renderer;
 
 		// Temporary
-		ShaderCache::Load(eShaderType::Vertex, "VSTexture",  "Resources/Shaders/HLSL/VSTexture.hlsl");
-		ShaderCache::Load(eShaderType::Pixel, "PSTexture", "Redources/Shaders/HLSL/PSTexture.hlsl");
+		//ShaderCache::Load(eShaderType::Vertex, "VSTexture",  "../Kepler/Resources/Shaders/HLSL/VSTexture.hlsl");
+		//ShaderCache::Load(eShaderType::Pixel, "PSTexture", "../Kepler/Resources/Shaders/HLSL/PSTexture.hlsl");
+		ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSTexture.hlsl");
+		ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PSTexture.hlsl");
+
+	
 	}
 
 	Renderer::Renderer()

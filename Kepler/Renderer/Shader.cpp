@@ -49,6 +49,7 @@ namespace kepler {
 
 	//////////// Shader Cache ////////////
 	std::unordered_map<std::string, std::shared_ptr<IShader>> ShaderCache::s_shaderTable;
+	std::shared_ptr<IShader> ShaderCache::s_pCurBoundShader = nullptr;
 
 	void ShaderCache::Add(const std::string& name, const std::shared_ptr<IShader>& shader)
 	{
@@ -62,18 +63,21 @@ namespace kepler {
 
 	std::shared_ptr<IShader> ShaderCache::Load(const eShaderType& type, const std::string& filepath)
 	{
-		std::shared_ptr<IShader> shader = IShader::Create(type, filepath);
-		s_shaderTable.insert(std::make_pair(shader->GetName(), shader));
-		
-		return shader;
+		int dirIndex = filepath.find_last_of('/');
+		int dotIndex = filepath.find_last_of('.');
+		std::string name = std::string(filepath.begin() + dirIndex + 1, filepath.begin() + dotIndex);
+		std::shared_ptr<IShader> shader = IShader::Create(type, name, filepath);
+		Add(name, shader);
+
+		return s_shaderTable[name];
 	}
 
 	std::shared_ptr<IShader> ShaderCache::Load(const eShaderType& type, const std::string& name, const std::string& filepath)
 	{
 		std::shared_ptr<IShader> shader = IShader::Create(type, name, filepath);
-		s_shaderTable.insert(std::make_pair(shader->GetName(), shader));
+		Add(name, shader);
 
-		return shader;
+		return s_shaderTable[name];
 	}
 
 	bool ShaderCache::IsLoaded(const std::string& name)
