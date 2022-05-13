@@ -4,6 +4,16 @@
 
 namespace kepler {
 
+	enum class eTextureDataType
+	{
+		Typeless=0,
+		Int,
+		UInt,
+		Float, 
+		NormalizedInt,
+		NormalizedUInt
+	};
+
 	class ITexture
 	{
 	public:
