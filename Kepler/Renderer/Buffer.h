@@ -23,6 +23,15 @@ namespace kepler {
 		Matrix = Float44
 	};
 
+	enum class eBufferUsage
+	{
+		Default = 0,
+		Static,
+		Dynamic,
+		Immutable,
+		Staging,
+	};
+
 	// 추상화된 쉐이더 데이터 타입에 대한 타입 크기를 리턴하는 함수
 	static uint32_t ShaderDataTypeSize(eShaderDataType type)
 	{
@@ -45,18 +54,18 @@ namespace kepler {
 		return 0;
 	}
 
-	// InputLayout의 구성 원소
-	struct InputElement
+	// BufferLayout의 구성 원소
+	struct BufferElement
 	{
 		std::string name;
 		uint32_t index;
 		uint32_t size;
 		uint32_t stride;
-		size_t offset;
+		uint32_t offset;
 		eShaderDataType type;
 
-		InputElement() = default;
-		InputElement(const std::string& _name, const uint32_t _index, eShaderDataType _type)
+		BufferElement() = default;
+		BufferElement(const std::string& _name, const uint32_t _index, eShaderDataType _type, uint32_t offset, uint32_t stride)
 			: name{ _name }
 			, index{_index}
 			, type{ _type }
@@ -87,11 +96,11 @@ namespace kepler {
 		}
 	};
 
-	// Vertex Buffer를 위한 Input Layout(Vertex Shader의 Input으로 연결됨)
-	class InputLayout
+	// Vertex Buffer를 위한 Buffer Layout(Vertex Shader의 Input으로 연결됨)
+	class BufferLayout
 	{
 	private:
-		std::vector<InputElement> m_elements;
+		std::vector<BufferElement> m_elements;
 		uint32_t m_stride;
 
 		inline void CalcOffsetAndStride()
@@ -106,7 +115,7 @@ namespace kepler {
 			}
 		}
 	public:
-		InputLayout(std::initializer_list<InputElement> elements)
+		BufferLayout(std::initializer_list<BufferElement> elements)
 			: m_elements{elements}
 		{
 			CalcOffsetAndStride();
@@ -114,12 +123,12 @@ namespace kepler {
 
 		inline size_t GetElementCount() const { return m_elements.size(); }
 		inline uint32_t GetStride() const { return m_stride; }
-		inline const std::vector<InputElement>& GetElements() const { return m_elements; }
+		inline const std::vector<BufferElement>& GetElements() const { return m_elements; }
 
-		[[nodiscard]] std::vector<InputElement>::iterator begin() { return m_elements.begin(); }
-		[[nodiscard]] std::vector<InputElement>::iterator end() { return m_elements.end(); }
-		[[nodiscard]] std::vector<InputElement>::const_iterator begin() const { return m_elements.begin(); }
-		[[nodiscard]] std::vector<InputElement>::const_iterator end() const { return m_elements.end(); }
+		[[nodiscard]] std::vector<BufferElement>::iterator begin() { return m_elements.begin(); }
+		[[nodiscard]] std::vector<BufferElement>::iterator end() { return m_elements.end(); }
+		[[nodiscard]] std::vector<BufferElement>::const_iterator begin() const { return m_elements.begin(); }
+		[[nodiscard]] std::vector<BufferElement>::const_iterator end() const { return m_elements.end(); }
 	};
 
 	// Vertex Buffer Interface
@@ -132,11 +141,11 @@ namespace kepler {
 		virtual void Unbind() = 0;
 
 		virtual void SetData(const void* data, uint32_t size) = 0;
-		virtual void SetLayout(const InputLayout& layout) = 0;
-		virtual const InputLayout& GetLayout() const = 0;
+		virtual void SetLayout(const BufferLayout& bufferLayout) = 0;
+		virtual const BufferLayout& GetLayout() const = 0;
 	
-		static std::shared_ptr<IVertexBuffer> Create(const uint32_t size);
-		static std::shared_ptr<IVertexBuffer> Create(const float* const vertices, const uint32_t size);
+		static std::shared_ptr<IVertexBuffer> Create(const uint32_t size, eBufferUsage usage);
+		static std::shared_ptr<IVertexBuffer> Create(const float* const vertices, const uint32_t size,eBufferUsage usage);
 	};
 
 	// Index Buffer Interface
@@ -150,6 +159,6 @@ namespace kepler {
 
 		virtual uint32_t GetSize() const = 0;
 
-		static std::shared_ptr<IIndexBuffer> Create(const uint32_t* const indices, const uint32_t size);
+		static std::shared_ptr<IIndexBuffer> Create(const uint32_t* const indices, const uint32_t size, eBufferUsage usage);
 	};
 }

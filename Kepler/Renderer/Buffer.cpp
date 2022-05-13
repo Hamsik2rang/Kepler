@@ -6,7 +6,7 @@
 
 namespace kepler {
 
-	std::shared_ptr<IVertexBuffer> IVertexBuffer::Create(uint32_t size)
+	std::shared_ptr<IVertexBuffer> IVertexBuffer::Create(const uint32_t size, eBufferUsage usage)
 	{
 		eGraphicsAPI api = IGraphicsAPI::GetAPI();
 		switch (api)
@@ -18,7 +18,7 @@ namespace kepler {
 			}
 		case eGraphicsAPI::DirectX11:
 			{
-				return std::make_shared<DX11VertexBuffer>(size);
+				return std::make_shared<DX11VertexBuffer>(size, usage);
 			}
 			//...
 		}
@@ -27,7 +27,7 @@ namespace kepler {
 		return nullptr;
 	}
 
-	std::shared_ptr<IVertexBuffer> IVertexBuffer::Create(const float* const vertices, uint32_t size)
+	std::shared_ptr<IVertexBuffer> IVertexBuffer::Create(const float* const vertices, uint32_t size, eBufferUsage usage)
 	{
 		eGraphicsAPI api = IGraphicsAPI::GetAPI();
 		switch (api)
@@ -39,7 +39,7 @@ namespace kepler {
 			}
 		case eGraphicsAPI::DirectX11:
 			{
-				return std::make_shared<DX11VertexBuffer>(vertices, size);
+				return std::make_shared<DX11VertexBuffer>(vertices, size, usage);
 			}
 			//...
 		}
@@ -50,7 +50,7 @@ namespace kepler {
 
 
 
-	std::shared_ptr<IIndexBuffer> IIndexBuffer::Create(const uint32_t* const indices, uint32_t size)
+	std::shared_ptr<IIndexBuffer> IIndexBuffer::Create(const uint32_t* const indices, const uint32_t size, eBufferUsage usage)
 	{
 		eGraphicsAPI api = IGraphicsAPI::GetAPI();
 		switch (api)
