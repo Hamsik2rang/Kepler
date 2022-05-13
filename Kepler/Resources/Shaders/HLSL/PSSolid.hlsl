@@ -1,3 +1,5 @@
+#include "Global/PSGlobal.hlsli"
+
 
 struct PS_INPUT
 {

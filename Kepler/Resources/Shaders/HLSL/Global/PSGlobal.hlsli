@@ -1,1 +1,1 @@
-SamplerState g_LinearWrapSampler;
+SamplerState g_LinearWrapState : register(s0);
