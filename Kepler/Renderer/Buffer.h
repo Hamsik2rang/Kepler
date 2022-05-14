@@ -105,7 +105,7 @@ namespace kepler {
 
 		inline void CalcOffsetAndStride()
 		{
-			size_t offset = 0u;
+			uint32_t offset = 0u;
 			m_stride = 0;
 			for (auto& e : m_elements)
 			{

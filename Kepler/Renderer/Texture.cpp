@@ -18,7 +18,8 @@ namespace kepler {
 			}
 		case eGraphicsAPI::DirectX11:
 			{
-				return std::make_shared<DX11Texture1D>(type, length, channel, bytePerTexel);
+				//return std::make_shared<DX11Texture1D>(type, length, channel, bytePerTexel);
+				return nullptr;
 			}
 		}
 
@@ -87,7 +88,8 @@ namespace kepler {
 			}
 		case eGraphicsAPI::DirectX11:
 			{
-				return std::make_shared<DX11Texture3D>(type, width, height, depth, channel, bytePerTexel);
+				//return std::make_shared<DX11Texture3D>(type, width, height, depth, channel, bytePerTexel);
+				return nullptr;
 			}
 		}
 

@@ -41,7 +41,7 @@ namespace kepler {
 #endif
 		ID3DBlob* pErrorBlob = nullptr;
 
-		HRESULT hr = D3DCompileFromFile(wFilePath.c_str(), nullptr, nullptr, entryPointName.c_str(), target.c_str(), shaderFlags, 0, &m_pBlob, &pErrorBlob);
+		HRESULT hr = D3DCompileFromFile(wFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, entryPointName.c_str(), target.c_str(), shaderFlags, 0, &m_pBlob, &pErrorBlob);
 		if (FAILED(hr))
 		{
 			if (pErrorBlob)
@@ -50,8 +50,11 @@ namespace kepler {
 				KEPLER_ASSERT(false, errorMsg.c_str());
 			}
 		}
-		pErrorBlob->Release();
-		pErrorBlob = nullptr;
+		if (pErrorBlob)
+		{
+			pErrorBlob->Release();
+			pErrorBlob = nullptr;
+		}
 	}
 
 	void DX11Shader::Create()
@@ -167,7 +170,7 @@ namespace kepler {
 				}
 			}
 			// 상수 버퍼 크기 지정
-			curBufferDesc.ByteWidth = sizeof(cBufferDesc.Size);
+			curBufferDesc.ByteWidth = cBufferDesc.Size;
 			// 초기화 데이터 할당
 			D3D11_SUBRESOURCE_DATA initData{};
 			initData.pSysMem = buffer;
@@ -198,6 +201,7 @@ namespace kepler {
 		: m_type{ type }
 		, m_pVoidShader{ nullptr }
 		, m_pBlob{ nullptr }
+		, m_name{ name }
 	{
 		Compile(filepath);
 		Create();

@@ -1,5 +1,5 @@
 #include "kepch.h"
-
+#define STB_IMAGE_IMPLEMENTATION
 #include "Dependencies/stbimage/stb_image.h"
 
 #include "DX11Texture.h"

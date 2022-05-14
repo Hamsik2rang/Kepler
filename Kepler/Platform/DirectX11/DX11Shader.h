@@ -51,6 +51,7 @@ namespace kepler {
 
 		inline virtual void SetName(const std::string& name) override { m_name = name; }
 		inline virtual std::string GetName() const override { return m_name; }
+		inline virtual void* GetRawProgram() const override { return m_pBlob; }
 		inline virtual eShaderType GetType() const override { return m_type; }
 	};
 }

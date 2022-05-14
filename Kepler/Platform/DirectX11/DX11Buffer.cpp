@@ -2,8 +2,10 @@
 
 #include "DX11Buffer.h"
 #include "DX11Context.h"
+#include "Renderer/Shader.h"
 
 namespace kepler {
+
     // 추상화된 쉐이더 데이터 타입을 DirectX11 쉐이더 데이터 타입으로 변경하는 함수
     static DXGI_FORMAT ShaderDataTypeToDXGIFormat(eShaderDataType type)
     {
@@ -106,6 +108,7 @@ namespace kepler {
         UINT offset = 0;
         UINT stride = static_cast<UINT>(m_layout.GetStride());
         pDeviceContext->IASetVertexBuffers(0, 1, &m_pBuffer, &stride, &offset);
+        pDeviceContext->IASetInputLayout(m_pInputLayout);
     }
 
     // 렌더링 파이프라인에서 바인딩 해제
@@ -116,6 +119,7 @@ namespace kepler {
         GetDX11DeviceAndDeviceContext(&pDevice, &pDeviceContext);
 
 		pDeviceContext->IASetVertexBuffers(0, 0, nullptr, nullptr, nullptr);
+        pDeviceContext->IASetInputLayout(nullptr);
     }
 
     // VertexBuffer의 정점 데이터 변경
@@ -131,6 +135,25 @@ namespace kepler {
     void DX11VertexBuffer::SetLayout(const BufferLayout& layout)
     {
         m_layout = layout;
+        std::vector<D3D11_INPUT_ELEMENT_DESC> descs;
+        for (auto iter = m_layout.begin(); iter != m_layout.end(); iter++)
+        {
+            D3D11_INPUT_ELEMENT_DESC desc{};
+            desc.SemanticName = iter->name.c_str();
+            desc.SemanticIndex = iter->index;
+            desc.Format = ShaderDataTypeToDXGIFormat(iter->type);
+            desc.InputSlot = 0;
+            desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+            desc.AlignedByteOffset = iter->stride;
+            descs.push_back(desc);
+        }
+        // Temporary
+        ID3DBlob* pBlob = reinterpret_cast<ID3DBlob*>(ShaderCache::GetShader("VSTexture")->GetRawProgram());
+        HRESULT hr = IGraphicsContext::Get()->GetDevice()->CreateInputLayout(&descs[0], descs.size(), pBlob->GetBufferPointer(), pBlob->GetBufferSize(), &m_pInputLayout);
+        if (FAILED(hr))
+        {
+            KEPLER_CORE_ASSERT(false, "Fail to create input layout");
+        }
     }
 
     /////////// IndexBuffer Member Functions ///////////
