@@ -5,14 +5,18 @@ using namespace kepler;
 
 void ExampleLayer::OnAttach()
 {
+	ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSTest.hlsl");
+	ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PSTest.hlsl");
+
+	//---------------------------------------------------
 	m_pVertexArray = IVertexArray::Create();
-	float vertices[]{
-		0.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		1.0f, 1.0f, 0.0f
+	float vertices[] = {
+		 0.5f,  0.5f, 0.0f,  // top right
+		 0.5f, -0.5f, 0.0f,  // bottom right
+		-0.5f, -0.5f, 0.0f,  // bottom left
+		-0.5f,  0.5f, 0.0f   // top left 
 	};
-	
+
 	std::shared_ptr<IVertexBuffer> pVertex = IVertexBuffer::Create(vertices, sizeof(vertices), eBufferUsage::Default);
 	BufferLayout layout = {
 		{ "POSITION", 0, kepler::eShaderDataType::Float3, 0, sizeof(float) * 3},
@@ -20,26 +24,14 @@ void ExampleLayer::OnAttach()
 	pVertex->SetLayout(layout);
 	m_pVertexArray->AddVertexBuffer(pVertex);
 
-	//float color[]{
-	//	1.0f, 0.0f, 0.0f, 1.0f,
-	//	0.0f, 1.0f, 0.0f, 1.0f,
-	//	0.0f, 0.0f, 1.0f, 1.0f,
-	//	1.0f, 1.0f, 1.0f, 1.0f,
-	//};
-	//
-	//std::shared_ptr<IVertexBuffer> pColor = IVertexBuffer::Create(color, sizeof(color), eBufferUsage::Default);
-	//layout = { 
-	//	{ "COLOR", 0, eShaderDataType::Float4, 0, sizeof(float) * 4 } 
-	//};
-	//pColor->SetLayout(layout);
-	//m_pVertexArray->AddVertexBuffer(pColor);
-	
-	uint32_t indices[]{
-		0, 2, 3,
-		0, 3, 1
+	//---------------------------------------------------
+	uint32_t  indices[] = {  
+		0, 1, 3,	// first triangle
+		1, 2, 3		// second triangle
 	};
-	std::shared_ptr<IIndexBuffer> pIBuffer = IIndexBuffer::Create(indices, 6, eBufferUsage::Default);
+	std::shared_ptr<IIndexBuffer> pIBuffer = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), eBufferUsage::Default);
 	m_pVertexArray->SetIndexBuffer(pIBuffer);
+	m_pVertexArray->Bind();
 }
 
 void ExampleLayer::OnDetach()
@@ -47,25 +39,15 @@ void ExampleLayer::OnDetach()
 
 }
 
-void ExampleLayer::OnUpdate() 
+void ExampleLayer::OnUpdate()
 {
-	//auto window = Application::Get()->GetWindow();
-	//kepler::Renderer::Get()->Render(window);
+	auto window = Application::Get()->GetWindow();
 
-	//XMMATRIX viewProjection = XMMatrixLookAtLH({ 0.0f, 1.0f, 5.0f, 0.0f }, { 0.0f, 0.0f, 0.0f , 0.0f }, { 0.0f, 1.0f, 0.0f , 0.0f })
-	//	* XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV4, 1280 / 720, 0.01f, 100.0f);
-	//XMMATRIX view = XMMatrixLookAtLH({ 0.0f, 1.0f, 5.0f, 0.0f }, { 0.0f, 0.0f, 0.0f , 0.0f }, { 0.0f, 1.0f, 0.0f , 0.0f });
-	//XMMATRIX projection = XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV4, 1280 / 720, 0.01f, 100.0f);
-	
-	//ShaderCache::GetShader("VSSolid")->SetMatrix("g_ViewProjection", XMMatrixTranspose(viewProjection));
-	//ShaderCache::GetShader("VSSolid")->SetMatrix("g_World", XMMatrixTranspose(XMMatrixIdentity()));
-	//ShaderCache::GetShader("VSSolid")->SetMatrix("g_View", XMMatrixTranspose(view));
-	//ShaderCache::GetShader("VSSolid")->SetMatrix("g_Projection", XMMatrixTranspose(projection));
-	
 	ShaderCache::GetShader("VSTest")->Bind();
 	ShaderCache::GetShader("PSTest")->Bind();
-	
+
 	m_pVertexArray->Bind();
+
 	Renderer::Get()->Submit(m_pVertexArray);
 }
 

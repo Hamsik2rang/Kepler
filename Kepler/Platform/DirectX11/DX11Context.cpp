@@ -154,7 +154,6 @@ bool kepler::DX11Context::Init(const WindowData& data)
 
 bool kepler::DX11Context::InitDepthBuffer(const WindowData& data)
 {
-
     // 깊이 버퍼 구조체를 초기화합니다
     D3D11_TEXTURE2D_DESC depthBufferDesc;
     ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));

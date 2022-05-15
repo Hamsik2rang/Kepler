@@ -20,27 +20,17 @@ namespace kepler {
 	{
 	private:
 		static Renderer* s_pInstance;
-		HWND m_hWnd = nullptr;
-		IGraphicsAPI* m_pGraphicsAPI = nullptr;
-		Camera* m_pCamera = nullptr;
-		DX11TextureShader* m_pTextureShader = nullptr;
-		DX11Model* m_pModel = nullptr;
-
-		XMMATRIX m_worldMatrix{};
-		XMMATRIX m_projectionMatrix{};
-		XMMATRIX m_orthoMatrix{};
-		XMMATRIX m_viewMatrix{};
+		
+		IGraphicsAPI* m_pGraphicsAPI;
 
 		Renderer();
 		~Renderer();
+
 	public:
 		static Renderer* Get();
 		static void Init();
 		
 		inline eGraphicsAPI GetAPI() const { return m_pGraphicsAPI->GetAPI(); }
-		
-		// 렌더링합니다.
-		bool Render(IWindow* pWWnd);
 
 		void ClearColor();
 		void SetColor();
@@ -48,9 +38,7 @@ namespace kepler {
 		void Resize(uint32_t width, uint32_t height);
 		
 		// TODO: should be going to get buffer(vertex, index) params
-		void BeginScene();
 		void Submit(std::shared_ptr<IVertexArray>& pVertexArray);
-		void EndScene();
 	};
 
 }

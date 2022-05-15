@@ -159,6 +159,6 @@ namespace kepler {
 
 		virtual uint32_t GetCount() const = 0;
 
-		static std::shared_ptr<IIndexBuffer> Create(const uint32_t* const indices, const uint32_t size, eBufferUsage usage);
+		static std::shared_ptr<IIndexBuffer> Create(const uint32_t* const indices, const uint32_t count, eBufferUsage usage);
 	};
 }

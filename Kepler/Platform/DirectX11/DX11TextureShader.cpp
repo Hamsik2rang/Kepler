@@ -1,7 +1,8 @@
 #include "kepch.h"
 
 #include <d3dcompiler.h>
-
+#include "Renderer/Shader.h"
+#include "Renderer/Renderer.h"
 #include "DX11TextureShader.h"
 
 namespace kepler {
@@ -50,31 +51,33 @@ namespace kepler {
     bool DX11TextureShader::InitShader(ID3D11Device* pDevice, HWND hwnd, WCHAR* pVsFilename, WCHAR* pPsFilename)
     {
         HRESULT result;
-        ID3D10Blob* errorMessage = nullptr;
+        ID3DBlob* errorMessage = nullptr;
 
         // 버텍스 쉐이더 코드를 컴파일한다.
-        ID3D10Blob* vertexShaderBuffer = nullptr;
-        result = D3DCompileFromFile(pVsFilename, NULL, NULL, "TextureVertexShader", "vs_5_0", D3D10_SHADER_ENABLE_STRICTNESS,
+        ID3DBlob* vertexShaderBuffer = nullptr;
+        result = D3DCompileFromFile(pVsFilename, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "vs_5_0", 0,
             0, &vertexShaderBuffer, &errorMessage);
         if (FAILED(result))
         {
             // 셰이더 컴파일 실패시 오류메시지를 출력합니다.
             if (errorMessage)
             {
-                OutputShaderErrorMessage(errorMessage, hwnd, pVsFilename);
+                //OutputShaderErrorMessage(errorMessage, hwnd, pVsFilename);
+                KEPLER_CORE_ASSERT(false, errorMessage->GetBufferPointer());
             }
             // 컴파일 오류가 아니라면 셰이더 파일을 찾을 수 없는 경우입니다.
             else
             {
-                MessageBox(hwnd, pVsFilename, L"Missing Shader File", MB_OK);
+                //MessageBox(hwnd, pVsFilename, L"Missing Shader File", MB_OK);
+                KEPLER_CORE_ASSERT(false, "Fail to find Shader File");
             }
 
             return false;
         }
 
         // 픽셀 쉐이더 코드를 컴파일한다.
-        ID3D10Blob* pixelShaderBuffer = nullptr;
-        result = D3DCompileFromFile(pPsFilename, NULL, NULL, "TexturePixelShader", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS,
+        ID3DBlob* pixelShaderBuffer = nullptr;
+        result = D3DCompileFromFile(pPsFilename, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", "ps_5_0", 0,
             0, &pixelShaderBuffer, &errorMessage);
         if (FAILED(result))
         {
@@ -153,7 +156,7 @@ namespace kepler {
         matrixBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
         matrixBufferDesc.MiscFlags = 0;
         matrixBufferDesc.StructureByteStride = 0;
-
+        
         // 상수 버퍼 포인터를 만들어 이 클래스에서 정점 셰이더 상수 버퍼에 접근할 수 있게 합니다.
         result = pDevice->CreateBuffer(&matrixBufferDesc, NULL, &m_pMatrixBuffer);
         if (FAILED(result))
@@ -176,7 +179,7 @@ namespace kepler {
         samplerDesc.BorderColor[3] = 0;
         samplerDesc.MinLOD = 0;
         samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
+        
         // 텍스처 샘플러 상태를 만듭니다.
         result = pDevice->CreateSamplerState(&samplerDesc, &m_pSampleState);
         if (FAILED(result))
@@ -207,28 +210,28 @@ namespace kepler {
         worldMatrix = XMMatrixTranspose(worldMatrix);
         viewMatrix = XMMatrixTranspose(viewMatrix);
         projectionMatrix = XMMatrixTranspose(projectionMatrix);
-
+        
         // 상수 버퍼의 내용을 쓸 수 있도록 잠급니다.
         D3D11_MAPPED_SUBRESOURCE mappedResource{};
         if (FAILED(pDeviceContext->Map(m_pMatrixBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
         {
             return false;
         }
-
+        
         // 상수 버퍼의 데이터에 대한 포인터를 가져옵니다.
         MatrixBufferType* dataPtr = (MatrixBufferType*)mappedResource.pData;
-
+        
         // 상수 버퍼에 행렬을 복사합니다.
         dataPtr->world = worldMatrix;
         dataPtr->view = viewMatrix;
         dataPtr->projection = projectionMatrix;
-
+        
         // 상수 버퍼의 잠금을 풉니다.
         pDeviceContext->Unmap(m_pMatrixBuffer, 0);
-
+        
         // 정점 셰이더에서의 상수 버퍼의 위치를 설정합니다.
         unsigned int bufferNumber = 0;
-
+        
         // 마지막으로 정점 셰이더의 상수 버퍼를 바뀐 값으로 바꿉니다.
         pDeviceContext->VSSetConstantBuffers(bufferNumber, 1, &m_pMatrixBuffer);
 
@@ -240,17 +243,21 @@ namespace kepler {
 
     void DX11TextureShader::RenderShader(ID3D11DeviceContext* pDeviceContext, int indexCount)
     {
-        // 정점 입력 레이아웃을 설정합니다.
-        pDeviceContext->IASetInputLayout(m_pInputLayout);
-
-        // 삼각형을 그릴 정점 셰이더와 픽셀 셰이더를 설정합니다.
+        //// 정점 입력 레이아웃을 설정합니다.
+        //pDeviceContext->IASetInputLayout(m_pInputLayout);
+        //
+        //// 삼각형을 그릴 정점 셰이더와 픽셀 셰이더를 설정합니다.
         pDeviceContext->VSSetShader(m_pVertexShader, NULL, 0);
         pDeviceContext->PSSetShader(m_pPixelShader, NULL, 0);
+        //
+        //ShaderCache::GetShader("VSTest")->Bind();
+        //ShaderCache::GetShader("PSTest")->Bind();
 
         // 픽셀 쉐이더에서 샘플러 상태를 설정합니다.
-        pDeviceContext->PSSetSamplers(0, 1, &m_pSampleState);
+        //pDeviceContext->PSSetSamplers(0, 1, &m_pSampleState);
 
         // 삼각형을 그립니다.
         pDeviceContext->DrawIndexed(indexCount, 0, 0);
+        //pDeviceContext->Draw(6, 0);
     }
 }

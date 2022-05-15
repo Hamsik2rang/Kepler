@@ -339,7 +339,8 @@ namespace kepler {
 		GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
 		switch (m_type)
 		{
-		case eShaderType::Vertex:	pDeviceContext->VSSetShader(m_pVertexShader, nullptr, 0);	pDeviceContext->IASetInputLayout(m_pVertexLayout); break;
+		case eShaderType::Vertex:	pDeviceContext->IASetInputLayout(m_pVertexLayout); 
+									pDeviceContext->VSSetShader(m_pVertexShader, nullptr, 0);break;
 		case eShaderType::Geometry: pDeviceContext->GSSetShader(m_pGeometryShader, nullptr, 0);	break;
 		case eShaderType::Pixel:	pDeviceContext->PSSetShader(m_pPixelShader, nullptr, 0);	break;
 		case eShaderType::Domain:	pDeviceContext->DSSetShader(m_pDomainShader, nullptr, 0);	break;
@@ -354,7 +355,8 @@ namespace kepler {
 		GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
 		switch (m_type)
 		{
-		case eShaderType::Vertex:	pDeviceContext->VSSetShader(nullptr, nullptr, 0);	pDeviceContext->IASetInputLayout(nullptr); break;
+		case eShaderType::Vertex:	pDeviceContext->IASetInputLayout(nullptr); 
+									pDeviceContext->VSSetShader(nullptr, nullptr, 0);	break;
 		case eShaderType::Geometry: pDeviceContext->GSSetShader(nullptr, nullptr, 0);	break;
 		case eShaderType::Pixel:	pDeviceContext->PSSetShader(nullptr, nullptr, 0);	break;
 		case eShaderType::Domain:	pDeviceContext->DSSetShader(nullptr, nullptr, 0);	break;

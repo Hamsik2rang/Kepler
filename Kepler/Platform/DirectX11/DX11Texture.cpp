@@ -23,24 +23,6 @@ namespace kepler {
 	{
 	}
 
-	bool DX11Texture::Init(ID3D11Device* pDevice, const WCHAR* pFilename)
-	{
-		// 텍스처를 파일로부터 읽어온다
-		if (FAILED(CreateDDSTextureFromFile(pDevice, pFilename, nullptr, &m_pTexture)))
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	void DX11Texture::Shutdown()
-	{
-		//텍스처 뷰 리소스를 해제한다.
-		if (m_pTexture) { m_pTexture->Release(); m_pTexture = nullptr; }
-	}
-
-
 
 	// DX11Texture2D
 	DX11Texture2D::DX11Texture2D(const eTextureDataType type, const uint32_t width, const uint32_t height, const uint8_t channel, const uint8_t bytePerTexel)

@@ -1,6 +1,7 @@
 #include "kepch.h"
 #include "DX11Model.h"
 #include "DX11Texture.h"
+#include "Renderer/Shader.h"
 
 #include <fstream>
 using namespace std;
@@ -16,6 +17,7 @@ namespace kepler {
 
 	DX11Model::~DX11Model()
 	{
+
 	}
 
 	bool DX11Model::Init(ID3D11Device* pDevice, VertexType* pVertices, const int vertex_count, const WCHAR* pTextureFilename)
@@ -76,11 +78,7 @@ namespace kepler {
 	bool DX11Model::InitBuffers(ID3D11Device* pDevice)
 	{
 		// 인덱스 배열을 만듭니다.
-		unsigned long* indices = new unsigned long[m_indexCount];
-		if (!indices)
-		{
-			return false;
-		}
+		uint32_t* indices = new uint32_t[m_vertexCount];
 
 		// TODO: 추후 인덱스 배열 값을 불러오도록 구현
 		// 인덱스 배열은 순차적으로 만듭니다.

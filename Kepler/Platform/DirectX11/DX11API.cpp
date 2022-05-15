@@ -22,6 +22,8 @@ void kepler::DX11API::ClearColor()
 {
 	ID3D11DeviceContext* pImmediateContext = IGraphicsContext::Get()->GetDeviceContext();
 	ID3D11RenderTargetView* pRenderTargetView = IGraphicsContext::Get()->GetRenderTargetView();
+
+	pImmediateContext->OMSetRenderTargets(1, &pRenderTargetView, nullptr);
 	pImmediateContext->ClearRenderTargetView(pRenderTargetView, m_clearColor);
 }
 

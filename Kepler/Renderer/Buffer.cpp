@@ -50,7 +50,7 @@ namespace kepler {
 
 
 
-	std::shared_ptr<IIndexBuffer> IIndexBuffer::Create(const uint32_t* const indices, const uint32_t size, eBufferUsage usage)
+	std::shared_ptr<IIndexBuffer> IIndexBuffer::Create(const uint32_t* const indices, const uint32_t count, eBufferUsage usage)
 	{
 		eGraphicsAPI api = IGraphicsAPI::GetAPI();
 		switch (api)
@@ -62,7 +62,7 @@ namespace kepler {
 			}
 		case eGraphicsAPI::DirectX11:
 			{
-				return std::make_shared<DX11IndexBuffer>(indices, size);
+				return std::make_shared<DX11IndexBuffer>(indices, count);
 			}
 			//...
 		}

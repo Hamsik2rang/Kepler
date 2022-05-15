@@ -100,8 +100,8 @@ namespace kepler {
         ID3D11DeviceContext* pDeviceContext;
         GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
 
-        UINT offset = 0;
         UINT stride = m_layout.GetStride();
+        UINT offset = 0;
         pDeviceContext->IASetVertexBuffers(slot, 1, &m_pBuffer, &stride, &offset);
     }
 
@@ -156,9 +156,8 @@ namespace kepler {
     // 렌더링 파이프라인에 바인딩
     void DX11IndexBuffer::Bind()
     {
-        ID3D11Device* pDevice;
         ID3D11DeviceContext* pDeviceContext;
-        GetDX11DeviceAndDeviceContext(&pDevice, &pDeviceContext);
+        GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
 
         pDeviceContext->IASetIndexBuffer(m_pBuffer, DXGI_FORMAT_R32_UINT, 0);
         pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
