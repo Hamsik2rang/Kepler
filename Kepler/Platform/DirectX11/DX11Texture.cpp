@@ -30,11 +30,17 @@ namespace kepler {
 		, m_height{ height }
 		, m_pResourceView{ nullptr }
 		, m_pTexture{ nullptr }
+		, m_pSamplerState{ nullptr }
 	{
 		//...
 	}
 
 	DX11Texture2D::DX11Texture2D(const eTextureDataType type, const std::string& filepath)
+		: m_width{ 0 }
+		, m_height{ 0 }
+		, m_pResourceView{ nullptr }
+		, m_pTexture{ nullptr }
+		, m_pSamplerState{ nullptr }
 	{
 		int channel = 0;
 		unsigned char* pRawImage = stbi_load(filepath.c_str(), reinterpret_cast<int*>(&m_width), reinterpret_cast<int*>(&m_height), &channel, 4);

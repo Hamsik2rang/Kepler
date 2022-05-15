@@ -75,7 +75,7 @@ namespace kepler {
 			}
 		}
 		// relase constant buffer bytes
-		for (auto& p : m_pBufferBytes)
+		for (auto& p : m_pByteBuffer)
 		{
 			if (p)
 			{
@@ -253,7 +253,12 @@ namespace kepler {
 
 		// 쉐이더 디스크립션 받아오기
 		D3D11_SHADER_DESC shaderDesc{};
-		m_pReflection->GetDesc(&shaderDesc);
+		HRESULT hr = m_pReflection->GetDesc(&shaderDesc);
+		if (FAILED(hr))
+		{
+			KEPLER_CORE_ASSERT(false, "Fail to get Shader description");
+			return;
+		}
 
 		// 쉐이더 안의 상수 버퍼 수를 알아냄
 		m_constantBufferCount = shaderDesc.ConstantBuffers;
@@ -287,6 +292,7 @@ namespace kepler {
 			}
 			char* buffer = new char[cBufferDesc.Size];
 			memset(buffer, 0, cBufferDesc.Size);
+			m_constantBufferSize.push_back(cBufferDesc.Size);
 
 			// 각 상수버퍼 변수별로 순회하면서 default value 존재 여부 확인
 			uint32_t varCount = cBufferDesc.Variables;
@@ -329,7 +335,7 @@ namespace kepler {
 				return;
 			}
 
-			m_pBufferBytes.push_back(std::move(buffer));
+			m_pByteBuffer.push_back(std::move(buffer));
 		}
 	}
 
@@ -405,7 +411,30 @@ namespace kepler {
 		ID3D11DeviceContext* pDeviceContext{ nullptr };
 		GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
 
-		pDeviceContext->UpdateSubresource(m_ppConstantBuffers[index], 0, nullptr, reinterpret_cast<const void*>(m_pBufferBytes[index]), 0, 0);
+		// If constantbuffer isn't initialized dynamic usage
+		//pDeviceContext->UpdateSubresource(m_ppConstantBuffers[index], 0, nullptr, m_pBufferBytes[index], 0, 0);
+
+		D3D11_MAPPED_SUBRESOURCE ms{};
+		HRESULT hr = pDeviceContext->Map(m_ppConstantBuffers[index], 0, D3D11_MAP_WRITE_DISCARD, 0, &ms);
+
+		if (FAILED(hr))
+		{
+			KEPLER_CORE_ASSERT(false, "Fail to get mapped system memory to set update constant buffer");
+			return;
+		}
+		char* pMappedMem = (char*)ms.pData;
+		::memcpy(pMappedMem, m_pByteBuffer[index], m_constantBufferSize[index]);
+		pDeviceContext->Unmap(m_ppConstantBuffers[index], 0);
+
+		switch (m_type)
+		{
+		case eShaderType::Vertex:	pDeviceContext->VSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
+		case eShaderType::Geometry: pDeviceContext->GSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
+		case eShaderType::Pixel:	pDeviceContext->PSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
+		case eShaderType::Domain:	pDeviceContext->DSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
+		case eShaderType::Hull:		pDeviceContext->HSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
+		case eShaderType::Compute:	pDeviceContext->CSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
+		}
 	}
 
 	void DX11Shader::SetInt(const std::string& paramName, int value)
@@ -418,7 +447,7 @@ namespace kepler {
 			KEPLER_WARNING("Invalid shader parameter");
 			return;
 		}
-		memcpy(m_pBufferBytes[index] + offset, &value, sizeof(value));
+		memcpy(m_pByteBuffer[index] + offset, &value, sizeof(value));
 		UpdateConstantBuffer(index);
 	}
 
@@ -432,7 +461,7 @@ namespace kepler {
 			KEPLER_WARNING("Invalid shader parameter");
 			return;
 		}
-		memcpy(m_pBufferBytes[index] + offset, &value, sizeof(value));
+		memcpy(m_pByteBuffer[index] + offset, &value, sizeof(value));
 		UpdateConstantBuffer(index);
 	}
 
@@ -446,7 +475,7 @@ namespace kepler {
 			KEPLER_WARNING("Invalid shader parameter");
 			return;
 		}
-		memcpy(m_pBufferBytes[index] + offset, &value, sizeof(value));
+		memcpy(m_pByteBuffer[index] + offset, &value, sizeof(value));
 		UpdateConstantBuffer(index);
 	}
 
@@ -460,7 +489,7 @@ namespace kepler {
 			KEPLER_WARNING("Invalid shader parameter");
 			return;
 		}
-		memcpy(m_pBufferBytes[index] + offset, &value, sizeof(value));
+		memcpy(m_pByteBuffer[index] + offset, &value, sizeof(value));
 		UpdateConstantBuffer(index);
 	}
 
@@ -474,7 +503,7 @@ namespace kepler {
 			KEPLER_WARNING("Invalid shader parameter");
 			return;
 		}
-		memcpy(m_pBufferBytes[index] + offset, &value, sizeof(value));
+		memcpy(m_pByteBuffer[index] + offset, &value, sizeof(value));
 		UpdateConstantBuffer(index);
 	}
 
@@ -488,7 +517,7 @@ namespace kepler {
 			KEPLER_WARNING("Invalid shader parameter");
 			return;
 		}
-		memcpy(m_pBufferBytes[index] + offset, &value, sizeof(value));
+		memcpy(m_pByteBuffer[index] + offset, &value, sizeof(value));
 		UpdateConstantBuffer(index);
 	}
 }

@@ -31,6 +31,10 @@
 #include "ImGui/ImGuiLayer.h"
 //-----------------------------------------
 
+//----- Utility --------------------------
+#include "Utility/Timer.hpp"
+//-----------------------------------------
+
 //----- Global Variables-------------------
 namespace kepler {
 	extern HINSTANCE	g_hInst;

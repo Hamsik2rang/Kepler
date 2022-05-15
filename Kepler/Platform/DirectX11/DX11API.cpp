@@ -6,7 +6,7 @@
 #include "Core/Application.h"
 
 kepler::DX11API::DX11API()
-	: m_clearColor{1.0f, 0.0f, 1.0f, 1.0f}
+	: m_clearColor{0.1f, 0.1f, 0.1f, 1.0f}
 {
 	Init();
 }

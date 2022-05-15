@@ -23,7 +23,8 @@ namespace kepler {
 		uint32_t					m_constantBufferCount;
 		
 		ID3D11Buffer**				m_ppConstantBuffers;
-		std::vector<char*>			m_pBufferBytes;
+		std::vector<uint32_t>		m_constantBufferSize;
+		std::vector<char*>			m_pByteBuffer;
 
 		std::string			m_name;
 		const eShaderType	m_type;
