@@ -68,21 +68,21 @@ namespace kepler {
         {
 		case eBufferUsage::Default:
         case eBufferUsage::Static:
-				bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-                bufferDesc.CPUAccessFlags = 0;
-                break;
-            case eBufferUsage::Immutable: 
-                bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-                bufferDesc.CPUAccessFlags = 0;
-                break;
-            case eBufferUsage::Dynamic:
-                bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-                bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-                break;
-            case eBufferUsage::Staging:
-                bufferDesc.Usage = D3D11_USAGE_STAGING;
-                bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
-                break;
+			bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+            bufferDesc.CPUAccessFlags = 0;
+            break;
+        case eBufferUsage::Immutable: 
+            bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
+            bufferDesc.CPUAccessFlags = 0;
+            break;
+        case eBufferUsage::Dynamic:
+            bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+            bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+            break;
+        case eBufferUsage::Staging:
+            bufferDesc.Usage = D3D11_USAGE_STAGING;
+            bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
+            break;
         }
 
         D3D11_SUBRESOURCE_DATA initData{};

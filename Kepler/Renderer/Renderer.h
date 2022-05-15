@@ -11,11 +11,6 @@ using namespace DirectX;
 
 namespace kepler {
 
-	class WindowsWindow;
-	class Camera;
-	class DX11Model;
-	class DX11TextureShader;
-
 	class Renderer
 	{
 	private:
@@ -40,5 +35,4 @@ namespace kepler {
 		// TODO: should be going to get buffer(vertex, index) params
 		void Submit(std::shared_ptr<IVertexArray>& pVertexArray);
 	};
-
 }

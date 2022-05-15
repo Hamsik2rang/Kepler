@@ -14,7 +14,7 @@ void ExampleLayer::OnAttach()
 		 0.5f,  0.5f, 0.0f,  // top right
 		 0.5f, -0.5f, 0.0f,  // bottom right
 		-0.5f, -0.5f, 0.0f,  // bottom left
-		-0.5f,  0.5f, 0.0f   // top left 
+		-0.5f,  0.5f, 0.0f   // top left
 	};
 
 	std::shared_ptr<IVertexBuffer> pVertex = IVertexBuffer::Create(vertices, sizeof(vertices), eBufferUsage::Default);
@@ -25,13 +25,13 @@ void ExampleLayer::OnAttach()
 	m_pVertexArray->AddVertexBuffer(pVertex);
 
 	//---------------------------------------------------
-	uint32_t  indices[] = {  
+	uint32_t indices[] = {
 		0, 1, 3,	// first triangle
 		1, 2, 3		// second triangle
 	};
+
 	std::shared_ptr<IIndexBuffer> pIBuffer = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), eBufferUsage::Default);
 	m_pVertexArray->SetIndexBuffer(pIBuffer);
-	m_pVertexArray->Bind();
 }
 
 void ExampleLayer::OnDetach()
@@ -41,11 +41,9 @@ void ExampleLayer::OnDetach()
 
 void ExampleLayer::OnUpdate()
 {
-	auto window = Application::Get()->GetWindow();
-
 	ShaderCache::GetShader("VSTest")->Bind();
 	ShaderCache::GetShader("PSTest")->Bind();
-
+	
 	m_pVertexArray->Bind();
 
 	Renderer::Get()->Submit(m_pVertexArray);

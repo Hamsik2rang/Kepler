@@ -106,7 +106,7 @@ bool kepler::DX11Context::Init(const WindowData& data)
         return false;
     }
 
-    m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, nullptr);
+    //m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, nullptr);
 
     //// 깊이 버퍼를 초기화합니다.
     //if (!InitDepthBuffer(data))
