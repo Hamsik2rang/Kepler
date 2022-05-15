@@ -9,5 +9,4 @@ cbuffer cb : register(b0)
 }
 
 
-
-SamplerState g_LinearWrapState : register(s0);
+//SamplerState g_LinearWrapState : register(s0);

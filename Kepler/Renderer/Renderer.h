@@ -44,7 +44,7 @@ namespace kepler {
 
 		void ClearColor();
 		void SetColor();
-		void SetViewport();
+		void SetViewport(const uint32_t width, const uint32_t height, const float minDepth, const float maxDepth);
 		void Resize(uint32_t width, uint32_t height);
 		
 		// TODO: should be going to get buffer(vertex, index) params

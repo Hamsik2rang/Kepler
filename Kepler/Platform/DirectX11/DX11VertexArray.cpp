@@ -6,9 +6,9 @@ namespace kepler {
 	
 	void DX11VertexArray::Bind()
 	{
-		for (auto& vb : m_pVertexBuffers)
+		for (uint32_t i = 0; i < m_pVertexBuffers.size(); i++)
 		{
-			vb->Bind();
+			m_pVertexBuffers[i]->Bind(i);
 		}
 		m_pIndexBuffer->Bind();
 	}
@@ -20,5 +20,15 @@ namespace kepler {
 			vb->Unbind();
 		}
 		m_pIndexBuffer->Unbind();
+	}
+
+	void DX11VertexArray::AddVertexBuffer(const std::shared_ptr<IVertexBuffer> vertexBuffer)
+	{ 
+		m_pVertexBuffers.emplace_back(vertexBuffer); 
+	}
+
+	void DX11VertexArray::SetIndexBuffer(const std::shared_ptr<IIndexBuffer> indexBuffer)
+	{ 
+		m_pIndexBuffer = indexBuffer; 
 	}
 }

@@ -137,7 +137,7 @@ namespace kepler {
 	public:
 		virtual ~IVertexBuffer() = default;
 	
-		virtual void Bind() = 0;
+		virtual void Bind(uint32_t slot) = 0;
 		virtual void Unbind() = 0;
 
 		virtual void SetData(const void* data, uint32_t size) = 0;
@@ -157,7 +157,7 @@ namespace kepler {
 		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
 
-		virtual uint32_t GetSize() const = 0;
+		virtual uint32_t GetCount() const = 0;
 
 		static std::shared_ptr<IIndexBuffer> Create(const uint32_t* const indices, const uint32_t size, eBufferUsage usage);
 	};

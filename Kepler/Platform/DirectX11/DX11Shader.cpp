@@ -5,6 +5,86 @@
 #include "Utility/StringUtility.h"
 
 namespace kepler {
+
+	DX11Shader::DX11Shader(const eShaderType& type, const std::string& filepath)
+		: m_type{ type }
+		, m_pVoidShader{ nullptr }
+		, m_pBlob{ nullptr }
+		, m_pReflection{ nullptr }
+		, m_pVertexLayout{ nullptr }
+	{
+		Compile(filepath);
+		Create();
+		if (type == eShaderType::Vertex) InitVertexLayout();
+		InitConstantBuffer();
+	}
+
+	DX11Shader::DX11Shader(const eShaderType& type, const std::string& name, const std::string& filepath)
+		: m_type{ type }
+		, m_pVoidShader{ nullptr }
+		, m_pBlob{ nullptr }
+		, m_name{ name }
+		, m_pReflection{ nullptr }
+		, m_pVertexLayout{ nullptr }
+	{
+		Compile(filepath);
+		Create();
+		if (type == eShaderType::Vertex) InitVertexLayout();
+		InitConstantBuffer();
+	}
+
+	DX11Shader::~DX11Shader()
+	{
+		if (m_pReflection)
+		{
+			m_pReflection->Release();
+			m_pReflection = nullptr;
+		}
+		if (m_pVertexLayout)
+		{
+			m_pVertexLayout->Release();
+			m_pVertexLayout = nullptr;
+		}
+		// release shader
+		if (m_pVertexShader)
+		{
+			switch (m_type)
+			{
+			case eShaderType::Vertex:	m_pVertexShader->Release();		break;
+			case eShaderType::Geometry: m_pGeometryShader->Release();	break;
+			case eShaderType::Pixel:	m_pPixelShader->Release();		break;
+			case eShaderType::Domain:	m_pDomainShader->Release();		break;
+			case eShaderType::Hull:		m_pHullShader->Release();		break;
+			case eShaderType::Compute:	m_pComputeShader->Release();	break;
+			}
+			m_pVertexShader = nullptr;
+		}
+		// release raw shader program
+		if (m_pBlob)
+		{
+			m_pBlob->Release();
+			m_pBlob = nullptr;
+		}
+		// release constant buffers
+		for (uint32_t i = 0; i < m_constantBufferCount; i++)
+		{
+			if (m_ppConstantBuffers[i])
+			{
+				m_ppConstantBuffers[i]->Release();
+				m_ppConstantBuffers[i] = nullptr;
+			}
+		}
+		// relase constant buffer bytes
+		for (auto& p : m_pBufferBytes)
+		{
+			if (p)
+			{
+				delete[] p;
+				p = nullptr;
+			}
+		}
+	}
+
 	// HLSL 5.0(DirectX 11_0, 11_1 지원 수준)만을 다룬다고 가정하고 컴파일합니다.
 	// TODO: 추후 HLSL Version detection 코드를 작성합시다.
 	void DX11Shader::Compile(const std::string& filepath, const std::string& entryPointName)
@@ -90,31 +170,97 @@ namespace kepler {
 		}
 	}
 
+	void DX11Shader::InitVertexLayout()
+	{
+		ID3D11Device* pDevice;
+		GetDX11DeviceAndDeviceContext(&pDevice, nullptr);
+
+		if (!m_pReflection)
+		{
+			HRESULT hr = D3DReflect(m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), __uuidof(ID3D11ShaderReflection), reinterpret_cast<void**>(&m_pReflection));
+			if (FAILED(hr))
+			{
+				KEPLER_CORE_ASSERT(false, "Fail to Get shader reflection");
+				return;
+			}
+		}
+		D3D11_SHADER_DESC shaderDesc{};
+		m_pReflection->GetDesc(&shaderDesc);
+
+		std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayoutDescs;
+		for (uint32_t paramIndex = 0; paramIndex < shaderDesc.InputParameters; paramIndex++)
+		{
+			D3D11_SIGNATURE_PARAMETER_DESC paramDesc{};
+			m_pReflection->GetInputParameterDesc(paramIndex,&paramDesc);
+			
+			D3D11_INPUT_ELEMENT_DESC curDesc{};
+			curDesc.SemanticName = paramDesc.SemanticName;
+			curDesc.SemanticIndex = paramDesc.SemanticIndex;
+			curDesc.InputSlot = paramIndex;
+			curDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+			curDesc.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+			curDesc.InstanceDataStepRate = 0;
+
+			if (paramDesc.Mask == 1)
+			{
+				if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_UINT32) curDesc.Format = DXGI_FORMAT_R32_UINT;
+				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_SINT32) curDesc.Format = DXGI_FORMAT_R32_SINT;
+				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) curDesc.Format = DXGI_FORMAT_R32_FLOAT;
+			}
+			else if (paramDesc.Mask <= 3)
+			{
+				if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_UINT32) curDesc.Format = DXGI_FORMAT_R32G32_UINT;
+				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_SINT32) curDesc.Format = DXGI_FORMAT_R32G32_SINT;
+				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) curDesc.Format = DXGI_FORMAT_R32G32_FLOAT;
+			}
+			else if (paramDesc.Mask <= 7)
+			{
+				if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_UINT32) curDesc.Format = DXGI_FORMAT_R32G32B32_UINT;
+				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_SINT32) curDesc.Format = DXGI_FORMAT_R32G32B32_SINT;
+				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) curDesc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+			}
+			else if (paramDesc.Mask <= 15)
+			{
+				if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_UINT32) curDesc.Format = DXGI_FORMAT_R32G32B32A32_UINT;
+				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_SINT32) curDesc.Format = DXGI_FORMAT_R32G32B32A32_SINT;
+				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) curDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+			}
+			
+			inputLayoutDescs.push_back(curDesc);
+		}
+
+		HRESULT hr = pDevice->CreateInputLayout(&inputLayoutDescs[0], inputLayoutDescs.size(), m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), &m_pVertexLayout);
+		if (FAILED(hr))
+		{
+			KEPLER_CORE_ASSERT(false, "Fail to Create Input Layout");
+		}
+	}
+
 	void DX11Shader::InitConstantBuffer()
 	{
 		ID3D11Device* pDevice = nullptr;
 		GetDX11DeviceAndDeviceContext(&pDevice, nullptr);
 
-		HRESULT hr = D3DReflect(m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), __uuidof(ID3D11ShaderReflection), reinterpret_cast<void**>(&m_pReflection));
-		if (FAILED(hr))
+		if (!m_pReflection)
 		{
-			KEPLER_CORE_ASSERT(false, "Fail to Get shader reflection");
-			return;
+			HRESULT hr = D3DReflect(m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), __uuidof(ID3D11ShaderReflection), reinterpret_cast<void**>(&m_pReflection));
+			if (FAILED(hr))
+			{
+				KEPLER_CORE_ASSERT(false, "Fail to Get shader reflection");
+				return;
+			}
 		}
 
 		// 쉐이더 디스크립션 받아오기
 		D3D11_SHADER_DESC shaderDesc{};
-		if (FAILED(m_pReflection->GetDesc(&shaderDesc)))
-		{
-			KEPLER_CORE_ASSERT(false, "Fail to get shader reflection data");
-			return;
-		}
+		m_pReflection->GetDesc(&shaderDesc);
+
 		// 쉐이더 안의 상수 버퍼 수를 알아냄
-		m_cBufferCount = shaderDesc.ConstantBuffers;
+		m_constantBufferCount = shaderDesc.ConstantBuffers;
 		// 상수 버퍼 개수만큼 상수 버퍼 및 디스크립터 생성
-		std::vector<D3D11_BUFFER_DESC> bufferDescs(m_cBufferCount, D3D11_BUFFER_DESC{});
-		m_ppConstantBuffers = new ID3D11Buffer*[m_cBufferCount];
-		for (uint32_t cBufIndex = 0; cBufIndex < m_cBufferCount; cBufIndex++)
+		std::vector<D3D11_BUFFER_DESC> bufferDescs(m_constantBufferCount, D3D11_BUFFER_DESC{});
+		m_ppConstantBuffers = new ID3D11Buffer*[m_constantBufferCount];
+		for (uint32_t cBufIndex = 0; cBufIndex < m_constantBufferCount; cBufIndex++)
 		{
 			D3D11_BUFFER_DESC& curBufferDesc = bufferDescs[cBufIndex];
 			// not necessary
@@ -155,7 +301,7 @@ namespace kepler {
 				}
 					
 				D3D11_SHADER_VARIABLE_DESC varDesc{};
-				hr = pVariableReflection->GetDesc(&varDesc);
+				HRESULT hr = pVariableReflection->GetDesc(&varDesc);
 				if (FAILED(hr))
 				{
 					KEPLER_CORE_ASSERT(false, "Fail to get variable description");
@@ -175,7 +321,7 @@ namespace kepler {
 			D3D11_SUBRESOURCE_DATA initData{};
 			initData.pSysMem = buffer;
 			// 버퍼 생성
-			hr = pDevice->CreateBuffer(&curBufferDesc, &initData, &m_ppConstantBuffers[cBufIndex]);
+			HRESULT hr = pDevice->CreateBuffer(&curBufferDesc, &initData, &m_ppConstantBuffers[cBufIndex]);
 			if (FAILED(hr))
 			{
 				KEPLER_CORE_ASSERT(false, "Fail to Create ConstantBuffer");
@@ -187,76 +333,13 @@ namespace kepler {
 		}
 	}
 
-	DX11Shader::DX11Shader(const eShaderType& type, const std::string& filepath)
-		: m_type{ type }
-		, m_pVoidShader{ nullptr }
-		, m_pBlob{ nullptr }
-	{
-		Compile(filepath);
-		Create();
-		InitConstantBuffer();
-	}
-
-	DX11Shader::DX11Shader(const eShaderType& type, const std::string& name, const std::string& filepath)
-		: m_type{ type }
-		, m_pVoidShader{ nullptr }
-		, m_pBlob{ nullptr }
-		, m_name{ name }
-	{
-		Compile(filepath);
-		Create();
-		InitConstantBuffer();
-	}
-
-	DX11Shader::~DX11Shader()
-	{
-		// release shader
-		if (m_pVertexShader)
-		{
-			switch (m_type)
-			{
-			case eShaderType::Vertex:	m_pVertexShader->Release();		break;
-			case eShaderType::Geometry: m_pGeometryShader->Release();	break;
-			case eShaderType::Pixel:	m_pPixelShader->Release();		break;
-			case eShaderType::Domain:	m_pDomainShader->Release();		break;
-			case eShaderType::Hull:		m_pHullShader->Release();		break;
-			case eShaderType::Compute:	m_pComputeShader->Release();	break;
-			}
-			m_pVertexShader = nullptr;
-		}
-		// release raw shader program
-		if (m_pBlob)
-		{
-			m_pBlob->Release();
-			m_pBlob = nullptr;
-		}
-		// release constant buffers
-		for (uint32_t i = 0; i < m_cBufferCount; i++)
-		{
-			if (m_ppConstantBuffers[i])
-			{
-				m_ppConstantBuffers[i]->Release();
-				m_ppConstantBuffers[i] = nullptr;
-			}
-		}
-		// relase constant buffer bytes
-		for (auto& p : m_pBufferBytes)
-		{
-			if (p)
-			{
-				delete[] p;
-				p = nullptr;
-			}
-		}
-	}
-
 	void DX11Shader::Bind()
 	{
 		ID3D11DeviceContext* pDeviceContext = nullptr;
 		GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
 		switch (m_type)
 		{
-		case eShaderType::Vertex:	pDeviceContext->VSSetShader(m_pVertexShader, nullptr, 0);	break;
+		case eShaderType::Vertex:	pDeviceContext->VSSetShader(m_pVertexShader, nullptr, 0);	pDeviceContext->IASetInputLayout(m_pVertexLayout); break;
 		case eShaderType::Geometry: pDeviceContext->GSSetShader(m_pGeometryShader, nullptr, 0);	break;
 		case eShaderType::Pixel:	pDeviceContext->PSSetShader(m_pPixelShader, nullptr, 0);	break;
 		case eShaderType::Domain:	pDeviceContext->DSSetShader(m_pDomainShader, nullptr, 0);	break;
@@ -271,7 +354,7 @@ namespace kepler {
 		GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
 		switch (m_type)
 		{
-		case eShaderType::Vertex:	pDeviceContext->VSSetShader(nullptr, nullptr, 0);	break;
+		case eShaderType::Vertex:	pDeviceContext->VSSetShader(nullptr, nullptr, 0);	pDeviceContext->IASetInputLayout(nullptr); break;
 		case eShaderType::Geometry: pDeviceContext->GSSetShader(nullptr, nullptr, 0);	break;
 		case eShaderType::Pixel:	pDeviceContext->PSSetShader(nullptr, nullptr, 0);	break;
 		case eShaderType::Domain:	pDeviceContext->DSSetShader(nullptr, nullptr, 0);	break;
@@ -282,7 +365,7 @@ namespace kepler {
 
 	bool DX11Shader::GetConstantBufferDataInfo(const std::string& inParamName, int& outIndex, int& outOffset)
 	{
-		for (uint32_t index = 0; index < m_cBufferCount; index++)
+		for (uint32_t index = 0; index < m_constantBufferCount; index++)
 		{
 			ID3D11ShaderReflectionConstantBuffer* cBufferReflection = m_pReflection->GetConstantBufferByIndex(index);
 			if (!cBufferReflection)

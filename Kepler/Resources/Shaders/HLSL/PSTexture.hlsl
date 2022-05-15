@@ -1,5 +1,5 @@
 #include "Global/PSGlobal.hlsli"
-// Solid Pixel Shader
+// Pixel Texture Shader
 
 Texture2D Texture : register(t0);
 

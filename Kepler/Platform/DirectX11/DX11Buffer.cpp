@@ -32,7 +32,6 @@ namespace kepler {
     DX11VertexBuffer::DX11VertexBuffer(const uint32_t size, eBufferUsage usage)
 		: m_layout{}
 		, m_pBuffer{ nullptr }
-		, m_pInputLayout{ nullptr }
     {
         ID3D11Device* pDevice;
         ID3D11DeviceContext* pDeviceContext;
@@ -56,7 +55,6 @@ namespace kepler {
     DX11VertexBuffer::DX11VertexBuffer(const float* const vertices, const uint32_t size, eBufferUsage usage)
         : m_layout{}
         , m_pBuffer{ nullptr }
-		, m_pInputLayout{ nullptr }
     {
         ID3D11Device* pDevice;
         ID3D11DeviceContext* pDeviceContext;
@@ -97,29 +95,23 @@ namespace kepler {
     }
 
     // 렌더링 파이프라인에 바인딩
-    void DX11VertexBuffer::Bind()
+    void DX11VertexBuffer::Bind(uint32_t slot)
     {
-        ID3D11Device* pDevice;
         ID3D11DeviceContext* pDeviceContext;
-        GetDX11DeviceAndDeviceContext(&pDevice, &pDeviceContext);
-
-        KEPLER_CORE_ASSERT(m_pInputLayout, "Vertex Buffer has no layout.");
+        GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
 
         UINT offset = 0;
-        UINT stride = static_cast<UINT>(m_layout.GetStride());
-        pDeviceContext->IASetVertexBuffers(0, 1, &m_pBuffer, &stride, &offset);
-        pDeviceContext->IASetInputLayout(m_pInputLayout);
+        UINT stride = m_layout.GetStride();
+        pDeviceContext->IASetVertexBuffers(slot, 1, &m_pBuffer, &stride, &offset);
     }
 
     // 렌더링 파이프라인에서 바인딩 해제
     void DX11VertexBuffer::Unbind()
     {
-        ID3D11Device* pDevice;
         ID3D11DeviceContext* pDeviceContext;
-        GetDX11DeviceAndDeviceContext(&pDevice, &pDeviceContext);
+        GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
 
 		pDeviceContext->IASetVertexBuffers(0, 0, nullptr, nullptr, nullptr);
-        pDeviceContext->IASetInputLayout(nullptr);
     }
 
     // VertexBuffer의 정점 데이터 변경
@@ -135,30 +127,11 @@ namespace kepler {
     void DX11VertexBuffer::SetLayout(const BufferLayout& layout)
     {
         m_layout = layout;
-        std::vector<D3D11_INPUT_ELEMENT_DESC> descs;
-        for (auto iter = m_layout.begin(); iter != m_layout.end(); iter++)
-        {
-            D3D11_INPUT_ELEMENT_DESC desc{};
-            desc.SemanticName = iter->name.c_str();
-            desc.SemanticIndex = iter->index;
-            desc.Format = ShaderDataTypeToDXGIFormat(iter->type);
-            desc.InputSlot = 0;
-            desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-            desc.AlignedByteOffset = iter->stride;
-            descs.push_back(desc);
-        }
-        // Temporary
-        ID3DBlob* pBlob = reinterpret_cast<ID3DBlob*>(ShaderCache::GetShader("VSTexture")->GetRawProgram());
-        HRESULT hr = IGraphicsContext::Get()->GetDevice()->CreateInputLayout(&descs[0], descs.size(), pBlob->GetBufferPointer(), pBlob->GetBufferSize(), &m_pInputLayout);
-        if (FAILED(hr))
-        {
-            KEPLER_CORE_ASSERT(false, "Fail to create input layout");
-        }
     }
 
     /////////// IndexBuffer Member Functions ///////////
-    DX11IndexBuffer::DX11IndexBuffer(const uint32_t* const indices, const uint32_t size)
-        : m_size{size}
+    DX11IndexBuffer::DX11IndexBuffer(const uint32_t* const indices, const uint32_t count)
+        : m_count{count}
         , m_pBuffer{ nullptr }
     {
         ID3D11Device* pDevice;
@@ -167,7 +140,7 @@ namespace kepler {
 
         D3D11_BUFFER_DESC bufferDesc{};
         bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-        bufferDesc.ByteWidth = size;
+        bufferDesc.ByteWidth = count * sizeof(uint32_t);
         bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
         bufferDesc.CPUAccessFlags = 0;
 
@@ -188,6 +161,7 @@ namespace kepler {
         GetDX11DeviceAndDeviceContext(&pDevice, &pDeviceContext);
 
         pDeviceContext->IASetIndexBuffer(m_pBuffer, DXGI_FORMAT_R32_UINT, 0);
+        pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     }
 
     // 렌더링 파이프라인에서 바인딩 해제

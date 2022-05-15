@@ -98,65 +98,55 @@ bool kepler::DX11Context::Init(const WindowData& data)
     }
 
     hr = m_pDevice->CreateRenderTargetView(pBackBuffer, nullptr, &m_pRenderTargetView);
+    pBackBuffer->Release();
+    pBackBuffer = nullptr;
     if (FAILED(hr))
     {
         KEPLER_CORE_ASSERT(false, "Fail to Create RenderTarget View");
         return false;
     }
-    pBackBuffer->Release();
-    pBackBuffer = nullptr;
 
-    // 깊이 버퍼를 초기화합니다.
-    if (!InitDepthBuffer(data))
-    {
-        KEPLER_CORE_ASSERT(false, "Fail to Initialize Depth Buffer");
-        return false;
-    }
+    m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, nullptr);
 
-    // 깊이 버퍼를 초기화합니다.
-    if (!InitDepthStencil(data))
-    {
-        KEPLER_CORE_ASSERT(false, "Fail to Initialize Depth Stencil");
-        return false;
-    }
-
-    // 렌더링 대상 뷰와 깊이 스텐실 버퍼를 출력 렌더 파이프 라인에 바인딩합니다
-    GetDeviceContext()->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
-
-    // 그려지는 폴리곤과 방법을 결정할 래스터 구조체를 설정합니다
-    D3D11_RASTERIZER_DESC rasterDesc{};
-    rasterDesc.AntialiasedLineEnable = false;
-    rasterDesc.CullMode = D3D11_CULL_BACK;
-    rasterDesc.DepthBias = 0;
-    rasterDesc.DepthBiasClamp = 0.0f;
-    rasterDesc.DepthClipEnable = true;
-    rasterDesc.FillMode = D3D11_FILL_SOLID;
-    rasterDesc.FrontCounterClockwise = false;
-    rasterDesc.MultisampleEnable = false;
-    rasterDesc.ScissorEnable = false;
-    rasterDesc.SlopeScaledDepthBias = 0.0f;
-
-    // 래스터 구조체에서 래스터 라이저 상태를 만듭니다
-    if (FAILED(GetDevice()->CreateRasterizerState(&rasterDesc, &m_pRasterState)))
-    {
-        KEPLER_CORE_ASSERT(false, "Fail to Create Raster State");
-        return false;
-    }
-
-    // 이제 래스터 라이저 상태를 설정합니다
-    GetDeviceContext()->RSSetState(m_pRasterState);
-
-    // 렌더링을 위해 뷰포트를 설정합니다
-    D3D11_VIEWPORT viewport{};
-    viewport.Width = (FLOAT)data.width;
-    viewport.Height = (FLOAT)data.height;
-    viewport.MinDepth = 0.0f;
-    viewport.MaxDepth = 1.0f;
-    viewport.TopLeftX = 0.0f;
-    viewport.TopLeftY = 0.0f;
-
-    // 뷰포트를 생성합니다
-    GetDeviceContext()->RSSetViewports(1, &viewport);
+    //// 깊이 버퍼를 초기화합니다.
+    //if (!InitDepthBuffer(data))
+    //{
+    //    KEPLER_CORE_ASSERT(false, "Fail to Initialize Depth Buffer");
+    //    return false;
+    //}
+    //
+    //// 깊이 버퍼를 초기화합니다.
+    //if (!InitDepthStencil(data))
+    //{
+    //    KEPLER_CORE_ASSERT(false, "Fail to Initialize Depth Stencil");
+    //    return false;
+    //}
+    //
+    //// 렌더링 대상 뷰와 깊이 스텐실 버퍼를 출력 렌더 파이프 라인에 바인딩합니다
+    //m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
+    //
+    //// 그려지는 폴리곤과 방법을 결정할 래스터 구조체를 설정합니다
+    //D3D11_RASTERIZER_DESC rasterDesc{};
+    //rasterDesc.AntialiasedLineEnable = false;
+    //rasterDesc.CullMode = D3D11_CULL_BACK;
+    //rasterDesc.DepthBias = 0;
+    //rasterDesc.DepthBiasClamp = 0.0f;
+    //rasterDesc.DepthClipEnable = true;
+    //rasterDesc.FillMode = D3D11_FILL_SOLID;
+    //rasterDesc.FrontCounterClockwise = false;
+    //rasterDesc.MultisampleEnable = false;
+    //rasterDesc.ScissorEnable = false;
+    //rasterDesc.SlopeScaledDepthBias = 0.0f;
+    //
+    //// 래스터 구조체에서 래스터 라이저 상태를 만듭니다
+    //if (FAILED(m_pDevice->CreateRasterizerState(&rasterDesc, &m_pRasterState)))
+    //{
+    //    KEPLER_CORE_ASSERT(false, "Fail to Create Raster State");
+    //    return false;
+    //}
+    //
+    //// 이제 래스터 라이저 상태를 설정합니다
+    //m_pImmediateContext->RSSetState(m_pRasterState);
 
     return true;
 }

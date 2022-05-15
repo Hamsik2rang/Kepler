@@ -3,32 +3,45 @@
 #include "DX11API.h"
 #include "Renderer/GraphicsContext.h"
 #include "Platform/DirectX11/DX11Context.h"
+#include "Core/Application.h"
+
+kepler::DX11API::DX11API()
+	: m_clearColor{1.0f, 0.0f, 1.0f, 1.0f}
+{
+	Init();
+}
 
 void kepler::DX11API::Init()
 {
-	SetViewport();
-	ClearColor();
+	auto window = Application::Get()->GetWindow();
+
+	SetViewport(window->GetWidth(), window->GetHeight());
 }
 
 void kepler::DX11API::ClearColor()
 {
-	static float color[]{ 0.1f, 0.1f, 0.1f, 1.0f };
-	SetColor(color);
+	ID3D11DeviceContext* pImmediateContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11RenderTargetView* pRenderTargetView = IGraphicsContext::Get()->GetRenderTargetView();
+	pImmediateContext->ClearRenderTargetView(pRenderTargetView, m_clearColor);
 }
 
 void kepler::DX11API::SetColor(const float color[4])
 {
-	ID3D11DeviceContext* pImmediateContext = IGraphicsContext::Get()->GetDeviceContext();
-	ID3D11RenderTargetView* pRenderTargetView = IGraphicsContext::Get()->GetRenderTargetView();
-	pImmediateContext->OMSetRenderTargets(1, &pRenderTargetView, nullptr);
-	pImmediateContext->ClearRenderTargetView(pRenderTargetView, color);
+	memcpy(m_clearColor, color, sizeof(color));
 }
 
-void kepler::DX11API::SetViewport()
+void kepler::DX11API::SetViewport(const uint32_t width, const uint32_t height, const float minDepth, const float maxDepth)
 {
-	uint32_t screenWidth = 800;
-	uint32_t screenHeight = 600;
-	Resize(screenWidth, screenHeight);
+	D3D11_VIEWPORT viewport{};
+	viewport.Width = static_cast<FLOAT>(width);
+	viewport.Height = static_cast<FLOAT>(height);
+	viewport.MinDepth = minDepth;
+	viewport.MaxDepth = maxDepth;
+	viewport.TopLeftX = 0.0f;
+	viewport.TopLeftY = 0.0f;
+
+	ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+	pDeviceContext->RSSetViewports(1, &viewport);
 }
 
 void kepler::DX11API::Resize(uint32_t width, uint32_t height)
@@ -49,5 +62,5 @@ void kepler::DX11API::Resize(uint32_t width, uint32_t height)
 void kepler::DX11API::DrawIndexed(std::shared_ptr<IVertexArray>& pVertexArray)
 {
 	ID3D11DeviceContext* pImmediateContext = IGraphicsContext::Get()->GetDeviceContext();
-	pImmediateContext->DrawIndexed(pVertexArray->GetIndexBuffer()->GetSize(), 0, 0);
+	pImmediateContext->DrawIndexed(pVertexArray->GetIndexBuffer()->GetCount(), 0, 0);
 }

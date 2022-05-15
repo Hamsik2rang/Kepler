@@ -1,5 +1,5 @@
 #include "Global/VSGlobal.hlsli"
-// Vertex Solid Shader
+// Vertex Texture Shader
 
 struct VS_INPUT
 {

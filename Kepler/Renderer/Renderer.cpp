@@ -34,8 +34,8 @@ namespace kepler {
 		// Temporary
 		//ShaderCache::Load(eShaderType::Vertex, "VSTexture",  "../Kepler/Resources/Shaders/HLSL/VSTexture.hlsl");
 		//ShaderCache::Load(eShaderType::Pixel, "PSTexture", "../Kepler/Resources/Shaders/HLSL/PSTexture.hlsl");
-		ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSTexture.hlsl");
-		ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PSTexture.hlsl");
+		ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSTest.hlsl");
+		ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PSTest.hlsl");
 
 	
 	}
@@ -78,9 +78,6 @@ namespace kepler {
 	{
 		DX11Context* pContext = (DX11Context*)IGraphicsContext::Get();
 		DX11API* pAPI = (DX11API*)m_pGraphicsAPI;
-
-		// 씬을 그리기 위해 버퍼를 지웁니다
-		pAPI->ClearColor();
 
 		// 행렬을 설정합니다.
 
@@ -134,9 +131,9 @@ namespace kepler {
 
 	}
 
-	void Renderer::SetViewport()
+	void Renderer::SetViewport(const uint32_t width, const uint32_t height, const float minDepth, const float maxDepth)
 	{
-
+		m_pGraphicsAPI->SetViewport(width, height, minDepth, maxDepth);
 	}
 
 	void Renderer::Resize(uint32_t width, uint32_t height)
@@ -146,6 +143,8 @@ namespace kepler {
 
 	void Renderer::Submit(std::shared_ptr<IVertexArray>& pVertexArray)
 	{
+		DX11Context* pContext = reinterpret_cast<DX11Context*>(IGraphicsContext::Get());
+
 		m_pGraphicsAPI->DrawIndexed(pVertexArray);
 	}
 

@@ -8,7 +8,6 @@ namespace kepler {
 	{
 	private:
 		ID3D11Buffer*		m_pBuffer;
-		ID3D11InputLayout*  m_pInputLayout;
 		BufferLayout		m_layout;
 
 	public:
@@ -16,7 +15,7 @@ namespace kepler {
 		DX11VertexBuffer(const float* const vertices, const uint32_t size, eBufferUsage usage);
 		
 		// Inherited via IVertexBuffer
-		virtual void Bind() override;
+		virtual void Bind(uint32_t slot) override;
 		virtual void Unbind() override;
 		virtual void SetData(const void* data, uint32_t size) override;
 		inline virtual void SetLayout(const BufferLayout& bufferLayout) override;
@@ -27,14 +26,14 @@ namespace kepler {
 	{
 	private:
 		ID3D11Buffer* m_pBuffer;
-		uint32_t m_size;
+		uint32_t m_count;
 
 	public:
-		DX11IndexBuffer(const uint32_t* const indices, const uint32_t size);
+		DX11IndexBuffer(const uint32_t* const indices, const uint32_t count);
 		
 		// Inherited via IIndexBuffer
 		virtual void Bind() override;
 		virtual void Unbind() override;
-		inline virtual uint32_t GetSize() const override { return m_size; }
+		inline virtual uint32_t GetCount() const override { return m_count; }
 	};
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Core/Base.h"
+
 #include "Renderer/VertexArray.h"
 
 namespace kepler {
@@ -15,8 +17,8 @@ namespace kepler {
 		virtual void Bind() override;
 		virtual void Unbind() override;
 
-		inline virtual void AddVertexBuffer(std::shared_ptr<IVertexBuffer> const vertexBuffer) override { m_pVertexBuffers.push_back(vertexBuffer); }
-		inline virtual void SetIndexBuffer(std::shared_ptr<IIndexBuffer> const indexBuffer) override { m_pIndexBuffer = indexBuffer; }
+		virtual void AddVertexBuffer(const std::shared_ptr<IVertexBuffer> vertexBuffer) override;
+		virtual void SetIndexBuffer(const std::shared_ptr<IIndexBuffer> indexBuffer) override;
 		
 		inline virtual const std::vector<std::shared_ptr<IVertexBuffer>>& GetVertexBuffers() const override { return m_pVertexBuffers; }
 		inline virtual const std::shared_ptr<IIndexBuffer> GetIndexBuffer() const override { return m_pIndexBuffer; }

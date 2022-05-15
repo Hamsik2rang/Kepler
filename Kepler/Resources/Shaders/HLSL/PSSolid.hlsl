@@ -1,5 +1,5 @@
 #include "Global/PSGlobal.hlsli"
-
+// Pixel Solid Shader
 
 struct PS_INPUT
 {

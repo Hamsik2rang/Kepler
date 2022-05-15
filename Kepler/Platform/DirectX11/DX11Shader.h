@@ -18,8 +18,9 @@ namespace kepler {
 			void*					m_pVoidShader;
 		};
 		ID3D11ShaderReflection*		m_pReflection;
+		ID3D11InputLayout*			m_pVertexLayout;
 		ID3DBlob*					m_pBlob;
-		uint32_t					m_cBufferCount;
+		uint32_t					m_constantBufferCount;
 		
 		ID3D11Buffer**				m_ppConstantBuffers;
 		std::vector<char*>			m_pBufferBytes;
@@ -29,6 +30,7 @@ namespace kepler {
 
 		void Compile(const std::string& filepath, const std::string& entryPointName = "main");
 		void Create();
+		void InitVertexLayout();
 		void InitConstantBuffer();
 		
 		bool GetConstantBufferDataInfo(const std::string& inParamName, int& outIndex, int& outOffset);
