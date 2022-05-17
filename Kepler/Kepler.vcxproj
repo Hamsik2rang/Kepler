@@ -175,6 +175,7 @@
     <ClInclude Include="Platform\DirectX11\DX11Model.h" />
     <ClInclude Include="Platform\DirectX11\DX11Shader.h" />
     <ClInclude Include="Platform\DirectX11\DX11Texture.h" />
+    <ClInclude Include="Platform\DirectX11\DX11TextureShader.h" />
     <ClInclude Include="Platform\DirectX11\DX11VertexArray.h" />
     <ClInclude Include="Renderer\Buffer.h" />
     <ClInclude Include="Renderer\Camera.h" />
@@ -222,6 +223,7 @@
     <ClCompile Include="Platform\DirectX11\DX11Model.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Shader.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Texture.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11TextureShader.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11VertexArray.cpp" />
     <ClCompile Include="Platform\Win32\WinAPI.cpp" />
     <ClCompile Include="Platform\Windows\WindowsWindow.cpp" />

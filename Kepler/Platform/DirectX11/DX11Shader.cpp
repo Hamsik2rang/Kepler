@@ -346,7 +346,7 @@ namespace kepler {
 		switch (m_type)
 		{
 		case eShaderType::Vertex:	pDeviceContext->IASetInputLayout(m_pVertexLayout); 
-									pDeviceContext->VSSetShader(m_pVertexShader, nullptr, 0);break;
+									pDeviceContext->VSSetShader(m_pVertexShader, nullptr, 0);	break;
 		case eShaderType::Geometry: pDeviceContext->GSSetShader(m_pGeometryShader, nullptr, 0);	break;
 		case eShaderType::Pixel:	pDeviceContext->PSSetShader(m_pPixelShader, nullptr, 0);	break;
 		case eShaderType::Domain:	pDeviceContext->DSSetShader(m_pDomainShader, nullptr, 0);	break;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <DirectXMath.h>
+
 #include "Core/Base.h"
 
 namespace kepler {

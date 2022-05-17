@@ -2,8 +2,8 @@
 
 cbuffer cb : register(b0)
 {
-    float g_Time;
-    float3 padding;
+    float g_Time    : packoffset(c0.w);
+    float3 padding  : packoffset(c0);
 }
 
 struct PS_INPUT

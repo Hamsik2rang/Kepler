@@ -1,9 +1,9 @@
 #include "kepch.h"
 
 #include <d3dcompiler.h>
+#include "DX11TextureShader.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Renderer.h"
-#include "DX11TextureShader.h"
 
 namespace kepler {
     DX11TextureShader::DX11TextureShader()
