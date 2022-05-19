@@ -16,6 +16,7 @@ Currently in progress to implement.
 * [ImGui](https://github.com/ocornut/imgui) - for GUI
 * [spdlog](https://github.com/gabime/spdlog) - for Logging System
 * [DirectXTK](https://github.com/microsoft/DirectXTK)
+* [stbimage](https://github.com/nothings/stb)  
 
 -TBA-
 
