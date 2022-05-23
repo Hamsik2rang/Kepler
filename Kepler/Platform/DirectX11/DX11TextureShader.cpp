@@ -243,21 +243,17 @@ namespace kepler {
 
     void DX11TextureShader::RenderShader(ID3D11DeviceContext* pDeviceContext, int indexCount)
     {
-        //// 정점 입력 레이아웃을 설정합니다.
-        //pDeviceContext->IASetInputLayout(m_pInputLayout);
-        //
-        //// 삼각형을 그릴 정점 셰이더와 픽셀 셰이더를 설정합니다.
+        // 정점 입력 레이아웃을 설정합니다.
+        pDeviceContext->IASetInputLayout(m_pInputLayout);
+        
+        // 삼각형을 그릴 정점 셰이더와 픽셀 셰이더를 설정합니다.
         pDeviceContext->VSSetShader(m_pVertexShader, NULL, 0);
         pDeviceContext->PSSetShader(m_pPixelShader, NULL, 0);
-        //
-        //ShaderCache::GetShader("VSTest")->Bind();
-        //ShaderCache::GetShader("PSTest")->Bind();
 
         // 픽셀 쉐이더에서 샘플러 상태를 설정합니다.
-        //pDeviceContext->PSSetSamplers(0, 1, &m_pSampleState);
+        pDeviceContext->PSSetSamplers(0, 1, &m_pSampleState);
 
         // 삼각형을 그립니다.
         pDeviceContext->DrawIndexed(indexCount, 0, 0);
-        //pDeviceContext->Draw(6, 0);
     }
 }
