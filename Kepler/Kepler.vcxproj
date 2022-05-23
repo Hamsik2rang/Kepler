@@ -169,6 +169,19 @@
     <ClInclude Include="Core\LayerStack.h" />
     <ClInclude Include="Core\Log.h" />
     <ClInclude Include="Dependencies\stbimage\stb_image.h" />
+    <ClInclude Include="Math\Constant.h" />
+    <ClInclude Include="Math\Interpolation.hpp" />
+    <ClInclude Include="Math\Intrinsic.h" />
+    <ClInclude Include="Math\KeplerMath.h" />
+    <ClInclude Include="Math\MathUtility.h" />
+    <ClInclude Include="Math\Matrix.h" />
+    <ClInclude Include="Math\Matrix33.hpp" />
+    <ClInclude Include="Math\Matrix44.hpp" />
+    <ClInclude Include="Math\Quaternion.h" />
+    <ClInclude Include="Math\Transformation.hpp" />
+    <ClInclude Include="Math\Vector.h" />
+    <ClInclude Include="Math\Vector3.hpp" />
+    <ClInclude Include="Math\Vector4.hpp" />
     <ClInclude Include="Platform\DirectX11\DX11Buffer.h" />
     <ClInclude Include="Platform\DirectX11\DX11Context.h" />
     <ClInclude Include="Platform\DirectX11\DX11API.h" />
@@ -217,6 +230,7 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">kepch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Math\Constant.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11API.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Buffer.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Context.cpp" />
