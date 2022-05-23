@@ -36,6 +36,7 @@ namespace kepler {
 	private:
 		// 정점 데이터
 		VertexType* m_pVertices = nullptr;
+		float* m_pFloatVertex = nullptr;
 		// 텍스처 데이터
 		DX11Texture* m_pTexture = nullptr;
 		// 정점 버퍼

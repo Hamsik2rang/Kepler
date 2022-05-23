@@ -4,6 +4,7 @@
 #include "Core/Log.h"
 #include "Core/Event/ApplicationEvent.hpp"
 #include "Renderer/Renderer.h"
+#include "Platform/DirectX11/DX11Context.h"
 
 namespace kepler{
 

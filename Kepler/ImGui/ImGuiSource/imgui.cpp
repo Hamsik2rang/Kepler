@@ -18194,7 +18194,7 @@ void ImGui::DebugNodeDockNode(ImGuiDockNode* node, const char* label)
             is_alive ? " IsAlive" : "", is_active ? " IsActive" : "",
             node->WantLockSizeOnce ? " WantLockSizeOnce" : "",
             node->HasCentralNodeChild ? " HasCentralNodeChild" : "");
-        if (TreeNode("flags", "Flags Merged: 0x%04X, Local: 0x%04X, InWindows: 0x%04X, Shared: 0x%04X", node->MergedFlags, node->LocalFlags, node->LocalFlagsInWindows, node->SharedFlags))
+        if (TreeNode("flags", "Flags Merged: 0x%04X, Local: 0x%04X, InWindows: 0x%04X, Ref: 0x%04X", node->MergedFlags, node->LocalFlags, node->LocalFlagsInWindows, node->SharedFlags))
         {
             if (BeginTable("flags", 4))
             {

@@ -13,6 +13,11 @@
 
 //----- Renderer --------------------------
 #include "Renderer/Renderer.h"
+#include "Renderer/GraphicsAPI.h"
+#include "Renderer/Buffer.h"
+#include "Renderer/VertexArray.h"
+#include "Renderer/Shader.h"
+#include "Renderer/Texture.h"
 //-----------------------------------------
 
 //----- Math ------------------------------
@@ -24,6 +29,10 @@
 #include "Platform/Win32/WinAPI.h"
 #include "Platform/Windows/WindowsWindow.h"
 #include "ImGui/ImGuiLayer.h"
+//-----------------------------------------
+
+//----- Utility --------------------------
+#include "Utility/Timer.hpp"
 //-----------------------------------------
 
 //----- Global Variables-------------------
@@ -41,6 +50,6 @@ namespace kepler {
 #endif
 // NOTICE: 반드시 가장 마지막에 선언해야 합니다!!
 #ifndef KEPLER_UNITTEST
-#include "Core/EntryPoint.h"
+//#include "Core/EntryPoint.h"
 #endif
 //-----------------------------------------

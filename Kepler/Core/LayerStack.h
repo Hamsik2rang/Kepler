@@ -22,8 +22,8 @@ namespace kepler {
 		void PopOverlay(Layer* overlay);
 		
 		// LayerStack 순회를 위한 Iterator 구현
-		inline std::list<Layer*>::iterator begin() { return m_pLayers.begin(); }
-		inline std::list<Layer*>::iterator end() { return m_pLayers.end(); }
+		[[nodiscard]] inline std::list<Layer*>::iterator begin() { return m_pLayers.begin(); }
+		[[nodiscard]] inline std::list<Layer*>::iterator end() { return m_pLayers.end(); }
 	};
 
 }

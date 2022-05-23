@@ -2,9 +2,11 @@
 
 #include <DirectXMath.h>
 
+#include "Core/Base.h"
+
 namespace kepler {
     using namespace DirectX;
-
+    
     class DX11TextureShader
     {
     private:

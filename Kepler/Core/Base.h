@@ -18,3 +18,6 @@
 
 #include "Core/Log.h"
 #include "Core/Assertion.h"
+
+#include <memory>
+#include <utility>

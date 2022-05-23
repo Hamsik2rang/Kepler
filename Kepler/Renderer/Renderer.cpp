@@ -2,13 +2,14 @@
 
 #include "Renderer.h"
 #include "GraphicsContext.h"
-#include "Core/Application.h"
 #include "Platform/Windows/WindowsWindow.h"
 #include "Platform/DirectX11/DX11Context.h"
 #include "Platform/DirectX11/DX11API.h"
 #include "Platform/DirectX11/DX11Model.h"
 #include "Platform/DirectX11/DX11TextureShader.h"
 #include "Renderer/Camera.h"
+
+#include "Renderer/Shader.h"
 
 namespace kepler {
 	Renderer* Renderer::s_pInstance = nullptr;
@@ -24,35 +25,28 @@ namespace kepler {
 
 	void Renderer::Init()
 	{
-		if (!s_pInstance)
+		if (s_pInstance)
 		{
-			s_pInstance = new Renderer;
+			return;
 		}
+		s_pInstance = new Renderer;
 	}
 
 	Renderer::Renderer()
-		:m_pGraphicsAPI{ nullptr }
+		:m_pGraphicsAPI{ IGraphicsAPI::Create() }
 	{
-		m_pGraphicsAPI = IGraphicsAPI::Create();
-		m_pCamera = new Camera();
-		m_pTextureShader = new DX11TextureShader();
 
-		m_pCamera->SetPosition(0.0f, 0.0f, -5.0f);
 	}
 
 	Renderer::~Renderer()
 	{
-		delete m_pCamera;
+
 	}
 
-	bool Renderer::Render(DX11Model** ppModel, int modelCount)
+	bool Renderer::Render(IWindow* pWWnd)
 	{
-		WindowsWindow* pWWnd = (WindowsWindow*)Application::Get()->GetWindow();
 		DX11Context* pContext = (DX11Context*)IGraphicsContext::Get();
 		DX11API* pAPI = (DX11API*)m_pGraphicsAPI;
-
-		// 씬을 그리기 위해 버퍼를 지웁니다
-		pAPI->ClearColor();
 
 		// 행렬을 설정합니다.
 
@@ -73,24 +67,26 @@ namespace kepler {
 		m_pCamera->Render();
 		m_pCamera->GetViewMatrix(m_viewMatrix);
 
+		// 2D 렌더링 시작 시 Z 버퍼를 끕니다.
+		pContext->TurnZBufferOff();
 
 		// TODO: 렌더링 코드를 작성하세요...
+		m_pModel->Render(pContext->GetDeviceContext());
+
 		if (!m_pTextureShader->Init(IGraphicsContext::Get()->GetDevice(), m_hWnd))
 		{
 			MessageBox(m_hWnd, L"Could not initialize Texture Shader.", L"Error", MB_OK);
 			return false;
 		}
 
-		for (int i = 0; i < modelCount; i++)
+		if (!m_pTextureShader->Render(pContext->GetDeviceContext(), m_pModel->GetIndexCount(), m_worldMatrix,
+			m_viewMatrix, m_projectionMatrix, m_pModel->GetTexture()))
 		{
-			ppModel[i]->Render(pContext->GetDeviceContext());
-			if (!m_pTextureShader->Render(pContext->GetDeviceContext(), ppModel[i]->GetIndexCount(), m_worldMatrix,
-				m_viewMatrix, m_projectionMatrix, ppModel[i]->GetTexture()))
-			{
-				return false;
-			}
+			return false;
 		}
 
+		// 2D 렌더링 종료 시 Z 버퍼를 켭니다.
+		pContext->TurnZBufferOn();
 		return true;
 	}
 
@@ -104,9 +100,9 @@ namespace kepler {
 
 	}
 
-	void Renderer::SetViewport()
+	void Renderer::SetViewport(const uint32_t width, const uint32_t height, const float minDepth, const float maxDepth)
 	{
-
+		m_pGraphicsAPI->SetViewport(width, height, minDepth, maxDepth);
 	}
 
 	void Renderer::Resize(uint32_t width, uint32_t height)
@@ -114,8 +110,8 @@ namespace kepler {
 
 	}
 
-	void Renderer::DrawIndexed()
+	void Renderer::Submit(std::shared_ptr<IVertexArray>& pVertexArray)
 	{
-
+		m_pGraphicsAPI->DrawIndexed(pVertexArray);
 	}
 }

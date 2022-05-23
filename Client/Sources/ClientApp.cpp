@@ -1,6 +1,7 @@
-#include <Kepler.h>
-#include "TestLayer.h"
+#include "ExampleLayer.h"
 
+
+#include <Core/EntryPoint.h>
 
 class Client : public kepler::Application
 {
@@ -8,8 +9,7 @@ public:
 	Client()
 		:Application(kepler::eGraphicsAPI::DirectX11)
 	{
-		PushLayer(new TestLayer());
-		//PushOverlay(new kepler::ImGuiLayer());
+		PushLayer(new ExampleLayer());
 	}
 	~Client()
 	{

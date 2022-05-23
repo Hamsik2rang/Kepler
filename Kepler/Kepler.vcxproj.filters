@@ -108,10 +108,34 @@
     <ClInclude Include="Platform\DirectX11\DX11Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Platform\DirectX11\DX11TextureShader.h">
+    <ClInclude Include="Renderer\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Camera.h">
+    <ClInclude Include="Renderer\Buffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\VertexArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\DirectX11\DX11VertexArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\DirectX11\DX11Buffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\DirectX11\DX11Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\stbimage\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\DirectX11\DX11TextureShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -185,10 +209,31 @@
     <ClCompile Include="Platform\DirectX11\DX11Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Platform\DirectX11\DX11TextureShader.cpp">
+    <ClCompile Include="Renderer\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\Camera.cpp">
+    <ClCompile Include="Renderer\VertexArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform\DirectX11\DX11VertexArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform\DirectX11\DX11Buffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Buffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform\DirectX11\DX11Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform\DirectX11\DX11TextureShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -207,5 +252,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\Shaders\HLSL\Global\VSGlobal.hlsli" />
+    <None Include="Resources\Shaders\HLSL\Global\PSGlobal.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shaders\HLSL\VSTexture.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\PSTexture.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\VSSolid.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\PSSolid.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\VSTest.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\PSTest.hlsl" />
   </ItemGroup>
 </Project>
