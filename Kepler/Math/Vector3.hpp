@@ -308,8 +308,8 @@ namespace kepler {
 		__m128 rps = _mm_movelh_ps(rxy, rz0);
 
 		__m128 result = _mm_mul_ps(lps, rps);
-		result = _mm_hadd_ps(lps, rps);
-		result = _mm_hadd_ps(lps, rps);
+		result = _mm_hadd_ps(result, result);
+		result = _mm_hadd_ps(result, result);
 
 		return _mm_cvtss_f32(result);
 	}

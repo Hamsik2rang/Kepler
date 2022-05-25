@@ -42,7 +42,7 @@ namespace kepler {
 			float tb = ::sinf(theta * t) / sin;
 
 			Quaternion qt = ta * qa + tb * qb;
-
+			
 			return qt;
 		}
 	}
