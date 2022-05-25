@@ -1,5 +1,6 @@
-#include "Constant.h"
+#include "kepch.h"
 
+#include "Constant.h"
 
 namespace kepler {
 	namespace math {

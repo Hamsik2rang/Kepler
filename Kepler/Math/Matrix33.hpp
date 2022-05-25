@@ -23,7 +23,7 @@ namespace kepler {
 			: elem{ 0.0f }
 		{}
 
-		Matrix33(const float const _elem[9])
+		Matrix33(const float _elem[9])
 			: elem{ _elem[0], _elem[1],_elem[2],
 					_elem[3], _elem[4], _elem[5],
 					_elem[6], _elem[7], _elem[8]}
@@ -252,20 +252,6 @@ namespace kepler {
 		}
 		//--------------------------------------------------------
 	};
-
-	// Static Variables --------------------------------------
-	const Matrix33 Matrix33::Zero = {
-		0.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 
-		0.0f, 0.0f, 0.0f
-	};
-
-	const Matrix33 Matrix33::Identity = {
-		1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f
-	};
-	//--------------------------------------------------------
 
 	using Mat33f = Matrix33;
 }

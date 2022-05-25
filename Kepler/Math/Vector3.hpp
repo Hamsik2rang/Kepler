@@ -273,18 +273,8 @@ namespace kepler {
 		//--------------------------------------------------------
 	};
 
-	// Static Variables --------------------------------------
-	const Vector3 Vector3::Zero = { 0.0f, 0.0f, 0.0f };
-	const Vector3 Vector3::Up = { 0.0f, 1.0f, 0.0f };
-	const Vector3 Vector3::Down = { 0.0f, -1.0f, 0.0f };
-	const Vector3 Vector3::Right = { 1.0f, 0.0f, 0.0f };
-	const Vector3 Vector3::Left = { -1.0f, 0.0f, 0.0f };
-	const Vector3 Vector3::Front = { 0.0f, 0.0f, 1.0f };
-	const Vector3 Vector3::Back = { 0.0f, 0.0f, -1.0f };
-	//--------------------------------------------------------
-
 	// Global Functions --------------------------------------
-	const Vector3 Cross(const Vector3& lhs, const Vector3& rhs)
+	inline const Vector3 Cross(const Vector3& lhs, const Vector3& rhs)
 	{
 		__m128 lps = lhs.ToM128();
 		__m128 rps = rhs.ToM128();
@@ -295,7 +285,7 @@ namespace kepler {
 		return Vector3(cross.m128_f32[0], cross.m128_f32[1], cross.m128_f32[2]);
 	}
 
-	const float Dot(const Vector3& lhs, const Vector3& rhs)
+	inline const float Dot(const Vector3& lhs, const Vector3& rhs)
 	{
 		__m128 zero = _mm_set1_ps(0.0f);
 		__m128 lxy = _mm_loadl_pi(zero, reinterpret_cast<const __m64*>(&lhs.x));

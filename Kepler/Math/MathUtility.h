@@ -20,22 +20,5 @@ namespace kepler {
 			// radian(rad) = 180' * radian / pi
 			return radian * 180.0f / constant::PI;
 		}
-
-		inline const float Clamp(float f, float min, float max)
-		{
-			if (min >= max)
-			{
-				float temp = min;
-				min = max;
-				max = min;
-			}
-
-			if (f < min) f = min;
-			else if (f > max) f = max;
-
-			return f;
-		}
-
-
 	}
 }

@@ -26,7 +26,7 @@ namespace kepler {
 			: elem{ 0.0f }
 		{}
 
-		Matrix44(const float const _elem[16])
+		Matrix44(const float _elem[16])
 			: elem{ _elem[0],  _elem[1],  _elem[2],  _elem[3],
 					_elem[4],  _elem[5],  _elem[6],  _elem[7],
 					_elem[8],  _elem[9],  _elem[10], _elem[11],
@@ -289,22 +289,6 @@ namespace kepler {
 		}
 		//--------------------------------------------------------
 	};
-
-	// Static Variables --------------------------------------
-	const Matrix44 Matrix44::Zero = {
-		0.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 0.0f 
-	};
-
-	const Matrix44 Matrix44::Identity = {
-		1.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 1.0f
-	};
-	//--------------------------------------------------------
 
 	using Mat44f = Matrix44;
 }
