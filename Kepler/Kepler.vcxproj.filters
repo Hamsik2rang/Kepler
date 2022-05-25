@@ -144,7 +144,7 @@
     <ClInclude Include="Math\Constant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Math\Interpolation.hpp">
+    <ClInclude Include="Math\Interpolation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Math\Intrinsic.h">
@@ -276,6 +276,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Math\Constant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Interpolation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vector3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vector4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Matrix33.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Matrix44.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Quaternion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

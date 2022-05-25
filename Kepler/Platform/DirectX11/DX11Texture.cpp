@@ -79,10 +79,12 @@ namespace kepler {
 		texDesc.Width = m_width;
 		texDesc.Height = m_height;
 		texDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-		texDesc.MipLevels = 0;
+		texDesc.MipLevels = 1;
 		texDesc.ArraySize = 1;
 		texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-		texDesc.CPUAccessFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
+		texDesc.SampleDesc.Count = 1;
+		texDesc.SampleDesc.Quality = 0;
+		texDesc.CPUAccessFlags = 0;
 
 		D3D11_SUBRESOURCE_DATA initData{};
 		initData.pSysMem = pRawImage;
@@ -93,19 +95,17 @@ namespace kepler {
 
 		// 텍스처 생성
 		HRESULT hr = pDevice->CreateTexture2D(&texDesc, &initData, &m_pTexture);
-		if (FAILED(hr))
-		{
-			KEPLER_CORE_ASSERT(false, "Fail to create texture");
-			stbi_image_free(pRawImage);
-			pRawImage = nullptr;
-			return;
-		}
 		if (pRawImage)
 		{
 			stbi_image_free(pRawImage);
 			pRawImage = nullptr;
 		}
-
+		if (FAILED(hr))
+		{
+			KEPLER_CORE_ASSERT(false, "Fail to create texture");
+			return;
+		}
+		
 		// 리소스 뷰 생성
 		hr = pDevice->CreateShaderResourceView(m_pTexture, nullptr, &m_pResourceView);
 
@@ -122,6 +122,25 @@ namespace kepler {
 		hr = pDevice->CreateSamplerState(&samplerDesc, &m_pSamplerState);
 	}
 
+	DX11Texture2D::~DX11Texture2D()
+	{
+		if (m_pTexture)
+		{
+			m_pTexture->Release();
+			m_pTexture = nullptr;
+		}
+		if (m_pResourceView)
+		{
+			m_pResourceView->Release();
+			m_pResourceView = nullptr;
+		}
+		if (m_pSamplerState)
+		{
+			m_pSamplerState->Release();
+			m_pSamplerState = nullptr;
+		}
+	}
+
 	void DX11Texture2D::Bind(uint32_t slot)
 	{
 		ID3D11DeviceContext* pDeviceContext = nullptr;
@@ -135,7 +154,6 @@ namespace kepler {
 	{
 		//TODO: 추후 구현
 	}
-
 
 	// 나중에 더 다듬어서 사용
 	[[deprecated]]

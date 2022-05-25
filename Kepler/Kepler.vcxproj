@@ -170,7 +170,7 @@
     <ClInclude Include="Core\Log.h" />
     <ClInclude Include="Dependencies\stbimage\stb_image.h" />
     <ClInclude Include="Math\Constant.h" />
-    <ClInclude Include="Math\Interpolation.hpp" />
+    <ClInclude Include="Math\Interpolation.h" />
     <ClInclude Include="Math\Intrinsic.h" />
     <ClInclude Include="Math\KeplerMath.h" />
     <ClInclude Include="Math\MathUtility.h" />
@@ -231,6 +231,12 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">kepch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="Math\Constant.cpp" />
+    <ClCompile Include="Math\Interpolation.cpp" />
+    <ClCompile Include="Math\Matrix33.cpp" />
+    <ClCompile Include="Math\Matrix44.cpp" />
+    <ClCompile Include="Math\Quaternion.cpp" />
+    <ClCompile Include="Math\Vector3.cpp" />
+    <ClCompile Include="Math\Vector4.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11API.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Buffer.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Context.cpp" />

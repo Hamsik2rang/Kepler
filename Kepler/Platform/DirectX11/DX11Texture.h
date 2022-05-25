@@ -37,6 +37,8 @@ namespace kepler {
 	public:
 		DX11Texture2D(const eTextureDataType type, const uint32_t width, const uint32_t height, const uint8_t channel, const uint8_t bytePerTexel);
 		DX11Texture2D(const eTextureDataType type, const std::string& filepath);
+		
+		~DX11Texture2D();
 
 		// Inherited via ITexture2D
 		virtual void Bind(uint32_t slot) override;

@@ -35,6 +35,18 @@ void ExampleLayer::OnAttach()
 	pColor->SetLayout(layout);
 	m_pVertexArray->AddVertexBuffer(pColor);
 
+	float uv[]{
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f
+	};
+	std::shared_ptr<IVertexBuffer> pUV = IVertexBuffer::Create(uv, sizeof(uv), eBufferUsage::Default);
+	pUV->SetLayout({ 
+		{"TEXCOORD", 0, kepler::eShaderDataType::Float2, 0, sizeof(float) * 2} 
+		});
+	m_pVertexArray->AddVertexBuffer(pUV);
+
 	//---------------------------------------------------
 	uint32_t indices[] = {
 		0, 1, 3,	// first triangle
@@ -43,6 +55,8 @@ void ExampleLayer::OnAttach()
 
 	std::shared_ptr<IIndexBuffer> pIBuffer = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), eBufferUsage::Default);
 	m_pVertexArray->SetIndexBuffer(pIBuffer);
+
+	m_pTexture = ITexture2D::Create(eTextureDataType::Float, "Assets/Textures/2k_earth_daymap.jpg");
 
 	m_timer.Start();
 }
@@ -60,7 +74,7 @@ void ExampleLayer::OnUpdate()
 	ShaderCache::GetShader("PSTest")->Bind();
 	
 	ShaderCache::GetShader("PSTest")->SetFloat("g_Time", curTime);
-	
+	m_pTexture->Bind(0);
 	m_pVertexArray->Bind();
 	
 	Renderer::Get()->Submit(m_pVertexArray);
