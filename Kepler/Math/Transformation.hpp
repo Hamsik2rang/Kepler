@@ -89,7 +89,6 @@ namespace kepler {
 
 		const Mat44f LookAt(const Vector3& eye, const Vector3& at, const Vector3& worldUp = { 0.0f, 1.0f, 0.0f })
 		{
-			// Gram-Schmidt process
 			Vec3f right = Cross(worldUp, at).Normalize();
 			Vec3f up = Cross(at, right).Normalize();
 			Vec3f front = Cross(right, up);
@@ -110,7 +109,7 @@ namespace kepler {
 			1.0f / (std::tanf(DegToRad(fovY / 2.0f)) * aspect), 0.0f, 0.0f, 0.0f ,
 			0.0f, 1.0f / std::tanf(DegToRad(fovY / 2.0f)), 0.0f, 0.0f ,
 			0.0f, 0.0f, far / (far - near), -1.0f,
-			0.0f, 0.0f, near* far / (far - near), 0.0f
+			0.0f, 0.0f, near * far / (far - near), 0.0f
 			};
 
 			return perspective;
@@ -119,10 +118,10 @@ namespace kepler {
 		const Mat44f Orthographic(const float left, const float right, const float top, const float bottom, const float near, const float far)
 		{
 			Mat44f orthographic{
-				2.0f / (right - left), 0.0f, 0.0f, -(right + left) / (right - left),
-				0.0f, 2.0f / (top - bottom), 0.0f, -(top + bottom) / (top - bottom),
-				0.0f, 0.0f, -2.0f / (far - near), -(far + near) / (far - near),
-				0.0f, 0.0f,	0.0f, 1.0f
+				2.0f / (right - left), 0.0f, 0.0f, 0.0f,
+				0.0f, 2.0f / (top - bottom), 0.0f, 0.0f,
+				0.0f, 0.0f, -2.0f / (far - near), 0.0f,
+				-(right + left) / (right - left),  -(top + bottom) / (top - bottom),-(far + near) / (far - near), 1.0f
 			};
 		}
 	}
