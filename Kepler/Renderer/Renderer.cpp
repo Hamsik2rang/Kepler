@@ -110,7 +110,7 @@ namespace kepler {
 
 	}
 
-	void Renderer::Submit(std::shared_ptr<IVertexArray>& pVertexArray)
+	void Renderer::Submit(std::shared_ptr<IVertexArray>& pVertexArray, const Vec3f& transform)
 	{
 		m_pGraphicsAPI->DrawIndexed(pVertexArray);
 	}

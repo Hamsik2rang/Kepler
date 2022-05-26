@@ -47,10 +47,10 @@ namespace kepler {
 
 		virtual void SetInt(const std::string& paramName, int value) override;
 		virtual void SetFloat(const std::string& paramName, float value) override;
-		virtual void SetFloat3(const std::string& paramName, DirectX::XMFLOAT3 value) override;
-		virtual void SetFloat4(const std::string& paramName, DirectX::XMFLOAT4 value) override;
-		virtual void SetVector(const std::string& paramName, DirectX::XMVECTOR value) override;
-		virtual void SetMatrix(const std::string& paramName, DirectX::XMMATRIX value) override;
+		virtual void SetFloat3(const std::string& paramName, const Vec3f& value) override;
+		virtual void SetFloat4(const std::string& paramName, const Vec4f& value) override;
+		virtual void SetVector(const std::string& paramName, const Vec4f& value) override;
+		virtual void SetMatrix(const std::string& paramName, const Mat44f& value) override;
 
 		inline virtual void SetName(const std::string& name) override { m_name = name; }
 		inline virtual std::string GetName() const override { return m_name; }

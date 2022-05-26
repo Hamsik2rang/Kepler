@@ -8,7 +8,8 @@
 #include "Renderer/Camera.h"
 #include "Platform/DirectX11/DX11Model.h"
 #include "Platform/DirectX11/DX11TextureShader.h"
-#include <DirectXMath.h>
+
+#include "Math/KeplerMath.h"
 
 using namespace DirectX;
 
@@ -21,15 +22,15 @@ namespace kepler {
 		IGraphicsAPI* m_pGraphicsAPI;
 		
 		// º°Èñ ÄÚµå
-		HWND m_hWnd = nullptr;
-		Camera* m_pCamera = nullptr;
-		DX11TextureShader* m_pTextureShader = nullptr;
-		DX11Model* m_pModel = nullptr;
-
-		XMMATRIX m_worldMatrix{};
-		XMMATRIX m_projectionMatrix{};
-		XMMATRIX m_orthoMatrix{};
-		XMMATRIX m_viewMatrix{};
+		//HWND m_hWnd = nullptr;
+		//Camera* m_pCamera = nullptr;
+		//DX11TextureShader* m_pTextureShader = nullptr;
+		//DX11Model* m_pModel = nullptr;
+		//
+		//XMMATRIX m_worldMatrix{};
+		//XMMATRIX m_projectionMatrix{};
+		//XMMATRIX m_orthoMatrix{};
+		//XMMATRIX m_viewMatrix{};
 
 		Renderer();
 		~Renderer();
@@ -47,7 +48,7 @@ namespace kepler {
 		void SetViewport(const uint32_t width, const uint32_t height, const float minDepth, const float maxDepth);
 		void Resize(uint32_t width, uint32_t height);
 		
-		// TODO: should be going to get buffer(vertex, index) params
-		void Submit(std::shared_ptr<IVertexArray>& pVertexArray);
+		// TODO: should be going to define additional function overloadings(T, TR, TRS, shader program, etc.)
+		void Submit(std::shared_ptr<IVertexArray>& pVertexArray, const Vec3f& transform = Vec3f::Zero);
 	};
 }

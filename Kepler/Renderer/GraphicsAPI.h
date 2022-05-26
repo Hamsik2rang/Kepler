@@ -2,7 +2,6 @@
 
 #include "Core/Base.h"
 #include "Renderer/VertexArray.h"
-#include "DirectXMath.h"
 
 namespace kepler {
 

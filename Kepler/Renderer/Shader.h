@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <string>
 #include "Core/Base.h"
-#include "DirectXMath.h"
+#include "Math/KeplerMath.h"
 
 namespace kepler {
 
@@ -27,13 +27,12 @@ namespace kepler {
 		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
 		
-		// 추후 커스텀 수학 라이브러리로 수정할 예정이기 때문에 지금은 DXMATH로 사용합니다.
 		virtual void SetInt(const std::string& paramName, int value) = 0;
 		virtual void SetFloat(const std::string& paramName, float value) = 0;
-		virtual void SetFloat3(const std::string& paramName, DirectX::XMFLOAT3 value) = 0;
-		virtual void SetFloat4(const std::string& paramName, DirectX::XMFLOAT4 value) = 0;
-		virtual void SetVector(const std::string& paramName, DirectX::XMVECTOR value) = 0;
-		virtual void SetMatrix(const std::string& paramName, DirectX::XMMATRIX value) = 0;
+		virtual void SetFloat3(const std::string& paramName, const Vec3f& value) = 0;
+		virtual void SetFloat4(const std::string& paramName, const Vec4f& value) = 0;
+		virtual void SetVector(const std::string& paramName, const Vec4f& value) = 0;
+		virtual void SetMatrix(const std::string& paramName, const Mat44f& value) = 0;
 
 		virtual void SetName(const std::string& name) = 0;
 		virtual std::string GetName() const = 0;

@@ -465,7 +465,7 @@ namespace kepler {
 		UpdateConstantBuffer(index);
 	}
 
-	void DX11Shader::SetFloat3(const std::string& paramName, DirectX::XMFLOAT3 value)
+	void DX11Shader::SetFloat3(const std::string& paramName, const Vec3f& value)
 	{
 		int index = 0;
 		int offset = 0;
@@ -479,7 +479,7 @@ namespace kepler {
 		UpdateConstantBuffer(index);
 	}
 
-	void DX11Shader::SetFloat4(const std::string& paramName, DirectX::XMFLOAT4 value)
+	void DX11Shader::SetFloat4(const std::string& paramName, const Vec4f& value)
 	{
 		int index = 0;
 		int offset = 0;
@@ -493,7 +493,7 @@ namespace kepler {
 		UpdateConstantBuffer(index);
 	}
 
-	void DX11Shader::SetVector(const std::string& paramName, DirectX::XMVECTOR value)
+	void DX11Shader::SetVector(const std::string& paramName, const Vec4f& value)
 	{
 		int index = 0;
 		int offset = 0;
@@ -507,7 +507,7 @@ namespace kepler {
 		UpdateConstantBuffer(index);
 	}
 
-	void DX11Shader::SetMatrix(const std::string& paramName, DirectX::XMMATRIX value)
+	void DX11Shader::SetMatrix(const std::string& paramName, const Mat44f& value)
 	{
 		int index = 0;
 		int offset = 0;
