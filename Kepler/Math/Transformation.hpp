@@ -103,25 +103,25 @@ namespace kepler {
 			return view;
 		}
 
-		const Mat44f Perspective(const float fovY, const float aspect, const float near, const float far)
+		const Mat44f Perspective(const float fovY, const float aspect, const float nearClip, const float farClip)
 		{
 			Mat44f perspective{
 			1.0f / (std::tanf(DegToRad(fovY / 2.0f)) * aspect), 0.0f, 0.0f, 0.0f ,
 			0.0f, 1.0f / std::tanf(DegToRad(fovY / 2.0f)), 0.0f, 0.0f ,
-			0.0f, 0.0f, far / (far - near), -1.0f,
-			0.0f, 0.0f, near * far / (far - near), 0.0f
+			0.0f, 0.0f, farClip / (farClip - nearClip), -1.0f,
+			0.0f, 0.0f, nearClip * farClip / (farClip - nearClip), 0.0f
 			};
 
 			return perspective;
 		}
 
-		const Mat44f Orthographic(const float left, const float right, const float top, const float bottom, const float near, const float far)
+		const Mat44f Orthographic(const float left, const float right, const float top, const float bottom, const float nearClip, const float farClip)
 		{
 			Mat44f orthographic{
 				2.0f / (right - left), 0.0f, 0.0f, 0.0f,
 				0.0f, 2.0f / (top - bottom), 0.0f, 0.0f,
-				0.0f, 0.0f, -2.0f / (far - near), 0.0f,
-				-(right + left) / (right - left),  -(top + bottom) / (top - bottom),-(far + near) / (far - near), 1.0f
+				0.0f, 0.0f, -2.0f / (farClip - nearClip), 0.0f,
+				-(right + left) / (right - left),  -(top + bottom) / (top - bottom),-(farClip + nearClip) / (farClip - nearClip), 1.0f
 			};
 		}
 	}
