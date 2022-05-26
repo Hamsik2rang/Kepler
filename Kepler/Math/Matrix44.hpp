@@ -274,6 +274,26 @@ namespace kepler {
 			return !(lhs == rhs);
 		}
 
+		__forceinline friend const Vector4 operator*(const Vector4& lhs, const Matrix44& rhs)
+		{
+			__m128 xxxx = _mm_shuffle_ps(lhs.ps, lhs.ps, KP_MM_SHUFFLE_LE(0, 0, 0, 0));
+			__m128 yyyy = _mm_shuffle_ps(lhs.ps, lhs.ps, KP_MM_SHUFFLE_LE(1, 1, 1, 1));
+			__m128 zzzz = _mm_shuffle_ps(lhs.ps, lhs.ps, KP_MM_SHUFFLE_LE(2, 2, 2, 2));
+			__m128 wwww = _mm_shuffle_ps(lhs.ps, lhs.ps, KP_MM_SHUFFLE_LE(3, 3, 3, 3));
+
+			__m128 e0 = _mm_mul_ps(xxxx, rhs.row[0].ps);
+			__m128 e1 = _mm_mul_ps(yyyy, rhs.row[1].ps);
+			__m128 e2 = _mm_mul_ps(zzzz, rhs.row[2].ps);
+			__m128 e3 = _mm_mul_ps(wwww, rhs.row[3].ps);
+
+			__m128 e01 = _mm_add_ps(e0, e1);
+			__m128 e02 = _mm_add_ps(e2, e3);
+
+			Vector4 result(_mm_add_ps(e01, e02));
+
+			return result;
+		}
+
 		friend std::ostream& operator<<(std::ostream& os, const Matrix44& rhs)
 		{
 			for (int i = 0; i < 4; i++)
