@@ -61,14 +61,12 @@ void ExampleLayer::OnAttach()
 	//	{"TEXCOORD", 0, kepler::eShaderDataType::Float2, 0, sizeof(float) * 2} 
 	//	});
 	//m_pVertexArray->AddVertexBuffer(pUV);
-#pragma pack(push, 4)
 	struct QuadVertex
 	{
 		Vec3f position;
 		Vec2f uv;
 		Vec4f color;
 	};
-#pragma pack(pop)
 	QuadVertex vertices[4]{
 		{{ 0.5f,  0.5f, 0.0f }, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f} },  // top right
 		{{ 0.5f, -0.5f, 0.0f }, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f} },  // bottom right
@@ -78,8 +76,8 @@ void ExampleLayer::OnAttach()
 	std::shared_ptr<IVertexBuffer> pVB = IVertexBuffer::Create(reinterpret_cast<float*>(vertices), sizeof(vertices), eBufferUsage::Default);
 	pVB->SetLayout({
 		{ "POSITION", 0, kepler::eShaderDataType::Float3, 0, sizeof(float) * 3 },
-		{ "TEXCOORD", 0, kepler::eShaderDataType::Float2, 9, sizeof(float) * 2 },
-		{ "COLOR", 0, kepler::eShaderDataType::Float4, 32, sizeof(float) * 4 }
+		{ "TEXCOORD", 0, kepler::eShaderDataType::Float2, 12, sizeof(float) * 2 },
+		{ "COLOR", 0, kepler::eShaderDataType::Float4, 20, sizeof(float) * 4 }
 		});
 	m_pVertexArray->AddVertexBuffer(pVB);
 
@@ -89,6 +87,7 @@ void ExampleLayer::OnAttach()
 	};
 	std::shared_ptr<IIndexBuffer> pIB = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), eBufferUsage::Default);
 	m_pVertexArray->SetIndexBuffer(pIB);
+	//---------------------------------------------------
 
 	m_pTexture = ITexture2D::Create(eTextureDataType::Float, "Assets/Textures/2k_earth_daymap.jpg");
 

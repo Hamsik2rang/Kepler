@@ -19,8 +19,9 @@ namespace kepler {
 		{
 			t = std::clamp(t, 0.0f, 1.0f);
 
-			Vector4 vt{};
-			vt.ps = _mm_add_ps(_mm_mul_ps(v0.ps, _mm_set_ps1(1.0f - t)), _mm_mul_ps(v1.ps, _mm_set_ps1(t)));
+			__m128 ps0 = _mm_loadu_ps(v0.elem);
+			__m128 ps1 = _mm_loadu_ps(v1.elem);
+			Vector4 vt(_mm_add_ps(_mm_mul_ps(ps0, _mm_set_ps1(1.0f - t)), _mm_mul_ps(ps1, _mm_set_ps1(t))));
 
 			return vt;
 		}

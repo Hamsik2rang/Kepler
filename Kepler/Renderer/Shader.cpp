@@ -63,8 +63,8 @@ namespace kepler {
 
 	std::shared_ptr<IShader> ShaderCache::Load(const eShaderType& type, const std::string& filepath)
 	{
-		int dirIndex = filepath.find_last_of('/');
-		int dotIndex = filepath.find_last_of('.');
+		size_t dirIndex = filepath.find_last_of('/');
+		size_t dotIndex = filepath.find_last_of('.');
 		std::string name = std::string(filepath.begin() + dirIndex + 1, filepath.begin() + dotIndex);
 		std::shared_ptr<IShader> shader = IShader::Create(type, name, filepath);
 		Add(name, shader);

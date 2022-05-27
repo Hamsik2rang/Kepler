@@ -103,17 +103,9 @@ namespace kepler {
         for (const auto& e : m_layout)
         {
             //UINT stride = m_layout.GetStride();
-            UINT stride = 48;
-            UINT offset = 0;
+            UINT stride = m_layout.GetStride();
+            UINT offset = e.offset;
             uint32_t slot = ShaderCache::GetLastCachedShader(eShaderType::Vertex)->GetInputElementSlot(e.name, e.index);
-            if (slot == 1)
-            {
-                offset = 32;
-            }
-            else if (slot == 2)
-            {
-                offset = 12;
-            }
             
             pDeviceContext->IASetVertexBuffers(slot, 1, &m_pBuffer, &stride, &offset);
         }
