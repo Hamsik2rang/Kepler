@@ -13,10 +13,7 @@ namespace kepler {
 		, m_pReflection{ nullptr }
 		, m_pVertexLayout{ nullptr }
 	{
-		Compile(filepath);
-		Create();
-		if (type == eShaderType::Vertex) InitVertexLayout();
-		InitConstantBuffer();
+		Init(filepath);
 	}
 
 	DX11Shader::DX11Shader(const eShaderType& type, const std::string& name, const std::string& filepath)
@@ -27,10 +24,7 @@ namespace kepler {
 		, m_pReflection{ nullptr }
 		, m_pVertexLayout{ nullptr }
 	{
-		Compile(filepath);
-		Create();
-		if (type == eShaderType::Vertex) InitVertexLayout();
-		InitConstantBuffer();
+		Init(filepath);
 	}
 
 	DX11Shader::~DX11Shader()
@@ -83,6 +77,23 @@ namespace kepler {
 				p = nullptr;
 			}
 		}
+	}
+
+	// 1. 쉐이더 컴파일
+	// 2. 쉐이더 객체 생성
+	// 3. 쉐이더 리플렉션 초기화
+	// +. vertex shader인 경우라면 Vertex Input Layout 초기화
+	// 4. 쉐이더 안의 상수 버퍼 초기화
+	void DX11Shader::Init(const std::string& filepath)
+	{
+		Compile(filepath);
+		Create();
+		InitReflection();
+		if (m_type == eShaderType::Vertex) 
+		{
+			InitVertexLayout();
+		}
+		InitConstantBuffer();
 	}
 
 	// HLSL 5.0(DirectX 11_0, 11_1 지원 수준)만을 다룬다고 가정하고 컴파일합니다.
@@ -170,28 +181,28 @@ namespace kepler {
 		}
 	}
 
+	void DX11Shader::InitReflection()
+	{
+		HRESULT hr = D3DReflect(m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), __uuidof(ID3D11ShaderReflection), reinterpret_cast<void**>(&m_pReflection));
+		if (FAILED(hr))
+		{
+			KEPLER_CORE_ASSERT(false, "Fail to Get shader reflection");
+			return;
+		}
+	}
+
 	void DX11Shader::InitVertexLayout()
 	{
 		ID3D11Device* pDevice;
 		GetDX11DeviceAndDeviceContext(&pDevice, nullptr);
 
-		if (!m_pReflection)
-		{
-			HRESULT hr = D3DReflect(m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), __uuidof(ID3D11ShaderReflection), reinterpret_cast<void**>(&m_pReflection));
-			if (FAILED(hr))
-			{
-				KEPLER_CORE_ASSERT(false, "Fail to Get shader reflection");
-				return;
-			}
-		}
 		D3D11_SHADER_DESC shaderDesc{};
 		m_pReflection->GetDesc(&shaderDesc);
 
-		std::vector<D3D11_INPUT_ELEMENT_DESC> inputLayoutDescs;
 		for (uint32_t paramIndex = 0; paramIndex < shaderDesc.InputParameters; paramIndex++)
 		{
 			D3D11_SIGNATURE_PARAMETER_DESC paramDesc{};
-			m_pReflection->GetInputParameterDesc(paramIndex,&paramDesc);
+			m_pReflection->GetInputParameterDesc(paramIndex, &paramDesc);
 			
 			D3D11_INPUT_ELEMENT_DESC curDesc{};
 			curDesc.SemanticName = paramDesc.SemanticName;
@@ -226,10 +237,10 @@ namespace kepler {
 				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) curDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 			}
 			
-			inputLayoutDescs.push_back(curDesc);
+			m_inputElemDescs.push_back(curDesc);
 		}
 
-		HRESULT hr = pDevice->CreateInputLayout(&inputLayoutDescs[0], inputLayoutDescs.size(), m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), &m_pVertexLayout);
+		HRESULT hr = pDevice->CreateInputLayout(&m_inputElemDescs[0], static_cast<UINT>(m_inputElemDescs.size()), m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), &m_pVertexLayout);
 		if (FAILED(hr))
 		{
 			KEPLER_CORE_ASSERT(false, "Fail to Create Input Layout");
@@ -240,16 +251,6 @@ namespace kepler {
 	{
 		ID3D11Device* pDevice = nullptr;
 		GetDX11DeviceAndDeviceContext(&pDevice, nullptr);
-
-		if (!m_pReflection)
-		{
-			HRESULT hr = D3DReflect(m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), __uuidof(ID3D11ShaderReflection), reinterpret_cast<void**>(&m_pReflection));
-			if (FAILED(hr))
-			{
-				KEPLER_CORE_ASSERT(false, "Fail to Get shader reflection");
-				return;
-			}
-		}
 
 		// 쉐이더 디스크립션 받아오기
 		D3D11_SHADER_DESC shaderDesc{};
@@ -519,5 +520,23 @@ namespace kepler {
 		}
 		memcpy(m_pByteBuffer[index] + offset, &value, sizeof(value));
 		UpdateConstantBuffer(index);
+	}
+
+	uint32_t DX11Shader::GetInputElementSlot(const std::string& paramName, const uint32_t paramIndex) const
+	{
+		uint32_t inputSlot = 0xffffffff;	// inputslot을 찾았는지 구분하기 위한 임의의 maximum value
+		for (const auto& e : m_inputElemDescs)
+		{
+			if (e.SemanticName == paramName && e.SemanticIndex == paramIndex)
+			{
+				inputSlot = e.InputSlot;
+				break;
+			}
+		}
+
+		// 유효 슬롯 범위를 넘어간 경우(찾지 못한 경우)
+		KEPLER_ASSERT(inputSlot < D3D11_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT, "Fail to get Input Element Slot");
+
+		return inputSlot;
 	}
 }

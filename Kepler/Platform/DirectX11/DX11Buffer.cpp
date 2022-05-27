@@ -95,14 +95,28 @@ namespace kepler {
     }
 
     // 렌더링 파이프라인에 바인딩
-    void DX11VertexBuffer::Bind(uint32_t slot)
+    void DX11VertexBuffer::Bind()
     {
         ID3D11DeviceContext* pDeviceContext;
         GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
 
-        UINT stride = m_layout.GetStride();
-        UINT offset = 0;
-        pDeviceContext->IASetVertexBuffers(slot, 1, &m_pBuffer, &stride, &offset);
+        for (const auto& e : m_layout)
+        {
+            //UINT stride = m_layout.GetStride();
+            UINT stride = 48;
+            UINT offset = 0;
+            uint32_t slot = ShaderCache::GetLastCachedShader(eShaderType::Vertex)->GetInputElementSlot(e.name, e.index);
+            if (slot == 1)
+            {
+                offset = 32;
+            }
+            else if (slot == 2)
+            {
+                offset = 12;
+            }
+            
+            pDeviceContext->IASetVertexBuffers(slot, 1, &m_pBuffer, &stride, &offset);
+        }
     }
 
     // 렌더링 파이프라인에서 바인딩 해제

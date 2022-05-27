@@ -10,6 +10,7 @@ namespace kepler {
 	private:
 		Vec3f m_position;
 		float m_rotation;
+		float m_aspect;
 
 		Mat44f m_viewMatrix;
 		Mat44f m_viewProjectionMatrix;

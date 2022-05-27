@@ -60,7 +60,6 @@ namespace kepler {
 		std::string name;
 		uint32_t index;
 		uint32_t size;
-		uint32_t stride;
 		uint32_t offset;
 		eShaderDataType type;
 
@@ -70,7 +69,6 @@ namespace kepler {
 			, index{_index}
 			, type{ _type }
 			, size{ ShaderDataTypeSize(_type)}
-			, stride{ 0 }
 			, offset{ 0 }
 		{}
 
@@ -137,7 +135,7 @@ namespace kepler {
 	public:
 		virtual ~IVertexBuffer() = default;
 	
-		virtual void Bind(uint32_t slot) = 0;
+		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
 
 		virtual void SetData(const void* data, uint32_t size) = 0;

@@ -1,17 +1,13 @@
 #pragma once
 
 #include "Core/Base.h"
-#include "Core/Window.h"
 #include "Renderer/GraphicsAPI.h"
 #include "Renderer/VertexArray.h"
-#include "Renderer/Shader.h"
 #include "Renderer/Camera.h"
-#include "Platform/DirectX11/DX11Model.h"
-#include "Platform/DirectX11/DX11TextureShader.h"
+#include "Core/Window.h"
 
 #include "Math/KeplerMath.h"
 
-using namespace DirectX;
 
 namespace kepler {
 
@@ -41,7 +37,7 @@ namespace kepler {
 		
 		inline eGraphicsAPI GetAPI() const { return m_pGraphicsAPI->GetAPI(); }
 
-		bool Render(IWindow* pWindow);
+		//bool Render(IWindow* pWindow);
 
 		void ClearColor();
 		void SetColor();

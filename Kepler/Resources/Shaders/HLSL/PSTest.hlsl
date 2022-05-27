@@ -23,6 +23,5 @@ float4 main(PS_INPUT input) : SV_TARGET
     float3 rgb = 0.5 + 0.5 * cos(g_Time + input.ndcPos.xyx + float3(0.0f, 2.0f, 4.0f));
     float4 col = float4(rgb, 1.0f);
     float4 tex = g_texture.Sample(g_samplerState, input.uv);
- 
     return tex * col;
 }

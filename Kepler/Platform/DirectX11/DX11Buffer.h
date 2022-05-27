@@ -15,7 +15,7 @@ namespace kepler {
 		DX11VertexBuffer(const float* const vertices, const uint32_t size, eBufferUsage usage);
 		
 		// Inherited via IVertexBuffer
-		virtual void Bind(uint32_t slot) override;
+		virtual void Bind() override;
 		virtual void Unbind() override;
 		virtual void SetData(const void* data, uint32_t size) override;
 		inline virtual void SetLayout(const BufferLayout& bufferLayout) override;
