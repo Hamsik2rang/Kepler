@@ -43,7 +43,7 @@ namespace kepler {
 			}
 		case eGraphicsAPI::DirectX11:
 			{
-				return std::make_shared<DX11Texture2D>(type ,width, height, channel, bytePerTexel);
+				return std::make_shared<DX11Texture2D>(type, width, height, channel, bytePerTexel);
 			}
 		}
 

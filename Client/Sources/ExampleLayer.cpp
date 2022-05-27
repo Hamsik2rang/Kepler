@@ -90,6 +90,7 @@ void ExampleLayer::OnAttach()
 	//---------------------------------------------------
 
 	m_pTexture = ITexture2D::Create(eTextureDataType::Float, "Assets/Textures/2k_earth_daymap.jpg");
+	m_pTexture->Bind(0);
 
 	m_timer.Start();
 }
@@ -107,7 +108,6 @@ void ExampleLayer::OnUpdate()
 	ShaderCache::GetShader("PSTest")->Bind();
 	
 	ShaderCache::GetShader("PSTest")->SetFloat("g_Time", curTime);
-	m_pTexture->Bind(0);
 	m_pVertexArray->Bind();
 	
 	Renderer::Get()->Submit(m_pVertexArray);

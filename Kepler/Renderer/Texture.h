@@ -24,7 +24,7 @@ namespace kepler {
 	public:
 		virtual uint32_t GetWidth() const = 0;
 
-		virtual void Bind(uint32_t slot) = 0;
+		virtual void Bind(const uint32_t slot = 0) = 0;
 		virtual void SetData(const void* data, const uint32_t size) = 0;
 
 		static std::shared_ptr<ITexture1D> Create(const eTextureDataType type, const uint32_t width, const uint8_t channel, const uint8_t bytePerTexel);
@@ -36,7 +36,7 @@ namespace kepler {
 		virtual uint32_t GetWidth() const = 0;
 		virtual uint32_t GetHeight() const = 0;
 
-		virtual void Bind(uint32_t slot) = 0;
+		virtual void Bind(const uint32_t slot = 0) = 0;
 		virtual void SetData(const void* data, const uint32_t size) = 0;
 
 		static std::shared_ptr<ITexture2D> Create(const eTextureDataType type, const uint32_t width, const uint32_t height, const uint8_t channel, const uint8_t bytePerTexel);
@@ -51,7 +51,7 @@ namespace kepler {
 		virtual uint32_t GetHeight() const = 0;
 		virtual uint32_t GetDepth() const = 0;
 
-		virtual void Bind(uint32_t slot) = 0;
+		virtual void Bind(const uint32_t slot = 0) = 0;
 		virtual void SetData(const void* data, const uint32_t size) = 0;
 
 		static std::shared_ptr<ITexture3D> Create(const eTextureDataType type, 

@@ -2,6 +2,7 @@
 
 #include "Renderer/Texture.h"
 #include "DX11Texture.h"
+#include "Renderer/Shader.h"
 
 namespace kepler {
 
@@ -41,7 +42,7 @@ namespace kepler {
 		~DX11Texture2D();
 
 		// Inherited via ITexture2D
-		virtual void Bind(uint32_t slot) override;
+		virtual void Bind(const uint32_t slot) override;
 		virtual void SetData(const void* data, const uint32_t size) override;
 		inline virtual uint32_t GetWidth() const override { return m_width; }
 		inline virtual uint32_t GetHeight() const override { return m_height; }

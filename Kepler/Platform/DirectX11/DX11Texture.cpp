@@ -141,11 +141,10 @@ namespace kepler {
 		}
 	}
 
-	void DX11Texture2D::Bind(uint32_t slot)
+	void DX11Texture2D::Bind(const uint32_t slot)
 	{
 		ID3D11DeviceContext* pDeviceContext = nullptr;
 		GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
-
 		pDeviceContext->PSSetShaderResources(slot, 1, &m_pResourceView);
 		pDeviceContext->PSSetSamplers(slot, 1, &m_pSamplerState);
 	}
