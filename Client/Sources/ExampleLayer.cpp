@@ -129,14 +129,12 @@ void ExampleLayer::OnDetach()
 
 }
 
-void ExampleLayer::OnUpdate()
+void ExampleLayer::OnUpdate(const float deltaTime)
 {
-	float curTime = m_timer.Elapsed();
-
 	ShaderCache::GetShader("VSTest")->Bind();
 	ShaderCache::GetShader("PSTest")->Bind();
 	
-	ShaderCache::GetShader("PSTest")->SetFloat("g_Time", curTime);
+	ShaderCache::GetShader("PSTest")->SetFloat("g_Time", deltaTime);
 	m_pVertexArray[0]->Bind();
 	
 	Renderer::Get()->Submit(m_pVertexArray[0]);

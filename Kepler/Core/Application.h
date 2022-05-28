@@ -6,6 +6,7 @@
 #include "Core/LayerStack.h"
 #include "ImGui/ImGuiLayer.h"
 #include "Renderer/GraphicsAPI.h"
+#include "Utility/Timer.hpp"
 
 namespace kepler {
 	// Window Application
@@ -17,6 +18,7 @@ namespace kepler {
 		std::unique_ptr<IWindow>	m_pWindow;
 		std::unique_ptr<ImGuiLayer> m_pImGuiLayer;
 		LayerStack					m_layerStack;
+		Timer						m_timer;
 
 	protected:
 		Application(eGraphicsAPI api);

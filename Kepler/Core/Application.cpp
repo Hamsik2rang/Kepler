@@ -68,8 +68,10 @@ namespace kepler{
 		KEPLER_CORE_INFO("Kepler is RUNNING...");
 
 		MSG msg{};
+		m_timer.Start();
 		while (msg.message != WM_QUIT)
 		{
+			float deltaTime = m_timer.Elapsed();
 			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 			{
 				TranslateMessage(&msg);
@@ -80,7 +82,7 @@ namespace kepler{
 			// Update all layer(and overlay)s
 			for (Layer* layer : m_layerStack)
 			{
-				layer->OnUpdate();
+				layer->OnUpdate(deltaTime);
 			}
 			// GUI Update
 			m_pImGuiLayer->Begin();

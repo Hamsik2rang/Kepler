@@ -20,6 +20,6 @@ public:
 
 	virtual void OnAttach() override;
 	virtual void OnDetach() override;
-	virtual void OnUpdate() override;
+	virtual void OnUpdate(const float deltaTime) override;
 	virtual void OnEvent(kepler::Event& e) override;
 };

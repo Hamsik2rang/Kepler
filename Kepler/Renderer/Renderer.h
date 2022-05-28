@@ -45,6 +45,6 @@ namespace kepler {
 		void Resize(uint32_t width, uint32_t height);
 		
 		// TODO: should be going to define additional function overloadings(T, TR, TRS, shader program, etc.)
-		void Submit(std::shared_ptr<IVertexArray>& pVertexArray, const Vec3f& transform = Vec3f::Zero);
+		void Submit(std::shared_ptr<IVertexArray>& pVertexArray, const Mat44f& transform = Mat44f::Identity);
 	};
 }
