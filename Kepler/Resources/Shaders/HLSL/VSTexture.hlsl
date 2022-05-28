@@ -17,7 +17,8 @@ VS_OUTPUT main(VS_INPUT input)
 {
     VS_OUTPUT output = (VS_OUTPUT)0;
     
-    output.Pos = mul(mul(float4(input.Pos, 1.0), g_World), g_ViewProjection);
+    //output.Pos = mul(mul(float4(input.Pos, 1.0), g_World), g_ViewProjection);
+    output.Pos = float4(input.Pos, 1.0f);
     output.UV = input.UV;
     
 	return output;

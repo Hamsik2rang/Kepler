@@ -135,10 +135,11 @@ namespace kepler {
 		HRESULT hr = D3DCompileFromFile(wFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, entryPointName.c_str(), target.c_str(), shaderFlags, 0, &m_pBlob, &pErrorBlob);
 		if (FAILED(hr))
 		{
+			KEPLER_CORE_ASSERT(false, "Fail to compile Shader");
 			if (pErrorBlob)
 			{
 				std::string errorMsg((const char*)pErrorBlob->GetBufferPointer());
-				KEPLER_ASSERT(false, errorMsg.c_str());
+				KEPLER_CORE_ASSERT(false, errorMsg.c_str());
 			}
 		}
 		if (pErrorBlob)

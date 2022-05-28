@@ -1,7 +1,7 @@
 #include "Global/PSGlobal.hlsli"
 // Pixel Texture Shader
 
-Texture2D Texture : register(t0);
+Texture2D g_Texture : register(t0);
 
 struct PS_INPUT
 {
@@ -11,5 +11,5 @@ struct PS_INPUT
 
 float4 main(PS_INPUT input) : SV_TARGET
 {
-    return Texture.Sample(g_LinearWrapState, input.UV) * float4(1.0f, 1.0f, 1.0f, 1.0f);
+    return g_Texture.Sample(g_LinearWrapState, input.UV) * float4(1.0f, 1.0f, 1.0f, 1.0f);
 }

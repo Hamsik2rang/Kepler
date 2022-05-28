@@ -102,7 +102,6 @@ namespace kepler {
 
         for (const auto& e : m_layout)
         {
-            //UINT stride = m_layout.GetStride();
             UINT stride = m_layout.GetStride();
             UINT offset = e.offset;
             uint32_t slot = ShaderCache::GetLastCachedShader(eShaderType::Vertex)->GetInputElementSlot(e.name, e.index);
