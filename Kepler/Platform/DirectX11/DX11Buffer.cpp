@@ -52,7 +52,7 @@ namespace kepler {
         }
     }
 
-    DX11VertexBuffer::DX11VertexBuffer(const float* const vertices, const uint32_t size, eBufferUsage usage)
+    DX11VertexBuffer::DX11VertexBuffer(const void* const vertices, const uint32_t size, eBufferUsage usage)
         : m_layout{}
         , m_pBuffer{ nullptr }
     {

@@ -27,7 +27,7 @@ namespace kepler {
 		return nullptr;
 	}
 
-	std::shared_ptr<IVertexBuffer> IVertexBuffer::Create(const float* const vertices, uint32_t size, eBufferUsage usage)
+	std::shared_ptr<IVertexBuffer> IVertexBuffer::Create(const void* const vertices, uint32_t size, eBufferUsage usage)
 	{
 		eGraphicsAPI api = IGraphicsAPI::GetAPI();
 		switch (api)

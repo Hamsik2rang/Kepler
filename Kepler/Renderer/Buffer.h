@@ -143,7 +143,7 @@ namespace kepler {
 		virtual const BufferLayout& GetLayout() const = 0;
 	
 		static std::shared_ptr<IVertexBuffer> Create(const uint32_t size, eBufferUsage usage);
-		static std::shared_ptr<IVertexBuffer> Create(const float* const vertices, const uint32_t size,eBufferUsage usage);
+		static std::shared_ptr<IVertexBuffer> Create(const void* const vertices, const uint32_t size,eBufferUsage usage);
 	};
 
 	// Index Buffer Interface
