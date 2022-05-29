@@ -334,5 +334,7 @@
     <FxCompile Include="Resources\Shaders\HLSL\PSSolid.hlsl" />
     <FxCompile Include="Resources\Shaders\HLSL\VSTest.hlsl" />
     <FxCompile Include="Resources\Shaders\HLSL\PSTest.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\VSSolidTexture.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\PixelSolidTexture.hlsl" />
   </ItemGroup>
 </Project>

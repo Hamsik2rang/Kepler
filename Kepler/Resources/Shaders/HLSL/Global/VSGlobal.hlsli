@@ -7,6 +7,3 @@ cbuffer cb : register(b0)
     matrix g_ViewProjection;
     matrix g_WorldViewProjection;
 }
-
-
-//SamplerState g_LinearWrapState : register(s0);
