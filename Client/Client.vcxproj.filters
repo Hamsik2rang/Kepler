@@ -24,7 +24,7 @@
     <ClCompile Include="Sources\ExampleLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestLayer.cpp">
+    <ClCompile Include="Sources\Render2DTestLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +32,8 @@
     <ClInclude Include="Sources\ExampleLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="TestLayer.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="Sources\Render2DTestLayer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

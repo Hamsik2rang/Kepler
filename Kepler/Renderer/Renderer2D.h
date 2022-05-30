@@ -32,18 +32,17 @@ namespace kepler {
 		void DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const Vec4f& color);
 		void DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const Vec4f& color);
 		
-		void DrawQuad(const Vec2f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot);
-		void DrawQuad(const Vec3f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot);
-		void DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot);
-		void DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot);
+		void DrawQuad(const Vec2f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture);
+		void DrawQuad(const Vec3f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture);
+		void DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture);
+		void DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture);
 
-		void DrawQuad(const Vec2f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot, const Vec4f& color);
-		void DrawQuad(const Vec3f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot, const Vec4f& color);
-		void DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot, const Vec4f& color);
-		void DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot, const Vec4f& color);
+		void DrawQuad(const Vec2f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color);
+		void DrawQuad(const Vec3f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color);
+		void DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color);
+		void DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color);
 
 		void DrawQuad(const Mat44f& transform, const Vec4f& color);
-		void DrawQuad(const Mat44f& transform, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot);
-		void DrawQuad(const Mat44f& transform, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot, const Vec4f& color);
+		void DrawQuad(const Mat44f& transform, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color = { 1.0f, 1.0f, 1.0f,1.0f });
 	};
 }

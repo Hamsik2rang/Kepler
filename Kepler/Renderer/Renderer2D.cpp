@@ -4,34 +4,14 @@
 
 namespace kepler {
 
-	struct Quad
-	{
-		struct QuadVertex
-		{
-			Vec3f position;
-			Vec2f uv;
-			Vec4f color;
-		};
-
-		QuadVertex vertices[4]{
-			{{ 0.5f,  0.5f, 0.0f }, {1.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f} },  // top right
-			{{ 0.5f, -0.5f, 0.0f }, {1.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f} },  // bottom right
-			{{ -0.5f, -0.5f, 0.0f }, {0.0f, 1.0f}, {1.0f, 1.0f, 1.0f, 1.0f} },  // bottom left
-			{{ -0.5f,  0.5f, 0.0f }, {0.0f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f} }   // top left
-		};
-
-		uint32_t indices[6]{
-			0, 1, 2,
-			0, 2, 3
-		};
-	};
+	Renderer2D* Renderer2D::s_pInstance = nullptr;
 
 	struct BatchData
 	{
 		std::shared_ptr<ITexture2D> pTexture;
 		std::shared_ptr<IShader> pVertexShader;
 		std::shared_ptr<IShader> pPixelShader;
-		std::vector<std::pair<std::shared_ptr<IVertexArray>, Mat44f&>> vt;
+		std::vector<std::pair<std::shared_ptr<IVertexArray>, Mat44f>> vt;
 	};
 
 	struct RenderData
@@ -42,11 +22,16 @@ namespace kepler {
 			float aspect;
 		} sceneData{};
 
-		std::list<BatchData> batchList;
+		std::vector<BatchData> batchObjects;
 	};
 
-	static Quad s_quad;
-	static RenderData s_data;
+	static RenderData s_data{};
+
+	Renderer2D::Renderer2D()
+		:m_pGraphicsAPI{ IGraphicsAPI::Create() }
+	{
+
+	}
 
 	Renderer2D::~Renderer2D()
 	{
@@ -73,14 +58,11 @@ namespace kepler {
 		{
 			s_pInstance = new Renderer2D;
 
-			ShaderCache::Load(eShaderType::Vertex, "Resources/Shaders/HLSL/VSSolid.hlsl");
-			ShaderCache::Load(eShaderType::Pixel, "Resources/Shaders/HLSL/PSSolid.hlsl");
+			ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSSolid.hlsl");
+			ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PSSolid.hlsl");
 
-			ShaderCache::Load(eShaderType::Vertex, "Resources/Shaders/HLSL/VSTexture.hlsl");
-			ShaderCache::Load(eShaderType::Pixel, "Resources/Shaders/HLSL/PSTexture.hlsl");
-
-			ShaderCache::Load(eShaderType::Vertex, "Resources/Shaders/HLSL/VSSolidTexture.hlsl");
-			ShaderCache::Load(eShaderType::Pixel, "Resources/Shaders/HLSL/PSSolidTexture.hlsl");
+			ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSTexture.hlsl");
+			ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PSTexture.hlsl");
 		}
 	}
 
@@ -98,91 +80,137 @@ namespace kepler {
 	void Renderer2D::Flush()
 	{
 		//...
+		for (const auto& batchData : s_data.batchObjects)
+		{
+			batchData.pVertexShader->Bind();
+			batchData.pPixelShader->Bind();
+			if (batchData.pTexture)
+			{
+				batchData.pTexture->Bind(0);
+			}
+			//auto viewProjTranspose = s_data.sceneData.viewProjection.Transpose();
+			//batchData.pVertexShader->SetMatrix("g_ViewProjection", viewProjTranspose);
+			batchData.pVertexShader->SetMatrix("g_ViewProjection", Mat44f::Identity);
 
-		s_data.batchList.clear();
+			for (const auto& vt : batchData.vt)
+			{
+				batchData.pVertexShader->SetMatrix("g_World", vt.second.Transpose());
+				vt.first->Bind();
+				m_pGraphicsAPI->DrawIndexed(vt.first);
+			}
+		}
+
+		s_data.batchObjects.clear();
 	}
 
 	void Renderer2D::DrawQuad(const Vec2f& position, const Vec2f& size, const Vec4f& color)
 	{
-		// Solid Shader
-		
+		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::Identity, { size.x / 16.0f * 9.0f, size.y, 1.0f });
+		DrawQuad(transform, color);
 	}
 
 	void Renderer2D::DrawQuad(const Vec3f& position, const Vec2f& size, const Vec4f& color)
 	{
-		// Solid Shader
+		Mat44f transform = math::GetWorldMatrix(position, Quaternion::Identity, { size.x / 16.0f * 9.0f, size.y, 1.0f });
+		DrawQuad(transform, color);
 	}
 
 	void Renderer2D::DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const Vec4f& color)
 	{
-		// Solid Shader
+		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / 16.0f * 9.0f, size.y, 1.0f });
+		DrawQuad(transform, color);
 	}
 
 	void Renderer2D::DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const Vec4f& color)
 	{
-		// Solid Shader
+		Mat44f transform = math::GetWorldMatrix(position, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / 16.0f * 9.0f, size.y, 1.0f });
+		DrawQuad(transform, color);
 	}
 
-	void Renderer2D::DrawQuad(const Vec2f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot)
+	void Renderer2D::DrawQuad(const Vec2f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture)
 	{
-		// Texture Shader
-
-
+		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::Identity, { size.x / 16.0f * 9.0f, size.y, 1.0f });
+		
+		DrawQuad(transform, texture);
 	}
 
-	void Renderer2D::DrawQuad(const Vec3f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot)
+	void Renderer2D::DrawQuad(const Vec3f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture)
 	{
-		// Texture Shader
+		Mat44f transform = math::GetWorldMatrix(position, Quaternion::Identity, { size.x / 16.0f * 9.0f, size.y, 1.0f });
+
+		DrawQuad(transform, texture);
 	}
 
-	void Renderer2D::DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot)
+	void Renderer2D::DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture)
 	{
-		// Texture Shader
+		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / 16.0f * 9.0f, size.y, 1.0f });
 
-
+		DrawQuad(transform, texture);
 	}
 
-	void Renderer2D::DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot)
+	void Renderer2D::DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture)
 	{
-		// Texture Shader
+		Mat44f transform = math::GetWorldMatrix(position, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / 16.0f * 9.0f, size.y, 1.0f });
 
-
+		DrawQuad(transform, texture);
 	}
 
-	void Renderer2D::DrawQuad(const Vec2f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot, const Vec4f& color)
+	void Renderer2D::DrawQuad(const Vec2f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color)
 	{
-		// Texture Color Shader
+		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::Identity, { size.x / 16.0f * 9.0f, size.y, 1.0f });
+
+		DrawQuad(transform, texture, color);
 	}
 
-	void Renderer2D::DrawQuad(const Vec3f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot, const Vec4f& color)
+	void Renderer2D::DrawQuad(const Vec3f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color)
 	{
-		// Texture Color Shader
+		Mat44f transform = math::GetWorldMatrix(position, Quaternion::Identity, { size.x, size.y, 1.0f });
 
-
+		DrawQuad(transform, texture, color);
 	}
 
-	void Renderer2D::DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot, const Vec4f& color)
+	void Renderer2D::DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color)
 	{
-		// Texture Color Shader
+		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / 16.0f * 9.0f, size.y, 1.0f });
 
-
+		DrawQuad(transform, texture, color);
 	}
 
-	void Renderer2D::DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot, const Vec4f& color)
+	void Renderer2D::DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color)
 	{
-		// Texture Color Shader
+		Mat44f transform = math::GetWorldMatrix(position, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / 16.0f * 9.0f, size.y, 1.0f });
 
-
+		DrawQuad(transform, texture, color);
 	}
 
 
+	// 텍스처가 지정되지 않은 Solid Quad
 	void Renderer2D::DrawQuad(const Mat44f& transform, const Vec4f& color)
 	{
-		// Solid Shader
-		BatchData data{};
-		data.pVertexShader = ShaderCache::GetShader("VSSolid");
-		data.pPixelShader = ShaderCache::GetShader("PSSolid");
+		// Solid Object가 배치 데이터 안에 추가된 적 있는지 파악
+		int index = -1;
+		for (int i = 0; i < s_data.batchObjects.size(); i++)
+		{
+			if (!s_data.batchObjects[i].pTexture)
+			{
+				index = i;
+				break;
+			}
+		}
 
+		// 추가되지 않았다면 Shader, Texture(nullptr)을 지정해 배치 데이터 추가
+		if (index < 0)
+		{
+			BatchData data{};
+			data.pVertexShader = ShaderCache::GetShader("VSSolid");
+			data.pPixelShader = ShaderCache::GetShader("PSSolid");
+			data.pTexture = nullptr;
+
+			s_data.batchObjects.push_back(data);
+			index = s_data.batchObjects.size() - 1;
+		}
+
+		// 정점, 인덱스 데이터 추가
 		struct QuadVertex
 		{
 			Vec3f pos;
@@ -211,26 +239,62 @@ namespace kepler {
 		pVA->AddVertexBuffer(pVB);
 		pVA->SetIndexBuffer(pIB);
 
-		//...
+		s_data.batchObjects[index].vt.push_back(std::make_pair(pVA, transform));
 	}
 
-	void Renderer2D::DrawQuad(const Mat44f& transform, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot)
+	void Renderer2D::DrawQuad(const Mat44f& transform, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color)
 	{
-		// Texture Shader
-		BatchData data{};
-		data.pVertexShader = ShaderCache::GetShader("VSTexture");
-		data.pPixelShader = ShaderCache::GetShader("PSTexture");
+		int index = -1;
+		for (int i = 0; i < s_data.batchObjects.size(); i++)
+		{
+			if (s_data.batchObjects[i].pTexture == texture)
+			{
+				index = i;
+				break;
+			}
+		}
 
-	}
+		if (index < 0)
+		{
+			BatchData data{};
+			data.pVertexShader = ShaderCache::GetShader("VSTexture");
+			data.pPixelShader = ShaderCache::GetShader("PSTexture");
+			data.pTexture = texture;
 
-	void Renderer2D::DrawQuad(const Mat44f& transform, const std::shared_ptr<ITexture2D>& texture, const uint32_t slot, const Vec4f& color)
-	{
-		// Texture Color Shader
-		BatchData data{};
-		data.pVertexShader = ShaderCache::GetShader("VSSolidTexture");
-		data.pPixelShader = ShaderCache::GetShader("PSSolidTexture");
+			s_data.batchObjects.push_back(data);
+			index = s_data.batchObjects.size() - 1;
+		}
 
+		struct QuadVertex
+		{
+			Vec3f pos;
+			Vec2f uv;
+			Vec4f color;
+		};
 
+		QuadVertex vertices[4]{
+			{ { 0.5f,  0.5f, 0.0f }, {1.0f, 0.0f}, color },
+			{ { 0.5f,  -0.5f, 0.0f }, {1.0f, 1.0f}, color },
+			{ { -0.5f,  -0.5f, 0.0f }, {0.0f, 1.0f}, color },
+			{ { -0.5f,  0.5f, 0.0f }, {0.0f, 0.0f}, color }
+		};
 
+		uint32_t indices[]{
+			0, 1, 2,
+			0, 2, 3
+		};
+
+		std::shared_ptr<IVertexBuffer> pVB = IVertexBuffer::Create(vertices, sizeof(vertices), eBufferUsage::Default);
+		pVB->SetLayout({
+			{ "POSITION", 0, eShaderDataType::Float3, 0, sizeof(float) * 3 },
+			{ "TEXCOORD", 0, eShaderDataType::Float2, sizeof(float) * 3, sizeof(float) * 2},
+			{ "COLOR", 0, eShaderDataType::Float4, sizeof(float) * 5, sizeof(float) * 4}
+			});
+		std::shared_ptr<IIndexBuffer> pIB = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), eBufferUsage::Default);
+		std::shared_ptr<IVertexArray> pVA = IVertexArray::Create();
+		pVA->AddVertexBuffer(pVB);
+		pVA->SetIndexBuffer(pIB);
+
+		s_data.batchObjects[index].vt.push_back(std::make_pair(pVA, transform));
 	}
 }

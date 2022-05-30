@@ -13,6 +13,8 @@
 
 //----- Renderer --------------------------
 #include "Renderer/Renderer.h"
+#include "Renderer/Renderer2D.h"
+#include "Renderer/OrthographicCamera.h"
 #include "Renderer/GraphicsAPI.h"
 #include "Renderer/Buffer.h"
 #include "Renderer/VertexArray.h"

@@ -96,12 +96,23 @@ void ExampleLayer::OnAttach()
 	// 3-4. Vertex Buffer를 Vertex Array에 추가합니다.
 	m_pVertexArray[1]->AddVertexBuffer(pTextureVertex);
 
-	// 텍스처 좌표 Vertex Buffer도 마찬가지로 생성한 후, 레이아웃을 설정합니다. 이후 Vertex Array에 추가합니다.
+	// 텍스처 좌표와 색상 Vertex Buffer도 마찬가지로 생성한 후, 레이아웃을 설정합니다. 이후 Vertex Array에 추가합니다.
 	std::shared_ptr<IVertexBuffer> pTextureUV = IVertexBuffer::Create(textureUV, sizeof(textureUV), eBufferUsage::Immutable);
 	pTextureUV->SetLayout({ 
 		{ "TEXCOORD", 0, kepler::eShaderDataType::Float2, 0, sizeof(float) * 2 }
 		});
 	m_pVertexArray[1]->AddVertexBuffer(pTextureUV);
+	Vec4f colors[]{
+		{1.0f, 1.0f, 1.0f, 1.0f},
+		{1.0f, 1.0f, 1.0f, 1.0f},
+		{1.0f, 1.0f, 1.0f, 1.0f},
+		{1.0f, 1.0f, 1.0f, 1.0f}
+	};
+	std::shared_ptr<IVertexBuffer> pColor = IVertexBuffer::Create(colors, sizeof(colors), eBufferUsage::Immutable);
+	pColor->SetLayout({
+		{ "COLOR", 0, kepler::eShaderDataType::Float4, 0, sizeof(float) * 4 }
+		});
+	m_pVertexArray[1]->AddVertexBuffer(pColor);
 
 	// Index Buffer 데이터. 
 	uint32_t indices[6]{
@@ -120,8 +131,6 @@ void ExampleLayer::OnAttach()
 	// 텍스처를 바인딩 할 때에는 쉐이더 프로그램의 어떤 텍스처와 매핑시킬지 슬롯(register number)을 지정합니다
 	m_pTexture = ITexture2D::Create(eTextureDataType::Float, "Assets/Textures/2k_earth_daymap.jpg");
 	m_pTexture->Bind(0);
-
-	m_timer.Start();
 }
 
 void ExampleLayer::OnDetach()
@@ -134,6 +143,7 @@ void ExampleLayer::OnUpdate(const float deltaTime)
 	ShaderCache::GetShader("VSTest")->Bind();
 	ShaderCache::GetShader("PSTest")->Bind();
 	
+	// 쉐이더의 Uniform 인자(DirectX의 경우 Constant Buffer)에 값을 전달하는 경우 먼저 해당 쉐이더를 바인딩 하고 나서 값을 전달합니다.
 	ShaderCache::GetShader("PSTest")->SetFloat("g_Time", deltaTime);
 	m_pVertexArray[0]->Bind();
 	

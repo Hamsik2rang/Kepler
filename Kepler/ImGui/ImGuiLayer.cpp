@@ -108,7 +108,7 @@ namespace kepler {
 		// 그리기. 추후 에디터 레이어가 추가되면 ImGuiLayer는 OnRender를 가질 필요가 없음.
 		ImGuiIO& io = ImGui::GetIO();
 
-		static bool bIsShownDemo = true;
+		static bool bIsShownDemo = false;
 		if (bIsShownDemo)
 		{
 			ImGui::ShowDemoWindow(&bIsShownDemo);
@@ -117,20 +117,20 @@ namespace kepler {
 		static float f = 0.0f;
 
 		ImGui::Begin("Hello Kepler!");
-		ImGui::Text("This is some useful text");
+		ImGui::Text("This is Test..");
 		ImGui::Checkbox("demo window", &bIsShownDemo);
 
-		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-		static ImVec4 clearColor(0.45f, 0.55f, 0.60f, 1.0f);
-		ImGui::ColorEdit3("clear color", (float*)&clearColor);
-
-		static int counter = 0;
-		if (ImGui::Button("Button"))
-		{
-			counter++;
-		}
-		ImGui::SameLine();
-		ImGui::Text("counter = %d", counter);
+		//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+		//static ImVec4 clearColor(0.45f, 0.55f, 0.60f, 1.0f);
+		//ImGui::ColorEdit3("clear color", (float*)&clearColor);
+		//
+		//static int counter = 0;
+		//if (ImGui::Button("Button"))
+		//{
+		//	counter++;
+		//}
+		//ImGui::SameLine();
+		//ImGui::Text("counter = %d", counter);
 
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 		ImGui::End();

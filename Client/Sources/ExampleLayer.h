@@ -9,8 +9,7 @@ class ExampleLayer: public kepler::Layer
 private:
 	std::shared_ptr<kepler::IVertexArray> m_pVertexArray[2];
 	std::shared_ptr<kepler::ITexture2D> m_pTexture;
-	std::vector<std::shared_ptr<kepler::IShader>> v;
-	kepler::Timer m_timer;
+
 public:
 	ExampleLayer()
 		:Layer("Example")

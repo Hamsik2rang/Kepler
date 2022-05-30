@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Camera.h"
-
+#include "Core/Application.h"
 
 namespace kepler {
 
@@ -17,6 +17,18 @@ namespace kepler {
 
 		void CalculateViewMatrix();
 	public:
+		OrthographicCamera()
+			: m_position{ Vec3f::Zero }
+			, m_rotation{ 0.0f }
+			, m_viewMatrix{Mat44f::Identity}
+			, m_viewProjectionMatrix{ Mat44f::Identity }
+			, m_aspect{ 16.0f / 9.0f }
+		{
+			IWindow* pWindow = Application::Get()->GetWindow();
+			m_aspect = static_cast<float>(pWindow->GetWidth()) / static_cast<float>(pWindow->GetHeight());
+		}
+		~OrthographicCamera() = default;
+
 		void SetProjection(const float left, const float right, const float top, const float bottom, const float nearClip, const float farClip);
 		
 		inline void SetPosition(const Vec3f& position) { m_position = position; CalculateViewMatrix(); }

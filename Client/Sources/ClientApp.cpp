@@ -1,4 +1,4 @@
-#include "ExampleLayer.h"
+#include "Render2DTestLayer.h"
 
 
 #include <Core/EntryPoint.h>
@@ -9,7 +9,7 @@ public:
 	Client()
 		:Application(kepler::eGraphicsAPI::DirectX11)
 	{
-		PushLayer(new ExampleLayer());
+		PushLayer(new Render2DTestLayer());
 	}
 	~Client()
 	{

@@ -159,9 +159,11 @@
   <ItemGroup>
     <ClCompile Include="Sources\ExampleLayer.cpp" />
     <ClCompile Include="Sources\ClientApp.cpp" />
+    <ClCompile Include="Sources\Render2DTestLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\ExampleLayer.h" />
+    <ClInclude Include="Sources\Render2DTestLayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
