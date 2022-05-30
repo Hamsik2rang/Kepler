@@ -6,6 +6,7 @@ class Render2DTestLayer : public kepler::Layer
 {
 private:
 	kepler::OrthographicCamera m_camera;
+	std::shared_ptr<kepler::ITexture2D> m_pTexture;
 
 public:
 	Render2DTestLayer()

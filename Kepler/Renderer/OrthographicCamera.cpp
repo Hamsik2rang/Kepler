@@ -6,7 +6,8 @@ namespace kepler {
 
 	void OrthographicCamera::CalculateViewMatrix()
 	{
-		m_viewMatrix = math::GetTransformMatrix(m_position) * math::GetRotationMatrixZ(math::DegToRad(m_rotation));
+		//m_viewMatrix = math::GetTransformMatrix(m_position) * math::GetRotationMatrixZ(math::DegToRad(m_rotation));
+		m_viewMatrix = Mat44f::Identity;
 		m_viewProjectionMatrix = m_viewMatrix * m_projectionMatrix;
 	}
 
