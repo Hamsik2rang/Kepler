@@ -119,9 +119,9 @@ namespace kepler {
 		{
 			Mat44f orthographic{
 				2.0f / (right - left), 0.0f, 0.0f, 0.0f,
-				0.0f, 2.0f / (top - bottom), 0.0f, 0.0f,
-				0.0f, 0.0f, -2.0f / (farClip - nearClip), 0.0f,
-				-(right + left) / (right - left),  -(top + bottom) / (top - bottom),-(farClip + nearClip) / (farClip - nearClip), 1.0f
+				0.0f, 2.0f / (bottom - top), 0.0f, 0.0f,
+				0.0f, 0.0f, 1.0f / (farClip - nearClip), 0.0f,
+				0.0f, 0.0f, -1.0f / (farClip - nearClip) * nearClip, 1.0f
 			};
 
 			return orthographic;

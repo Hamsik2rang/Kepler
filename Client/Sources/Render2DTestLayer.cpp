@@ -19,7 +19,7 @@ void Render2DTestLayer::OnUpdate(const float deltaTime)
 {
 	kepler::Renderer2D::Get()->BeginScene(m_camera);
 
-	kepler::Renderer2D::Get()->DrawQuad({ 0.0f, 0.0f, 0.0f }, { 0.5f, 0.5f }, { 1.0f, 1.0f, 1.0f, 1.0f });
+	kepler::Renderer2D::Get()->DrawQuad({ 0.0f, 0.0f, 0.0f }, { 150.f, 150.f }, { 1.0f, 1.0f, 1.0f, 1.0f });
 	kepler::Renderer2D::Get()->DrawQuad({ 0.5f, 0.5f, 0.0f }, { 0.5, 0.5f }, { 0.0f, 0.8f, 1.0f, 1.0f });
 	kepler::Renderer2D::Get()->DrawQuad({ -0.8f, -0.5f, 0.0f }, { 0.2f, 0.2f }, { 1.0f, 0.0f, 0.3f, 1.0f });
 

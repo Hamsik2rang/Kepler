@@ -186,7 +186,6 @@
     <ClInclude Include="Platform\DirectX11\DX11Buffer.h" />
     <ClInclude Include="Platform\DirectX11\DX11Context.h" />
     <ClInclude Include="Platform\DirectX11\DX11API.h" />
-    <ClInclude Include="Platform\DirectX11\DX11Model.h" />
     <ClInclude Include="Platform\DirectX11\DX11Shader.h" />
     <ClInclude Include="Platform\DirectX11\DX11Texture.h" />
     <ClInclude Include="Platform\DirectX11\DX11VertexArray.h" />
@@ -243,7 +242,6 @@
     <ClCompile Include="Platform\DirectX11\DX11API.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Buffer.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Context.cpp" />
-    <ClCompile Include="Platform\DirectX11\DX11Model.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Shader.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Texture.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11VertexArray.cpp" />
