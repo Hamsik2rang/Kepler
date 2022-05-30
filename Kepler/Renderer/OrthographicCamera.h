@@ -36,6 +36,7 @@ namespace kepler {
 
 		inline const Vec3f& GetPosition() const { return m_position; }
 		inline const float GetRotation() const { return m_rotation; }
+		inline const float GetAspect() const { return m_aspect; }
 		inline const Mat44f& GetViewMatrix() const { return m_viewMatrix; }
 		inline const Mat44f& GetViewProjectionMatrix() const { return m_viewProjectionMatrix; }
 	};

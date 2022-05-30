@@ -69,6 +69,7 @@ namespace kepler {
 	void Renderer2D::BeginScene(OrthographicCamera& camera)
 	{
 		s_data.sceneData.viewProjection = camera.GetViewProjectionMatrix();
+		s_data.sceneData.aspect = camera.GetAspect();
 	}
 
 	void Renderer2D::EndScene()
@@ -105,59 +106,59 @@ namespace kepler {
 
 	void Renderer2D::DrawQuad(const Vec2f& position, const Vec2f& size, const Vec4f& color)
 	{
-		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::Identity, { size.x / 16.0f * 9.0f, size.y, 1.0f });
+		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::Identity, { size.x / s_data.sceneData.aspect, size.y, 1.0f });
 		DrawQuad(transform, color);
 	}
 
 	void Renderer2D::DrawQuad(const Vec3f& position, const Vec2f& size, const Vec4f& color)
 	{
-		Mat44f transform = math::GetWorldMatrix(position, Quaternion::Identity, { size.x / 16.0f * 9.0f, size.y, 1.0f });
+		Mat44f transform = math::GetWorldMatrix(position, Quaternion::Identity, { size.x / s_data.sceneData.aspect, size.y, 1.0f });
 		DrawQuad(transform, color);
 	}
 
 	void Renderer2D::DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const Vec4f& color)
 	{
-		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / 16.0f * 9.0f, size.y, 1.0f });
+		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / s_data.sceneData.aspect,size.y, 1.0f });
 		DrawQuad(transform, color);
 	}
 
 	void Renderer2D::DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const Vec4f& color)
 	{
-		Mat44f transform = math::GetWorldMatrix(position, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / 16.0f * 9.0f, size.y, 1.0f });
+		Mat44f transform = math::GetWorldMatrix(position, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / s_data.sceneData.aspect, size.y, 1.0f });
 		DrawQuad(transform, color);
 	}
 
 	void Renderer2D::DrawQuad(const Vec2f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture)
 	{
-		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::Identity, { size.x / 16.0f * 9.0f, size.y, 1.0f });
+		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::Identity, { size.x / s_data.sceneData.aspect, size.y, 1.0f });
 		
 		DrawQuad(transform, texture);
 	}
 
 	void Renderer2D::DrawQuad(const Vec3f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture)
 	{
-		Mat44f transform = math::GetWorldMatrix(position, Quaternion::Identity, { size.x / 16.0f * 9.0f, size.y, 1.0f });
+		Mat44f transform = math::GetWorldMatrix(position, Quaternion::Identity, { size.x / s_data.sceneData.aspect, size.y, 1.0f });
 
 		DrawQuad(transform, texture);
 	}
 
 	void Renderer2D::DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture)
 	{
-		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / 16.0f * 9.0f, size.y, 1.0f });
+		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / s_data.sceneData.aspect, size.y, 1.0f });
 
 		DrawQuad(transform, texture);
 	}
 
 	void Renderer2D::DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture)
 	{
-		Mat44f transform = math::GetWorldMatrix(position, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / 16.0f * 9.0f, size.y, 1.0f });
+		Mat44f transform = math::GetWorldMatrix(position, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / s_data.sceneData.aspect, size.y, 1.0f });
 
 		DrawQuad(transform, texture);
 	}
 
 	void Renderer2D::DrawQuad(const Vec2f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color)
 	{
-		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::Identity, { size.x / 16.0f * 9.0f, size.y, 1.0f });
+		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::Identity, { size.x / s_data.sceneData.aspect, size.y, 1.0f });
 
 		DrawQuad(transform, texture, color);
 	}
@@ -171,14 +172,14 @@ namespace kepler {
 
 	void Renderer2D::DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color)
 	{
-		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / 16.0f * 9.0f, size.y, 1.0f });
+		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / s_data.sceneData.aspect, size.y, 1.0f });
 
 		DrawQuad(transform, texture, color);
 	}
 
 	void Renderer2D::DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color)
 	{
-		Mat44f transform = math::GetWorldMatrix(position, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / 16.0f * 9.0f, size.y, 1.0f });
+		Mat44f transform = math::GetWorldMatrix(position, Quaternion::FromEuler({ 0.0f, rotation, 0.0f }), { size.x / s_data.sceneData.aspect, size.y, 1.0f });
 
 		DrawQuad(transform, texture, color);
 	}
