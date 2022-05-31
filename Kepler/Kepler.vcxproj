@@ -168,25 +168,48 @@
     <ClInclude Include="Core\Layer.hpp" />
     <ClInclude Include="Core\LayerStack.h" />
     <ClInclude Include="Core\Log.h" />
+    <ClInclude Include="Dependencies\stbimage\stb_image.h" />
+    <ClInclude Include="Math\Constant.h" />
+    <ClInclude Include="Math\Interpolation.h" />
+    <ClInclude Include="Math\Intrinsic.h" />
+    <ClInclude Include="Math\KeplerMath.h" />
+    <ClInclude Include="Math\MathUtility.h" />
+    <ClInclude Include="Math\Matrix.h" />
+    <ClInclude Include="Math\Matrix33.hpp" />
+    <ClInclude Include="Math\Matrix44.hpp" />
+    <ClInclude Include="Math\Quaternion.h" />
+    <ClInclude Include="Math\Transformation.hpp" />
+    <ClInclude Include="Math\Vector.h" />
+    <ClInclude Include="Math\Vector2.hpp" />
+    <ClInclude Include="Math\Vector3.hpp" />
+    <ClInclude Include="Math\Vector4.hpp" />
+    <ClInclude Include="Platform\DirectX11\DX11Buffer.h" />
+    <ClInclude Include="Platform\DirectX11\DX11Context.h" />
+    <ClInclude Include="Platform\DirectX11\DX11API.h" />
+    <ClInclude Include="Platform\DirectX11\DX11Shader.h" />
+    <ClInclude Include="Platform\DirectX11\DX11Texture.h" />
+    <ClInclude Include="Platform\DirectX11\DX11VertexArray.h" />
+    <ClInclude Include="Renderer\Buffer.h" />
+    <ClInclude Include="Renderer\Camera.h" />
+    <ClInclude Include="Renderer\GraphicsAPI.h" />
+    <ClInclude Include="Renderer\GraphicsContext.h" />
     <ClInclude Include="Core\Window.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ImGui\ImGuiLayer.h" />
     <ClInclude Include="kepch.h" />
     <ClInclude Include="Kepler.h" />
-    <ClInclude Include="Math\Matrix.h" />
-    <ClInclude Include="Math\Matrix22.hpp" />
-    <ClInclude Include="Math\Matrix33.hpp" />
-    <ClInclude Include="Math\Matrix44.hpp" />
-    <ClInclude Include="Math\Vector.h" />
-    <ClInclude Include="Math\Vector2D.hpp" />
-    <ClInclude Include="Math\Vector3D.hpp" />
-    <ClInclude Include="Math\Vector4D.hpp" />
-    <ClInclude Include="Platform\DirectX\DirectXAPI.h" />
     <ClInclude Include="Platform\Win32\WinAPI.h" />
     <ClInclude Include="Platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="Renderer\OrthographicCamera.h" />
+    <ClInclude Include="Renderer\Renderer.h" />
+    <ClInclude Include="Renderer\Renderer2D.h" />
+    <ClInclude Include="Renderer\Shader.h" />
+    <ClInclude Include="Renderer\Texture.h" />
+    <ClInclude Include="Renderer\VertexArray.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Utility\StringUtility.h" />
+    <ClInclude Include="Utility\Timer.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Application.cpp" />
@@ -208,9 +231,32 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">kepch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="Platform\DirectX\DirectXAPI.cpp" />
+    <ClCompile Include="Math\Constant.cpp" />
+    <ClCompile Include="Math\Interpolation.cpp" />
+    <ClCompile Include="Math\Matrix33.cpp" />
+    <ClCompile Include="Math\Matrix44.cpp" />
+    <ClCompile Include="Math\Quaternion.cpp" />
+    <ClCompile Include="Math\Vector2.cpp" />
+    <ClCompile Include="Math\Vector3.cpp" />
+    <ClCompile Include="Math\Vector4.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11API.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11Buffer.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11Context.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11Shader.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11Texture.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11VertexArray.cpp" />
     <ClCompile Include="Platform\Win32\WinAPI.cpp" />
     <ClCompile Include="Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="Renderer\Buffer.cpp" />
+    <ClCompile Include="Renderer\Camera.cpp" />
+    <ClCompile Include="Renderer\GraphicsContext.cpp" />
+    <ClCompile Include="Renderer\GraphicsAPI.cpp" />
+    <ClCompile Include="Renderer\OrthographicCamera.cpp" />
+    <ClCompile Include="Renderer\Renderer.cpp" />
+    <ClCompile Include="Renderer\Renderer2D.cpp" />
+    <ClCompile Include="Renderer\Shader.cpp" />
+    <ClCompile Include="Renderer\Texture.cpp" />
+    <ClCompile Include="Renderer\VertexArray.cpp" />
     <ClCompile Include="Utility\StringUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +268,54 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\Shaders\HLSL\Global\PSGlobal.hlsli" />
+    <None Include="Resources\Shaders\HLSL\Global\VSGlobal.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shaders\HLSL\PSSolid.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\HLSL\PSTest.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\HLSL\PSTexture.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\HLSL\VSSolid.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\HLSL\VSTest.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\HLSL\VSTexture.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

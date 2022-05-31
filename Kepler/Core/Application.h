@@ -4,7 +4,9 @@
 #include "Core/Window.h"
 
 #include "Core/LayerStack.h"
-#include "ImGui\ImGuiLayer.h"
+#include "ImGui/ImGuiLayer.h"
+#include "Renderer/GraphicsAPI.h"
+#include "Utility/Timer.hpp"
 
 namespace kepler {
 	// Window Application
@@ -14,15 +16,18 @@ namespace kepler {
 		static	Application*		s_pInstance;
 
 		std::unique_ptr<IWindow>	m_pWindow;
-		std::unique_ptr<ImGuiLayer> m_pGUILayer;
+		std::unique_ptr<ImGuiLayer> m_pImGuiLayer;
 		LayerStack					m_layerStack;
+		Timer						m_timer;
+
+	protected:
+		Application(eGraphicsAPI api);
 
 	public:
-		Application();
 		~Application();
 
 		static Application* Get();
-		inline IWindow& GetWindow() { return *m_pWindow; }
+		inline IWindow* GetWindow() { return m_pWindow.get(); }
 
 		void OnEvent(Event& e);
 
