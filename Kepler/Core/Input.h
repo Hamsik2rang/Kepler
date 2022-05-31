@@ -14,8 +14,9 @@ namespace kepler {
 	class Input
 	{
 	private:
-		static Axis m_axis;
-		static uint64_t m_keyMap[5];
+		static Axis s_axis;
+		static uint64_t s_keyMap[5];
+		static const int s_bitCount;
 		
 	public:
 		static bool IsButtonDown(MouseCode mouseButton);
@@ -28,6 +29,6 @@ namespace kepler {
 		static void SetButtonDown(MouseCode  mouseButton);
 		static void SetButtonUp(MouseCode  mouseButton);
 
-		inline static Axis GetAxis() { return m_axis; };
+		inline static Axis GetAxis() { return s_axis; };
 	};
 }

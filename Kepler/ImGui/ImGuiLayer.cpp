@@ -10,6 +10,7 @@
 #include "ImGuiLayer.h"
 #include "Core/Application.h"
 #include "Platform/Windows/WindowsWindow.h"
+#include "Renderer/GraphicsContext.h"
 
 
 	// Forward declare message handler from imgui_impl_win32.cpp
@@ -41,7 +42,6 @@ namespace kepler {
 		
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-		//BUG: WNY IT'S NOT SET????
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
 		ImGui::StyleColorsDark();
@@ -53,11 +53,11 @@ namespace kepler {
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
 
-		// TODO: 이거 언젠가 꼭 바꿔야됩니다..
 		Application* pApp = Application::Get();
-		HWND hWnd = pApp->GetWindow().GetWindowHandle();
-		ID3D11Device* pDevice = pApp->GetWindow().GetD3DDevice();
-		ID3D11DeviceContext* pDeviceContext = pApp->GetWindow().GetD3DDeviceContext();
+		HWND hWnd = pApp->GetWindow()->GetWindowHandle();
+
+		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+		ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 		// ImGui 초기화
 		ImGui_ImplWin32_Init(hWnd);
 		ImGui_ImplDX11_Init(pDevice, pDeviceContext);
@@ -71,45 +71,31 @@ namespace kepler {
 		ImGui::DestroyContext();
 	}
 
-	void ImGuiLayer::OnUpdate()
+	void ImGuiLayer::OnUpdate(const float deltaTime)
 	{
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-		// ImGui 새 프레임 생성
+	}
+
+	void ImGuiLayer::OnEvent(Event& e)
+	{
+
+	}
+
+	void ImGuiLayer::Begin()
+	{
+		//현재 프레임에 대한 ImGui 컨텍스트 초기화
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
+	}
 
-		static bool bIsShownDemo = true;
-		if (bIsShownDemo)
-		{
-			ImGui::ShowDemoWindow(&bIsShownDemo);
-		}
-		
-		static float f = 0.0f;
-
-		ImGui::Begin("Hello Kepler!");
-		ImGui::Text("This is some useful text");
-		ImGui::Checkbox("demo window", &bIsShownDemo);
-
-		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-		static ImVec4 clearColor(0.45f, 0.55f, 0.60f, 1.0f);
-		ImGui::ColorEdit3("clear color", (float*)&clearColor);
-
-		static int counter = 0;
-		if (ImGui::Button("Button"))
-		{
-			counter++;
-		}
-		ImGui::SameLine();
-		ImGui::Text("counter = %d", counter);
-
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-		ImGui::End();
-
+	void ImGuiLayer::End()
+	{
+		// 현재 프레임 ImGui 컨텍스트 안에 그려진 모든 레이어들 그리기
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
+		ImGuiIO& io = ImGui::GetIO();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			ImGui::UpdatePlatformWindows();
@@ -117,9 +103,37 @@ namespace kepler {
 		}
 	}
 
-	void ImGuiLayer::OnEvent(Event& e)
+	void ImGuiLayer::OnRender()
 	{
+		// 그리기. 추후 에디터 레이어가 추가되면 ImGuiLayer는 OnRender를 가질 필요가 없음.
+		ImGuiIO& io = ImGui::GetIO();
 
+		static bool bIsShownDemo = false;
+		if (bIsShownDemo)
+		{
+			ImGui::ShowDemoWindow(&bIsShownDemo);
+		}
+
+		static float f = 0.0f;
+
+		ImGui::Begin("Hello Kepler!");
+		ImGui::Text("This is Test..");
+		ImGui::Checkbox("demo window", &bIsShownDemo);
+
+		//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+		//static ImVec4 clearColor(0.45f, 0.55f, 0.60f, 1.0f);
+		//ImGui::ColorEdit3("clear color", (float*)&clearColor);
+		//
+		//static int counter = 0;
+		//if (ImGui::Button("Button"))
+		//{
+		//	counter++;
+		//}
+		//ImGui::SameLine();
+		//ImGui::Text("counter = %d", counter);
+
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+		ImGui::End();
 	}
 
 	LRESULT ImGuiLayer::ImGuiEventHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)

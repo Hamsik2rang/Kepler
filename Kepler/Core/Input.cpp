@@ -4,52 +4,55 @@
 
 namespace kepler {
 
-	const int BIT_UINT64 = 64;
-
-	Axis Input::m_axis{};
-	uint64_t Input::m_keyMap[5]{};
+	Axis Input::s_axis{};
+	uint64_t Input::s_keyMap[5]{};
+	const int Input::s_bitCount = 64;
 
 	bool Input::IsButtonDown(MouseCode mouseButton)
 	{
 		KEPLER_ASSERT(mouseButton < 256, "invalid button");
-		return m_keyMap[mouseButton / BIT_UINT64] & BIT(mouseButton % BIT_UINT64);
+
+		return s_keyMap[mouseButton / s_bitCount] & BIT_UINT64(mouseButton % s_bitCount);
 	}
 
 	bool Input::IsButtonUp(MouseCode mouseButton)
 	{
 		KEPLER_ASSERT(mouseButton < 256, "invalid button");
-		return !(m_keyMap[mouseButton / BIT_UINT64] & BIT(mouseButton % BIT_UINT64));
+
+		return !(s_keyMap[mouseButton / s_bitCount] & BIT_UINT64(mouseButton % s_bitCount));
 	}
 
 	bool Input::IsKeyDown(KeyCode keyCode)
 	{
 		KEPLER_ASSERT(keyCode < 256, "invalid keycode");
-		return m_keyMap[keyCode / BIT_UINT64] & BIT(keyCode % BIT_UINT64);
+
+		return s_keyMap[keyCode / s_bitCount] & BIT_UINT64(keyCode % s_bitCount);
 	}
 
 	bool Input::IsKeyUp(KeyCode keyCode)
 	{
 		KEPLER_ASSERT(keyCode < 256, "invalid keycode");
-		return !(m_keyMap[keyCode / BIT_UINT64] & BIT(keyCode % BIT_UINT64));
+
+		return !(s_keyMap[keyCode / s_bitCount] & BIT_UINT64(keyCode % s_bitCount));
 	}
 
 	void Input::SetKeyDown(KeyCode keyCode)
 	{
-		m_keyMap[keyCode / BIT_UINT64] |= BIT(keyCode % BIT_UINT64);
+		s_keyMap[keyCode / s_bitCount] |= BIT_UINT64(keyCode % s_bitCount);
 	}
 
 	void Input::SetKeyUp(KeyCode keyCode)
 	{
-		m_keyMap[keyCode / BIT_UINT64] &= ~BIT(keyCode % BIT_UINT64);
+		s_keyMap[keyCode / s_bitCount] &= ~BIT_UINT64(keyCode % s_bitCount);
 	}
 
 	void Input::SetButtonDown(MouseCode mouseButton)
 	{
-		m_keyMap[mouseButton / BIT_UINT64] |= BIT(mouseButton % BIT_UINT64);
+		s_keyMap[mouseButton / s_bitCount] |= BIT_UINT64(mouseButton % s_bitCount);
 	}
 
 	void Input::SetButtonUp(MouseCode mouseButton)
 	{
-		m_keyMap[mouseButton / BIT_UINT64] &= ~BIT(mouseButton % BIT_UINT64);
+		s_keyMap[mouseButton / s_bitCount] &= ~BIT_UINT64(mouseButton % s_bitCount);
 	}
 }
