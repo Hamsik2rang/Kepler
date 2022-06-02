@@ -157,13 +157,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\ExampleLayer.cpp" />
+    <ClCompile Include="Sources\Ball.cpp" />
     <ClCompile Include="Sources\ClientApp.cpp" />
-    <ClCompile Include="Sources\Render2DTestLayer.cpp" />
+    <ClCompile Include="Sources\GameLayer.cpp" />
+    <ClCompile Include="Sources\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sources\ExampleLayer.h" />
-    <ClInclude Include="Sources\Render2DTestLayer.h" />
+    <ClInclude Include="Sources\Ball.h" />
+    <ClInclude Include="Sources\GameLayer.h" />
+    <ClInclude Include="Sources\Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

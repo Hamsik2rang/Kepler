@@ -1,22 +1,18 @@
 #pragma once
 
 #include "Kepler.h"
+#include "Player.h"
 
-class Render2DTestLayer : public kepler::Layer
+class GameLayer : public kepler::Layer
 {
 private:
-	kepler::OrthographicCamera m_camera;
-	std::shared_ptr<kepler::ITexture2D> m_pTexture;
+	Player* m_pPlayer;
 
 public:
-	Render2DTestLayer()
-		:Layer("Render2D Test")
-	{
-		
-	}
-
 	virtual void OnAttach() override;
 	virtual void OnDetach() override;
 	virtual void OnUpdate(const float deltaTime) override;
+	virtual void OnRender() override;
 	virtual void OnEvent(kepler::Event& e) override;
+
 };
