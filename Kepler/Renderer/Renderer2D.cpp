@@ -78,6 +78,7 @@ namespace kepler {
 		Flush();
 	}
 
+	// TODO: Instancing이든 뭐든 사용해서 Drawcall 줄여야 함
 	void Renderer2D::Flush()
 	{
 		for (const auto& batchData : s_data.batchObjects)
