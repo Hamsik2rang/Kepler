@@ -21,6 +21,9 @@ namespace kepler {
 
 	class IShader
 	{
+	protected:
+		friend void ShaderCache::SetLastCachedShader(const eShaderType& type, const std::string& name);
+
 	public:
 		virtual ~IShader() = default;
 
@@ -66,5 +69,6 @@ namespace kepler {
 		static bool IsLoaded(const std::string& name);
 		static std::shared_ptr<IShader> GetShader(const std::string& name);
 		static std::shared_ptr<IShader> GetLastCachedShader(const eShaderType& type);
+		static void SetLastCachedShader(const eShaderType& type, const std::string& name);
 	};
 }

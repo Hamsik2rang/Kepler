@@ -355,6 +355,8 @@ namespace kepler {
 		case eShaderType::Hull:		pDeviceContext->HSSetShader(m_pHullShader, nullptr, 0);		break;
 		case eShaderType::Compute:	pDeviceContext->CSSetShader(m_pComputeShader, nullptr, 0);	break;
 		}
+
+		ShaderCache::SetLastCachedShader(m_type, m_name);
 	}
 
 	void DX11Shader::Unbind()
