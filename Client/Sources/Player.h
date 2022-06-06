@@ -1,28 +1,34 @@
 #pragma once
 
 #include <memory>
+#include <functional>
 
 #include "Kepler.h"
+#include "GameObject.h"
 
-class Player
+class Player : public GameObject
 {
 private:
-	kepler::Vec2f	m_position{ 100.0f, -200.0f };
-	kepler::Vec2f	m_direction{ 0.0f, 0.0f };
-	bool			m_bIsJumped = false;
+	std::function<void(std::shared_ptr<kepler::ITexture2D>*)>  m_animationCallback;
+
+	kepler::Vec2f	m_position;
+	kepler::Vec2f	m_size;
+	kepler::Vec2f	m_direction;
+	bool			m_bIsGrounded;
+	bool			m_bIsSpiked;
 
 	std::shared_ptr<kepler::ITexture2D> m_pMoveSprite[3];
 	std::shared_ptr<kepler::ITexture2D> m_pJumpSprite[2];
 	std::shared_ptr<kepler::ITexture2D> m_pSlideSprite[2];
 	std::shared_ptr<kepler::ITexture2D> m_pEndGameSprite[2];
 
-	void Move(const kepler::Vec2f position);
-	void Jump(const kepler::Vec2f jump);
+	std::shared_ptr<kepler::ITexture2D> m_nextRenderSprite;
+
 public:
+	Player(kepler::Vec2f& position, kepler::Vec2f& size, bool bIsJumped, eColliderType colliderType = eColliderType::None);
+	void Init();
 
-	void Init(bool bIsEnemy);
-
-	void Update(const float vertical, const float horizontal, bool bIsJumped);
-	void OnUpdate(const float deltaTime);
+	void OnEvent(kepler::Event& e);
+	void OnUpdate(float deltaTime);
 	void OnRender();
 };

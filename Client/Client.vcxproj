@@ -159,12 +159,15 @@
   <ItemGroup>
     <ClCompile Include="Sources\Ball.cpp" />
     <ClCompile Include="Sources\ClientApp.cpp" />
+    <ClCompile Include="Sources\CollisionDetector.cpp" />
     <ClCompile Include="Sources\GameLayer.cpp" />
     <ClCompile Include="Sources\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\Ball.h" />
+    <ClInclude Include="Sources\CollisionDetector.h" />
     <ClInclude Include="Sources\GameLayer.h" />
+    <ClInclude Include="Sources\GameObject.h" />
     <ClInclude Include="Sources\Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

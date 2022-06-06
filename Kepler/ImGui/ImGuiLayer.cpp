@@ -71,7 +71,7 @@ namespace kepler {
 		ImGui::DestroyContext();
 	}
 
-	void ImGuiLayer::OnUpdate(const float deltaTime)
+	void ImGuiLayer::OnUpdate(float deltaTime)
 	{
 
 	}

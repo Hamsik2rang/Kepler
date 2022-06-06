@@ -2,7 +2,7 @@
 
 void GameLayer::OnAttach()
 {
-	m_pPlayer = new Player;
+	m_pPlayer = std::make_shared<Player>(kepler::Vec2f{ 100, -200 }, kepler::Vec2f{ 200.0f, 400.0f }, false, eColliderType::Box);
 }
 
 void GameLayer::OnDetach()
@@ -10,9 +10,9 @@ void GameLayer::OnDetach()
 
 }
 
-void GameLayer::OnUpdate(const float deltaTime)
+void GameLayer::OnUpdate(float deltaTime)
 {
-
+	m_pPlayer->OnUpdate(deltaTime);
 }
 
 void GameLayer::OnRender()
@@ -22,37 +22,5 @@ void GameLayer::OnRender()
 
 void GameLayer::OnEvent(kepler::Event& e)
 {
-	// KeyPressed
-	if (e.GetEventType() == kepler::eEventType::KeyPressed)
-	{
-		kepler::KeyPressedEvent* keyPressedEvent = reinterpret_cast<kepler::KeyPressedEvent*>(&e);
-		switch (keyPressedEvent->GetKeyCode())
-		{
-		case kepler::key::Up:
-			{
 
-			}
-			break;
-		case kepler::key::Down:
-			{
-
-			}
-			break;
-		case kepler::key::Left:
-			{
-
-			}
-			break;
-		case kepler::key::Right:
-			{
-
-			}
-			break;
-		case kepler::key::Space:
-			{
-
-			}
-			break;
-		}
-	}
 }
