@@ -164,6 +164,7 @@
     <ClCompile Include="Sources\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Sources\Animation2D.hpp" />
     <ClInclude Include="Sources\Ball.h" />
     <ClInclude Include="Sources\CollisionDetector.h" />
     <ClInclude Include="Sources\GameLayer.h" />
