@@ -84,15 +84,21 @@ namespace kepler{
 			{
 				layer->OnUpdate(deltaTime);
 			}
+			// Render all layer(and overlay)s
+			for (Layer* layer : m_layerStack)
+			{
+				layer->OnRender();
+			}
+
 			// GUI Update
 			m_pImGuiLayer->Begin();
 			for (Layer* layer : m_layerStack)
 			{
-			    layer->OnRender();
+			    layer->OnGUIRender();
 			}
 			
 			// TODO: 추후에 Editor Layer가 구현되어 LayerStack안에 들어가면 제거 
-			m_pImGuiLayer->OnRender();
+			m_pImGuiLayer->OnGUIRender();
 
 			m_pImGuiLayer->End();
 			// Window Update

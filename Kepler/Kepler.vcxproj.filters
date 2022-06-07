@@ -200,28 +200,7 @@
     <ClCompile Include="Core\LayerStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImGui\ImGuiSource\imgui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImGuiSource\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImGuiSource\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImGuiSource\imgui_tables.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImGuiSource\imgui_widgets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ImGui\ImGuiLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImGuiSource\imgui_impl_dx11.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImGuiSource\imgui_impl_win32.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Core\Input.cpp">
@@ -300,6 +279,27 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Renderer2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuiSource\imgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuiSource\imgui_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuiSource\imgui_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuiSource\imgui_impl_dx11.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuiSource\imgui_impl_win32.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuiSource\imgui_tables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\ImGuiSource\imgui_widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

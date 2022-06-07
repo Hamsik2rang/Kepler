@@ -1,3 +1,4 @@
+#pragma warning(disable: 6812)
 #include "Player.h"
 
 
@@ -15,7 +16,7 @@ Player::Player(const kepler::Vec2f& position, const kepler::Vec2f& size, bool bI
 void Player::Init()
 {
 	std::string TextureFilePath = "./Assets/Textures/";
-	
+
 	std::vector<std::shared_ptr<kepler::ITexture2D>> textures;
 	// load and set slide texture
 	for (int i = 0; i < 3; i++)
@@ -24,14 +25,14 @@ void Player::Init()
 		textures.push_back(kepler::ITexture2D::Create(kepler::eTextureDataType::Float, moveTexturePath));
 	}
 	m_animation[PlayerStateWalk].AddSprite(textures[0]);
-	m_animation[PlayerStateWalk].AddSprites({textures[0], textures[1], textures[2]});
-	m_animation[PlayerStateWalk].SetFrameCount(6);
+	m_animation[PlayerStateWalk].AddSprites({ textures[0], textures[1], textures[2] });
+	m_animation[PlayerStateWalk].SetFrameCount(24);
 	m_animation[PlayerStateWalk].SetRepeat(true);
 	// set idle texture
 	m_animation[PlayerStateIdle].AddSprites({ textures[0] });
 	m_animation[PlayerStateIdle].SetFrameCount(1);
 	m_animation[PlayerStateIdle].SetRepeat(false);
-	
+
 	textures.clear();
 	// load and set jump texture
 	for (int i = 0; i < 2; i++)
@@ -40,7 +41,7 @@ void Player::Init()
 		textures.push_back(kepler::ITexture2D::Create(kepler::eTextureDataType::Float, jumpTexturePath));
 	}
 	m_animation[PlayerStateJump].AddSprites({ textures[0], textures[1] });
-	m_animation[PlayerStateJump].SetFrameCount(4);
+	m_animation[PlayerStateJump].SetFrameCount(16);
 	m_animation[PlayerStateJump].SetRepeat(false);
 	textures.clear();
 
@@ -56,9 +57,9 @@ void Player::Init()
 
 	// load and set lose texture
 	m_animation[PlayerStateLose].AddSprites({ textures[0], textures[1], textures[2] });
-	m_animation[PlayerStateLose].SetFrameCount(6);
+	m_animation[PlayerStateLose].SetFrameCount(24);
 	m_animation[PlayerStateLose].SetRepeat(false);
-	
+
 	// load and set win texture
 	auto winTexture = kepler::ITexture2D::Create(kepler::eTextureDataType::Float, TextureFilePath + "win.png");
 	m_animation[PlayerStateWin].AddSprites({ winTexture });
@@ -70,14 +71,14 @@ void Player::Init()
 
 void Player::OnEvent(kepler::Event& e)
 {
-	
+
 }
 
 void Player::OnUpdate(float deltaTime)
 {
-	if (m_bIsGrounded && m_position.y - (m_size.y / 2.0f) < -360.0f)
+	if (!m_bIsGrounded && m_position.y - (m_size.y / 2.0f) < -300.0f)
 	{
-		m_position.y = -360.0f + (m_size.y / 2.0f);
+		m_position.y = -250.0f + (m_size.y / 2.0f);
 		m_bIsGrounded = true;
 		m_curDirection = { 0.0f, 0.0f };
 		m_state = ePlayerState::PlayerStateIdle;
@@ -88,19 +89,19 @@ void Player::OnUpdate(float deltaTime)
 	int horizontal = 0;
 	int vertical = 0;
 
-	if (kepler::Input::IsButtonDown(kepler::key::W))
+	if (kepler::Input::IsButtonDown(kepler::key::Up))
 	{
 		vertical += 1;
 	}
-	if (kepler::Input::IsButtonDown(kepler::key::S))
+	if (kepler::Input::IsButtonDown(kepler::key::Down))
 	{
 		vertical -= 1;
 	}
-	if (kepler::Input::IsButtonDown(kepler::key::A))
+	if (kepler::Input::IsButtonDown(kepler::key::Left))
 	{
 		horizontal -= 1;
 	}
-	if (kepler::Input::IsButtonDown(kepler::key::D))
+	if (kepler::Input::IsButtonDown(kepler::key::Right))
 	{
 		horizontal += 1;
 	}
@@ -109,6 +110,7 @@ void Player::OnUpdate(float deltaTime)
 	{
 		if (vertical > 0)
 		{
+			m_bIsGrounded = false;
 			m_state = ePlayerState::PlayerStateJump;
 			m_pCurAnim = &m_animation[PlayerStateJump];
 			m_pCurAnim->Start();
@@ -116,6 +118,7 @@ void Player::OnUpdate(float deltaTime)
 		}
 		else if (vertical < 0 && horizontal != 0)
 		{
+			m_bIsGrounded = false;
 			m_state = ePlayerState::PlayerStateSlide;
 			m_pCurAnim = &m_animation[PlayerStateSlide];
 			m_pCurAnim->Start();
@@ -141,7 +144,7 @@ void Player::OnUpdate(float deltaTime)
 	}
 	else
 	{
-		m_curDirection.y = m_lastDirection.y - 9.8f * deltaTime;
+		m_curDirection.y = m_lastDirection.y / 10.0f - 9.8f * deltaTime;
 		switch (m_state)
 		{
 		case ePlayerState::PlayerStateSlide:
@@ -162,7 +165,7 @@ void Player::OnUpdate(float deltaTime)
 	m_pCurAnim->Update();
 }
 
-void Player::OnRender()
+void Player::OnGUIRender()
 {
-	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite(), {1.0f, 1.0f, 1.0f, 1.0f});
+	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite(), { 1.0f, 1.0f, 1.0f, 1.0f });
 }

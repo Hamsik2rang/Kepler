@@ -26,10 +26,13 @@ namespace kepler {
 		virtual void OnUpdate(float deltaTime) {};
 		// 레이어에게 전달된 이벤트를 처리합니다(또는 무시합니다).
 		virtual void OnEvent(Event& e) {};
+		// 레이어에서 화면에 그릴 것들을 그립니다.
+		virtual void OnRender() {};
 
+		// ImGUI 구성을 위한 함수들입니다.
 		virtual void Begin() {};
 		virtual void End() {};
-		virtual void OnRender() {};
+		virtual void OnGUIRender() {};
 
 		inline const std::string& GetName() const { return m_name; }
 	};

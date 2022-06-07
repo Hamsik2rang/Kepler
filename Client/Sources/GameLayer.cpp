@@ -1,5 +1,7 @@
 #include "GameLayer.h"
 
+#include <imgui.h>
+
 void GameLayer::OnAttach()
 {
 	kepler::IWindow* window = kepler::Application::Get()->GetWindow();
@@ -11,8 +13,8 @@ void GameLayer::OnAttach()
 
 
 	kepler::Vec2f pos = { 0.0f, 0.0f};
-	kepler::Vec2f size = { 50.0f, 100.0f };
-	m_pPlayer = std::make_shared<Player>(pos, size, false, eColliderType::Box);
+	kepler::Vec2f size = { 120.0f, 150.0f };
+	m_pPlayer = std::make_shared<Player>(pos, size, true, eColliderType::Box);
 
 
 }
@@ -25,15 +27,30 @@ void GameLayer::OnDetach()
 void GameLayer::OnUpdate(float deltaTime)
 {
 	m_pPlayer->OnUpdate(deltaTime);
+
 }
 
 void GameLayer::OnRender()
 {
 	kepler::Renderer2D::Get()->BeginScene(m_camera);
-
-	m_pPlayer->OnRender();
-	
+	m_pPlayer->OnGUIRender();
 	kepler::Renderer2D::Get()->EndScene();
+}
+
+void GameLayer::OnGUIRender()
+{
+	kepler::Vec2f playerPos = m_pPlayer->GetPosition();
+	kepler::Vec2f playerDir = m_pPlayer->GetDirection();
+	//ImGuiIO& io = ImGui::GetIO();
+	//
+	//ImGui::Begin("Debug");
+	//ImGui::Text("Player Position: (%.2f, %.2f)", playerPos.x, playerPos.y);
+	//ImGui::Text("Player Direction: (%.2f, %.2f)", playerDir.x, playerDir.y);
+	//
+	//
+	//
+	//
+	//ImGui::End();
 }
 
 void GameLayer::OnEvent(kepler::Event& e)

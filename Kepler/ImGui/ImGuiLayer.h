@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include "Core/Base.h"
 #include "Core/Layer.hpp"
 
@@ -23,9 +24,8 @@ namespace kepler {
 
 		virtual void Begin() override;
 		virtual void End() override;
+		virtual void OnGUIRender() override;
 
-		// Temporary
-		virtual void OnRender() override;
 
 		static LRESULT ImGuiEventHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	};

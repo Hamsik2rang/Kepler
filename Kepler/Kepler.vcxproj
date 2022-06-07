@@ -215,6 +215,8 @@
     <ClCompile Include="Core\Application.cpp" />
     <ClCompile Include="Core\Input.cpp" />
     <ClCompile Include="ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="Core\LayerStack.cpp" />
+    <ClCompile Include="Core\Log.cpp" />
     <ClCompile Include="ImGui\ImGuiSource\imgui.cpp" />
     <ClCompile Include="ImGui\ImGuiSource\imgui_demo.cpp" />
     <ClCompile Include="ImGui\ImGuiSource\imgui_draw.cpp" />
@@ -222,8 +224,6 @@
     <ClCompile Include="ImGui\ImGuiSource\imgui_impl_win32.cpp" />
     <ClCompile Include="ImGui\ImGuiSource\imgui_tables.cpp" />
     <ClCompile Include="ImGui\ImGuiSource\imgui_widgets.cpp" />
-    <ClCompile Include="Core\LayerStack.cpp" />
-    <ClCompile Include="Core\Log.cpp" />
     <ClCompile Include="kepch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

@@ -2,7 +2,6 @@
 
 // 외부 오픈소스 라이브러리 Dear ImGui를 이용합니다. ImGuiLayer의 추가 구현을 위한 자세한 설명과 사용법은 아래 링크를 참조하세요.
 // https://github.com/ocornut/ImGui
-
 #include "imgui.h"
 #include "backends/imgui_impl_dx11.h"
 #include "backends/imgui_impl_win32.h"
@@ -103,22 +102,22 @@ namespace kepler {
 		}
 	}
 
-	void ImGuiLayer::OnRender()
+	void ImGuiLayer::OnGUIRender()
 	{
 		// 그리기. 추후 에디터 레이어가 추가되면 ImGuiLayer는 OnRender를 가질 필요가 없음.
-		ImGuiIO& io = ImGui::GetIO();
-
-		static bool bIsShownDemo = false;
-		if (bIsShownDemo)
-		{
-			ImGui::ShowDemoWindow(&bIsShownDemo);
-		}
-
-		static float f = 0.0f;
-
-		ImGui::Begin("Hello Kepler!");
-		ImGui::Text("This is Test..");
-		ImGui::Checkbox("demo window", &bIsShownDemo);
+		//ImGuiIO& io = ImGui::GetIO();
+		//
+		//static bool bIsShownDemo = false;
+		//if (bIsShownDemo)
+		//{
+		//	ImGui::ShowDemoWindow(&bIsShownDemo);
+		//}
+		//
+		//static float f = 0.0f;
+		//
+		//ImGui::Begin("Hello Kepler!");
+		//ImGui::Text("This is Test..");
+		//ImGui::Checkbox("demo window", &bIsShownDemo);
 
 		//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
 		//static ImVec4 clearColor(0.45f, 0.55f, 0.60f, 1.0f);
@@ -132,8 +131,8 @@ namespace kepler {
 		//ImGui::SameLine();
 		//ImGui::Text("counter = %d", counter);
 
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-		ImGui::End();
+		//ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+		//ImGui::End();
 	}
 
 	LRESULT ImGuiLayer::ImGuiEventHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
