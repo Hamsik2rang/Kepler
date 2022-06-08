@@ -171,7 +171,10 @@ void Player::OnUpdate(float deltaTime)
 	m_lastDirection = m_curDirection;
 	m_pCurAnim->Update();
 
-	if (!m_bIsGrounded && m_position.y - (m_size.y / 2.0f) < constant::GROUND_Y)
+
+	// collision detection
+	// 1. collision with ground
+	if (!m_bIsGrounded && m_position.y < -230.0f)
 	{
 		m_position.y = -230.0f;
 		m_bIsGrounded = true;
@@ -181,9 +184,28 @@ void Player::OnUpdate(float deltaTime)
 		m_pCurAnim = &m_animation[PlayerStateIdle];
 		m_pCurAnim->Start();
 	}
+
+	float screenWidth = static_cast<float>(kepler::Application::Get()->GetWindow()->GetWidth());
+
+	// 2. collision with net
+	if (m_position.x < (m_size.x + constant::NET_SIZE.x) / 2.0f)
+	{
+		m_position.x = (m_size.x + constant::NET_SIZE.x) / 2.0f;
+	}
+	// 3. collision with screen
+	else if (m_position.x > (screenWidth - m_size.x) / 2.0f)
+	{
+		m_position.x = (screenWidth - m_size.x) / 2.0f;
+	}
 }
 
 void Player::OnRender()
 {
-	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite());
+	bool bFlipX = false;
+	if (m_state != PlayerStateJump)
+	{
+		bFlipX = m_curDirection.x > 0.0f;
+	}
+	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite(), bFlipX);
+
 }

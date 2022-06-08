@@ -9,7 +9,7 @@ void Level::Init(float width, float height)
 
 void Level::OnRender()
 {
-	kepler::Renderer2D::Get()->DrawQuad({ 0.0f, 0.0f }, { m_width, m_height }, m_pLevelSprite, { 1.0f, 1.0f, 1.0f, 1.0f });
+	kepler::Renderer2D::Get()->DrawQuad({ 0.0f, 0.0f }, { m_width, m_height }, m_pLevelSprite);
 }
 
 void Level::OnUpdate(float deltaTime)

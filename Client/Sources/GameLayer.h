@@ -2,6 +2,7 @@
 
 #include "Kepler.h"
 #include "Player.h"
+#include "Ball.h"
 #include "Level.h"
 
 class GameLayer : public kepler::Layer
@@ -9,9 +10,13 @@ class GameLayer : public kepler::Layer
 private:
 	std::shared_ptr<Player> m_pPlayer;
 	std::shared_ptr<Level> m_pLevel;
+	std::shared_ptr<Ball> m_pBall;
 	kepler::OrthographicCamera m_camera;
 
+
 public:
+	GameLayer();
+
 	virtual void OnAttach() override;
 	virtual void OnDetach() override;
 	virtual void OnUpdate(float deltaTime) override;

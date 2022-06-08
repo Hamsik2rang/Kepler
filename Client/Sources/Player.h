@@ -27,7 +27,7 @@ private:
 	kepler::Vec2f	m_lastDirection;
 	ePlayerState	m_state;
 	bool			m_bIsGrounded;
-	bool			m_bIsSpiked;
+	bool			m_bIsAccelarated;
 
 	Animation2D m_animation[6];
 
@@ -41,7 +41,8 @@ public:
 	void OnRender();
 
 	// Inherited via GameObject
-	virtual kepler::Vec2f GetPosition() const override { return m_position; }
-	virtual kepler::Vec2f GetCurrentDirection() const override { return m_curDirection; }
-	virtual kepler::Vec2f GetLastDirection() const override { return m_lastDirection; }
+	inline virtual kepler::Vec2f GetPosition() const override { return m_position; }
+	inline virtual kepler::Vec2f GetSize() const override { return m_size; }
+	inline virtual kepler::Vec2f GetCurrentDirection() const override { return m_curDirection; }
+	inline virtual kepler::Vec2f GetLastDirection() const override { return m_lastDirection; }
 };
