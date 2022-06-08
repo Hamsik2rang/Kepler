@@ -101,6 +101,7 @@ void Player::OnUpdate(float deltaTime)
 		{
 			m_bIsGrounded = false;
 			m_state = ePlayerState::PlayerStateJump;
+			m_size = constant::SQUIRTLE_JUMP_SIZE;
 			if (m_pCurAnim != &m_animation[PlayerStateJump])
 			{
 				m_pCurAnim = &m_animation[PlayerStateJump];
@@ -114,6 +115,7 @@ void Player::OnUpdate(float deltaTime)
 			{
 				m_bIsGrounded = false;
 				m_state = ePlayerState::PlayerStateSlide;
+				m_size = constant::SQUIRTLE_SLIDE_SIZE;
 				if (m_pCurAnim != &m_animation[PlayerStateSlide])
 				{
 					m_pCurAnim = &m_animation[PlayerStateSlide];
@@ -124,6 +126,7 @@ void Player::OnUpdate(float deltaTime)
 		}
 		else
 		{
+			m_size = constant::SQUIRTLE_IDLE_SIZE;
 			if (horizontal)
 			{
 				m_state = ePlayerState::PlayerStateWalk;
@@ -168,19 +171,19 @@ void Player::OnUpdate(float deltaTime)
 	m_lastDirection = m_curDirection;
 	m_pCurAnim->Update();
 
-	if (!m_bIsGrounded && m_position.y < -230.0f)
+	if (!m_bIsGrounded && m_position.y - (m_size.y / 2.0f) < constant::GROUND_Y)
 	{
 		m_position.y = -230.0f;
 		m_bIsGrounded = true;
 		m_curDirection = { 0.0f, 0.0f };
 		m_state = ePlayerState::PlayerStateIdle;
+		m_size = constant::SQUIRTLE_IDLE_SIZE;
 		m_pCurAnim = &m_animation[PlayerStateIdle];
 		m_pCurAnim->Start();
 	}
-
 }
 
 void Player::OnRender()
 {
-	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite(), { 1.0f, 1.0f, 1.0f, 1.0f });
+	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite());
 }

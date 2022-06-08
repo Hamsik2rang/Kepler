@@ -6,6 +6,7 @@
 #include "Kepler.h"
 #include "GameObject.h"
 #include "Animation2D.hpp"
+#include "Constant.h"
 
 enum ePlayerState
 {

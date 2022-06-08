@@ -2,11 +2,13 @@
 
 #include "Kepler.h"
 #include "Player.h"
+#include "Level.h"
 
 class GameLayer : public kepler::Layer
 {
 private:
 	std::shared_ptr<Player> m_pPlayer;
+	std::shared_ptr<Level> m_pLevel;
 	kepler::OrthographicCamera m_camera;
 
 public:

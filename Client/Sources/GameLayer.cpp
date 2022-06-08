@@ -13,9 +13,11 @@ void GameLayer::OnAttach()
 
 
 	kepler::Vec2f pos = { 280.0f, -230.0f};
-	kepler::Vec2f size = { 120.0f, 150.0f };
+	kepler::Vec2f size = { 152.5f, 200.0f };
 	m_pPlayer = std::make_shared<Player>(pos, size, true, eColliderType::Box);
 
+	m_pLevel = std::make_shared<Level>();
+	m_pLevel->Init(width, height);
 
 }
 
@@ -26,13 +28,14 @@ void GameLayer::OnDetach()
 
 void GameLayer::OnUpdate(float deltaTime)
 {
+	m_pLevel->OnUpdate(deltaTime);
 	m_pPlayer->OnUpdate(deltaTime);
-
 }
 
 void GameLayer::OnRender()
 {
 	kepler::Renderer2D::Get()->BeginScene(m_camera);
+	m_pLevel->OnRender();
 	m_pPlayer->OnRender();
 	kepler::Renderer2D::Get()->EndScene();
 }
