@@ -37,9 +37,10 @@ public:
 
 	void OnEvent(kepler::Event& e);
 	void OnUpdate(float deltaTime);
-	void OnGUIRender();
+	void OnRender();
 
 	// Inherited via GameObject
 	virtual kepler::Vec2f GetPosition() const override { return m_position; }
-	virtual kepler::Vec2f GetDirection() const override { return m_curDirection; }
+	virtual kepler::Vec2f GetCurrentDirection() const override { return m_curDirection; }
+	virtual kepler::Vec2f GetLastDirection() const override { return m_lastDirection; }
 };

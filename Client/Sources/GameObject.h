@@ -19,5 +19,6 @@ public:
 		: m_colliderType{ colliderType }
 	{}
 	virtual kepler::Vec2f GetPosition() const = 0;
-	virtual kepler::Vec2f GetDirection() const = 0;
+	virtual kepler::Vec2f GetCurrentDirection() const = 0;
+	virtual kepler::Vec2f GetLastDirection() const = 0;
 };

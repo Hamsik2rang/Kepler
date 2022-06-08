@@ -12,7 +12,7 @@ void GameLayer::OnAttach()
 	m_camera.SetPosition({ 0.0f, 0.0f, 0.0f });
 
 
-	kepler::Vec2f pos = { 0.0f, 0.0f};
+	kepler::Vec2f pos = { 280.0f, -230.0f};
 	kepler::Vec2f size = { 120.0f, 150.0f };
 	m_pPlayer = std::make_shared<Player>(pos, size, true, eColliderType::Box);
 
@@ -33,24 +33,25 @@ void GameLayer::OnUpdate(float deltaTime)
 void GameLayer::OnRender()
 {
 	kepler::Renderer2D::Get()->BeginScene(m_camera);
-	m_pPlayer->OnGUIRender();
+	m_pPlayer->OnRender();
 	kepler::Renderer2D::Get()->EndScene();
 }
 
 void GameLayer::OnGUIRender()
 {
 	kepler::Vec2f playerPos = m_pPlayer->GetPosition();
-	kepler::Vec2f playerDir = m_pPlayer->GetDirection();
-	//ImGuiIO& io = ImGui::GetIO();
-	//
-	//ImGui::Begin("Debug");
-	//ImGui::Text("Player Position: (%.2f, %.2f)", playerPos.x, playerPos.y);
-	//ImGui::Text("Player Direction: (%.2f, %.2f)", playerDir.x, playerDir.y);
-	//
-	//
-	//
-	//
-	//ImGui::End();
+	kepler::Vec2f playerDir = m_pPlayer->GetCurrentDirection();
+	kepler::Vec2f playerLastDir = m_pPlayer->GetLastDirection();
+	ImGuiIO& io = ImGui::GetIO();
+	
+	ImGui::Begin("Debug");
+	ImGui::Text("Player Position: (%.2f, %.2f)", playerPos.x, playerPos.y);
+	ImGui::Text("Player Direction: (%.2f, %.2f)", playerDir.x, playerDir.y);
+	ImGui::Text("Player Last Direction : (%.2f, %.2f)", playerLastDir.x, playerLastDir.y);
+	
+	
+	
+	ImGui::End();
 }
 
 void GameLayer::OnEvent(kepler::Event& e)

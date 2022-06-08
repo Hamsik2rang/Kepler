@@ -24,9 +24,8 @@ void Player::Init()
 		std::string moveTexturePath = TextureFilePath + "walk" + std::to_string(i + 1) + ".png";
 		textures.push_back(kepler::ITexture2D::Create(kepler::eTextureDataType::Float, moveTexturePath));
 	}
-	m_animation[PlayerStateWalk].AddSprite(textures[0]);
 	m_animation[PlayerStateWalk].AddSprites({ textures[0], textures[1], textures[2] });
-	m_animation[PlayerStateWalk].SetFrameCount(24);
+	m_animation[PlayerStateWalk].SetFrameCount(18);
 	m_animation[PlayerStateWalk].SetRepeat(true);
 	// set idle texture
 	m_animation[PlayerStateIdle].AddSprites({ textures[0] });
@@ -41,7 +40,7 @@ void Player::Init()
 		textures.push_back(kepler::ITexture2D::Create(kepler::eTextureDataType::Float, jumpTexturePath));
 	}
 	m_animation[PlayerStateJump].AddSprites({ textures[0], textures[1] });
-	m_animation[PlayerStateJump].SetFrameCount(16);
+	m_animation[PlayerStateJump].SetFrameCount(12);
 	m_animation[PlayerStateJump].SetRepeat(false);
 	textures.clear();
 
@@ -57,7 +56,7 @@ void Player::Init()
 
 	// load and set lose texture
 	m_animation[PlayerStateLose].AddSprites({ textures[0], textures[1], textures[2] });
-	m_animation[PlayerStateLose].SetFrameCount(24);
+	m_animation[PlayerStateLose].SetFrameCount(18);
 	m_animation[PlayerStateLose].SetRepeat(false);
 
 	// load and set win texture
@@ -76,11 +75,12 @@ void Player::OnEvent(kepler::Event& e)
 
 void Player::OnUpdate(float deltaTime)
 {
-	if (!m_bIsGrounded && m_position.y - (m_size.y / 2.0f) < -300.0f)
+	if (!m_bIsGrounded && m_position.y < -230.0f)
 	{
-		m_position.y = -250.0f + (m_size.y / 2.0f);
+		m_position.y = -230.0f;
 		m_bIsGrounded = true;
 		m_curDirection = { 0.0f, 0.0f };
+		m_lastDirection.y = 0.0f;
 		m_state = ePlayerState::PlayerStateIdle;
 		m_pCurAnim = &m_animation[PlayerStateIdle];
 		m_pCurAnim->Start();
@@ -112,39 +112,52 @@ void Player::OnUpdate(float deltaTime)
 		{
 			m_bIsGrounded = false;
 			m_state = ePlayerState::PlayerStateJump;
-			m_pCurAnim = &m_animation[PlayerStateJump];
-			m_pCurAnim->Start();
-			m_curDirection = { horizontal * 5.0f, 20.0f };
+			if (m_pCurAnim != &m_animation[PlayerStateJump])
+			{
+				m_pCurAnim = &m_animation[PlayerStateJump];
+				m_pCurAnim->Start();
+			}
+			m_curDirection = { horizontal * 5.0f, 25.0f };
 		}
 		else if (vertical < 0 && horizontal != 0)
 		{
 			m_bIsGrounded = false;
 			m_state = ePlayerState::PlayerStateSlide;
-			m_pCurAnim = &m_animation[PlayerStateSlide];
-			m_pCurAnim->Start();
-			m_curDirection = { horizontal * 20.0f, 5.0f };
+			if (m_pCurAnim != &m_animation[PlayerStateSlide])
+			{
+				m_pCurAnim = &m_animation[PlayerStateSlide];
+				m_pCurAnim->Start();
+			}
+			m_curDirection = { horizontal * 15.0f, 7.5f };
 		}
 		else
 		{
 			if (horizontal)
 			{
 				m_state = ePlayerState::PlayerStateWalk;
-				m_pCurAnim = &m_animation[PlayerStateWalk];
-				m_pCurAnim->Start();
+				if (m_pCurAnim != &m_animation[PlayerStateWalk])
+				{
+					m_pCurAnim = &m_animation[PlayerStateWalk];
+					m_pCurAnim->Start();
+				}
 				m_curDirection = { horizontal * 5.0f, 0.0f };
 			}
 			else
 			{
 				m_state = ePlayerState::PlayerStateIdle;
-				m_pCurAnim = &m_animation[PlayerStateIdle];
-				m_pCurAnim->Start();
+				if (m_pCurAnim != &m_animation[PlayerStateIdle])
+				{
+					m_pCurAnim = &m_animation[PlayerStateIdle];
+					m_pCurAnim->Start();
+				}
 				m_curDirection = { 0.0f, 0.0f };
 			}
 		}
 	}
 	else
 	{
-		m_curDirection.y = m_lastDirection.y / 10.0f - 9.8f * deltaTime;
+		m_curDirection.y = m_lastDirection.y - (49.0f * deltaTime);
+		KEPLER_TRACE("{0} - {1} - {2}", m_position.y, m_curDirection.y, m_lastDirection.y);
 		switch (m_state)
 		{
 		case ePlayerState::PlayerStateSlide:
@@ -161,11 +174,11 @@ void Player::OnUpdate(float deltaTime)
 	}
 
 	m_position += m_curDirection;
-	m_curDirection = m_lastDirection;
+	m_lastDirection = m_curDirection;
 	m_pCurAnim->Update();
 }
 
-void Player::OnGUIRender()
+void Player::OnRender()
 {
 	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite(), { 1.0f, 1.0f, 1.0f, 1.0f });
 }
