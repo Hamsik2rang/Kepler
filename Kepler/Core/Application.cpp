@@ -69,9 +69,12 @@ namespace kepler{
 
 		MSG msg{};
 		m_timer.Start();
+		float lastTime = 0.0f;
 		while (msg.message != WM_QUIT)
 		{
-			float deltaTime = m_timer.Elapsed();
+			float curTime = m_timer.Elapsed();
+			float deltaTime = curTime - lastTime;
+			lastTime = curTime;
 			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 			{
 				TranslateMessage(&msg);
