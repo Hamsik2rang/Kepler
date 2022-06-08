@@ -126,60 +126,32 @@ namespace kepler {
 		DrawQuad(transform, color);
 	}
 
-	void Renderer2D::DrawQuad(const Vec2f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture)
+	void Renderer2D::DrawQuad(const Vec2f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, bool bFlipX, bool bFlipY, const Vec4f& color)
 	{
 		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::Identity, { size.x, size.y, 1.0f });
 
-		DrawQuad(transform, texture);
+		DrawQuad(transform, texture, bFlipX, bFlipY, color);
 	}
 
-	void Renderer2D::DrawQuad(const Vec3f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture)
+	void Renderer2D::DrawQuad(const Vec3f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, bool bFlipX, bool bFlipY, const Vec4f& color)
 	{
 		Mat44f transform = math::GetWorldMatrix(position, Quaternion::Identity, { size.x, size.y, 1.0f });
 
-		DrawQuad(transform, texture);
+		DrawQuad(transform, texture, bFlipX, bFlipY, color);
 	}
 
-	void Renderer2D::DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture)
+	void Renderer2D::DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, bool bFlipX, bool bFlipY, const Vec4f& color)
 	{
 		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::FromEuler({ 0.0f,  0.0f, rotation }), { size.x, size.y, 1.0f });
 
-		DrawQuad(transform, texture);
+		DrawQuad(transform, texture, bFlipX, bFlipY, color);
 	}
 
-	void Renderer2D::DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture)
+	void Renderer2D::DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, bool bFlipX, bool bFlipY, const Vec4f& color)
 	{
 		Mat44f transform = math::GetWorldMatrix(position, Quaternion::FromEuler({ 0.0f,  0.0f, rotation }), { size.x, size.y, 1.0f });
 
-		DrawQuad(transform, texture);
-	}
-
-	void Renderer2D::DrawQuad(const Vec2f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color)
-	{
-		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::Identity, { size.x, size.y, 1.0f });
-
-		DrawQuad(transform, texture, color);
-	}
-
-	void Renderer2D::DrawQuad(const Vec3f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color)
-	{
-		Mat44f transform = math::GetWorldMatrix(position, Quaternion::Identity, { size.x, size.y, 1.0f });
-
-		DrawQuad(transform, texture, color);
-	}
-
-	void Renderer2D::DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color)
-	{
-		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::FromEuler({ 0.0f,  0.0f, rotation }), { size.x, size.y, 1.0f });
-
-		DrawQuad(transform, texture, color);
-	}
-
-	void Renderer2D::DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color)
-	{
-		Mat44f transform = math::GetWorldMatrix(position, Quaternion::FromEuler({ 0.0f,  0.0f, rotation }), { size.x, size.y, 1.0f });
-
-		DrawQuad(transform, texture, color);
+		DrawQuad(transform, texture, bFlipX, bFlipY, color);
 	}
 
 
@@ -241,7 +213,7 @@ namespace kepler {
 		s_data.batchObjects[index].vt.push_back(std::make_pair(pVA, transform));
 	}
 
-	void Renderer2D::DrawQuad(const Mat44f& transform, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color)
+	void Renderer2D::DrawQuad(const Mat44f& transform, const std::shared_ptr<ITexture2D>& texture, bool bFlipX, bool bFlipY, const Vec4f& color)
 	{
 		int index = -1;
 		for (int i = 0; i < s_data.batchObjects.size(); i++)
@@ -277,6 +249,21 @@ namespace kepler {
 			{ { -0.5f,  -0.5f, 0.0f }, {0.0f, 1.0f}, color },
 			{ { -0.5f,  0.5f, 0.0f }, {0.0f, 0.0f}, color }
 		};
+
+		if (bFlipX)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				vertices[i].uv.x *= -1;
+			}
+		}
+		if (bFlipY)
+		{
+			for (int i = 0; i < 4; i++)	
+			{
+				vertices[i].uv.y *= -1;
+			}
+		}
 
 		uint32_t indices[]{
 			0, 1, 2,

@@ -26,23 +26,18 @@ namespace kepler {
 		void BeginScene(OrthographicCamera& camera);
 		void EndScene();
 		void Flush();
-		
-		void DrawQuad(const Vec2f& position, const Vec2f& size, const Vec4f& color);
-		void DrawQuad(const Vec3f& position, const Vec2f& size, const Vec4f& color);
-		void DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const Vec4f& color);
-		void DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const Vec4f& color);
-		
-		void DrawQuad(const Vec2f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture);
-		void DrawQuad(const Vec3f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture);
-		void DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture);
-		void DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture);
 
-		void DrawQuad(const Vec2f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color);
-		void DrawQuad(const Vec3f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color);
-		void DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color);
-		void DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color);
+		void DrawQuad(const Vec2f& position, const Vec2f& size, const Vec4f& color = { 1.0f,1.0f, 1.0f, 1.0f });
+		void DrawQuad(const Vec3f& position, const Vec2f& size, const Vec4f& color = { 1.0f,1.0f, 1.0f, 1.0f });
+		void DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const Vec4f& color = { 1.0f,1.0f, 1.0f, 1.0f });
+		void DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const Vec4f& color = { 1.0f,1.0f, 1.0f, 1.0f });
 
-		void DrawQuad(const Mat44f& transform, const Vec4f& color);
-		void DrawQuad(const Mat44f& transform, const std::shared_ptr<ITexture2D>& texture, const Vec4f& color = { 1.0f, 1.0f, 1.0f,1.0f });
+		void DrawQuad(const Vec2f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, bool bFilpX = false, bool bFlipY = false, const Vec4f& color = { 1.0f,1.0f, 1.0f, 1.0f });
+		void DrawQuad(const Vec3f& position, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, bool bFilpX = false, bool bFlipY = false, const Vec4f& color = { 1.0f,1.0f, 1.0f, 1.0f });
+		void DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, bool bFilpX = false, bool bFlipY = false, const Vec4f& color = { 1.0f,1.0f, 1.0f, 1.0f });
+		void DrawQuad(const Vec3f& position, const float rotation, const Vec2f& size, const std::shared_ptr<ITexture2D>& texture, bool bFilpX = false, bool bFlipY = false, const Vec4f& color = { 1.0f,1.0f, 1.0f, 1.0f });
+
+		void DrawQuad(const Mat44f& transform, const Vec4f& color = { 1.0f, 1.0f, 1.0f, 1.0f });
+		void DrawQuad(const Mat44f& transform, const std::shared_ptr<ITexture2D>& texture, bool bFlipX, bool bFlipY, const Vec4f& color);
 	};
 }
