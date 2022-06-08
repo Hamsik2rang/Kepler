@@ -75,17 +75,6 @@ void Player::OnEvent(kepler::Event& e)
 
 void Player::OnUpdate(float deltaTime)
 {
-	if (!m_bIsGrounded && m_position.y < -230.0f)
-	{
-		m_position.y = -230.0f;
-		m_bIsGrounded = true;
-		m_curDirection = { 0.0f, 0.0f };
-		m_lastDirection.y = 0.0f;
-		m_state = ePlayerState::PlayerStateIdle;
-		m_pCurAnim = &m_animation[PlayerStateIdle];
-		m_pCurAnim->Start();
-	}
-
 	int horizontal = 0;
 	int vertical = 0;
 
@@ -121,14 +110,17 @@ void Player::OnUpdate(float deltaTime)
 		}
 		else if (vertical < 0 && horizontal != 0)
 		{
-			m_bIsGrounded = false;
-			m_state = ePlayerState::PlayerStateSlide;
-			if (m_pCurAnim != &m_animation[PlayerStateSlide])
+			if (kepler::Input::IsButtonDown(kepler::key::Space))
 			{
-				m_pCurAnim = &m_animation[PlayerStateSlide];
-				m_pCurAnim->Start();
+				m_bIsGrounded = false;
+				m_state = ePlayerState::PlayerStateSlide;
+				if (m_pCurAnim != &m_animation[PlayerStateSlide])
+				{
+					m_pCurAnim = &m_animation[PlayerStateSlide];
+					m_pCurAnim->Start();
+				}
+				m_curDirection = { horizontal * 15.0f, 7.5f };
 			}
-			m_curDirection = { horizontal * 15.0f, 7.5f };
 		}
 		else
 		{
@@ -157,7 +149,6 @@ void Player::OnUpdate(float deltaTime)
 	else
 	{
 		m_curDirection.y = m_lastDirection.y - (49.0f * deltaTime);
-		KEPLER_TRACE("{0} - {1} - {2}", m_position.y, m_curDirection.y, m_lastDirection.y);
 		switch (m_state)
 		{
 		case ePlayerState::PlayerStateSlide:
@@ -176,6 +167,17 @@ void Player::OnUpdate(float deltaTime)
 	m_position += m_curDirection;
 	m_lastDirection = m_curDirection;
 	m_pCurAnim->Update();
+
+	if (!m_bIsGrounded && m_position.y < -230.0f)
+	{
+		m_position.y = -230.0f;
+		m_bIsGrounded = true;
+		m_curDirection = { 0.0f, 0.0f };
+		m_state = ePlayerState::PlayerStateIdle;
+		m_pCurAnim = &m_animation[PlayerStateIdle];
+		m_pCurAnim->Start();
+	}
+
 }
 
 void Player::OnRender()
