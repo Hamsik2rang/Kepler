@@ -1,14 +1,16 @@
 #pragma warning(disable: 6812)
 #include "Player.h"
 
+#include "CollisionDetector.h"
 
-Player::Player(const kepler::Vec2f& position, const kepler::Vec2f& size, bool bIsGrounded, eColliderType colliderType)
-	: GameObject(colliderType)
+Player::Player(const kepler::Vec2f& position, const kepler::Vec2f& size, bool bIsGrounded, eColliderType type, eColliderCategory category)
+	: GameObject(type, category)
 	, m_position{ position }
 	, m_lastDirection{ -1.0f, 0.0f }
 	, m_size{ size }
 	, m_bIsGrounded{ bIsGrounded }
 	, m_state{ ePlayerState::PlayerStateIdle }
+	, m_bIsSpiked{ false }
 {
 	Init();
 }
@@ -173,30 +175,12 @@ void Player::OnUpdate(float deltaTime)
 
 
 	// collision detection
-	// 1. collision with ground
-	if (!m_bIsGrounded && m_position.y < -230.0f)
-	{
-		m_position.y = -230.0f;
-		m_bIsGrounded = true;
-		m_curDirection = { 0.0f, 0.0f };
-		m_state = ePlayerState::PlayerStateIdle;
-		m_size = constant::SQUIRTLE_IDLE_SIZE;
-		m_pCurAnim = &m_animation[PlayerStateIdle];
-		m_pCurAnim->Start();
-	}
 
-	float screenWidth = static_cast<float>(kepler::Application::Get()->GetWindow()->GetWidth());
-
-	// 2. collision with net
-	if (m_position.x < (m_size.x + constant::NET_SIZE.x) / 2.0f)
-	{
-		m_position.x = (m_size.x + constant::NET_SIZE.x) / 2.0f;
-	}
 	// 3. collision with screen
-	else if (m_position.x > (screenWidth - m_size.x) / 2.0f)
-	{
-		m_position.x = (screenWidth - m_size.x) / 2.0f;
-	}
+	//else if (m_position.x > (screenWidth - m_size.x) / 2.0f)
+	//{
+	//	m_position.x = (screenWidth - m_size.x) / 2.0f;
+	//}
 }
 
 void Player::OnRender()
@@ -208,4 +192,43 @@ void Player::OnRender()
 	}
 	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite(), bFlipX);
 
+}
+
+void Player::OnCollision(CollisionData& data)
+{
+	kepler::Vec2f colliderPos = data.collider->GetPosition();
+	kepler::Vec2f colliderSize = data.collider->GetSize();
+
+	switch (data.collider->GetColliderCategory())
+	{
+	case eColliderCategory::Net:
+		{
+			m_position.x = (m_size.x + colliderSize.x) / 2.0f;
+		}
+		break;
+	case eColliderCategory::Ground:
+		{
+			if (!m_bIsGrounded)
+			{
+				m_bIsGrounded = true;
+				m_position.y = constant::GROUND_POSITION.y;
+				m_curDirection = { 0.0f, 0.0f };
+				m_state = ePlayerState::PlayerStateIdle;
+				m_size = constant::SQUIRTLE_IDLE_SIZE;
+				m_pCurAnim = &m_animation[PlayerStateIdle];
+				m_pCurAnim->Start();
+			}
+		}
+		break;
+	case eColliderCategory::Wall:
+		{
+			m_position.x = colliderPos.x - (colliderSize.x + m_size.x) / 2.0f;
+		}
+		break;
+	case eColliderCategory::Ball:
+		{
+			//empty
+		}
+		break;
+	}
 }

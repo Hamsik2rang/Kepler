@@ -13,7 +13,6 @@ private:
 	std::shared_ptr<Ball> m_pBall;
 	kepler::OrthographicCamera m_camera;
 
-
 public:
 	GameLayer();
 

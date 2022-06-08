@@ -17,14 +17,16 @@ private:
 	std::shared_ptr<kepler::ITexture2D> m_pImpactTexture;
 
 	float m_rotation;
-	bool m_bIsAccelerated;
+	bool m_bIsAccelarated;
 public:
-	Ball(kepler::Vec2f position, kepler::Vec2f size, eColliderType type = eColliderType::Circle);
+	Ball(kepler::Vec2f position, kepler::Vec2f size, eColliderType type = eColliderType::Circle, eColliderCategory category = eColliderCategory::Ball);
 	void Init();
 
 	void OnEvent(kepler::Event& e);
 	void OnUpdate(float deltaTime);
 	void OnRender();
+
+	virtual void OnCollision(CollisionData& data);
 
 	// Inherited via GameObject
 	inline virtual kepler::Vec2f GetPosition() const override { return m_positions[0]; }

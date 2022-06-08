@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 
 #include <memory>
 #include <functional>
@@ -27,13 +28,13 @@ private:
 	kepler::Vec2f	m_lastDirection;
 	ePlayerState	m_state;
 	bool			m_bIsGrounded;
-	bool			m_bIsAccelarated;
+	bool			m_bIsSpiked;
 
 	Animation2D m_animation[6];
-
 	Animation2D* m_pCurAnim;
+
 public:
-	Player(const kepler::Vec2f& position, const kepler::Vec2f& size, bool bIsJumped, eColliderType colliderType = eColliderType::None);
+	Player(const kepler::Vec2f& position, const kepler::Vec2f& size, bool bIsJumped, eColliderType type = eColliderType::None, eColliderCategory category = eColliderCategory::Player);
 	void Init();
 
 	void OnEvent(kepler::Event& e);
@@ -45,4 +46,6 @@ public:
 	inline virtual kepler::Vec2f GetSize() const override { return m_size; }
 	inline virtual kepler::Vec2f GetCurrentDirection() const override { return m_curDirection; }
 	inline virtual kepler::Vec2f GetLastDirection() const override { return m_lastDirection; }
+	virtual void GetCollisionData(void* pOutData) const { pOutData = (void*)&m_bIsSpiked; }
+	virtual void OnCollision(CollisionData& data) override;
 };

@@ -8,7 +8,6 @@
 
 struct CollisionData
 {
-	kepler::Vec2f collisionPos;
 	std::shared_ptr<GameObject> collider;
 	bool bIsSpiked;
 };

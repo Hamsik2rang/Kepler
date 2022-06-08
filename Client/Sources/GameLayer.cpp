@@ -1,4 +1,5 @@
 #include "GameLayer.h"
+#include "CollisionDetector.h"
 
 #include <imgui.h>
 
@@ -21,6 +22,8 @@ void GameLayer::OnAttach()
 	m_pLevel = std::make_shared<Level>();
 	m_pLevel->Init(width, height);
 
+	CollisionDetector::AddCollider(m_pPlayer);
+	CollisionDetector::AddCollider(m_pBall);
 }
 
 void GameLayer::OnDetach()
@@ -33,6 +36,8 @@ void GameLayer::OnUpdate(float deltaTime)
 	m_pLevel->OnUpdate(deltaTime);
 	m_pBall->OnUpdate(deltaTime);
 	m_pPlayer->OnUpdate(deltaTime);
+
+	CollisionDetector::Detection();
 }
 
 void GameLayer::OnRender()

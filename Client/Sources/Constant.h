@@ -21,5 +21,5 @@ namespace constant {
 	extern const kepler::Vec2f BALL_ENEMY_SPAWN_POSITION;
 	extern const kepler::Vec4f BALL_SHADOW;
 
-	extern const float GROUND_Y;
+	extern const kepler::Vec2f GROUND_POSITION;
 }

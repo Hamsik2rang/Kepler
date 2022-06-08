@@ -9,20 +9,37 @@ enum class eColliderType
 	Circle,
 };
 
+enum class eColliderCategory
+{
+	Player = 0,
+	Enemy = 1,
+	Ball = 2,
+	Net = 3,
+	Ground = 4,
+	Wall = 5
+};
+
+struct CollisionData;
+
 class GameObject
 {
 protected:
 	eColliderType m_colliderType;
-
+	eColliderCategory m_colliderCategory;
 public:
-	GameObject(eColliderType colliderType)
+	GameObject(eColliderType colliderType, eColliderCategory colliderCategory)
 		: m_colliderType{ colliderType }
+		, m_colliderCategory{ colliderCategory }
 	{}
-	
+
 	eColliderType GetColliderType() const { return m_colliderType; }
+	eColliderCategory GetColliderCategory() const { return m_colliderCategory; }
 
 	virtual kepler::Vec2f GetPosition() const = 0;
 	virtual kepler::Vec2f GetSize() const = 0;
 	virtual kepler::Vec2f GetCurrentDirection() const = 0;
 	virtual kepler::Vec2f GetLastDirection() const = 0;
+
+	virtual void GetCollisionData(void* pOutData) const {}
+	virtual void OnCollision(CollisionData& data) {};
 };

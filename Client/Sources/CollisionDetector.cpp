@@ -38,6 +38,15 @@ bool CollisionDetector::Detection()
 					lowerObj->GetPosition().y + lowerObj->GetSize().y / 2.0f < higherObj->GetPosition().y - higherObj->GetSize().y / 2.0f)
 				{
 					//...
+					CollisionData data{};
+					
+					data.collider = s_pColliders[i];
+					s_pColliders[i]->GetCollisionData(&data.bIsSpiked);
+					s_pColliders[j]->OnCollision(data);
+					
+					data.collider = s_pColliders[j];
+					s_pColliders[j]->GetCollisionData(&data.bIsSpiked);
+					s_pColliders[i]->OnCollision(data);
 
 				}
 			}
@@ -47,6 +56,15 @@ bool CollisionDetector::Detection()
 				if ((s_pColliders[i]->GetPosition() - s_pColliders[j]->GetPosition()).Length() < (s_pColliders[i]->GetSize().x / 2.0f) + (s_pColliders[j]->GetSize().x / 2.0f))
 				{
 					//...
+					CollisionData data{};
+
+					data.collider = s_pColliders[i];
+					s_pColliders[i]->GetCollisionData(&data.bIsSpiked);
+					s_pColliders[j]->OnCollision(data);
+
+					data.collider = s_pColliders[j];
+					s_pColliders[j]->GetCollisionData(&data.bIsSpiked);
+					s_pColliders[i]->OnCollision(data);
 				}
 			}
 			// Box to Circle - segment-to-center distance
@@ -161,6 +179,15 @@ bool CollisionDetector::Detection()
 				if (isCollided)
 				{
 					//...
+					CollisionData data{};
+
+					data.collider = s_pColliders[i];
+					s_pColliders[i]->GetCollisionData(&data.bIsSpiked);
+					s_pColliders[j]->OnCollision(data);
+
+					data.collider = s_pColliders[j];
+					s_pColliders[j]->GetCollisionData(&data.bIsSpiked);
+					s_pColliders[i]->OnCollision(data);
 				}
 			}
 		}

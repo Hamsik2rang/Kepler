@@ -19,5 +19,5 @@ namespace constant {
 	const kepler::Vec2f BALL_ENEMY_SPAWN_POSITION{ -360.0f, 300.0f };
 	const kepler::Vec4f BALL_SHADOW{ 13.0f / 255.0f, 9.0f / 255.0f, 240.0f / 255.0f, 1.0f };
 
-	const float GROUND_Y{ -360.0f };
+	const kepler::Vec2f GROUND_POSITION{ 0.0f, -360.0f };
 }

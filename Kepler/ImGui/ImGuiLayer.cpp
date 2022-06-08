@@ -31,7 +31,6 @@ namespace kepler {
 
 	void ImGuiLayer::OnAttach()
 	{
-		// TODO: Create ImGui Context and set props
 		// ImGui context »ý¼º
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
