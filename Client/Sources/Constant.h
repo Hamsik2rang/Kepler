@@ -22,4 +22,5 @@ namespace constant {
 	extern const kepler::Vec4f BALL_SHADOW;
 
 	extern const kepler::Vec2f GROUND_POSITION;
+	extern const kepler::Vec2f GROUND_SIZE;
 }

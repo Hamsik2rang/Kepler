@@ -8,6 +8,9 @@ class Wall : public GameObject
 private:
 	kepler::Vec2f m_position;
 	kepler::Vec2f m_size;
+#ifdef _DEBUG
+	kepler::Vec4f m_debugColor;
+#endif
 
 public:
 	Wall(const kepler::Vec2f& position, const kepler::Vec2f& size)
@@ -16,8 +19,12 @@ public:
 		, m_size{ size }
 	{}
 
+	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, { 0.0f, 1.0f, 0.0f, 1.0f }); }
+	inline void OnUpdate(float deltaTime) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
+	inline void OnCollision(CollisionData& data) { m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f }; }
+
 	inline virtual kepler::Vec2f GetPosition() const override { return m_position; }
-	inline virtual kepler::Vec2f GetSize() const override { return kepler::Vec2f(); }
+	inline virtual kepler::Vec2f GetSize() const override { return m_size; }
 	inline virtual kepler::Vec2f GetCurrentDirection() const override { return kepler::Vec2f(); }
 	inline virtual kepler::Vec2f GetLastDirection() const override { return kepler::Vec2f(); }
 };
@@ -27,6 +34,9 @@ class Net : public GameObject
 private:
 	kepler::Vec2f m_position;
 	kepler::Vec2f m_size;
+#ifdef _DEBUG
+	kepler::Vec4f m_debugColor;
+#endif
 
 public:
 	Net(const kepler::Vec2f& position, const kepler::Vec2f& size)
@@ -35,8 +45,12 @@ public:
 		, m_size{ size }
 	{}
 
-	inline virtual kepler::Vec2f GetPosition() const override { return kepler::Vec2f(); }
-	inline virtual kepler::Vec2f GetSize() const override { return kepler::Vec2f(); }
+	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, { 0.0f, 1.0f, 0.0f, 1.0f }); }
+	inline void OnUpdate(float deltaTime) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
+	inline void OnCollision(CollisionData& data) { m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f }; }
+
+	inline virtual kepler::Vec2f GetPosition() const override { return m_position; }
+	inline virtual kepler::Vec2f GetSize() const override { return m_size; }
 	inline virtual kepler::Vec2f GetCurrentDirection() const override { return kepler::Vec2f(); }
 	inline virtual kepler::Vec2f GetLastDirection() const override { return kepler::Vec2f(); }
 };
@@ -46,6 +60,9 @@ class Ground : public GameObject
 private:
 	kepler::Vec2f m_position;
 	kepler::Vec2f m_size;
+#ifdef _DEBUG
+	kepler::Vec4f m_debugColor;
+#endif
 
 public:
 	Ground(const kepler::Vec2f& position, const kepler::Vec2f& size)
@@ -54,8 +71,12 @@ public:
 		, m_size{ size }
 	{}
 
-	inline virtual kepler::Vec2f GetPosition() const override { return kepler::Vec2f(); }
-	inline virtual kepler::Vec2f GetSize() const override { return kepler::Vec2f(); }
+	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, { 0.0f, 1.0f, 0.0f, 1.0f }); }
+	inline void OnUpdate(float deltaTime) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
+	inline void OnCollision(CollisionData& data) { m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f }; }
+
+	inline virtual kepler::Vec2f GetPosition() const override { return m_position; }
+	inline virtual kepler::Vec2f GetSize() const override { return m_size; }
 	inline virtual kepler::Vec2f GetCurrentDirection() const override { return kepler::Vec2f(); }
 	inline virtual kepler::Vec2f GetLastDirection() const override { return kepler::Vec2f(); }
 };

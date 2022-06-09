@@ -11,13 +11,14 @@ namespace constant {
 
 	const kepler::Vec2f PLAYER_SPAWN_POSITION{ 360.0f, -230.0f };
 
-	const kepler::Vec2f NET_POSITION{ 0.0f, -180.0f };
+	const kepler::Vec2f NET_POSITION{ 0.0f, -235.0f };
 	const kepler::Vec2f NET_SIZE{ 10.0f, 360.0f };
 
-	const kepler::Vec2f BALL_SIZE{150.0f, 150.0f};
+	const kepler::Vec2f BALL_SIZE{ 150.0f, 150.0f };
 	const kepler::Vec2f BALL_PLAYER_SPAWN_POSITION{ 360.0f, 300.0f };
 	const kepler::Vec2f BALL_ENEMY_SPAWN_POSITION{ -360.0f, 300.0f };
 	const kepler::Vec4f BALL_SHADOW{ 13.0f / 255.0f, 9.0f / 255.0f, 240.0f / 255.0f, 1.0f };
 
-	const kepler::Vec2f GROUND_POSITION{ 0.0f, -360.0f };
+	const kepler::Vec2f GROUND_POSITION{ 0.0f, -320.0f };
+	const kepler::Vec2f GROUND_SIZE{ 2000.0f, 5.0f };
 }

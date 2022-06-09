@@ -77,6 +77,7 @@ void Player::OnEvent(kepler::Event& e)
 
 void Player::OnUpdate(float deltaTime)
 {
+	m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	int horizontal = 0;
 	int vertical = 0;
 
@@ -172,15 +173,6 @@ void Player::OnUpdate(float deltaTime)
 	m_position += m_curDirection;
 	m_lastDirection = m_curDirection;
 	m_pCurAnim->Update();
-
-
-	// collision detection
-
-	// 3. collision with screen
-	//else if (m_position.x > (screenWidth - m_size.x) / 2.0f)
-	//{
-	//	m_position.x = (screenWidth - m_size.x) / 2.0f;
-	//}
 }
 
 void Player::OnRender()
@@ -190,12 +182,12 @@ void Player::OnRender()
 	{
 		bFlipX = m_curDirection.x > 0.0f;
 	}
-	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite(), bFlipX);
-
+	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite(), bFlipX, false, m_debugColor);
 }
 
 void Player::OnCollision(CollisionData& data)
 {
+	m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f };
 	kepler::Vec2f colliderPos = data.collider->GetPosition();
 	kepler::Vec2f colliderSize = data.collider->GetSize();
 
@@ -203,18 +195,24 @@ void Player::OnCollision(CollisionData& data)
 	{
 	case eColliderCategory::Net:
 		{
-			m_position.x = (m_size.x + colliderSize.x) / 2.0f;
+			if (m_curDirection.x < 0.0f)
+			{
+				m_position.x = (m_size.x + colliderSize.x) / 2.0f;
+			}
 		}
 		break;
 	case eColliderCategory::Ground:
 		{
+			m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 			if (!m_bIsGrounded)
 			{
 				m_bIsGrounded = true;
-				m_position.y = constant::GROUND_POSITION.y;
 				m_curDirection = { 0.0f, 0.0f };
-				m_state = ePlayerState::PlayerStateIdle;
 				m_size = constant::SQUIRTLE_IDLE_SIZE;
+				//m_position.y = constant::GROUND_POSITION.y + m_size.y / 2.0f;
+				m_position.y = constant::GROUND_POSITION.y + m_size.y / 2.0f;
+
+				m_state = ePlayerState::PlayerStateIdle;
 				m_pCurAnim = &m_animation[PlayerStateIdle];
 				m_pCurAnim->Start();
 			}
@@ -222,7 +220,10 @@ void Player::OnCollision(CollisionData& data)
 		break;
 	case eColliderCategory::Wall:
 		{
-			m_position.x = colliderPos.x - (colliderSize.x + m_size.x) / 2.0f;
+			if (m_curDirection.x > 0.0f)
+			{
+				m_position.x = colliderPos.x - (colliderSize.x + m_size.x) / 2.0f;
+			}
 		}
 		break;
 	case eColliderCategory::Ball:

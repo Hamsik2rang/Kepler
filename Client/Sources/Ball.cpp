@@ -3,11 +3,12 @@
 #include "Constant.h"
 #include "CollisionDetector.h"
 
-Ball::Ball(kepler::Vec2f position, kepler::Vec2f size, eColliderType type, eColliderCategory category)
+Ball::Ball(kepler::Vec2f position, float radius, eColliderType type, eColliderCategory category)
 	: m_curDirection{ 0.0f, -1.0f }
 	, m_lastDirection{ 0.0f, 0.0f }
-	, m_size{ size }
+	, m_size{ radius, radius }
 	, m_bIsAccelarated{ false }
+	, m_bIsGrounded{ false }
 	, m_rotation{ false }
 	, GameObject(type, category)
 {
@@ -28,6 +29,7 @@ void Ball::OnEvent(kepler::Event& e)
 
 void Ball::OnUpdate(float deltaTime)
 {
+	m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	m_rotation += deltaTime * 180.0f;
 	if (m_positions.size() > 3)
 	{
@@ -49,7 +51,7 @@ void Ball::OnUpdate(float deltaTime)
 
 void Ball::OnRender()
 {
-	kepler::Renderer2D::Get()->DrawQuad(m_positions[0], m_rotation, m_size, m_pBallTexture);
+	kepler::Renderer2D::Get()->DrawQuad(m_positions[0], m_rotation, m_size, m_pBallTexture, false, false, m_debugColor);
 	if (m_bIsAccelarated)
 	{
 		for (int i = 1; i < m_positions.size(); i++)
@@ -61,6 +63,7 @@ void Ball::OnRender()
 
 void Ball::OnCollision(CollisionData& data)
 {
+	m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f };
 	kepler::Vec2f colliderPos = data.collider->GetPosition();
 	kepler::Vec2f colliderSize = data.collider->GetSize();
 	bool bIsSpiked = data.bIsSpiked;
@@ -79,7 +82,6 @@ void Ball::OnCollision(CollisionData& data)
 		break;
 	case eColliderCategory::Net:
 		{
-
 			if (m_positions[0].y - m_size.y - (colliderPos.y + colliderSize.y) > kepler::math::constant::EPSILON)
 			{
 				m_curDirection.y *= -1.0f;
@@ -97,7 +99,12 @@ void Ball::OnCollision(CollisionData& data)
 		break;
 	case eColliderCategory::Ground:
 		{
-			m_positions[0].y = constant::GROUND_POSITION.y;
+			m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+			m_bIsGrounded = true;
+			m_positions[0].y = constant::GROUND_POSITION.y + m_size.y / 2.0f;
+			m_curDirection = { 0.0f, 0.0f };
+			m_lastDirection = { 0.0f, 0.0f };
+			m_rotation = 0.0f;
 			// end set
 			// call gamemanager
 		}

@@ -16,10 +16,15 @@ private:
 	std::shared_ptr<kepler::ITexture2D> m_pBallTexture;
 	std::shared_ptr<kepler::ITexture2D> m_pImpactTexture;
 
+#ifdef _DEBUG
+	kepler::Vec4f m_debugColor;
+#endif
+
 	float m_rotation;
 	bool m_bIsAccelarated;
+	bool m_bIsGrounded;
 public:
-	Ball(kepler::Vec2f position, kepler::Vec2f size, eColliderType type = eColliderType::Circle, eColliderCategory category = eColliderCategory::Ball);
+	Ball(kepler::Vec2f position, float radius, eColliderType type = eColliderType::Circle, eColliderCategory category = eColliderCategory::Ball);
 	void Init();
 
 	void OnEvent(kepler::Event& e);

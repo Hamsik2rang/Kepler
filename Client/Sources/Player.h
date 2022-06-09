@@ -30,6 +30,10 @@ private:
 	bool			m_bIsGrounded;
 	bool			m_bIsSpiked;
 
+#ifdef _DEBUG
+	kepler::Vec4f m_debugColor;
+#endif
+
 	Animation2D m_animation[6];
 	Animation2D* m_pCurAnim;
 
