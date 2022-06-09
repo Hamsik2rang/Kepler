@@ -161,6 +161,7 @@
     <ClCompile Include="Sources\ClientApp.cpp" />
     <ClCompile Include="Sources\CollisionDetector.cpp" />
     <ClCompile Include="Sources\Constant.cpp" />
+    <ClCompile Include="Sources\Enemy.cpp" />
     <ClCompile Include="Sources\GameLayer.cpp" />
     <ClCompile Include="Sources\Level.cpp" />
     <ClCompile Include="Sources\Player.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Sources\Ball.h" />
     <ClInclude Include="Sources\CollisionDetector.h" />
     <ClInclude Include="Sources\Constant.h" />
+    <ClInclude Include="Sources\Enemy.h" />
     <ClInclude Include="Sources\GameLayer.h" />
     <ClInclude Include="Sources\GameObject.h" />
     <ClInclude Include="Sources\Level.h" />

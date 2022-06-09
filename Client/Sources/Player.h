@@ -21,7 +21,7 @@ enum ePlayerState
 
 class Player : public GameObject
 {
-private:
+protected:
 	kepler::Vec2f	m_position;
 	kepler::Vec2f	m_size;
 	kepler::Vec2f	m_curDirection;
@@ -38,18 +38,19 @@ private:
 	Animation2D* m_pCurAnim;
 
 public:
-	Player(const kepler::Vec2f& position, const kepler::Vec2f& size, bool bIsJumped, eColliderType type = eColliderType::None, eColliderCategory category = eColliderCategory::Player);
+	Player(const kepler::Vec2f& position, const kepler::Vec2f& size, bool bIsJumped, eColliderType type = eColliderType::Box, eColliderCategory category = eColliderCategory::Player);
 	void Init();
 
-	void OnEvent(kepler::Event& e);
-	void OnUpdate(float deltaTime);
-	void OnRender();
+	virtual void OnEvent(kepler::Event& e);
+	virtual void OnUpdate(float deltaTime);
+	virtual void OnRender();
 
 	// Inherited via GameObject
+	virtual void OnCollision(CollisionData& data) override;
+
 	inline virtual kepler::Vec2f GetPosition() const override { return m_position; }
 	inline virtual kepler::Vec2f GetSize() const override { return m_size; }
 	inline virtual kepler::Vec2f GetCurrentDirection() const override { return m_curDirection; }
 	inline virtual kepler::Vec2f GetLastDirection() const override { return m_lastDirection; }
-	virtual void GetCollisionData(void* pOutData) const { pOutData = (void*)&m_bIsSpiked; }
-	virtual void OnCollision(CollisionData& data) override;
+	inline virtual void GetCollisionData(void* pOutData) const { pOutData = (void*)&m_bIsSpiked; }
 };

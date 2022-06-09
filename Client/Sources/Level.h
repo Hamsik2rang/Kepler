@@ -2,6 +2,7 @@
 
 #include "Kepler.h"
 #include "GameObject.h"
+#include "Constant.h"
 
 class Wall : public GameObject
 {
@@ -45,7 +46,7 @@ public:
 		, m_size{ size }
 	{}
 
-	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, { 0.0f, 1.0f, 0.0f, 1.0f }); }
+	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, constant::NET_SIZE, { 0.0f, 1.0f, 0.0f, 1.0f }); }
 	inline void OnUpdate(float deltaTime) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
 	inline void OnCollision(CollisionData& data) { m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f }; }
 

@@ -31,7 +31,7 @@ void Player::Init()
 	m_animation[PlayerStateWalk].SetRepeat(true);
 	// set idle texture
 	m_animation[PlayerStateIdle].AddSprites({ textures[0] });
-	m_animation[PlayerStateIdle].SetFrameCount(1);
+	m_animation[PlayerStateIdle].SetFrameCount(4);
 	m_animation[PlayerStateIdle].SetRepeat(false);
 
 	textures.clear();
@@ -41,7 +41,7 @@ void Player::Init()
 		std::string jumpTexturePath = TextureFilePath + "jump" + std::to_string(i + 1) + ".png";
 		textures.push_back(kepler::ITexture2D::Create(kepler::eTextureDataType::Float, jumpTexturePath));
 	}
-	m_animation[PlayerStateJump].AddSprites({ textures[0], textures[1] });
+	m_animation[PlayerStateJump].AddSprites({ textures[1], textures[0] });
 	m_animation[PlayerStateJump].SetFrameCount(12);
 	m_animation[PlayerStateJump].SetRepeat(false);
 	textures.clear();
@@ -53,7 +53,7 @@ void Player::Init()
 		textures.push_back(kepler::ITexture2D::Create(kepler::eTextureDataType::Float, sildeTexturePath));
 	}
 	m_animation[PlayerStateSlide].AddSprites({ textures[0] });
-	m_animation[PlayerStateSlide].SetFrameCount(1);
+	m_animation[PlayerStateSlide].SetFrameCount(4);
 	m_animation[PlayerStateSlide].SetRepeat(false);
 
 	// load and set lose texture
@@ -80,6 +80,7 @@ void Player::OnUpdate(float deltaTime)
 	m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	int horizontal = 0;
 	int vertical = 0;
+	m_bIsSpiked = false;
 
 	if (kepler::Input::IsButtonDown(kepler::key::Up))
 	{
@@ -117,6 +118,7 @@ void Player::OnUpdate(float deltaTime)
 			if (kepler::Input::IsButtonDown(kepler::key::Space))
 			{
 				m_bIsGrounded = false;
+				m_bIsSpiked = true;
 				m_state = ePlayerState::PlayerStateSlide;
 				m_size = constant::SQUIRTLE_SLIDE_SIZE;
 				if (m_pCurAnim != &m_animation[PlayerStateSlide])
@@ -182,7 +184,11 @@ void Player::OnRender()
 	{
 		bFlipX = m_curDirection.x > 0.0f;
 	}
+#ifdef _DEBUG
 	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite(), bFlipX, false, m_debugColor);
+#else
+	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite(), bFlipX);
+#endif
 }
 
 void Player::OnCollision(CollisionData& data)
@@ -209,7 +215,6 @@ void Player::OnCollision(CollisionData& data)
 				m_bIsGrounded = true;
 				m_curDirection = { 0.0f, 0.0f };
 				m_size = constant::SQUIRTLE_IDLE_SIZE;
-				//m_position.y = constant::GROUND_POSITION.y + m_size.y / 2.0f;
 				m_position.y = constant::GROUND_POSITION.y + m_size.y / 2.0f;
 
 				m_state = ePlayerState::PlayerStateIdle;
@@ -224,11 +229,6 @@ void Player::OnCollision(CollisionData& data)
 			{
 				m_position.x = colliderPos.x - (colliderSize.x + m_size.x) / 2.0f;
 			}
-		}
-		break;
-	case eColliderCategory::Ball:
-		{
-			//empty
 		}
 		break;
 	}
