@@ -19,11 +19,11 @@ public:
 		, m_position{ position }
 		, m_size{ size }
 	{}
-
-	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, { 0.0f, 1.0f, 0.0f, 1.0f }); }
+#ifdef _DEUBG
+	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_debugColor); }
 	inline void OnUpdate(float deltaTime) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
-	inline void OnCollision(CollisionData& data) { m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f }; }
-
+	inline void OnCollision(CollisionData& data) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
+#endif
 	inline virtual kepler::Vec2f GetPosition() const override { return m_position; }
 	inline virtual kepler::Vec2f GetSize() const override { return m_size; }
 	inline virtual kepler::Vec2f GetCurrentDirection() const override { return kepler::Vec2f(); }
@@ -46,10 +46,11 @@ public:
 		, m_size{ size }
 	{}
 
-	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, constant::NET_SIZE, { 0.0f, 1.0f, 0.0f, 1.0f }); }
+#ifdef _DEUBG
+	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_debugColor); }
 	inline void OnUpdate(float deltaTime) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
-	inline void OnCollision(CollisionData& data) { m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f }; }
-
+	inline void OnCollision(CollisionData& data) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
+#endif
 	inline virtual kepler::Vec2f GetPosition() const override { return m_position; }
 	inline virtual kepler::Vec2f GetSize() const override { return m_size; }
 	inline virtual kepler::Vec2f GetCurrentDirection() const override { return kepler::Vec2f(); }
@@ -72,10 +73,11 @@ public:
 		, m_size{ size }
 	{}
 
-	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, { 0.0f, 1.0f, 0.0f, 1.0f }); }
+#ifdef _DEUBG
+	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_debugColor); }
 	inline void OnUpdate(float deltaTime) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
-	inline void OnCollision(CollisionData& data) { m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f }; }
-
+	inline void OnCollision(CollisionData& data) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
+#endif
 	inline virtual kepler::Vec2f GetPosition() const override { return m_position; }
 	inline virtual kepler::Vec2f GetSize() const override { return m_size; }
 	inline virtual kepler::Vec2f GetCurrentDirection() const override { return kepler::Vec2f(); }

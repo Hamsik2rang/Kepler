@@ -29,7 +29,9 @@ void Ball::OnEvent(kepler::Event& e)
 
 void Ball::OnUpdate(float deltaTime)
 {
+#ifdef _DEBUG
 	m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+#endif
 	m_rotation += deltaTime * 180.0f;
 	if (m_positions.size() > 3)
 	{
@@ -62,84 +64,87 @@ void Ball::OnRender()
 #ifdef _DEBUG
 	kepler::Renderer2D::Get()->DrawQuad(m_positions[0], m_rotation, m_size, m_pBallTexture, false, false, m_debugColor);
 #else
+
+	kepler::Renderer2D::Get()->DrawQuad(m_positions[0], m_rotation, m_size, m_pBallTexture);
+	if (m_bIsAccelarated)
 	{
-		kepler::Renderer2D::Get()->DrawQuad(m_positions[0], m_rotation, m_size, m_pBallTexture);
-#endif
-		if (m_bIsAccelarated)
+		for (int i = 1; i < m_positions.size(); i++)
 		{
-			for (int i = 1; i < m_positions.size(); i++)
-			{
-				kepler::Renderer2D::Get()->DrawQuad(m_positions[i], m_size, m_pBallTexture, false, false, constant::BALL_SHADOW * (0.33f * i));
-			}
+			kepler::Renderer2D::Get()->DrawQuad(m_positions[i], m_size, m_pBallTexture, false, false, constant::BALL_SHADOW * (0.33f * i));
 		}
+	}
+#endif
 }
 
-	void Ball::OnCollision(CollisionData & data)
+void Ball::OnCollision(CollisionData& data)
+{
+	static float COEF_OF_RES = 0.8f;
+
+#ifdef _DEBUG
+	m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f };
+#endif
+	kepler::Vec2f colliderPos = data.collider->GetPosition();
+	kepler::Vec2f colliderDir = data.collider->GetCurrentDirection();
+	kepler::Vec2f colliderSize = data.collider->GetSize();
+	bool bIsSpiked = data.bIsSpiked;
+
+	switch (data.collider->GetColliderCategory())
 	{
-		static float COEF_OF_RES = 0.8f;
-
-		m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f };
-		kepler::Vec2f colliderPos = data.collider->GetPosition();
-		kepler::Vec2f colliderDir = data.collider->GetCurrentDirection();
-		kepler::Vec2f colliderSize = data.collider->GetSize();
-		bool bIsSpiked = data.bIsSpiked;
-
-		switch (data.collider->GetColliderCategory())
+	case eColliderCategory::Player:
+	case eColliderCategory::Enemy:
 		{
-		case eColliderCategory::Player:
-		case eColliderCategory::Enemy:
-			{
-				m_debugColor = { 0.0f, 0.3f, 1.0f, 1.0f };
-				float impulse = m_curDirection.Length();
-				// 두 물체의 충돌면에 대한 법선벡터에 충격량 제한
-				kepler::Vec2f nextDirection = (m_positions[0] - colliderPos).Normalize() * (impulse < 10.0f ? impulse : 10.0f);
-				// Player sprite의 가로가 세로보다 짧으므로 x축에 평행하게 공이 충돌했을 때 충돌량을 y축 평행 충돌과 비슷하도록 보정함.
-				nextDirection.x *= 1.5f;
-				kepler::Vec2f xAxis = kepler::Vec2f::Right;
+			float impulse = m_curDirection.Length();
+			// 두 물체의 충돌면에 대한 법선벡터에 충격량 제한
+			kepler::Vec2f nextDirection = (m_positions[0] - colliderPos).Normalize() * (impulse < 10.0f ? impulse : 10.0f);
+			// Player sprite의 가로가 세로보다 짧으므로 x축에 평행하게 공이 충돌했을 때 충돌량을 y축 평행 충돌과 비슷하도록 보정함.
+			nextDirection.x *= 1.5f;
+			kepler::Vec2f xAxis = kepler::Vec2f::Right;
 
-				float cosAngle = kepler::Dot(xAxis, m_curDirection.Normalize());
-				if (std::fabsf(cosAngle) > std::cosf(kepler::math::constant::PIDIV4))
-				{
-					m_curDirection.y *= -1.0f;
-				}
-				else
-				{
-					m_curDirection.x *= -1.0f;
-				}
-				if (data.bIsSpiked)
-				{
-					m_bIsAccelarated = true;
-					m_curDirection *= 5.0f;
-				}
-				m_curDirection = nextDirection;
-			}
-			break;
-		case eColliderCategory::Net:
+			float cosAngle = kepler::Dot(xAxis, m_curDirection.Normalize());
+			if (std::fabsf(cosAngle) > std::cosf(kepler::math::constant::PIDIV4))
 			{
-				kepler::Vec2f distVector = m_positions[0] - (colliderPos + kepler::Vec2f{ 0.0f, constant::NET_SIZE.y / 2.0f });
-
-				if (std::fabsf(distVector.Length()) < m_size.x / 2.0f || m_positions[0].y < (colliderPos.y + constant::NET_SIZE.y / 2.0f))
-				{
-					m_curDirection.x *= -1.0f;
-				}
+				m_curDirection.y *= -1.0f;
 			}
-			break;
-		case eColliderCategory::Wall:
+			else
 			{
 				m_curDirection.x *= -1.0f;
 			}
-			break;
-		case eColliderCategory::Ground:
+			if (data.bIsSpiked)
 			{
-				m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
-				m_bIsGrounded = true;
-				m_curDirection = { m_curDirection.x, -m_curDirection.y * COEF_OF_RES };
-
-				// TODO: set end
-				// call gamemanager
+				m_bIsAccelarated = true;
+				m_curDirection *= 5.0f;
 			}
-			break;
+			m_curDirection = nextDirection;
 		}
-		m_positions[0] = m_positions[1] + m_curDirection;
-		m_lastDirection = m_curDirection;
+		break;
+	case eColliderCategory::Net:
+		{
+			kepler::Vec2f distVector = m_positions[0] - (colliderPos + kepler::Vec2f{ 0.0f, constant::NET_SIZE.y / 2.0f });
+
+			if (std::fabsf(distVector.Length()) < m_size.x / 2.0f || m_positions[0].y < (colliderPos.y + constant::NET_SIZE.y / 2.0f))
+			{
+				m_curDirection.x *= -1.0f;
+			}
+		}
+		break;
+	case eColliderCategory::Wall:
+		{
+			m_curDirection.x *= -COEF_OF_RES;
+		}
+		break;
+	case eColliderCategory::Ground:
+		{
+#ifdef _DEBUG
+			m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+#endif
+			m_bIsGrounded = true;
+			m_curDirection = kepler::Vec2f{ m_curDirection.x, -m_curDirection.y } * COEF_OF_RES;
+
+			// TODO: set end
+			// call gamemanager
+		}
+		break;
 	}
+	m_positions[0] = m_positions[1] + m_curDirection;
+	m_lastDirection = m_curDirection;
+}

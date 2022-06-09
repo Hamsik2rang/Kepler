@@ -34,8 +34,10 @@ void Level::OnRender()
 
 void Level::OnUpdate(float deltaTime)
 {
+#ifdef _DEBUG
 	m_pLeftWall->OnUpdate(deltaTime);
 	m_pRightWall->OnUpdate(deltaTime);
 	m_pNet->OnUpdate(deltaTime);
 	m_pGround->OnUpdate(deltaTime);
+#endif
 }

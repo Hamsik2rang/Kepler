@@ -15,12 +15,14 @@ void GameLayer::OnAttach()
 	m_camera.SetProjection(0.0f, width, 0.0f, height, 0.0f, 1.0f);
 	m_camera.SetPosition({ 0.0f, 0.0f, 0.0f });
 
-	m_pPlayer = std::make_shared<Player>(constant::PLAYER_SPAWN_POSITION, constant::SQUIRTLE_IDLE_SIZE, false, eColliderType::Box);
+	m_pPlayer = std::make_shared<Player>(constant::PLAYER_SPAWN_POSITION, constant::SQUIRTLE_IDLE_SIZE, false);
 
 	m_pBall = std::make_shared<Ball>(constant::BALL_PLAYER_SPAWN_POSITION, constant::BALL_SIZE.x);
 
 	m_pLevel = std::make_shared<Level>();
 	m_pLevel->Init(width, height);
+
+	m_pEnemy = std::make_shared<Enemy>(kepler::Vec2f{ -constant::PLAYER_SPAWN_POSITION.x, constant::PLAYER_SPAWN_POSITION.y }, constant::SQUIRTLE_IDLE_SIZE, false);
 
 	CollisionDetector::AddCollider(m_pPlayer);
 	CollisionDetector::AddCollider(m_pBall);
@@ -36,7 +38,7 @@ void GameLayer::OnUpdate(float deltaTime)
 	m_pLevel->OnUpdate(deltaTime);
 	m_pBall->OnUpdate(deltaTime);
 	m_pPlayer->OnUpdate(deltaTime);
-
+	m_pEnemy->OnUpdate(deltaTime);
 	CollisionDetector::Detection();
 }
 
@@ -47,6 +49,7 @@ void GameLayer::OnRender()
 	m_pLevel->OnRender();
 	m_pBall->OnRender();
 	m_pPlayer->OnRender();
+	m_pEnemy->OnRender();
 
 	kepler::Renderer2D::Get()->EndScene();
 }
@@ -68,16 +71,30 @@ void GameLayer::OnGUIRender()
 	ImGui::Text("Direction: (%.2f, %.2f)", playerDir.x, playerDir.y);
 	ImGui::Text("Last Direction : (%.2f, %.2f)", playerLastDir.x, playerLastDir.y);
 
+	ImGui::NewLine();
+	
 	kepler::Vec2f ballPos = m_pBall->GetPosition();
 	kepler::Vec2f ballSize = m_pBall->GetSize();
 	kepler::Vec2f ballDir = m_pBall->GetCurrentDirection();
 	kepler::Vec2f ballLastDir = m_pBall->GetLastDirection();
-	ImGui::NewLine();
 	ImGui::Text("Ball");
 	ImGui::Text("Position: (%.2f, %.2f)", ballPos.x, ballPos.y);
 	ImGui::Text("Size: (%.2f, %.2f)", ballSize.x, ballSize.y);
 	ImGui::Text("Direction: (%.2f, %.2f)", ballDir.x, ballDir.y);
 	ImGui::Text("Last Direction : (%.2f, %.2f)", ballLastDir.x, ballLastDir.y);
+
+	ImGui::NewLine();
+
+	kepler::Vec2f enemyPos = m_pEnemy->GetPosition();
+	kepler::Vec2f enemySize = m_pEnemy->GetSize();
+	kepler::Vec2f enemyDir = m_pEnemy->GetCurrentDirection();
+	kepler::Vec2f enemyLastDir = m_pEnemy->GetLastDirection();
+	ImGui::Text("Enemy");
+	ImGui::Text("Position (%.2f, %.2f)", enemyPos.x, enemyPos.y);
+	ImGui::Text("Size: (%.2f, %.2f)", enemySize.x, enemySize.y);
+	ImGui::Text("Direction: (%.2f, %.2f)", enemyDir.x, enemyDir.y);
+	ImGui::Text("Last Direction : (%.2f, %.2f)", enemyLastDir.x, enemyLastDir.y);
+
 
 	ImGui::End();
 #endif

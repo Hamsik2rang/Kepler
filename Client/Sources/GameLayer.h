@@ -4,13 +4,16 @@
 #include "Player.h"
 #include "Ball.h"
 #include "Level.h"
+#include "Enemy.h"
 
 class GameLayer : public kepler::Layer
 {
 private:
 	std::shared_ptr<Player> m_pPlayer;
+	std::shared_ptr<Enemy> m_pEnemy;
 	std::shared_ptr<Level> m_pLevel;
 	std::shared_ptr<Ball> m_pBall;
+
 	kepler::OrthographicCamera m_camera;
 
 public:

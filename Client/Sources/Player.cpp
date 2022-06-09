@@ -77,7 +77,9 @@ void Player::OnEvent(kepler::Event& e)
 
 void Player::OnUpdate(float deltaTime)
 {
+#ifdef _DEBUG
 	m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+#endif
 	int horizontal = 0;
 	int vertical = 0;
 	m_bIsSpiked = false;
@@ -193,7 +195,9 @@ void Player::OnRender()
 
 void Player::OnCollision(CollisionData& data)
 {
+#ifdef _DEBUG
 	m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f };
+#endif
 	kepler::Vec2f colliderPos = data.collider->GetPosition();
 	kepler::Vec2f colliderSize = data.collider->GetSize();
 
@@ -209,7 +213,9 @@ void Player::OnCollision(CollisionData& data)
 		break;
 	case eColliderCategory::Ground:
 		{
+#ifdef _DEBUG
 			m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+#endif
 			if (!m_bIsGrounded)
 			{
 				m_bIsGrounded = true;
