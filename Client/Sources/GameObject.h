@@ -40,6 +40,6 @@ public:
 	virtual kepler::Vec2f GetCurrentDirection() const = 0;
 	virtual kepler::Vec2f GetLastDirection() const = 0;
 
-	virtual void GetAdditionalColliderStatus(void* pOutData) const {}
+	virtual void GetAdditionalColliderStatus(bool& pOutData) const {}
 	virtual void OnCollision(CollisionData& data) {};
 };

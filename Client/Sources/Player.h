@@ -38,7 +38,7 @@ protected:
 	Animation2D* m_pCurAnim;
 
 public:
-	Player(const kepler::Vec2f& position, const kepler::Vec2f& size, bool bIsJumped, eColliderType type = eColliderType::Box, eColliderCategory category = eColliderCategory::Player);
+	Player(const kepler::Vec2f& position, const kepler::Vec2f& size, eColliderType type = eColliderType::Box, eColliderCategory category = eColliderCategory::Player);
 	void Init();
 
 	virtual void OnEvent(kepler::Event& e);
@@ -52,5 +52,5 @@ public:
 	inline virtual kepler::Vec2f GetSize() const override { return m_size; }
 	inline virtual kepler::Vec2f GetCurrentDirection() const override { return m_curDirection; }
 	inline virtual kepler::Vec2f GetLastDirection() const override { return m_lastDirection; }
-	inline virtual void GetCollisionData(void* pOutData) const { pOutData = (void*)&m_bIsSpiked; }
+	inline virtual void GetAdditionalColliderStatus(bool& pOutData) const { pOutData = m_bIsSpiked; }
 };

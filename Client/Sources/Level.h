@@ -19,7 +19,7 @@ public:
 		, m_position{ position }
 		, m_size{ size }
 	{}
-#ifdef _DEUBG
+#ifdef _DEBUG
 	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_debugColor); }
 	inline void OnUpdate(float deltaTime) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
 	inline void OnCollision(CollisionData& data) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
@@ -46,7 +46,7 @@ public:
 		, m_size{ size }
 	{}
 
-#ifdef _DEUBG
+#ifdef _DEBUG
 	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_debugColor); }
 	inline void OnUpdate(float deltaTime) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
 	inline void OnCollision(CollisionData& data) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
@@ -73,7 +73,7 @@ public:
 		, m_size{ size }
 	{}
 
-#ifdef _DEUBG
+#ifdef _DEBUG
 	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_debugColor); }
 	inline void OnUpdate(float deltaTime) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
 	inline void OnCollision(CollisionData& data) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }

@@ -15,16 +15,17 @@ void GameLayer::OnAttach()
 	m_camera.SetProjection(0.0f, width, 0.0f, height, 0.0f, 1.0f);
 	m_camera.SetPosition({ 0.0f, 0.0f, 0.0f });
 
-	m_pPlayer = std::make_shared<Player>(constant::PLAYER_SPAWN_POSITION, constant::SQUIRTLE_IDLE_SIZE, false);
+	m_pPlayer = std::make_shared<Player>(constant::PLAYER_SPAWN_POSITION, constant::SQUIRTLE_IDLE_SIZE);
 
 	m_pBall = std::make_shared<Ball>(constant::BALL_PLAYER_SPAWN_POSITION, constant::BALL_SIZE.x);
 
 	m_pLevel = std::make_shared<Level>();
 	m_pLevel->Init(width, height);
 
-	m_pEnemy = std::make_shared<Enemy>(kepler::Vec2f{ -constant::PLAYER_SPAWN_POSITION.x, constant::PLAYER_SPAWN_POSITION.y }, constant::SQUIRTLE_IDLE_SIZE, false);
+	m_pEnemy = std::make_shared<Enemy>(kepler::Vec2f{ -constant::PLAYER_SPAWN_POSITION.x, constant::PLAYER_SPAWN_POSITION.y }, constant::SQUIRTLE_IDLE_SIZE, m_pPlayer, m_pBall);
 
 	CollisionDetector::AddCollider(m_pPlayer);
+	CollisionDetector::AddCollider(m_pEnemy);
 	CollisionDetector::AddCollider(m_pBall);
 }
 
@@ -65,14 +66,17 @@ void GameLayer::OnGUIRender()
 	kepler::Vec2f playerSize = m_pPlayer->GetSize();
 	kepler::Vec2f playerDir = m_pPlayer->GetCurrentDirection();
 	kepler::Vec2f playerLastDir = m_pPlayer->GetLastDirection();
+	bool isPlayerSpiked = false;
+	m_pPlayer->GetAdditionalColliderStatus(isPlayerSpiked);
 	ImGui::Text("Player");
 	ImGui::Text("Position (%.2f, %.2f)", playerPos.x, playerPos.y);
 	ImGui::Text("Size: (%.2f, %.2f)", playerSize.x, playerSize.y);
 	ImGui::Text("Direction: (%.2f, %.2f)", playerDir.x, playerDir.y);
 	ImGui::Text("Last Direction : (%.2f, %.2f)", playerLastDir.x, playerLastDir.y);
+	ImGui::Text("Spike: %d", isPlayerSpiked);
 
 	ImGui::NewLine();
-	
+
 	kepler::Vec2f ballPos = m_pBall->GetPosition();
 	kepler::Vec2f ballSize = m_pBall->GetSize();
 	kepler::Vec2f ballDir = m_pBall->GetCurrentDirection();

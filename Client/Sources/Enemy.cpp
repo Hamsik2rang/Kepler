@@ -3,8 +3,8 @@
 #include "CollisionDetector.h"
 #include "Constant.h"
 
-Enemy::Enemy(const kepler::Vec2f& position, const kepler::Vec2f& size, bool bIsJumped, eColliderType type, eColliderCategory category)
-	: Player(position, size, bIsJumped, type, category)
+Enemy::Enemy(const kepler::Vec2f& position, const kepler::Vec2f& size, std::shared_ptr<Player> pPlayer, std::shared_ptr<Ball> pBall, eColliderType type, eColliderCategory category)
+	: Player(position, size, type, category)
 {
 	Init();
 }
@@ -20,6 +20,9 @@ void Enemy::OnUpdate(float deltaTime)
 	m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 #endif
 	// update AI State
+	
+	// 공이 플레이어쪽 코트 위에 있을 때
+	
 }
 
 void Enemy::OnRender()

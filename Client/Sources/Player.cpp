@@ -3,12 +3,12 @@
 
 #include "CollisionDetector.h"
 
-Player::Player(const kepler::Vec2f& position, const kepler::Vec2f& size, bool bIsGrounded, eColliderType type, eColliderCategory category)
+Player::Player(const kepler::Vec2f& position, const kepler::Vec2f& size, eColliderType type, eColliderCategory category)
 	: GameObject(type, category)
 	, m_position{ position }
 	, m_lastDirection{ -1.0f, 0.0f }
 	, m_size{ size }
-	, m_bIsGrounded{ bIsGrounded }
+	, m_bIsGrounded{ false }
 	, m_state{ ePlayerState::PlayerStateIdle }
 	, m_bIsSpiked{ false }
 {
@@ -20,7 +20,7 @@ void Player::Init()
 	std::string TextureFilePath = "./Assets/Textures/";
 
 	std::vector<std::shared_ptr<kepler::ITexture2D>> textures;
-	// load and set slide texture
+	// load and walk & idle textures
 	for (int i = 0; i < 3; i++)
 	{
 		std::string moveTexturePath = TextureFilePath + "walk" + std::to_string(i + 1) + ".png";
@@ -120,7 +120,6 @@ void Player::OnUpdate(float deltaTime)
 			if (kepler::Input::IsButtonDown(kepler::key::Space))
 			{
 				m_bIsGrounded = false;
-				m_bIsSpiked = true;
 				m_state = ePlayerState::PlayerStateSlide;
 				m_size = constant::SQUIRTLE_SLIDE_SIZE;
 				if (m_pCurAnim != &m_animation[PlayerStateSlide])
@@ -168,6 +167,10 @@ void Player::OnUpdate(float deltaTime)
 			break;
 		case ePlayerState::PlayerStateJump:
 			{
+				if (kepler::Input::IsButtonDown(kepler::key::Space))
+				{
+					m_bIsSpiked = true;
+				}
 				m_curDirection.x = horizontal * 5.0f;
 			}
 			break;
@@ -187,6 +190,10 @@ void Player::OnRender()
 		bFlipX = m_curDirection.x > 0.0f;
 	}
 #ifdef _DEBUG
+	if (m_bIsSpiked)
+	{
+		m_debugColor.g = 1.0f;
+	}
 	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite(), bFlipX, false, m_debugColor);
 #else
 	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite(), bFlipX);
@@ -219,6 +226,7 @@ void Player::OnCollision(CollisionData& data)
 			if (!m_bIsGrounded)
 			{
 				m_bIsGrounded = true;
+				m_bIsSpiked = false;
 				m_curDirection = { 0.0f, 0.0f };
 				m_size = constant::SQUIRTLE_IDLE_SIZE;
 				m_position.y = constant::GROUND_POSITION.y + m_size.y / 2.0f;

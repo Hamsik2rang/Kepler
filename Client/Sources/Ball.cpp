@@ -111,8 +111,10 @@ void Ball::OnCollision(CollisionData& data)
 			}
 			if (data.bIsSpiked)
 			{
-				m_bIsAccelarated = true;
-				m_curDirection *= 5.0f;
+
+				// spike Ã³¸®
+				m_bIsAccelarated ^= data.bIsSpiked;
+				m_curDirection *= 50.0f;
 			}
 			m_curDirection = nextDirection;
 		}
@@ -138,7 +140,7 @@ void Ball::OnCollision(CollisionData& data)
 			m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 #endif
 			m_bIsGrounded = true;
-			m_curDirection = kepler::Vec2f{ m_curDirection.x, -m_curDirection.y } * COEF_OF_RES;
+			m_curDirection = kepler::Vec2f{ m_curDirection.x, -m_curDirection.y } *COEF_OF_RES;
 
 			// TODO: set end
 			// call gamemanager

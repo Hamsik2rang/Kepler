@@ -43,11 +43,11 @@ bool CollisionDetector::Detection()
 					CollisionData data{};
 
 					data.collider = s_pColliders[i];
-					s_pColliders[i]->GetAdditionalColliderStatus(&data.bIsSpiked);
+					s_pColliders[i]->GetAdditionalColliderStatus(data.bIsSpiked);
 					s_pColliders[j]->OnCollision(data);
 
 					data.collider = s_pColliders[j];
-					s_pColliders[j]->GetAdditionalColliderStatus(&data.bIsSpiked);
+					s_pColliders[j]->GetAdditionalColliderStatus(data.bIsSpiked);
 					s_pColliders[i]->OnCollision(data);
 				}
 			}
@@ -60,11 +60,11 @@ bool CollisionDetector::Detection()
 					CollisionData data{};
 
 					data.collider = s_pColliders[i];
-					s_pColliders[i]->GetAdditionalColliderStatus(&data.bIsSpiked);
+					s_pColliders[i]->GetAdditionalColliderStatus(data.bIsSpiked);
 					s_pColliders[j]->OnCollision(data);
 
 					data.collider = s_pColliders[j];
-					s_pColliders[j]->GetAdditionalColliderStatus(&data.bIsSpiked);
+					s_pColliders[j]->GetAdditionalColliderStatus(data.bIsSpiked);
 					s_pColliders[i]->OnCollision(data);
 				}
 			}
@@ -181,11 +181,11 @@ bool CollisionDetector::Detection()
 					CollisionData data{};
 
 					data.collider = s_pColliders[i];
-					s_pColliders[i]->GetAdditionalColliderStatus(&data.bIsSpiked);
+					s_pColliders[i]->GetAdditionalColliderStatus(data.bIsSpiked);
 					s_pColliders[j]->OnCollision(data);
 
 					data.collider = s_pColliders[j];
-					s_pColliders[j]->GetAdditionalColliderStatus(&data.bIsSpiked);
+					s_pColliders[j]->GetAdditionalColliderStatus(data.bIsSpiked);
 					s_pColliders[i]->OnCollision(data);
 				}
 			}
