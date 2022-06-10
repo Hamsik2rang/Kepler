@@ -43,7 +43,7 @@ void Player::Init()
 	}
 	m_animation[PlayerStateJump].AddSprites({ textures[1], textures[0] });
 	m_animation[PlayerStateJump].SetFrameCount(12);
-	m_animation[PlayerStateJump].SetRepeat(false);
+	m_animation[PlayerStateJump].SetRepeat(true);
 	textures.clear();
 
 	// load and sset slide texture

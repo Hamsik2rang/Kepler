@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "Animation2D.hpp"
 #include "Constant.h"
+#include "CollisionDetector.h"
 
 enum ePlayerState
 {

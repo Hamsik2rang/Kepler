@@ -23,4 +23,7 @@ namespace constant {
 
 	extern const kepler::Vec2f GROUND_POSITION;
 	extern const kepler::Vec2f GROUND_SIZE;
+
+	extern const kepler::Vec2f SKY_POSITION;
+	extern const kepler::Vec2f SKY_SIZE;
 }

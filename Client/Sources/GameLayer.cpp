@@ -59,8 +59,9 @@ void GameLayer::OnGUIRender()
 {
 #ifdef _DEBUG
 	ImGuiIO& io = ImGui::GetIO();
-	ImGui::Begin("Debug");
-
+	ImGui::Begin("Debug Mode");
+	ImGui::Text("Press R to Respaw Ball");
+	ImGui::NewLine();
 	// Player Info
 	kepler::Vec2f playerPos = m_pPlayer->GetPosition();
 	kepler::Vec2f playerSize = m_pPlayer->GetSize();
@@ -81,11 +82,14 @@ void GameLayer::OnGUIRender()
 	kepler::Vec2f ballSize = m_pBall->GetSize();
 	kepler::Vec2f ballDir = m_pBall->GetCurrentDirection();
 	kepler::Vec2f ballLastDir = m_pBall->GetLastDirection();
+	bool isBallAccelerated = false;
+	m_pBall->GetAdditionalColliderStatus(isBallAccelerated);
 	ImGui::Text("Ball");
 	ImGui::Text("Position: (%.2f, %.2f)", ballPos.x, ballPos.y);
 	ImGui::Text("Size: (%.2f, %.2f)", ballSize.x, ballSize.y);
 	ImGui::Text("Direction: (%.2f, %.2f)", ballDir.x, ballDir.y);
 	ImGui::Text("Last Direction : (%.2f, %.2f)", ballLastDir.x, ballLastDir.y);
+	ImGui::Text("Accelerated: %d", isBallAccelerated);
 
 	ImGui::NewLine();
 
