@@ -3,6 +3,7 @@
 #include "Kepler.h"
 #include "GameObject.h"
 #include "Constant.h"
+#include "CollisionDetector.h"
 
 class Wall : public GameObject
 {
@@ -84,6 +85,33 @@ public:
 	inline virtual kepler::Vec2f GetLastDirection() const override { return kepler::Vec2f(); }
 };
 
+class Sky : public GameObject
+{
+private:
+	kepler::Vec2f m_position;
+	kepler::Vec2f m_size;
+#ifdef _DEBUG
+	kepler::Vec4f m_debugColor;
+#endif
+
+public:
+	Sky(const kepler::Vec2f& position, const kepler::Vec2f& size)
+		: GameObject(eColliderType::Box, eColliderCategory::Sky)
+		, m_position{ position }
+		, m_size{ size }
+	{}
+
+#ifdef _DEBUG
+	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_debugColor); }
+	inline void OnUpdate(float deltaTime) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
+	inline void OnCollision(CollisionData& data) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
+#endif
+	inline virtual kepler::Vec2f GetPosition() const override { return m_position; }
+	inline virtual kepler::Vec2f GetSize() const override { return m_size; }
+	inline virtual kepler::Vec2f GetCurrentDirection() const override { return kepler::Vec2f(); }
+	inline virtual kepler::Vec2f GetLastDirection() const override { return kepler::Vec2f(); }
+};
+
 
 class Level
 {
@@ -96,6 +124,7 @@ private:
 	std::shared_ptr<Wall> m_pRightWall;
 	std::shared_ptr<Net> m_pNet;
 	std::shared_ptr<Ground> m_pGround;
+	std::shared_ptr<Sky> m_pSky;
 
 public:
 	void Init(float width, float height);

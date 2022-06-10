@@ -13,11 +13,13 @@ void Level::Init(float width, float height)
 	m_pRightWall = std::make_shared<Wall>(kepler::Vec2f{ width / 2.0f, 0.0f }, kepler::Vec2f{ 10.0f, 500000.0f });
 	m_pNet = std::make_shared<Net>(constant::NET_POSITION, kepler::Vec2f{constant::NET_SIZE.x, 2000.0f});
 	m_pGround = std::make_shared<Ground>(constant::GROUND_POSITION, constant::GROUND_SIZE);
+	m_pSky = std::make_shared<Sky>(constant::SKY_POSITION, constant::SKY_SIZE);
 
 	CollisionDetector::AddCollider(m_pLeftWall);
 	CollisionDetector::AddCollider(m_pRightWall);
 	CollisionDetector::AddCollider(m_pNet);
 	CollisionDetector::AddCollider(m_pGround);
+	CollisionDetector::AddCollider(m_pSky);
 }
 
 void Level::OnRender()
