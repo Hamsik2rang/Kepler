@@ -2,22 +2,9 @@
 
 #include "Kepler.h"
 
-enum class eColliderType
-{
-	None = 0,
-	Box,
-	Circle,
-};
 
-enum class eColliderCategory
-{
-	Player = 0,
-	Enemy = 1,
-	Ball = 2,
-	Net = 3,
-	Ground = 4,
-	Wall = 5
-};
+enum class eColliderType;
+enum class eColliderCategory;
 
 struct CollisionData;
 

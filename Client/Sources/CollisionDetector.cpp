@@ -42,11 +42,31 @@ bool CollisionDetector::Detection()
 					//...
 					CollisionData data{};
 
+					if (leftObj == s_pColliders[j])
+					{
+						data.normal = kepler::Vec2f::Left;
+					}
+					else
+					{
+						data.normal = kepler::Vec2f::Right;
+					}
+
+					if (lowerObj == s_pColliders[j])
+					{
+						data.normal += kepler::Vec2f::Down;
+					}
+					else
+					{
+						data.normal += kepler::Vec2f::Up;
+					}
+					data.normal = data.normal.Normalize();
+
 					data.collider = s_pColliders[i];
 					s_pColliders[i]->GetAdditionalColliderStatus(data.bIsSpiked);
 					s_pColliders[j]->OnCollision(data);
 
 					data.collider = s_pColliders[j];
+					data.normal *= -1.0f;
 					s_pColliders[j]->GetAdditionalColliderStatus(data.bIsSpiked);
 					s_pColliders[i]->OnCollision(data);
 				}
@@ -60,10 +80,12 @@ bool CollisionDetector::Detection()
 					CollisionData data{};
 
 					data.collider = s_pColliders[i];
+					data.normal = (s_pColliders[j]->GetPosition() - s_pColliders[i]->GetPosition()).Normalize();
 					s_pColliders[i]->GetAdditionalColliderStatus(data.bIsSpiked);
 					s_pColliders[j]->OnCollision(data);
 
 					data.collider = s_pColliders[j];
+					data.normal *= -1.0f;
 					s_pColliders[j]->GetAdditionalColliderStatus(data.bIsSpiked);
 					s_pColliders[i]->OnCollision(data);
 				}
@@ -101,6 +123,7 @@ bool CollisionDetector::Detection()
 						isCollided = true;
 					}
 				}
+
 				// right segment
 				if (!isCollided)
 				{
@@ -126,6 +149,7 @@ bool CollisionDetector::Detection()
 						isCollided = true;
 					}
 				}
+
 				// top segment
 				if (!isCollided)
 				{
@@ -150,9 +174,10 @@ bool CollisionDetector::Detection()
 						isCollided = true;
 					}
 				}
-				// bottom segment
+
 				if (!isCollided)
 				{
+					// bottom segment
 					kepler::Vec2f segPoint{};
 					// 1. center of circle's x-pos is smaller than smallest point of bottom-segment's it
 					if (boxObj->GetPosition().x - boxObj->GetSize().x / 2.0f > circleObj->GetPosition().x)
@@ -174,6 +199,7 @@ bool CollisionDetector::Detection()
 						isCollided = true;
 					}
 				}
+
 
 				if (isCollided)
 				{
