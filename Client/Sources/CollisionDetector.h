@@ -19,9 +19,10 @@ enum class eColliderCategory
 	Ball,
 	Net,
 	Ground,
-	Wall, 
+	Wall,
 	Sky,
 };
+
 
 struct CollisionData
 {

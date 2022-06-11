@@ -39,6 +39,7 @@ void Ball::OnUpdate(float deltaTime)
 
 	m_curDirection = m_lastDirection;
 	m_curDirection.y -= 9.8f * deltaTime;
+
 #ifdef _DEBUG
 	if (kepler::Input::IsButtonDown(kepler::key::R))
 	{
@@ -116,10 +117,10 @@ void Ball::OnCollision(CollisionData& data)
 				break;
 			}
 
-			m_curDirection.x *= -1.0f;
 			m_bIsAccelarated = false;
-			if (m_transforms.front().first.y < colliderPos.y)
+			if (m_transforms.front().first.y < colliderPos.y + constant::NET_SIZE.y / 2.0f)
 			{
+				m_curDirection.x *= -1.0f;
 				if (m_transforms.front().first.x < 0.0f)
 				{
 					m_transforms[1].first.x = -(constant::NET_SIZE.x + m_size.x) / 2.0f;
@@ -128,6 +129,11 @@ void Ball::OnCollision(CollisionData& data)
 				{
 					m_transforms[1].first.x = (constant::NET_SIZE.x + m_size.x) / 2.0f;
 				}
+			}
+			else
+			{
+				m_curDirection.y *= -1.0f;
+				m_transforms[1].first.y = (constant::NET_POSITION.y + (constant::NET_SIZE.y + m_size.y) / 2.0f);
 			}
 
 		}
@@ -153,10 +159,19 @@ void Ball::OnCollision(CollisionData& data)
 #endif
 			m_bIsGrounded = true;
 			m_transforms[1].first.y = constant::GROUND_POSITION.y + (constant::GROUND_SIZE.y + m_size.y) / 2.0f;
-			m_curDirection = kepler::Vec2f{ m_curDirection.x, -m_curDirection.y } *COEF_OF_RES;
+			if (std::fabsf(m_curDirection.y) < 0.5f)
+			{
+				m_curDirection.y = 0.0f;
+			}
+			else
+			{
+				m_curDirection = kepler::Vec2f{ m_curDirection.x, -m_curDirection.y } *COEF_OF_RES;
+			}
 			m_bIsAccelarated = false;
+
 			// TODO: set end
 			// call gamemanager
+
 		}
 		break;
 	case eColliderCategory::Sky:
