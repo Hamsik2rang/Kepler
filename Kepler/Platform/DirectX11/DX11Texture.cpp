@@ -8,8 +8,6 @@
 
 namespace kepler {
 
-	
-
 	DX11Texture::DX11Texture()
 	{
 

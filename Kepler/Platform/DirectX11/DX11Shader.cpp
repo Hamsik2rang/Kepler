@@ -149,6 +149,7 @@ namespace kepler {
 		}
 	}
 
+	// 컴파일된 쉐이더 프로그램을 이용해 쉐이더 객체 생성
 	void DX11Shader::Create()
 	{
 		ID3D11Device* pDevice;
@@ -182,6 +183,7 @@ namespace kepler {
 		}
 	}
 
+	// 쉐이더 리플렉션 초기화
 	void DX11Shader::InitReflection()
 	{
 		HRESULT hr = D3DReflect(m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), __uuidof(ID3D11ShaderReflection), reinterpret_cast<void**>(&m_pReflection));
@@ -192,6 +194,8 @@ namespace kepler {
 		}
 	}
 
+	// 쉐이더 Vertex Layout 초기화
+	// 리플렉션을 이용해 자동으로 초기화해줌
 	void DX11Shader::InitVertexLayout()
 	{
 		ID3D11Device* pDevice;
@@ -213,25 +217,29 @@ namespace kepler {
 			curDesc.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
 			curDesc.InstanceDataStepRate = 0;
 
-			if (paramDesc.Mask == 1)
+			// 0b0001
+			if (paramDesc.Mask == 1)		
 			{
 				if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_UINT32) curDesc.Format = DXGI_FORMAT_R32_UINT;
 				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_SINT32) curDesc.Format = DXGI_FORMAT_R32_SINT;
 				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) curDesc.Format = DXGI_FORMAT_R32_FLOAT;
 			}
-			else if (paramDesc.Mask <= 3)
+			//0b0011
+			else if (paramDesc.Mask <= 3)	
 			{
 				if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_UINT32) curDesc.Format = DXGI_FORMAT_R32G32_UINT;
 				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_SINT32) curDesc.Format = DXGI_FORMAT_R32G32_SINT;
 				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) curDesc.Format = DXGI_FORMAT_R32G32_FLOAT;
 			}
-			else if (paramDesc.Mask <= 7)
+			//0b0111
+			else if (paramDesc.Mask <= 7)	
 			{
 				if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_UINT32) curDesc.Format = DXGI_FORMAT_R32G32B32_UINT;
 				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_SINT32) curDesc.Format = DXGI_FORMAT_R32G32B32_SINT;
 				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_FLOAT32) curDesc.Format = DXGI_FORMAT_R32G32B32_FLOAT;
 			}
-			else if (paramDesc.Mask <= 15)
+			//0b1111
+			else if (paramDesc.Mask <= 15)	
 			{
 				if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_UINT32) curDesc.Format = DXGI_FORMAT_R32G32B32A32_UINT;
 				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_SINT32) curDesc.Format = DXGI_FORMAT_R32G32B32A32_SINT;
@@ -248,6 +256,7 @@ namespace kepler {
 		}
 	}
 
+	//쉐이더 리플렉션을 이용해 쉐이더 내 ConstantBuffer 정보 자동으로 불러오는 함수
 	void DX11Shader::InitConstantBuffer()
 	{
 		ID3D11Device* pDevice = nullptr;
@@ -270,9 +279,7 @@ namespace kepler {
 		for (uint32_t cBufIndex = 0; cBufIndex < m_constantBufferCount; cBufIndex++)
 		{
 			D3D11_BUFFER_DESC& curBufferDesc = bufferDescs[cBufIndex];
-			// not necessary
-			//ZeroMemory(&bufferDescs[cBufIndex], sizeof(D3D11_BUFFER_DESC));
-
+			
 			curBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 			curBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 			curBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
@@ -336,7 +343,7 @@ namespace kepler {
 				delete[] buffer;
 				return;
 			}
-
+			// constantbuffer와 매핑된 cpu byte memory 저장
 			m_pByteBuffer.push_back(std::move(buffer));
 		}
 	}
@@ -358,7 +365,8 @@ namespace kepler {
 
 		ShaderCache::SetLastCachedShader(m_type, m_name);
 	}
-
+	
+	// DirectX11의 경우 필수적으로 호출할 필요 없음
 	void DX11Shader::Unbind()
 	{
 		ID3D11DeviceContext* pDeviceContext = nullptr;
@@ -375,6 +383,7 @@ namespace kepler {
 		}
 	}
 
+	// 파라미터 이름을 기반으로 해당 파라미터가 존재하는 constant buffer의 index와 constantbuffer 메모리의 시작 지점으로부터의 offset 반환하는 함수 
 	bool DX11Shader::GetConstantBufferDataInfo(const std::string& inParamName, int& outIndex, int& outOffset)
 	{
 		for (uint32_t index = 0; index < m_constantBufferCount; index++)
@@ -410,6 +419,7 @@ namespace kepler {
 		return false;
 	}
 
+	// constant buffer 갱신 함수
 	void DX11Shader::UpdateConstantBuffer(const int index)
 	{
 		ID3D11DeviceContext* pDeviceContext{ nullptr };
@@ -445,12 +455,14 @@ namespace kepler {
 	{
 		int index = 0;
 		int offset = 0;
+		// 쉐이더 변수 이름을 이용해 매핑된 memory의 인덱스와 offset을 찾음
 		GetConstantBufferDataInfo(paramName, index, offset);
 		if (index < 0)
 		{
 			KEPLER_WARNING("Invalid shader parameter");
 			return;
 		}
+		// 해당 메모리에 값을 쓴 후 constant buffer update
 		memcpy(m_pByteBuffer[index] + offset, &value, sizeof(value));
 		UpdateConstantBuffer(index);
 	}
@@ -459,12 +471,14 @@ namespace kepler {
 	{
 		int index = 0;
 		int offset = 0;
+		// 쉐이더 변수 이름을 이용해 매핑된 memory의 인덱스와 offset을 찾음
 		GetConstantBufferDataInfo(paramName, index, offset);
 		if (index < 0)
 		{
 			KEPLER_WARNING("Invalid shader parameter");
 			return;
 		}
+		// 해당 메모리에 값을 쓴 후 constant buffer update
 		memcpy(m_pByteBuffer[index] + offset, &value, sizeof(value));
 		UpdateConstantBuffer(index);
 	}
@@ -473,12 +487,14 @@ namespace kepler {
 	{
 		int index = 0;
 		int offset = 0;
+		// 쉐이더 변수 이름을 이용해 매핑된 memory의 인덱스와 offset을 찾음
 		GetConstantBufferDataInfo(paramName, index, offset);
 		if (index < 0)
 		{
 			KEPLER_WARNING("Invalid shader parameter");
 			return;
 		}
+		// 해당 메모리에 값을 쓴 후 constant buffer update
 		memcpy(m_pByteBuffer[index] + offset, &value, sizeof(value));
 		UpdateConstantBuffer(index);
 	}
@@ -487,12 +503,14 @@ namespace kepler {
 	{
 		int index = 0;
 		int offset = 0;
+		// 쉐이더 변수 이름을 이용해 매핑된 memory의 인덱스와 offset을 찾음
 		GetConstantBufferDataInfo(paramName, index, offset);
 		if (index < 0)
 		{
 			KEPLER_WARNING("Invalid shader parameter");
 			return;
 		}
+		// 해당 메모리에 값을 쓴 후 constant buffer update
 		memcpy(m_pByteBuffer[index] + offset, &value, sizeof(value));
 		UpdateConstantBuffer(index);
 	}
@@ -501,12 +519,14 @@ namespace kepler {
 	{
 		int index = 0;
 		int offset = 0;
+		// 쉐이더 변수 이름을 이용해 매핑된 memory의 인덱스와 offset을 찾음
 		GetConstantBufferDataInfo(paramName, index, offset);
 		if (index < 0)
 		{
 			KEPLER_WARNING("Invalid shader parameter");
 			return;
 		}
+		// 해당 메모리에 값을 쓴 후 constant buffer update
 		memcpy(m_pByteBuffer[index] + offset, &value, sizeof(value));
 		UpdateConstantBuffer(index);
 	}
@@ -515,12 +535,14 @@ namespace kepler {
 	{
 		int index = 0;
 		int offset = 0;
+		// 쉐이더 변수 이름을 이용해 매핑된 memory의 인덱스와 offset을 찾음
 		GetConstantBufferDataInfo(paramName, index, offset);
 		if (index < 0)
 		{
 			KEPLER_WARNING("Invalid shader parameter");
 			return;
 		}
+		// 해당 메모리에 값을 쓴 후 constant buffer update
 		memcpy(m_pByteBuffer[index] + offset, &value, sizeof(value));
 		UpdateConstantBuffer(index);
 	}
@@ -537,7 +559,7 @@ namespace kepler {
 			}
 		}
 
-		// 유효 슬롯 범위를 넘어간 경우(찾지 못한 경우)
+		// 유효 슬롯 범위를 넘어간 경우(찾지 못한 경우) assertion
 		KEPLER_ASSERT(inputSlot < D3D11_IA_VERTEX_INPUT_RESOURCE_SLOT_COUNT, "Fail to get Input Element Slot");
 
 		return inputSlot;

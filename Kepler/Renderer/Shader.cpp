@@ -130,12 +130,12 @@ namespace kepler {
 	{
 		switch (type)
 		{
-		case eShaderType::Vertex:	s_pLastCachedVertexShader = s_shaderTable[name];
-		case eShaderType::Pixel:	s_pLastCachedPixelShader = s_shaderTable[name];
-		case eShaderType::Geometry: s_pLastCachedGeometryShader = s_shaderTable[name];
-		case eShaderType::Hull:		s_pLastCachedHullShader = s_shaderTable[name];
-		case eShaderType::Domain:	s_pLastCachedDomainShader = s_shaderTable[name];
-		case eShaderType::Compute:	s_pLastCachedComputeShader = s_shaderTable[name];
+		case eShaderType::Vertex:	s_pLastCachedVertexShader = s_shaderTable[name]; break;
+		case eShaderType::Pixel:	s_pLastCachedPixelShader = s_shaderTable[name]; break;
+		case eShaderType::Geometry: s_pLastCachedGeometryShader = s_shaderTable[name]; break;
+		case eShaderType::Hull:		s_pLastCachedHullShader = s_shaderTable[name]; break;
+		case eShaderType::Domain:	s_pLastCachedDomainShader = s_shaderTable[name]; break;
+		case eShaderType::Compute:	s_pLastCachedComputeShader = s_shaderTable[name]; break;
 		}
 	}
 }

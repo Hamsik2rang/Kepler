@@ -27,6 +27,8 @@ public:
 	{}
 
 	inline void Start() { m_curFrame = 0; }
+	// curFrame은 1프레임당 1씩 증가하되, 반복 애니메이션의 경우 최대 프레임(frameCount)을 넘어서면 0으로 초기화됨(환형 증가)
+	// 비반복 애니메이션의 경우 마지막 프레임에서 고정
 	inline void Update()
 	{
 		m_curFrame++;

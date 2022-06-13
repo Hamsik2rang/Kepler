@@ -28,6 +28,7 @@ void GameLayer::OnAttach()
 	m_pLevel = std::make_shared<Level>();
 	m_pLevel->Init(width, height);
 
+	// GUI용 폰트 초기화
 	ImGuiIO& io = ImGui::GetIO();
 	m_pFont = io.Fonts->AddFontFromFileTTF("./Assets/Pokemon-Solid.ttf", 180.0f);
 	m_pHollowFont = io.Fonts->AddFontFromFileTTF("Assets/Pokemon-Hollow.ttf", 180.0f);
@@ -94,18 +95,23 @@ void GameLayer::OnUpdate(float deltaTime)
 
 }
 
+// 렌더링 함수
 void GameLayer::OnRender()
 {
+	// 현재 카메라의 viewprojection을 지정해 화면 렌더링 준비
 	kepler::Renderer2D::Get()->BeginScene(m_camera);
 
+	// 나중에 그릴수록 위에 그려짐(rendering order)
 	m_pLevel->OnRender();
-	m_pBall->OnRender();
 	m_pPlayer->OnRender();
 	m_pEnemy->OnRender();
+	m_pBall->OnRender();
 
+	// 렌더링 종료
 	kepler::Renderer2D::Get()->EndScene();
 }
 
+// GUI 렌더링 함수
 void GameLayer::OnGUIRender()
 {
 	ImVec2 viewportPos = ImGui::GetMainViewport()->Pos;
@@ -182,6 +188,7 @@ void GameLayer::OnGUIRender()
 		break;
 	}
 
+	// 디버그 전용 GUI
 #ifdef _DEBUG
 	ImGui::PushFont(m_pDebugFont);
 	ImGuiIO& io = ImGui::GetIO();

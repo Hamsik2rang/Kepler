@@ -5,7 +5,7 @@
 namespace kepler {
 
 	Renderer2D* Renderer2D::s_pInstance = nullptr;
-
+	// Batch Rendering시 데이터 단위가 되는 Batch Data
 	struct BatchData
 	{
 		std::shared_ptr<ITexture2D> pTexture;
@@ -14,6 +14,7 @@ namespace kepler {
 		std::vector<std::pair<std::shared_ptr<IVertexArray>, Mat44f>> vt;
 	};
 
+	// 화면 렌더링에 필요한 정보들
 	struct RenderData
 	{
 		struct SceneData
@@ -24,7 +25,6 @@ namespace kepler {
 
 		std::vector<BatchData> batchObjects;
 	};
-
 	static RenderData s_data{};
 
 	Renderer2D::Renderer2D()
@@ -57,10 +57,11 @@ namespace kepler {
 		if (!s_pInstance)
 		{
 			s_pInstance = new Renderer2D;
-
+			// Renderer2D는 엔진 내장 쉐이더를 이용해 간단히 그려줌.
+			// Solid Shader - 텍스처 없이 간단한 사각형을 그릴 때 사용
 			ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSSolid.hlsl");
 			ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PSSolid.hlsl");
-
+			// Texture Shader - 텍스처가 주어진 사각형을 그릴 때 사용
 			ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSTexture.hlsl");
 			ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PSTexture.hlsl");
 		}
@@ -74,11 +75,11 @@ namespace kepler {
 
 	void Renderer2D::EndScene()
 	{
-		// Batch Data들을 모두 출력합니다.
+		// 이번 프레임에 그리기 예약된 Batch Data들을 모두 출력합니다.
 		Flush();
 	}
 
-	// TODO: Instancing이든 뭐든 사용해서 Drawcall 줄여야 함
+	// TODO: Batch Rendering 구현해야 함
 	void Renderer2D::Flush()
 	{
 		for (const auto& batchData : s_data.batchObjects)
@@ -154,7 +155,6 @@ namespace kepler {
 		DrawQuad(transform, texture, bFlipX, bFlipY, color);
 	}
 
-
 	// 텍스처가 지정되지 않은 Solid Quad
 	void Renderer2D::DrawQuad(const Mat44f& transform, const Vec4f& color)
 	{
@@ -212,10 +212,12 @@ namespace kepler {
 
 		s_data.batchObjects[index].vt.push_back(std::make_pair(pVA, transform));
 	}
-
+	
+	// 텍스처가 지정된 Texture Quad
 	void Renderer2D::DrawQuad(const Mat44f& transform, const std::shared_ptr<ITexture2D>& texture, bool bFlipX, bool bFlipY, const Vec4f& color)
 	{
 		int index = -1;
+		// 전달받은 텍스처가 이미 등록된 텍스처인지 확인
 		for (int i = 0; i < s_data.batchObjects.size(); i++)
 		{
 			if (s_data.batchObjects[i].pTexture == texture)
@@ -225,6 +227,7 @@ namespace kepler {
 			}
 		}
 
+		// 새로운 텍스처일 경우 배치 데이터셋을 새로 추가
 		if (index < 0)
 		{
 			BatchData data{};
@@ -250,6 +253,7 @@ namespace kepler {
 			{ { -0.5f,  0.5f, 0.0f }, {0.0f, 0.0f}, color }
 		};
 
+		// Texture Flip
 		if (bFlipX)
 		{
 			for (int i = 0; i < 4; i++)

@@ -21,12 +21,12 @@ namespace kepler {
 		ID3D11InputLayout*			m_pVertexLayout;
 		std::vector<D3D11_INPUT_ELEMENT_DESC> m_inputElemDescs;
 
-		ID3DBlob*					m_pBlob;
+		ID3DBlob*					m_pBlob;	// Binary Shader Code
 		
 		ID3D11Buffer**				m_ppConstantBuffers;
-		uint32_t					m_constantBufferCount;
-		std::vector<uint32_t>		m_constantBufferSize;
-		std::vector<char*>			m_pByteBuffer;
+		uint32_t					m_constantBufferCount;	// 쉐이더에 존재하는 constant buffer의 개수
+		std::vector<uint32_t>		m_constantBufferSize;	// constant buffer별 크기
+		std::vector<char*>			m_pByteBuffer;			// constant buffer와 매핑된 byte 메모리
 
 		std::string			m_name;
 		const eShaderType	m_type;

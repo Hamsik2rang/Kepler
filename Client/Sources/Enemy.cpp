@@ -21,10 +21,12 @@ void Enemy::OnUpdate(float deltaTime)
 #endif
 	// update AI State
 
-	// 공이 플레이어쪽 코트 위에 있을 때
+	// TODO: Enemy AI 구현하기
 
 	
-	//collider 갱신
+
+	//...
+	// collider 갱신
 	m_pCollider->SetPosition(m_position);
 }
 
@@ -52,6 +54,7 @@ void Enemy::OnCollision(CollisionData& data)
 
 	switch (data.collider->GetCategory())
 	{
+		// 네트에 닿은 경우 충돌처리
 	case eColliderCategory::Net:
 		{
 			if (m_curDirection.x > 0.0f)
@@ -60,6 +63,9 @@ void Enemy::OnCollision(CollisionData& data)
 			}
 		}
 		break;
+		// 바닥에 닿은 경우 충돌처리. 
+		// 이미 바닥과 접해 있는 경우라면 무시하며
+		// 점프 후 착지할 경우에만 동작
 	case eColliderCategory::Ground:
 		{
 #ifdef _DEBUG
@@ -78,6 +84,7 @@ void Enemy::OnCollision(CollisionData& data)
 			}
 		}
 		break;
+		// 왼쪽 스크린 끝(벽)과 닿은 경우 충돌처리
 	case eColliderCategory::Wall:
 		{
 			if (m_curDirection.x < 0.0f)

@@ -9,25 +9,25 @@
 class Ball : public GameObject
 {
 private:
-	std::deque<std::pair<kepler::Vec2f, float>> m_transforms;
+	std::deque<std::pair<kepler::Vec2f, float>> m_transforms;	// 스파이크 처리 시 공의 궤적으로 잔상을 표현해야 하므로 이전 프레임의 위상을 deque로 저장함.
 	kepler::Vec2f m_size;
 	kepler::Vec2f m_curDirection;
 	kepler::Vec2f m_lastDirection;
 
-	std::shared_ptr<kepler::ITexture2D> m_pBallSprite;
-	std::shared_ptr<kepler::ITexture2D> m_pImpactSprite;
+	std::shared_ptr<kepler::ITexture2D> m_pBallSprite;		// 공 스프라이트
+	std::shared_ptr<kepler::ITexture2D> m_pImpactSprite;	// 땅에 닿았을 때의 이펙트 스프라이트
 	CircleCollider2D* m_pCollider;
 
 #ifdef _DEBUG
 	kepler::Vec4f m_debugColor;
 #endif
 
-	bool m_bIsAccelarated;
-	bool m_bIsGrounded;
+	bool m_bIsAccelarated;	// 스파이크 공격이 진행중인 경우 true
+	bool m_bIsGrounded;		// 땅에 닿은 경우 true
 public:
 	Ball(kepler::Vec2f position, float radius, eColliderType type = eColliderType::Circle, eColliderCategory category = eColliderCategory::Ball);
 	~Ball();
-	void Init();
+	void InitSprite();
 
 	void OnEvent(kepler::Event& e);
 	void OnUpdate(float deltaTime);

@@ -9,10 +9,10 @@
 struct CollisionData
 {
 	Collider2D* collider;
-	kepler::Vec2f normal;
 	void* bIsSpiked;
 };
 
+// 충돌체들을 관리하며 충돌 여부 감시하는 객체
 class CollisionDetector
 {
 private:

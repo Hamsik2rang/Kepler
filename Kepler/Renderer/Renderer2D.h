@@ -25,8 +25,9 @@ namespace kepler {
 
 		void BeginScene(OrthographicCamera& camera);
 		void EndScene();
-		void Flush();
+		void Flush();	// Batch Rendering시 정점들을 텍스처별로 모아 한번에 drawcall하는 함수
 
+		// 파라미터에 따라 사각형을 그려주는 함수들
 		void DrawQuad(const Vec2f& position, const Vec2f& size, const Vec4f& color = { 1.0f,1.0f, 1.0f, 1.0f });
 		void DrawQuad(const Vec3f& position, const Vec2f& size, const Vec4f& color = { 1.0f,1.0f, 1.0f, 1.0f });
 		void DrawQuad(const Vec2f& position, const float rotation, const Vec2f& size, const Vec4f& color = { 1.0f,1.0f, 1.0f, 1.0f });

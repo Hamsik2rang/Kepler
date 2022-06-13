@@ -25,7 +25,7 @@ class Collider2D
 protected:
 	const eColliderType m_type;
 	const eColliderCategory m_category;
-	bool m_bIsTrigger;
+	bool m_bIsTrigger;	// 물리 연산을 수행하지 않는 충돌체(트리거)의 경우 true
 
 	GameObject& m_gameObject;
 
@@ -42,7 +42,7 @@ public:
 	inline const eColliderType GetType() const { return m_type; }
 	inline const eColliderCategory GetCategory() const { return m_category; }
 	inline GameObject& GetGameObject() const { return m_gameObject; }
-	inline bool IsTrigger() const { return m_bIsTrigger; }
+	inline bool IsTrigger() const { return m_bIsTrigger; }	
 
 	virtual void SetPosition(kepler::Vec2f position) = 0;
 	virtual void SetSize(kepler::Vec2f size) = 0;

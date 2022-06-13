@@ -27,6 +27,7 @@ private:
 
 	kepler::OrthographicCamera m_camera;
 	
+	// GUI 전용 변수
 	float m_time;
 	float m_readyTime;
 	bool m_bBlink;

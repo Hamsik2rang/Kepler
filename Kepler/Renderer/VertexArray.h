@@ -7,6 +7,7 @@
 
 namespace kepler {
 
+	// Vertex Array Inferface
 	class IVertexArray
 	{
 	public:

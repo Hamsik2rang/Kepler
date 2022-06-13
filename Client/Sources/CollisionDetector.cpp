@@ -26,7 +26,7 @@ bool CollisionDetector::Detection()
 	{
 		for (int j = i + 1; j < s_pColliders.size(); j++)
 		{
-			// Box to Box - AABB
+			// Box to Box - AABBs
 			if (s_pColliders[i]->GetType() == eColliderType::Box && s_pColliders[j]->GetType() == eColliderType::Box)
 			{
 				auto& leftObj = (s_pColliders[i]->GetPosition().x < s_pColliders[j]->GetPosition().x) ? s_pColliders[i] : s_pColliders[j];
@@ -41,32 +41,11 @@ bool CollisionDetector::Detection()
 				{
 					//...
 					CollisionData data{};
-
-					if (leftObj == s_pColliders[j])
-					{
-						data.normal = kepler::Vec2f::Left;
-					}
-					else
-					{
-						data.normal = kepler::Vec2f::Right;
-					}
-
-					if (lowerObj == s_pColliders[j])
-					{
-						data.normal += kepler::Vec2f::Down;
-					}
-					else
-					{
-						data.normal += kepler::Vec2f::Up;
-					}
-					data.normal = data.normal.Normalize();
-
 					data.collider = s_pColliders[i];
 					data.bIsSpiked = s_pColliders[i]->GetCollisionInfo();
 					s_pColliders[j]->GetGameObject().OnCollision(data);
 
 					data.collider = s_pColliders[j];
-					data.normal *= -1.0f;
 					data.bIsSpiked = s_pColliders[j]->GetCollisionInfo();
 					s_pColliders[i]->GetGameObject().OnCollision(data);
 				}
@@ -80,17 +59,15 @@ bool CollisionDetector::Detection()
 					CollisionData data{};
 
 					data.collider = s_pColliders[i];
-					data.normal = (s_pColliders[j]->GetPosition() - s_pColliders[i]->GetPosition()).Normalize();
 					data.bIsSpiked = s_pColliders[i]->GetCollisionInfo();
 					s_pColliders[j]->GetGameObject().OnCollision(data);
 
 					data.collider = s_pColliders[j];
-					data.normal *= -1.0f;
 					data.bIsSpiked = s_pColliders[j]->GetCollisionInfo();
 					s_pColliders[i]->GetGameObject().OnCollision(data);
 				}
 			}
-			// Box to Circle - segment-to-center distance
+			// Box(AABB) to Circle - segment-to-center distance
 			else
 			{
 				bool isCollided{ false };
@@ -200,10 +177,9 @@ bool CollisionDetector::Detection()
 					}
 				}
 
-
+				// 충돌이 일어난 경우(하나 이상의 AABB의 테두리가 원과 겹친 경우)
 				if (isCollided)
 				{
-					//...
 					CollisionData data{};
 
 					data.collider = s_pColliders[i];
