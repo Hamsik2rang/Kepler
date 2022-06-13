@@ -4,40 +4,22 @@
 
 #include "Kepler.h"
 #include "GameObject.h"
-
-enum class eColliderType
-{
-	None = 0,
-	Box,
-	Circle,
-};
-
-enum class eColliderCategory
-{
-	Player = 0,
-	Enemy,
-	Ball,
-	Net,
-	Ground,
-	Wall,
-	Sky,
-};
-
+#include "Collider2D.hpp"
 
 struct CollisionData
 {
-	std::shared_ptr<GameObject> collider;
+	Collider2D* collider;
 	kepler::Vec2f normal;
-	bool bIsSpiked;
+	void* bIsSpiked;
 };
 
 class CollisionDetector
 {
 private:
-	static std::vector<std::shared_ptr<GameObject>> s_pColliders;
+	static std::vector<Collider2D*>s_pColliders;
 
 public:
-	static void AddCollider(std::shared_ptr<GameObject> collider);
-	static void DeleteCollider(std::shared_ptr<GameObject> collider);
+	static void AddCollider(Collider2D*  collider);
+	static void DeleteCollider(Collider2D* collider);
 	static bool Detection();
 };

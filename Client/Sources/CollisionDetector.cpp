@@ -1,13 +1,13 @@
 #include "CollisionDetector.h"
 
-std::vector<std::shared_ptr<GameObject>> CollisionDetector::s_pColliders;
+std::vector<Collider2D*> CollisionDetector::s_pColliders;
 
-void CollisionDetector::AddCollider(std::shared_ptr<GameObject> collider)
+void CollisionDetector::AddCollider(Collider2D* collider)
 {
 	s_pColliders.push_back(collider);
 }
 
-void CollisionDetector::DeleteCollider(std::shared_ptr<GameObject> collider)
+void CollisionDetector::DeleteCollider(Collider2D* collider)
 {
 	for (int i = 0; i < s_pColliders.size(); i++)
 	{
@@ -27,7 +27,7 @@ bool CollisionDetector::Detection()
 		for (int j = i + 1; j < s_pColliders.size(); j++)
 		{
 			// Box to Box - AABB
-			if (s_pColliders[i]->GetColliderType() == eColliderType::Box && s_pColliders[j]->GetColliderType() == eColliderType::Box)
+			if (s_pColliders[i]->GetType() == eColliderType::Box && s_pColliders[j]->GetType() == eColliderType::Box)
 			{
 				auto& leftObj = (s_pColliders[i]->GetPosition().x < s_pColliders[j]->GetPosition().x) ? s_pColliders[i] : s_pColliders[j];
 				auto& rightObj = (s_pColliders[i]->GetPosition().x > s_pColliders[j]->GetPosition().x) ? s_pColliders[i] : s_pColliders[j];
@@ -62,17 +62,17 @@ bool CollisionDetector::Detection()
 					data.normal = data.normal.Normalize();
 
 					data.collider = s_pColliders[i];
-					s_pColliders[i]->GetAdditionalColliderStatus(data.bIsSpiked);
-					s_pColliders[j]->OnCollision(data);
+					data.bIsSpiked = s_pColliders[i]->GetCollisionInfo();
+					s_pColliders[j]->GetGameObject().OnCollision(data);
 
 					data.collider = s_pColliders[j];
 					data.normal *= -1.0f;
-					s_pColliders[j]->GetAdditionalColliderStatus(data.bIsSpiked);
-					s_pColliders[i]->OnCollision(data);
+					data.bIsSpiked = s_pColliders[j]->GetCollisionInfo();
+					s_pColliders[i]->GetGameObject().OnCollision(data);
 				}
 			}
 			// Circle to Circle - center-to-center distance
-			else if (s_pColliders[i]->GetColliderType() == eColliderType::Circle && s_pColliders[j]->GetColliderType() == eColliderType::Circle)
+			else if (s_pColliders[i]->GetType() == eColliderType::Circle && s_pColliders[j]->GetType() == eColliderType::Circle)
 			{
 				if ((s_pColliders[i]->GetPosition() - s_pColliders[j]->GetPosition()).Length() < (s_pColliders[i]->GetSize().x / 2.0f) + (s_pColliders[j]->GetSize().x / 2.0f))
 				{
@@ -81,13 +81,13 @@ bool CollisionDetector::Detection()
 
 					data.collider = s_pColliders[i];
 					data.normal = (s_pColliders[j]->GetPosition() - s_pColliders[i]->GetPosition()).Normalize();
-					s_pColliders[i]->GetAdditionalColliderStatus(data.bIsSpiked);
-					s_pColliders[j]->OnCollision(data);
+					data.bIsSpiked = s_pColliders[i]->GetCollisionInfo();
+					s_pColliders[j]->GetGameObject().OnCollision(data);
 
 					data.collider = s_pColliders[j];
 					data.normal *= -1.0f;
-					s_pColliders[j]->GetAdditionalColliderStatus(data.bIsSpiked);
-					s_pColliders[i]->OnCollision(data);
+					data.bIsSpiked = s_pColliders[j]->GetCollisionInfo();
+					s_pColliders[i]->GetGameObject().OnCollision(data);
 				}
 			}
 			// Box to Circle - segment-to-center distance
@@ -95,8 +95,8 @@ bool CollisionDetector::Detection()
 			{
 				bool isCollided{ false };
 
-				auto& boxObj = s_pColliders[i]->GetColliderType() == eColliderType::Box ? s_pColliders[i] : s_pColliders[j];
-				auto& circleObj = s_pColliders[i]->GetColliderType() == eColliderType::Circle ? s_pColliders[i] : s_pColliders[j];
+				auto& boxObj = s_pColliders[i]->GetType() == eColliderType::Box ? s_pColliders[i] : s_pColliders[j];
+				auto& circleObj = s_pColliders[i]->GetType() == eColliderType::Circle ? s_pColliders[i] : s_pColliders[j];
 
 				// left segment
 				if (!isCollided)
@@ -207,12 +207,12 @@ bool CollisionDetector::Detection()
 					CollisionData data{};
 
 					data.collider = s_pColliders[i];
-					s_pColliders[i]->GetAdditionalColliderStatus(data.bIsSpiked);
-					s_pColliders[j]->OnCollision(data);
+					data.bIsSpiked = s_pColliders[i]->GetCollisionInfo();
+					s_pColliders[j]->GetGameObject().OnCollision(data);
 
 					data.collider = s_pColliders[j];
-					s_pColliders[j]->GetAdditionalColliderStatus(data.bIsSpiked);
-					s_pColliders[i]->OnCollision(data);
+					data.bIsSpiked = s_pColliders[j]->GetCollisionInfo();
+					s_pColliders[i]->GetGameObject().OnCollision(data);
 				}
 			}
 		}

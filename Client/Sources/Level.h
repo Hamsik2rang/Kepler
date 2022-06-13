@@ -10,6 +10,7 @@ class Wall : public GameObject
 private:
 	kepler::Vec2f m_position;
 	kepler::Vec2f m_size;
+	BoxCollider2D* m_pCollider;
 #ifdef _DEBUG
 	kepler::Vec4f m_debugColor;
 #endif
@@ -19,7 +20,12 @@ public:
 		: GameObject(eColliderType::Box, eColliderCategory::Wall)
 		, m_position{ position }
 		, m_size{ size }
-	{}
+		, m_pCollider{ new BoxCollider2D(*this, position,size, false, eColliderCategory::Wall) }
+	{
+		CollisionDetector::AddCollider(m_pCollider);
+	}
+
+	~Wall() { if (m_pCollider) { delete m_pCollider; m_pCollider = nullptr; } }
 #ifdef _DEBUG
 	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_debugColor); }
 	inline void OnUpdate(float deltaTime) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
@@ -36,6 +42,7 @@ class Net : public GameObject
 private:
 	kepler::Vec2f m_position;
 	kepler::Vec2f m_size;
+	BoxCollider2D* m_pCollider;
 #ifdef _DEBUG
 	kepler::Vec4f m_debugColor;
 #endif
@@ -45,8 +52,12 @@ public:
 		: GameObject(eColliderType::Box, eColliderCategory::Net)
 		, m_position{ position }
 		, m_size{ size }
-	{}
+		, m_pCollider{ new BoxCollider2D(*this, position, size, false, eColliderCategory::Net) }
+	{
+		CollisionDetector::AddCollider(m_pCollider);
+	}
 
+	~Net() { if (m_pCollider) { delete m_pCollider; m_pCollider = nullptr; } }
 #ifdef _DEBUG
 	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_debugColor); }
 	inline void OnUpdate(float deltaTime) { m_debugColor = { 0.0f, 1.0f, 0.0f, 1.0f }; }
@@ -63,6 +74,7 @@ class Ground : public GameObject
 private:
 	kepler::Vec2f m_position;
 	kepler::Vec2f m_size;
+	BoxCollider2D* m_pCollider;
 #ifdef _DEBUG
 	kepler::Vec4f m_debugColor;
 #endif
@@ -72,7 +84,12 @@ public:
 		: GameObject(eColliderType::Box, eColliderCategory::Ground)
 		, m_position{ position }
 		, m_size{ size }
-	{}
+		, m_pCollider{ new BoxCollider2D(*this, position, size, false, eColliderCategory::Ground) }
+	{
+		CollisionDetector::AddCollider(m_pCollider);
+	}
+
+	~Ground() { if (m_pCollider) { delete m_pCollider; m_pCollider = nullptr; } }
 
 #ifdef _DEBUG
 	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_debugColor); }
@@ -90,6 +107,7 @@ class Sky : public GameObject
 private:
 	kepler::Vec2f m_position;
 	kepler::Vec2f m_size;
+	BoxCollider2D* m_pCollider;
 #ifdef _DEBUG
 	kepler::Vec4f m_debugColor;
 #endif
@@ -99,7 +117,12 @@ public:
 		: GameObject(eColliderType::Box, eColliderCategory::Sky)
 		, m_position{ position }
 		, m_size{ size }
-	{}
+		, m_pCollider{ new BoxCollider2D(*this, position, size, false, eColliderCategory::Sky) }
+	{
+		CollisionDetector::AddCollider(m_pCollider);
+	}
+
+	~Sky() { if (m_pCollider) { delete m_pCollider; m_pCollider = nullptr; } }
 
 #ifdef _DEBUG
 	inline void OnRender() { kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_debugColor); }

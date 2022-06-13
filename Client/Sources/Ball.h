@@ -16,6 +16,7 @@ private:
 
 	std::shared_ptr<kepler::ITexture2D> m_pBallSprite;
 	std::shared_ptr<kepler::ITexture2D> m_pImpactSprite;
+	CircleCollider2D* m_pCollider;
 
 #ifdef _DEBUG
 	kepler::Vec4f m_debugColor;
@@ -25,6 +26,7 @@ private:
 	bool m_bIsGrounded;
 public:
 	Ball(kepler::Vec2f position, float radius, eColliderType type = eColliderType::Circle, eColliderCategory category = eColliderCategory::Ball);
+	~Ball();
 	void Init();
 
 	void OnEvent(kepler::Event& e);
@@ -38,5 +40,5 @@ public:
 	inline virtual kepler::Vec2f GetSize() const override { return m_size; }
 	inline virtual kepler::Vec2f GetCurrentDirection() const override { return m_curDirection; }
 	inline virtual kepler::Vec2f GetLastDirection() const override { return m_lastDirection; }
-	inline virtual void GetAdditionalColliderStatus(bool& pOutData) const { pOutData = m_bIsAccelarated; }
+	inline virtual void* GetCollisionInfo() const override { return (void*)&m_bIsAccelarated; }
 };

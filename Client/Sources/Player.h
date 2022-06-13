@@ -8,7 +8,7 @@
 #include "GameObject.h"
 #include "Animation2D.hpp"
 #include "Constant.h"
-#include "CollisionDetector.h"
+#include "Collider2D.hpp"
 
 enum ePlayerState
 {
@@ -27,9 +27,11 @@ protected:
 	kepler::Vec2f	m_size;
 	kepler::Vec2f	m_curDirection;
 	kepler::Vec2f	m_lastDirection;
+	BoxCollider2D*	m_pCollider;
 	ePlayerState	m_state;
 	bool			m_bIsGrounded;
 	bool			m_bIsSpiked;
+
 
 #ifdef _DEBUG
 	kepler::Vec4f m_debugColor;
@@ -40,7 +42,8 @@ protected:
 
 public:
 	Player(const kepler::Vec2f& position, const kepler::Vec2f& size, eColliderType type = eColliderType::Box, eColliderCategory category = eColliderCategory::Player);
-	void Init();
+	virtual ~Player();
+	void InitSprite();
 
 	virtual void OnEvent(kepler::Event& e);
 	virtual void OnUpdate(float deltaTime);
@@ -53,5 +56,5 @@ public:
 	inline virtual kepler::Vec2f GetSize() const override { return m_size; }
 	inline virtual kepler::Vec2f GetCurrentDirection() const override { return m_curDirection; }
 	inline virtual kepler::Vec2f GetLastDirection() const override { return m_lastDirection; }
-	inline virtual void GetAdditionalColliderStatus(bool& pOutData) const { pOutData = m_bIsSpiked; }
+	inline virtual void* GetCollisionInfo() const override { return (void*)&m_bIsSpiked; }
 };

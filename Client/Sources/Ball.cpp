@@ -10,9 +10,20 @@ Ball::Ball(kepler::Vec2f position, float radius, eColliderType type, eColliderCa
 	, m_bIsAccelarated{ false }
 	, m_bIsGrounded{ false }
 	, GameObject(type, category)
+	, m_pCollider{ new CircleCollider2D(*this, position, radius, false, category) }
 {
 	m_transforms.push_front(std::make_pair(position, 0.0f));
+	CollisionDetector::AddCollider(m_pCollider);
 	Init();
+}
+
+Ball::~Ball()
+{
+	if (m_pCollider)
+	{
+		delete m_pCollider;
+		m_pCollider = nullptr;
+	}
 }
 
 void Ball::Init()
@@ -51,6 +62,7 @@ void Ball::OnUpdate(float deltaTime)
 	kepler::Vec2f nextPosition = m_transforms.front().first + m_curDirection;
 	m_transforms.push_front(std::make_pair(nextPosition, rotation));
 	m_lastDirection = m_curDirection;
+	m_pCollider->SetPosition(m_transforms.front().first);
 }
 
 void Ball::OnRender()
@@ -82,11 +94,15 @@ void Ball::OnCollision(CollisionData& data)
 	m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f };
 #endif
 	kepler::Vec2f colliderPos = data.collider->GetPosition();
-	kepler::Vec2f colliderDir = data.collider->GetCurrentDirection();
+	kepler::Vec2f colliderDir = data.collider->GetDirection();
 	kepler::Vec2f colliderSize = data.collider->GetSize();
-	bool bIsSpiked = data.bIsSpiked;
+	bool bIsSpiked = false;
+	if (data.bIsSpiked)
+	{
+		bIsSpiked = *reinterpret_cast<bool*>(data.bIsSpiked);
+	}
 
-	switch (data.collider->GetColliderCategory())
+	switch (data.collider->GetCategory())
 	{
 	case eColliderCategory::Player:
 	case eColliderCategory::Enemy:
@@ -97,7 +113,7 @@ void Ball::OnCollision(CollisionData& data)
 			// Player sprite의 가로가 세로보다 짧으므로 x축에 평행하게 공이 충돌했을 때 충돌량을 y축 평행 충돌과 비슷하도록 보정함.
 			nextDirection.x *= 1.5f;
 
-			if (data.bIsSpiked)
+			if (bIsSpiked)
 			{
 				nextDirection = nextDirection.Normalize() * 35.0f;
 				m_bIsAccelarated = true;
@@ -183,4 +199,5 @@ void Ball::OnCollision(CollisionData& data)
 	}
 	m_transforms.front().first = m_transforms[1].first + m_curDirection;
 	m_lastDirection = m_curDirection;
+	m_pCollider->SetPosition(m_transforms.front().first);
 }

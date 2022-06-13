@@ -11,11 +11,22 @@ Player::Player(const kepler::Vec2f& position, const kepler::Vec2f& size, eCollid
 	, m_bIsGrounded{ false }
 	, m_state{ ePlayerState::PlayerStateIdle }
 	, m_bIsSpiked{ false }
+	, m_pCollider{ new BoxCollider2D(*this, position, size, false, category) }
 {
-	Init();
+	InitSprite();
+	CollisionDetector::AddCollider(m_pCollider);
 }
 
-void Player::Init()
+Player::~Player()
+{
+	if (m_pCollider)
+	{
+		delete m_pCollider;
+		m_pCollider = nullptr;
+	}
+}
+
+void Player::InitSprite()
 {
 	std::string TextureFilePath = "./Assets/Textures/";
 
@@ -178,6 +189,8 @@ void Player::OnUpdate(float deltaTime)
 	}
 
 	m_position += m_curDirection;
+	m_pCollider->SetSize(m_size);
+	m_pCollider->SetPosition(m_position);
 	m_lastDirection = m_curDirection;
 	m_pCurAnim->Update();
 }
@@ -208,7 +221,7 @@ void Player::OnCollision(CollisionData& data)
 	kepler::Vec2f colliderPos = data.collider->GetPosition();
 	kepler::Vec2f colliderSize = data.collider->GetSize();
 
-	switch (data.collider->GetColliderCategory())
+	switch (data.collider->GetCategory())
 	{
 	case eColliderCategory::Net:
 		{
@@ -246,4 +259,6 @@ void Player::OnCollision(CollisionData& data)
 		}
 		break;
 	}
+	m_pCollider->SetPosition(m_position);
+	m_pCollider->SetSize(m_size);
 }

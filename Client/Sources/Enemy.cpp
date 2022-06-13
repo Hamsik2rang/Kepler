@@ -6,7 +6,7 @@
 Enemy::Enemy(const kepler::Vec2f& position, const kepler::Vec2f& size, std::shared_ptr<Player> pPlayer, std::shared_ptr<Ball> pBall, eColliderType type, eColliderCategory category)
 	: Player(position, size, type, category)
 {
-	Init();
+	InitSprite();
 }
 
 void Enemy::OnEvent(kepler::Event& e)
@@ -20,9 +20,12 @@ void Enemy::OnUpdate(float deltaTime)
 	m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 #endif
 	// update AI State
-	
+
 	// 공이 플레이어쪽 코트 위에 있을 때
+
 	
+	//collider 갱신
+	m_pCollider->SetPosition(m_position);
 }
 
 void Enemy::OnRender()
@@ -47,7 +50,7 @@ void Enemy::OnCollision(CollisionData& data)
 	kepler::Vec2f colliderPos = data.collider->GetPosition();
 	kepler::Vec2f colliderSize = data.collider->GetSize();
 
-	switch (data.collider->GetColliderCategory())
+	switch (data.collider->GetCategory())
 	{
 	case eColliderCategory::Net:
 		{

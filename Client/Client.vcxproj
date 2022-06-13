@@ -169,6 +169,7 @@
   <ItemGroup>
     <ClInclude Include="Sources\Animation2D.hpp" />
     <ClInclude Include="Sources\Ball.h" />
+    <ClInclude Include="Sources\Collider2D.hpp" />
     <ClInclude Include="Sources\CollisionDetector.h" />
     <ClInclude Include="Sources\Constant.h" />
     <ClInclude Include="Sources\Enemy.h" />

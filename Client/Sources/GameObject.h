@@ -19,6 +19,8 @@ public:
 		, m_colliderCategory{ colliderCategory }
 	{}
 
+	virtual ~GameObject() = default;
+
 	eColliderType GetColliderType() const { return m_colliderType; }
 	eColliderCategory GetColliderCategory() const { return m_colliderCategory; }
 
@@ -27,6 +29,6 @@ public:
 	virtual kepler::Vec2f GetCurrentDirection() const = 0;
 	virtual kepler::Vec2f GetLastDirection() const = 0;
 
-	virtual void GetAdditionalColliderStatus(bool& pOutData) const {}
+	virtual void* GetCollisionInfo() const { return nullptr; }
 	virtual void OnCollision(CollisionData& data) {};
 };

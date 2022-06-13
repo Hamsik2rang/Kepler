@@ -23,10 +23,6 @@ void GameLayer::OnAttach()
 	m_pLevel->Init(width, height);
 
 	m_pEnemy = std::make_shared<Enemy>(kepler::Vec2f{ -constant::PLAYER_SPAWN_POSITION.x, constant::PLAYER_SPAWN_POSITION.y }, constant::SQUIRTLE_IDLE_SIZE, m_pPlayer, m_pBall);
-
-	CollisionDetector::AddCollider(m_pPlayer);
-	CollisionDetector::AddCollider(m_pEnemy);
-	CollisionDetector::AddCollider(m_pBall);
 }
 
 void GameLayer::OnDetach()
@@ -67,8 +63,7 @@ void GameLayer::OnGUIRender()
 	kepler::Vec2f playerSize = m_pPlayer->GetSize();
 	kepler::Vec2f playerDir = m_pPlayer->GetCurrentDirection();
 	kepler::Vec2f playerLastDir = m_pPlayer->GetLastDirection();
-	bool isPlayerSpiked = false;
-	m_pPlayer->GetAdditionalColliderStatus(isPlayerSpiked);
+	bool isPlayerSpiked = *reinterpret_cast<bool*>(m_pBall->GetCollisionInfo());
 	ImGui::Text("Player");
 	ImGui::Text("Position (%.2f, %.2f)", playerPos.x, playerPos.y);
 	ImGui::Text("Size: (%.2f, %.2f)", playerSize.x, playerSize.y);
@@ -82,8 +77,7 @@ void GameLayer::OnGUIRender()
 	kepler::Vec2f ballSize = m_pBall->GetSize();
 	kepler::Vec2f ballDir = m_pBall->GetCurrentDirection();
 	kepler::Vec2f ballLastDir = m_pBall->GetLastDirection();
-	bool isBallAccelerated = false;
-	m_pBall->GetAdditionalColliderStatus(isBallAccelerated);
+	bool isBallAccelerated = *reinterpret_cast<bool*>(m_pBall->GetCollisionInfo());
 	ImGui::Text("Ball");
 	ImGui::Text("Position: (%.2f, %.2f)", ballPos.x, ballPos.y);
 	ImGui::Text("Size: (%.2f, %.2f)", ballSize.x, ballSize.y);
