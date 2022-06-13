@@ -2,6 +2,7 @@
 #include "Player.h"
 
 #include "CollisionDetector.h"
+#include <DDSTextureLoader.h>
 
 Player::Player(const kepler::Vec2f& position, const kepler::Vec2f& size, eColliderType type, eColliderCategory category)
 	: GameObject(type, category)
@@ -37,6 +38,7 @@ void Player::InitSprite()
 		std::string moveTexturePath = TextureFilePath + "walk" + std::to_string(i + 1) + ".png";
 		textures.push_back(kepler::ITexture2D::Create(kepler::eTextureDataType::Float, moveTexturePath));
 	}
+
 	m_animation[PlayerStateWalk].AddSprites({ textures[0], textures[1], textures[2] });
 	m_animation[PlayerStateWalk].SetFrameCount(18);
 	m_animation[PlayerStateWalk].SetRepeat(true);

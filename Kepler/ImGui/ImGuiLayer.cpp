@@ -103,7 +103,8 @@ namespace kepler {
 
 	void ImGuiLayer::OnGUIRender()
 	{
-		// 그리기. 추후 에디터 레이어가 추가되면 ImGuiLayer는 OnRender를 가질 필요가 없음.
+		// GUI 예제 확인용
+		// GUI 붙이다 헷갈리는거 있을때 주석 풀고 데모 GUI 확인하세요.
 		//ImGuiIO& io = ImGui::GetIO();
 		//
 		//static bool bIsShownDemo = false;
@@ -117,7 +118,7 @@ namespace kepler {
 		//ImGui::Begin("Hello Kepler!");
 		//ImGui::Text("This is Test..");
 		//ImGui::Checkbox("demo window", &bIsShownDemo);
-
+		//
 		//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
 		//static ImVec4 clearColor(0.45f, 0.55f, 0.60f, 1.0f);
 		//ImGui::ColorEdit3("clear color", (float*)&clearColor);
@@ -129,7 +130,7 @@ namespace kepler {
 		//}
 		//ImGui::SameLine();
 		//ImGui::Text("counter = %d", counter);
-
+		//
 		//ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 		//ImGui::End();
 	}
