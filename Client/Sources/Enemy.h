@@ -16,6 +16,7 @@ public:
 	virtual void OnEvent(kepler::Event& e) override;
 	virtual void OnUpdate(float deltaTime) override;
 	virtual void OnRender() override;
+	virtual void Respawn() override;
 	// Inherited via GameObject
 	virtual void OnCollision(CollisionData& data) override;
 };

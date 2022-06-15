@@ -15,6 +15,8 @@
 	// Forward declare message handler from imgui_impl_win32.cpp
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+static ImFont* g_defaultFont;
+
 
 namespace kepler {
 
@@ -37,7 +39,7 @@ namespace kepler {
 
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-		
+
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
@@ -59,6 +61,8 @@ namespace kepler {
 		// ImGui 초기화
 		ImGui_ImplWin32_Init(hWnd);
 		ImGui_ImplDX11_Init(pDevice, pDeviceContext);
+
+		g_defaultFont = io.Fonts->AddFontFromFileTTF("../Kepler/Resources/OpenSans-Regular.ttf", 18.0f);
 	}
 
 	void ImGuiLayer::OnDetach()
@@ -85,6 +89,7 @@ namespace kepler {
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
+
 	}
 
 	void ImGuiLayer::End()
@@ -99,30 +104,32 @@ namespace kepler {
 			ImGui::UpdatePlatformWindows();
 			ImGui::RenderPlatformWindowsDefault();
 		}
+
 	}
 
 	void ImGuiLayer::OnGUIRender()
 	{
 		// GUI 예제 확인용
 		// GUI 붙이다 헷갈리는거 있을때 주석 풀고 데모 GUI 확인하세요.
+		//ImGui::PushFont(g_defaultFont);
 		//ImGuiIO& io = ImGui::GetIO();
-		//
+
 		//static bool bIsShownDemo = false;
 		//if (bIsShownDemo)
 		//{
 		//	ImGui::ShowDemoWindow(&bIsShownDemo);
 		//}
-		//
+
 		//static float f = 0.0f;
-		//
+
 		//ImGui::Begin("Hello Kepler!");
 		//ImGui::Text("This is Test..");
 		//ImGui::Checkbox("demo window", &bIsShownDemo);
-		//
+
 		//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
 		//static ImVec4 clearColor(0.45f, 0.55f, 0.60f, 1.0f);
 		//ImGui::ColorEdit3("clear color", (float*)&clearColor);
-		//
+
 		//static int counter = 0;
 		//if (ImGui::Button("Button"))
 		//{
@@ -130,9 +137,10 @@ namespace kepler {
 		//}
 		//ImGui::SameLine();
 		//ImGui::Text("counter = %d", counter);
-		//
+
 		//ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 		//ImGui::End();
+		//ImGui::PopFont();
 	}
 
 	LRESULT ImGuiLayer::ImGuiEventHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)

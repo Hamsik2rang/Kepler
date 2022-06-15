@@ -33,9 +33,11 @@ public:
 	void OnUpdate(float deltaTime);
 	void OnRender();
 
-	virtual void OnCollision(CollisionData& data);
+	void Respawn(bool bSpawnAbovePlayer);
+	inline bool IsGrounded() const { return m_bIsGrounded; }
 
 	// Inherited via GameObject
+	virtual void OnCollision(CollisionData& data);
 	inline virtual kepler::Vec2f GetPosition() const override { return m_transforms.front().first; }
 	inline virtual kepler::Vec2f GetSize() const override { return m_size; }
 	inline virtual kepler::Vec2f GetCurrentDirection() const override { return m_curDirection; }

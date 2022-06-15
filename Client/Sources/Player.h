@@ -48,6 +48,7 @@ public:
 	virtual void OnUpdate(float deltaTime);
 	virtual void OnRender();
 
+	virtual void Respawn();
 	// Inherited via GameObject
 	virtual void OnCollision(CollisionData& data) override;
 

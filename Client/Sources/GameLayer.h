@@ -27,17 +27,20 @@ private:
 
 	kepler::OrthographicCamera m_camera;
 	
-	// GUI 전용 변수
+	eGameState m_state;
+	uint32_t m_playerScore;
+	uint32_t m_enemyScore;
+	bool m_bIsGameOver;
+
+	//----- GUI 전용 변수 ------------------
 	float m_time;
 	float m_readyTime;
 	bool m_bBlink;
-	ImFont* m_pFont;
+
+	ImFont* m_pSolidFont;
 	ImFont* m_pHollowFont;
 	ImFont* m_pDebugFont;
-	eGameState m_state;
-
-	uint32_t m_playerScore;
-	uint32_t m_enemyScore;
+	//------------------------------------
 
 public:
 	GameLayer();

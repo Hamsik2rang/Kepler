@@ -3,15 +3,19 @@
 
 #include <imgui.h>
 
+
 GameLayer::GameLayer()
 	: m_playerScore{ 0u }
 	, m_enemyScore{ 0u }
-	, m_pFont{ nullptr }
-	, m_state{ eGameState::Menu }
+	, m_pSolidFont{nullptr}
+	, m_pDebugFont{ nullptr }
+	, m_pHollowFont{ nullptr }
 	, m_time{ 0.0f }
 	, m_readyTime{ 0.0f }
 	, m_bBlink{ true }
-{}
+{
+
+}
 
 void GameLayer::OnAttach()
 {
@@ -30,7 +34,7 @@ void GameLayer::OnAttach()
 
 	// GUI용 폰트 초기화
 	ImGuiIO& io = ImGui::GetIO();
-	m_pFont = io.Fonts->AddFontFromFileTTF("./Assets/Pokemon-Solid.ttf", 180.0f);
+	m_pSolidFont = io.Fonts->AddFontFromFileTTF("./Assets/Pokemon-Solid.ttf", 180.0f);
 	m_pHollowFont = io.Fonts->AddFontFromFileTTF("Assets/Pokemon-Hollow.ttf", 180.0f);
 	m_pDebugFont = io.Fonts->AddFontFromFileTTF("./Assets/OpenSans-Regular.ttf", 18.0f);
 }
@@ -56,6 +60,11 @@ void GameLayer::OnUpdate(float deltaTime)
 		break;
 	case eGameState::Ready:
 		{
+			// respawn & draw once
+
+
+
+			// count ready time
 			m_readyTime += deltaTime;
 			if (m_readyTime > 3.0f)
 			{
@@ -84,11 +93,30 @@ void GameLayer::OnUpdate(float deltaTime)
 			{
 				m_state = eGameState::Pause;
 			}
+			if (m_pBall->IsGrounded())
+			{
+				m_state = eGameState::GameOver;
+				if (m_pBall->GetPosition().x < 0.0f)
+				{
+					m_playerScore++;
+				}
+				else
+				{
+					m_enemyScore++;
+				}
+			}
 		}
 		break;
 	case eGameState::GameOver:
 		{
-
+			if (m_playerScore >= 15 || m_enemyScore >= 15)
+			{
+				m_bIsGameOver = true;
+			}
+			else
+			{
+				m_state = eGameState::Ready;
+			}
 		}
 		break;
 	}
@@ -116,24 +144,25 @@ void GameLayer::OnGUIRender()
 {
 	ImVec2 viewportPos = ImGui::GetMainViewport()->Pos;
 	ImVec2 viewportSize = ImGui::GetMainViewport()->Size;
+	ImGui::PushFont(m_pSolidFont);
 	switch (m_state)
 	{
 	case eGameState::Menu:
 		{
 			ImVec2 textSize = ImGui::CalcTextSize("Squirtle");
 			ImVec2 textPos = { viewportPos.x + (viewportSize.x - textSize.x) / 2.0f, viewportPos.y + 100.0f };
-			ImGui::GetForegroundDrawList()->AddText(m_pFont, 180.0f, textPos, 0xffaa5507, "Squirtle");
+			ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 180.0f, textPos, 0xffaa5507, "Squirtle");
 			ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 180.0f, textPos, 0xff00ceff, "Squirtle");
 
 			textSize = ImGui::CalcTextSize("VolleyBall");
 			textPos = { viewportPos.x + (viewportSize.x - textSize.x) / 2.0f, textPos.y + 200.0f };
-			ImGui::GetForegroundDrawList()->AddText(m_pFont, 180.0f, textPos, 0xffaa5507, "VolleyBall");
+			ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 180.0f, textPos, 0xffaa5507, "VolleyBall");
 			ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 180.0f, textPos, 0xff00ceff, "VolleyBall");
 
 			auto transparency = (int)((1.0f - (std::cosf(m_time * 5.0f) + 1.0f) / 2.0f) * 255.0f) << 24;
 			textPos.x += 80.0f;
 			textPos.y += 200.0f;
-			ImGui::GetForegroundDrawList()->AddText(m_pFont, 60.0f, textPos, 0x00aa5507 | transparency, "Press SPACE to Play!");
+			ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 60.0f, textPos, 0x00aa5507 | transparency, "Press SPACE to Play!");
 			ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 60.0f, textPos, 0x0000ceff | transparency, "Press SPACE to Play!");
 		}
 		break;
@@ -144,20 +173,20 @@ void GameLayer::OnGUIRender()
 			if (m_readyTime < 1.0f)
 			{
 				auto transparency = (int)((1.0f - m_readyTime) * 255.0f) << 24;
-				ImGui::GetForegroundDrawList()->AddText(m_pFont, 180.0f, textPos, 0x00aa5507 | transparency, "3");
+				ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 180.0f, textPos, 0x00aa5507 | transparency, "3");
 				ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 180.0f, textPos, 0x0000ceff | transparency, "3");
 
 			}
 			else if (m_readyTime > 1.0f && m_readyTime < 2.0f)
 			{
 				auto transparency = (int)((2.0f - m_readyTime) * 255.0f) << 24;
-				ImGui::GetForegroundDrawList()->AddText(m_pFont, 180.0f, textPos, 0x00aa5507 | transparency, "2");
+				ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 180.0f, textPos, 0x00aa5507 | transparency, "2");
 				ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 180.0f, textPos, 0x0000ceff | transparency, "2");
 			}
 			else
 			{
 				auto transparency = (int)((3.0f - m_readyTime) * 255.0f) << 24;
-				ImGui::GetForegroundDrawList()->AddText(m_pFont, 180.0f, textPos, 0x00aa5507 | transparency, "1");
+				ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 180.0f, textPos, 0x00aa5507 | transparency, "1");
 				ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 180.0f, textPos, 0x0000ceff | transparency, "1");
 			}
 
@@ -165,20 +194,35 @@ void GameLayer::OnGUIRender()
 		break;
 	case eGameState::Play:
 		{
+			std::string scoreStr = std::to_string(m_enemyScore);
+			ImVec2 textSize = ImGui::CalcTextSize(scoreStr.c_str());
+			ImVec2 textPos = { viewportPos.x + (viewportSize.x / 2.0f - textSize.x) / 2.0f, viewportPos.y + 10.0f };
+			ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 180.0f, textPos, 0xffaa5507, scoreStr.c_str());
+			ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 180.0f, textPos, 0xff00ceff, scoreStr.c_str());
 
+			textSize = ImGui::CalcTextSize("-");
+			textPos = { viewportPos.x + (viewportSize.x - textSize.x) / 2.0f, viewportPos.y + 10.0f };
+			ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 180.0f, textPos, 0xffaa5507, "-");
+			ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 180.0f, textPos, 0xff00ceff, "-");
+
+			scoreStr = std::to_string(m_playerScore);
+			textSize = ImGui::CalcTextSize(scoreStr.c_str());
+			textPos = { viewportPos.x + viewportSize.x / 2.0f + (viewportSize.x / 2.0f - textSize.x) / 2.0f, viewportPos.y + 10.0f };
+			ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 180.0f, textPos, 0xffaa5507, scoreStr.c_str());
+			ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 180.0f, textPos, 0xff00ceff, scoreStr.c_str());
 		}
 		break;
 	case eGameState::Pause:
 		{
 			ImVec2 textSize = ImGui::CalcTextSize("Paused");
 			ImVec2 textPos = { viewportPos.x + (viewportSize.x - textSize.x) / 2.0f, viewportPos.y + 200.0f };
-			ImGui::GetForegroundDrawList()->AddText(m_pFont, 180.0f, textPos, 0xffaa5507, "Paused");
+			ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 180.0f, textPos, 0xffaa5507, "Paused");
 			ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 180.0f, textPos, 0xff00ceff, "Paused");
 
 			textPos.x -= 30.0f;
 			textPos.y += 200.0f;
-			ImGui::GetForegroundDrawList()->AddText(m_pFont, 60.0f, textPos, 0xffaa5507 , "Press ENTER to Resume");
-			ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 60.0f, textPos, 0xff00ceff , "Press ENTER to Resume");
+			ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 60.0f, textPos, 0xffaa5507, "Press ENTER to Resume");
+			ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 60.0f, textPos, 0xff00ceff, "Press ENTER to Resume");
 		}
 		break;
 	case eGameState::GameOver:
@@ -187,6 +231,7 @@ void GameLayer::OnGUIRender()
 		}
 		break;
 	}
+	ImGui::PopFont();
 
 	// 디버그 전용 GUI
 #ifdef _DEBUG
@@ -201,13 +246,13 @@ void GameLayer::OnGUIRender()
 	kepler::Vec2f playerSize = m_pPlayer->GetSize();
 	kepler::Vec2f playerDir = m_pPlayer->GetCurrentDirection();
 	kepler::Vec2f playerLastDir = m_pPlayer->GetLastDirection();
-	bool isPlayerSpiked = *reinterpret_cast<bool*>(m_pBall->GetCollisionInfo());
+	bool bIsPlayerSpiked = *reinterpret_cast<bool*>(m_pBall->GetCollisionInfo());
 	ImGui::Text("Player");
 	ImGui::Text("Position (%.2f, %.2f)", playerPos.x, playerPos.y);
 	ImGui::Text("Size: (%.2f, %.2f)", playerSize.x, playerSize.y);
 	ImGui::Text("Direction: (%.2f, %.2f)", playerDir.x, playerDir.y);
 	ImGui::Text("Last Direction : (%.2f, %.2f)", playerLastDir.x, playerLastDir.y);
-	ImGui::Text("Spike: %d", isPlayerSpiked);
+	ImGui::Text("Spike: %d", bIsPlayerSpiked);
 
 	ImGui::NewLine();
 
@@ -215,13 +260,13 @@ void GameLayer::OnGUIRender()
 	kepler::Vec2f ballSize = m_pBall->GetSize();
 	kepler::Vec2f ballDir = m_pBall->GetCurrentDirection();
 	kepler::Vec2f ballLastDir = m_pBall->GetLastDirection();
-	bool isBallAccelerated = *reinterpret_cast<bool*>(m_pBall->GetCollisionInfo());
+	bool bIsBallAccelerated = *reinterpret_cast<bool*>(m_pBall->GetCollisionInfo());
 	ImGui::Text("Ball");
 	ImGui::Text("Position: (%.2f, %.2f)", ballPos.x, ballPos.y);
 	ImGui::Text("Size: (%.2f, %.2f)", ballSize.x, ballSize.y);
 	ImGui::Text("Direction: (%.2f, %.2f)", ballDir.x, ballDir.y);
 	ImGui::Text("Last Direction : (%.2f, %.2f)", ballLastDir.x, ballLastDir.y);
-	ImGui::Text("Accelerated: %d", isBallAccelerated);
+	ImGui::Text("Accelerated: %d", bIsBallAccelerated);
 
 	ImGui::NewLine();
 
@@ -234,7 +279,6 @@ void GameLayer::OnGUIRender()
 	ImGui::Text("Size: (%.2f, %.2f)", enemySize.x, enemySize.y);
 	ImGui::Text("Direction: (%.2f, %.2f)", enemyDir.x, enemyDir.y);
 	ImGui::Text("Last Direction : (%.2f, %.2f)", enemyLastDir.x, enemyLastDir.y);
-
 
 	ImGui::End();
 	ImGui::PopFont();

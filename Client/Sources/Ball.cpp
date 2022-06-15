@@ -1,5 +1,6 @@
 #include "Ball.h"
 
+#include "GameLayer.h"
 #include "Constant.h"
 #include "CollisionDetector.h"
 
@@ -87,11 +88,26 @@ void Ball::OnRender()
 		kepler::Renderer2D::Get()->DrawQuad(m_transforms.front().first - kepler::Vec2f{ 0.0f, m_size.y / 2.0f + 20.0f }, m_size * 2.0f, m_pImpactSprite);
 		m_bIsGrounded = false;
 	}
+}
+
+void Ball::Respawn(bool bSpawnAbovePlayer)
+{
+	m_transforms.clear();
+	if (bSpawnAbovePlayer)
+	{
+		m_transforms.push_front(std::make_pair(constant::BALL_PLAYER_SPAWN_POSITION, 0.0f));
 	}
+	else
+	{
+		m_transforms.push_front(std::make_pair(constant::BALL_ENEMY_SPAWN_POSITION, 0.0f));
+	}
+	m_curDirection = kepler::Vec2f::Zero;
+}
 
 void Ball::OnCollision(CollisionData& data)
 {
 	static float COEF_OF_RES = 0.8f;	// 반발계수(coefficient of restitution)
+	static float ACCELERATION = 35.0f;
 
 #ifdef _DEBUG
 	m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f };
@@ -122,7 +138,7 @@ void Ball::OnCollision(CollisionData& data)
 			// 꼬부기와 부딛혔을 때 꼬부기가 스파이크 공격을 시도한 상태라면 가속 처리(이미 가속 중이라면 유지)
 			if (bIsSpiked)
 			{
-				nextDirection = nextDirection.Normalize() * 35.0f;
+				nextDirection = nextDirection.Normalize() * ACCELERATION;
 				m_bIsAccelarated = true;
 			}
 			else
@@ -146,7 +162,7 @@ void Ball::OnCollision(CollisionData& data)
 			// _______i_________|_________i________
 			// 이를 위해 네트의 상단 꼭지점과 공의 거리를 계산함
 
-			// 네트의 상단 꼭지점과 공의 거리가 반지름 이상인 경우(네트와 걸치지 않은 경우)
+			// 네트의 상단 꼭지점과 공의 거리가 반지름 이상인 경우(네트와 걸치거나 닿지 않은 경우)
 			kepler::Vec2f distVector = m_transforms.front().first - (colliderPos + kepler::Vec2f{ 0.0f, constant::NET_SIZE.y / 2.0f });
 			if (std::fabsf(distVector.Length()) > m_size.x / 2.0f && m_transforms.front().first.y > (colliderPos.y + constant::NET_SIZE.y / 2.0f))
 			{
@@ -174,7 +190,6 @@ void Ball::OnCollision(CollisionData& data)
 				m_curDirection.y *= -1.0f;
 				m_transforms[1].first.y = (constant::NET_POSITION.y + (constant::NET_SIZE.y + m_size.y) / 2.0f);
 			}
-
 		}
 		break;
 		// 벽과 충돌처리
@@ -209,15 +224,9 @@ void Ball::OnCollision(CollisionData& data)
 			}
 			else
 			{
-				m_curDirection = kepler::Vec2f{ m_curDirection.x, -m_curDirection.y } * COEF_OF_RES;
+				m_curDirection = kepler::Vec2f{ m_curDirection.x, -m_curDirection.y } *COEF_OF_RES;
 			}
 			m_bIsAccelarated = false;
-
-			// 게임 상태를 멈추고 점수를 갱신해주어야 함.
-			// 다음 세트로 넘어감.
-			// TODO: set end
-			// call gamemanager
-
 		}
 		break;
 		// 천장(스크린 상단)과 닿은 경우

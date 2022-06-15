@@ -9,6 +9,19 @@ Enemy::Enemy(const kepler::Vec2f& position, const kepler::Vec2f& size, std::shar
 	InitSprite();
 }
 
+void Enemy::Respawn()
+{
+	m_position = -constant::PLAYER_SPAWN_POSITION;
+	m_size = constant::SQUIRTLE_IDLE_SIZE;
+	m_curDirection = { 1.0f, 0.0f };
+	m_state = PlayerStateIdle;
+	m_pCurAnim = &m_animation[PlayerStateIdle];
+	m_bIsGrounded = false;
+	m_bIsSpiked = false;
+	m_pCollider->SetPosition(m_position);
+	m_pCollider->SetSize(m_size);
+}
+
 void Enemy::OnEvent(kepler::Event& e)
 {
 
