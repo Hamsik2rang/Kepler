@@ -180,6 +180,9 @@
     <ClInclude Include="Math\Vector2.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Audio\AudioSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Application.cpp">
