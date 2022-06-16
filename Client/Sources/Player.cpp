@@ -124,13 +124,13 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 				m_pCurAnim = &m_animation[PlayerStateJump];
 				m_pCurAnim->Start();
 			}
-			m_curDirection = { horizontal * 5.0f, 25.0f };
+			m_curDirection = { horizontal * 5.0f, 10.0f };
 		}
 		// 아래쪽 방향키를 누른 경우
 		else if (vertical < 0 && horizontal != 0)
 		{
 			// 스페이스바도 함께 눌렀다면 해당 시점의 수평축 방향으로 슬라이딩 처리. 아니라면 무시
-			if (kepler::Input::IsButtonDown(kepler::key::Space))
+			if (m_curInput == kepler::key::Space)
 			{
 				m_bIsGrounded = false;
 				m_state = ePlayerState::PlayerStateSlide;
