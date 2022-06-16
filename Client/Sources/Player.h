@@ -22,12 +22,13 @@ enum ePlayerState
 
 class Player : public GameObject
 {
+
 protected:
 	kepler::Vec2f	m_position;
 	kepler::Vec2f	m_size;
 	kepler::Vec2f	m_curDirection;
 	kepler::Vec2f	m_lastDirection;
-	BoxCollider2D*	m_pCollider;
+	BoxCollider2D* m_pCollider;
 	ePlayerState	m_state;
 	bool			m_bIsGrounded;
 	bool			m_bIsSpiked;
@@ -39,10 +40,14 @@ protected:
 	Animation2D m_animation[6];
 	Animation2D* m_pCurAnim;	// 현재 상태에 대한 애니메이션을 가리키기만 하는 참조용 변수
 
+	virtual void ChangeState(float deltaTime, int vertical, int horizontal);
+
 public:
 	Player(const kepler::Vec2f& position, const kepler::Vec2f& size, eColliderType type = eColliderType::Box, eColliderCategory category = eColliderCategory::Player);
 	virtual ~Player();
 	void InitSprite();
+	void OnWin();
+	void OnLose();
 
 	virtual void OnEvent(kepler::Event& e);
 	virtual void OnUpdate(float deltaTime);

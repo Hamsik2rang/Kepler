@@ -11,15 +11,21 @@ Enemy::Enemy(const kepler::Vec2f& position, const kepler::Vec2f& size, std::shar
 
 void Enemy::Respawn()
 {
-	m_position = -constant::PLAYER_SPAWN_POSITION;
-	m_size = constant::SQUIRTLE_IDLE_SIZE;
-	m_curDirection = { 1.0f, 0.0f };
-	m_state = PlayerStateIdle;
-	m_pCurAnim = &m_animation[PlayerStateIdle];
 	m_bIsGrounded = false;
 	m_bIsSpiked = false;
+	m_position = { -constant::PLAYER_SPAWN_POSITION.x, constant::PLAYER_SPAWN_POSITION.y };
+	m_size = constant::SQUIRTLE_IDLE_SIZE;
+	m_curDirection = { 1.0f, 0.0f };
+	m_lastDirection = { 0.0f, 0.0f };
+	m_state = PlayerStateIdle;
+	m_pCurAnim = &m_animation[PlayerStateIdle];
 	m_pCollider->SetPosition(m_position);
 	m_pCollider->SetSize(m_size);
+}
+
+void Enemy::ChangeState(float deltaTime, int vertical, int horizontal)
+{
+
 }
 
 void Enemy::OnEvent(kepler::Event& e)
@@ -35,10 +41,11 @@ void Enemy::OnUpdate(float deltaTime)
 	// update AI State
 
 	// TODO: Enemy AI 구현하기
+	ChangeState(deltaTime, 0/*vertical*/, 0/*horizontal*/);
 
-	
 
 	//...
+	m_pCurAnim->Update();
 	// collider 갱신
 	m_pCollider->SetPosition(m_position);
 }
@@ -48,7 +55,7 @@ void Enemy::OnRender()
 	bool bFlipX = true;
 	if (m_state != PlayerStateJump)
 	{
-		bFlipX = m_curDirection.x < 1.0f;
+		bFlipX = m_curDirection.x > -0.1f;
 	}
 #ifdef _DEBUG
 	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite(), bFlipX, false, m_debugColor);
@@ -87,6 +94,7 @@ void Enemy::OnCollision(CollisionData& data)
 			if (!m_bIsGrounded)
 			{
 				m_bIsGrounded = true;
+				m_bIsSpiked = false;
 				m_curDirection = { 0.0f, 0.0f };
 				m_size = constant::SQUIRTLE_IDLE_SIZE;
 				m_position.y = constant::GROUND_POSITION.y + m_size.y / 2.0f;

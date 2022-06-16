@@ -33,6 +33,22 @@ void Ball::InitSprite()
 	m_pImpactSprite = kepler::ITexture2D::Create(kepler::eTextureDataType::Float, "./Assets/Textures/impact.png");
 }
 
+void Ball::Respawn(bool bSpawnAbovePlayer)
+{
+	m_transforms.clear();
+	if (bSpawnAbovePlayer)
+	{
+		m_transforms.push_front(std::make_pair(constant::BALL_PLAYER_SPAWN_POSITION, 0.0f));
+	}
+	else
+	{
+		m_transforms.push_front(std::make_pair(constant::BALL_ENEMY_SPAWN_POSITION, 0.0f));
+	}
+	m_curDirection = kepler::Vec2f::Zero;
+	m_lastDirection = kepler::Vec2f::Zero;
+	m_pCollider->SetPosition(m_transforms.front().first);
+}
+
 void Ball::OnEvent(kepler::Event& e)
 {
 
@@ -53,13 +69,6 @@ void Ball::OnUpdate(float deltaTime)
 	m_curDirection = m_lastDirection;
 	m_curDirection.y -= 9.8f * deltaTime;
 
-#ifdef _DEBUG
-	if (kepler::Input::IsButtonDown(kepler::key::R))
-	{
-		m_transforms.front().first = constant::BALL_PLAYER_SPAWN_POSITION;
-		m_curDirection = { 0.0f, -1.0f };
-	}
-#endif
 	// 새로 계산된 위상을 deque 앞에 push
 	kepler::Vec2f nextPosition = m_transforms.front().first + m_curDirection;
 	m_transforms.push_front(std::make_pair(nextPosition, rotation));
@@ -88,20 +97,6 @@ void Ball::OnRender()
 		kepler::Renderer2D::Get()->DrawQuad(m_transforms.front().first - kepler::Vec2f{ 0.0f, m_size.y / 2.0f + 20.0f }, m_size * 2.0f, m_pImpactSprite);
 		m_bIsGrounded = false;
 	}
-}
-
-void Ball::Respawn(bool bSpawnAbovePlayer)
-{
-	m_transforms.clear();
-	if (bSpawnAbovePlayer)
-	{
-		m_transforms.push_front(std::make_pair(constant::BALL_PLAYER_SPAWN_POSITION, 0.0f));
-	}
-	else
-	{
-		m_transforms.push_front(std::make_pair(constant::BALL_ENEMY_SPAWN_POSITION, 0.0f));
-	}
-	m_curDirection = kepler::Vec2f::Zero;
 }
 
 void Ball::OnCollision(CollisionData& data)

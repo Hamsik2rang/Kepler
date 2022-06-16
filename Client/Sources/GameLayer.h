@@ -30,13 +30,12 @@ private:
 	eGameState m_state;
 	uint32_t m_playerScore;
 	uint32_t m_enemyScore;
+	bool m_bSpawnAbovePlayer;
 	bool m_bIsGameOver;
-
-	//----- GUI 전용 변수 ------------------
 	float m_time;
 	float m_readyTime;
-	bool m_bBlink;
 
+	//----- GUI 전용 변수 ------------------
 	ImFont* m_pSolidFont;
 	ImFont* m_pHollowFont;
 	ImFont* m_pDebugFont;
@@ -51,4 +50,8 @@ public:
 	virtual void OnRender() override;
 	virtual void OnGUIRender() override;
 	virtual void OnEvent(kepler::Event& e) override;
+
+	void ResetObjects();
+
+	bool OnDebugKeyPressed(kepler::KeyPressedEvent& e);
 };

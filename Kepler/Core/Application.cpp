@@ -23,6 +23,8 @@ namespace kepler{
 
 		m_pImGuiLayer = std::make_unique<ImGuiLayer>();
 		m_pImGuiLayer->OnAttach();
+
+		m_bIsRunning = true;
 	}
 
 	Application* Application::Get()
@@ -70,7 +72,7 @@ namespace kepler{
 		MSG msg{};
 		m_timer.Start();
 		float lastTime = 0.0f;
-		while (msg.message != WM_QUIT)
+		while (msg.message != WM_QUIT && m_bIsRunning)
 		{
 			float curTime = m_timer.Elapsed();
 			float deltaTime = curTime - lastTime;

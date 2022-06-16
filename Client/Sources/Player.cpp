@@ -29,7 +29,7 @@ Player::~Player()
 
 // Sprite 불러오는 함수
 // 부기꼬는 Sprite에 따라 크기가 달라짐.
-// Frame Count는 3프레임당 스프라이트 1장씩 넘기도록 지정하였음. 
+// Frame Count는 6프레임당 스프라이트 1장씩 넘기도록 지정하였음. 
 void Player::InitSprite()
 {
 	std::string TextureFilePath = "./Assets/Textures/";
@@ -73,14 +73,14 @@ void Player::InitSprite()
 	m_animation[PlayerStateSlide].SetRepeat(false);
 
 	// load and set lose texture
-	m_animation[PlayerStateLose].AddSprites({ textures[0], textures[1], textures[2] });
+	m_animation[PlayerStateLose].AddSprites({ textures [0], textures[1], textures[2] });
 	m_animation[PlayerStateLose].SetFrameCount(18);
 	m_animation[PlayerStateLose].SetRepeat(false);
 
 	// load and set win texture
 	auto winTexture = kepler::ITexture2D::Create(kepler::eTextureDataType::Float, TextureFilePath + "win.png");
 	m_animation[PlayerStateWin].AddSprites({ winTexture });
-	m_animation[PlayerStateWin].SetFrameCount(1);
+	m_animation[PlayerStateWin].SetFrameCount(4);
 	m_animation[PlayerStateWin].SetRepeat(false);
 
 	m_pCurAnim = &m_animation[PlayerStateIdle];
@@ -88,53 +88,27 @@ void Player::InitSprite()
 
 void Player::Respawn()
 {
+	// 모든 애니메이션 현재 프레임 초기화
+	for (int i = 0; i < 6; i++)
+	{
+		m_animation[i].Start();
+	}
+
+	m_bIsGrounded = false;
+	m_bIsSpiked = false;
+
 	m_position = constant::PLAYER_SPAWN_POSITION;
 	m_size = constant::SQUIRTLE_IDLE_SIZE;
 	m_curDirection = { -1.0f, 0.0f };
+	m_lastDirection = { 0.0f, 0.0f };
 	m_state = PlayerStateIdle;
 	m_pCurAnim = &m_animation[PlayerStateIdle];
-	m_bIsGrounded = false;
-	m_bIsSpiked = false;
 	m_pCollider->SetPosition(m_position);
 	m_pCollider->SetSize(m_size);
 }
 
-
-void Player::OnEvent(kepler::Event& e)
+void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 {
-
-}
-
-// 키보드 위쪽 화살표 누를 시 점프
-// 키보드 아래쪽 화살표와 스페이스바 동시에 누를 시 슬라이딩
-// 점프 상태에서 스페이스바 누를 시 스파이크(강공격)
-void Player::OnUpdate(float deltaTime)
-{
-#ifdef _DEBUG
-	m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
-#endif
-	int horizontal = 0;
-	int vertical = 0;
-	m_bIsSpiked = false;
-
-	// 방향키 입력에 따라 veritcal, horizontal 축 값 지정
-	if (kepler::Input::IsButtonDown(kepler::key::Up))
-	{
-		vertical += 1;
-	}
-	if (kepler::Input::IsButtonDown(kepler::key::Down))
-	{
-		vertical -= 1;
-	}
-	if (kepler::Input::IsButtonDown(kepler::key::Left))
-	{
-		horizontal -= 1;
-	}
-	if (kepler::Input::IsButtonDown(kepler::key::Right))
-	{
-		horizontal += 1;
-	}
-
 	// 점프 또는 슬라이딩 상태가 아닌 경우
 	if (m_bIsGrounded)
 	{
@@ -221,6 +195,63 @@ void Player::OnUpdate(float deltaTime)
 			break;
 		}
 	}
+}
+
+// 게임 종료 시 승리/패배 상태 설정 함수
+void Player::OnWin()
+{
+	m_state = PlayerStateWin;
+	m_size = constant::SQUIRTLE_WIN_SIZE;
+	m_pCurAnim = &m_animation[PlayerStateWin];
+}
+
+void Player::OnLose()
+{
+	m_position.y = constant::PLAYER_SPAWN_POSITION.y - 50.0f;
+	m_state = PlayerStateLose;
+	m_size = constant::SQUIRTLE_LOSE_SIZE;
+	m_pCurAnim = &m_animation[PlayerStateLose];
+}
+
+void Player::OnEvent(kepler::Event& e)
+{
+
+}
+
+// 키보드 위쪽 화살표 누를 시 점프
+// 키보드 아래쪽 화살표와 스페이스바 동시에 누를 시 슬라이딩
+// 점프 상태에서 스페이스바 누를 시 스파이크(강공격)
+void Player::OnUpdate(float deltaTime)
+{
+#ifdef _DEBUG
+	m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+#endif
+	int horizontal = 0;
+	int vertical = 0;
+	m_bIsSpiked = false;
+
+	// 방향키 입력에 따라 veritcal, horizontal 축 값 지정
+	if (kepler::Input::IsButtonDown(kepler::key::Up))
+	{
+		vertical += 1;
+	}
+	if (kepler::Input::IsButtonDown(kepler::key::Down))
+	{
+		vertical -= 1;
+	}
+	if (kepler::Input::IsButtonDown(kepler::key::Left))
+	{
+		horizontal -= 1;
+	}
+	if (kepler::Input::IsButtonDown(kepler::key::Right))
+	{
+		horizontal += 1;
+	}
+
+	if (m_state != PlayerStateWin && m_state != PlayerStateLose)
+	{
+		ChangeState(deltaTime, vertical, horizontal);
+	}
 
 	// 위치, 방향, 충돌체 및 애니메이션 갱신
 	m_position += m_curDirection;
@@ -236,18 +267,18 @@ void Player::OnRender()
 	bool bFlipX = false;
 	if (m_state != PlayerStateJump)
 	{
-		bFlipX = m_curDirection.x > 0.0f;
+		bFlipX = m_curDirection.x > 0.1f;
 	}
 #ifdef _DEBUG
 	if (m_bIsSpiked)
 	{
 		m_debugColor.g = 1.0f;
-	}
+}
 	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite(), bFlipX, false, m_debugColor);
 #else
 	kepler::Renderer2D::Get()->DrawQuad(m_position, m_size, m_pCurAnim->GetCurFrameSprite(), bFlipX);
 #endif
-	}
+}
 
 void Player::OnCollision(CollisionData& data)
 {

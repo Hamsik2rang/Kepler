@@ -27,9 +27,7 @@ int APIENTRY wWinMain(
 	int day = 4;
 	KEPLER_CORE_WARNING("Initializing Log System");
 	KEPLER_CORE_INFO("Welcome to Kepler Engine, this code written in {0}/{1:02}/{2:02}", year, month, day);
-
-	RECT rcWinRect{};
-
+	
 	auto app = kepler::CreateApplication();
 	app->Run();
 	delete app;

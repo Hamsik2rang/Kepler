@@ -7,7 +7,7 @@ class Client : public kepler::Application
 {
 public:
 	Client()
-		:Application(kepler::eGraphicsAPI::DirectX11)
+		: Application(kepler::eGraphicsAPI::DirectX11)
 	{
 		PushLayer(new GameLayer());
 	}

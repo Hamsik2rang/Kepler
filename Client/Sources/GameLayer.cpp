@@ -4,15 +4,18 @@
 #include <imgui.h>
 
 
+
 GameLayer::GameLayer()
 	: m_playerScore{ 0u }
 	, m_enemyScore{ 0u }
-	, m_pSolidFont{nullptr}
+	, m_pSolidFont{ nullptr }
 	, m_pDebugFont{ nullptr }
 	, m_pHollowFont{ nullptr }
 	, m_time{ 0.0f }
 	, m_readyTime{ 0.0f }
-	, m_bBlink{ true }
+	, m_bSpawnAbovePlayer{ true }
+	, m_bIsGameOver{ false }
+	, m_state{ eGameState::Menu }
 {
 
 }
@@ -44,9 +47,22 @@ void GameLayer::OnDetach()
 
 }
 
+
+void GameLayer::OnEvent(kepler::Event& e)
+{
+	kepler::EventDispatcher dispatch(e);
+	dispatch.Dispatch<kepler::KeyPressedEvent>(std::bind(&GameLayer::OnDebugKeyPressed, this, std::placeholders::_1));
+}
+
 void GameLayer::OnUpdate(float deltaTime)
 {
 	m_time += deltaTime;
+
+
+	if (kepler::Input::IsButtonDown(kepler::key::Escape))
+	{
+		kepler::Application::Get()->Shutdown();
+	}
 
 	switch (m_state)
 	{
@@ -60,9 +76,6 @@ void GameLayer::OnUpdate(float deltaTime)
 		break;
 	case eGameState::Ready:
 		{
-			// respawn & draw once
-
-
 
 			// count ready time
 			m_readyTime += deltaTime;
@@ -99,28 +112,62 @@ void GameLayer::OnUpdate(float deltaTime)
 				if (m_pBall->GetPosition().x < 0.0f)
 				{
 					m_playerScore++;
+					m_bSpawnAbovePlayer = true;
+
 				}
 				else
 				{
 					m_enemyScore++;
+					m_bSpawnAbovePlayer = false;
 				}
 			}
 		}
 		break;
 	case eGameState::GameOver:
 		{
+			// 점수 먹혔을 때 애니메이션 딜레이 주는 용도의 변수들
+			static int delayUpdateFrame = 0;
+			static int nextUpdateFrame = 3;
+			// 150프레임동안 업데이트 속도를 33%로 낮춤(3프레임당 1번씩 업데이트됨)
+			if (delayUpdateFrame++ < 150)
+			{
+				if (delayUpdateFrame >= nextUpdateFrame)
+				{
+					nextUpdateFrame += 3;
+					m_pLevel->OnUpdate(deltaTime);
+					m_pBall->OnUpdate(deltaTime);
+					m_pPlayer->OnUpdate(deltaTime);
+					m_pEnemy->OnUpdate(deltaTime);
+					CollisionDetector::Detection();
+				}
+				break;
+			}
+			delayUpdateFrame = 0;
+			nextUpdateFrame = 4;
+
 			if (m_playerScore >= 15 || m_enemyScore >= 15)
 			{
 				m_bIsGameOver = true;
+				if (m_playerScore >= 15)
+				{
+					m_pPlayer->OnWin();
+					m_pEnemy->OnLose();
+				}
+				else if (m_enemyScore >= 15)
+				{
+					m_pEnemy->OnWin();
+					m_pPlayer->OnLose();
+				}
 			}
 			else
 			{
+				// respawn
+				ResetObjects();
 				m_state = eGameState::Ready;
 			}
 		}
 		break;
 	}
-
 }
 
 // 렌더링 함수
@@ -133,7 +180,10 @@ void GameLayer::OnRender()
 	m_pLevel->OnRender();
 	m_pPlayer->OnRender();
 	m_pEnemy->OnRender();
-	m_pBall->OnRender();
+	if (!m_bIsGameOver)
+	{
+		m_pBall->OnRender();
+	}
 
 	// 렌더링 종료
 	kepler::Renderer2D::Get()->EndScene();
@@ -145,6 +195,10 @@ void GameLayer::OnGUIRender()
 	ImVec2 viewportPos = ImGui::GetMainViewport()->Pos;
 	ImVec2 viewportSize = ImGui::GetMainViewport()->Size;
 	ImGui::PushFont(m_pSolidFont);
+
+	ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 45.0f, viewportPos, 0xffaa5507, "ESC to Exit");
+	ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 45.0f, viewportPos, 0xff00ceff, "ESC to Exit");
+
 	switch (m_state)
 	{
 	case eGameState::Menu:
@@ -189,7 +243,6 @@ void GameLayer::OnGUIRender()
 				ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 180.0f, textPos, 0x00aa5507 | transparency, "1");
 				ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 180.0f, textPos, 0x0000ceff | transparency, "1");
 			}
-
 		}
 		break;
 	case eGameState::Play:
@@ -221,13 +274,54 @@ void GameLayer::OnGUIRender()
 
 			textPos.x -= 30.0f;
 			textPos.y += 200.0f;
-			ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 60.0f, textPos, 0xffaa5507, "Press ENTER to Resume");
-			ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 60.0f, textPos, 0xff00ceff, "Press ENTER to Resume");
+			ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 60.0f, textPos, 0xffaa5507, "Press SPACE to Resume");
+			ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 60.0f, textPos, 0xff00ceff, "Press SPACE to Resume");
 		}
 		break;
 	case eGameState::GameOver:
 		{
+			if (m_bIsGameOver)
+			{
+				ImVec2 textSize;
+				ImVec2 textPos;
+				if (m_playerScore >= 15)
+				{
+					textSize = ImGui::CalcTextSize("Player Win!");
+					textPos = { viewportPos.x + (viewportSize.x - textSize.x) / 2.0f, viewportPos.y + 200.0f };
+					ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 180.0f, textPos, 0xffaa5507, "Player Win!");
+					ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 180.0f, textPos, 0xff00ceff, "Player Win!");
+				}
+				else if (m_enemyScore >= 15)
+				{
+					textSize = ImGui::CalcTextSize("Enemy Win!");
+					textPos = { viewportPos.x + (viewportSize.x - textSize.x) / 2.0f, viewportPos.y + 200.0f };
+					ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 180.0f, textPos, 0xffaa5507, "Enemy Win!");
+					ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 180.0f, textPos, 0xff00ceff, "Enemy Win!");
+				}
+				textPos.x += 150.0f;
+				textPos.y += 200.0f;
+				ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 60.0f, textPos, 0xffaa5507, "SPACE to Restart");
+				ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 60.0f, textPos, 0xff00ceff, "SPACE to Restart");
+			}
+			else
+			{
+				std::string scoreStr = std::to_string(m_enemyScore);
+				ImVec2 textSize = ImGui::CalcTextSize(scoreStr.c_str());
+				ImVec2 textPos = { viewportPos.x + (viewportSize.x / 2.0f - textSize.x) / 2.0f, viewportPos.y + 10.0f };
+				ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 180.0f, textPos, 0xffaa5507, scoreStr.c_str());
+				ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 180.0f, textPos, 0xff00ceff, scoreStr.c_str());
 
+				textSize = ImGui::CalcTextSize("-");
+				textPos = { viewportPos.x + (viewportSize.x - textSize.x) / 2.0f, viewportPos.y + 10.0f };
+				ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 180.0f, textPos, 0xffaa5507, "-");
+				ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 180.0f, textPos, 0xff00ceff, "-");
+
+				scoreStr = std::to_string(m_playerScore);
+				textSize = ImGui::CalcTextSize(scoreStr.c_str());
+				textPos = { viewportPos.x + viewportSize.x / 2.0f + (viewportSize.x / 2.0f - textSize.x) / 2.0f, viewportPos.y + 10.0f };
+				ImGui::GetForegroundDrawList()->AddText(m_pSolidFont, 180.0f, textPos, 0xffaa5507, scoreStr.c_str());
+				ImGui::GetForegroundDrawList()->AddText(m_pHollowFont, 180.0f, textPos, 0xff00ceff, scoreStr.c_str());
+			}
 		}
 		break;
 	}
@@ -285,7 +379,47 @@ void GameLayer::OnGUIRender()
 #endif
 }
 
-void GameLayer::OnEvent(kepler::Event& e)
+void GameLayer::ResetObjects()
 {
+	m_pPlayer->Respawn();
+	m_pEnemy->Respawn();
+	m_pBall->Respawn(m_bSpawnAbovePlayer);
+}
 
+bool GameLayer::OnDebugKeyPressed(kepler::KeyPressedEvent& e)
+{
+#ifdef _DEBUG
+	if (e.GetKeyCode() == kepler::key::R)
+	{
+		m_pBall->Respawn(true);
+	}
+	if (e.GetKeyCode() == kepler::key::T)
+	{
+		m_playerScore++;
+	}
+	if (e.GetKeyCode() == kepler::key::E)
+	{
+		m_enemyScore++;
+	}
+#endif
+	if (m_bIsGameOver && e.GetKeyCode() == kepler::key::Space)
+	{
+		m_bIsGameOver = false;
+		m_playerScore = 0;
+		m_enemyScore = 0;
+		m_bSpawnAbovePlayer = true;
+		ResetObjects();
+		m_state = eGameState::Ready;
+	}
+	if (m_state == eGameState::Play && e.GetKeyCode() == kepler::key::P)
+	{
+		m_state = eGameState::Pause;
+	}
+	if (m_state == eGameState::Pause && e.GetKeyCode() == kepler::key::Space)
+	{
+		m_state = eGameState::Ready;
+	}
+
+
+	return true;
 }

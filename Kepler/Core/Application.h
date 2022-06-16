@@ -19,6 +19,8 @@ namespace kepler {
 		std::unique_ptr<ImGuiLayer> m_pImGuiLayer;
 		LayerStack					m_layerStack;
 		Timer						m_timer;
+		
+		bool m_bIsRunning;
 
 	protected:
 		Application(eGraphicsAPI api);
@@ -34,6 +36,8 @@ namespace kepler {
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* overlay);
 		void Run();
+
+		inline void Shutdown() { m_bIsRunning = false; }
 	};
 	// Defined in Client
 	Application* CreateApplication();
