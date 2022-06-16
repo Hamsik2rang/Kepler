@@ -13,6 +13,7 @@ Player::Player(const kepler::Vec2f& position, const kepler::Vec2f& size, eCollid
 	, m_state{ PlayerStateIdle }
 	, m_bIsSpiked{ false }
 	, m_pCollider{ new BoxCollider2D(*this, position, size, false, category) }
+	, m_curInput{ 0 }
 {
 	InitSprite();
 	CollisionDetector::AddCollider(m_pCollider);
@@ -186,7 +187,7 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 		case ePlayerState::PlayerStateJump:
 			{
 				// 스파이크 처리
-				if (kepler::Input::IsButtonDown(kepler::key::Space))
+				if (m_curInput == kepler::key::Space)
 				{
 					m_bIsSpiked = true;
 				}
@@ -234,18 +235,26 @@ void Player::OnUpdate(float deltaTime)
 	if (kepler::Input::IsButtonDown(kepler::key::Up))
 	{
 		vertical += 1;
+		m_curInput = kepler::key::Up;
 	}
 	if (kepler::Input::IsButtonDown(kepler::key::Down))
 	{
 		vertical -= 1;
+		m_curInput = kepler::key::Down;
 	}
 	if (kepler::Input::IsButtonDown(kepler::key::Left))
 	{
 		horizontal -= 1;
+		m_curInput = kepler::key::Left;
 	}
 	if (kepler::Input::IsButtonDown(kepler::key::Right))
 	{
 		horizontal += 1;
+		m_curInput = kepler::key::Right;
+	}
+	if (kepler::Input::IsButtonDown(kepler::key::Space))
+	{
+		m_curInput = kepler::key::Space;
 	}
 
 	if (m_state != PlayerStateWin && m_state != PlayerStateLose)

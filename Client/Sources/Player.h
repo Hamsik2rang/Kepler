@@ -28,10 +28,11 @@ protected:
 	kepler::Vec2f	m_size;
 	kepler::Vec2f	m_curDirection;
 	kepler::Vec2f	m_lastDirection;
-	BoxCollider2D* m_pCollider;
+	BoxCollider2D*	m_pCollider;
 	ePlayerState	m_state;
 	bool			m_bIsGrounded;
 	bool			m_bIsSpiked;
+	kepler::KeyCode m_curInput;
 
 #ifdef _DEBUG
 	kepler::Vec4f m_debugColor;

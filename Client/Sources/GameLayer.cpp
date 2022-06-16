@@ -31,9 +31,9 @@ void GameLayer::OnAttach()
 
 	m_pPlayer = std::make_shared<Player>(constant::PLAYER_SPAWN_POSITION, constant::SQUIRTLE_IDLE_SIZE);
 	m_pBall = std::make_shared<Ball>(constant::BALL_PLAYER_SPAWN_POSITION, constant::BALL_SIZE.x);
-	m_pEnemy = std::make_shared<Enemy>(kepler::Vec2f{ -constant::PLAYER_SPAWN_POSITION.x, constant::PLAYER_SPAWN_POSITION.y }, constant::SQUIRTLE_IDLE_SIZE, m_pPlayer, m_pBall);
 	m_pLevel = std::make_shared<Level>();
 	m_pLevel->Init(width, height);
+	m_pEnemy = std::make_shared<Enemy>(kepler::Vec2f{ -constant::PLAYER_SPAWN_POSITION.x, constant::PLAYER_SPAWN_POSITION.y }, constant::SQUIRTLE_IDLE_SIZE, m_pLevel, m_pPlayer, m_pBall);
 
 	// GUI용 폰트 초기화
 	ImGuiIO& io = ImGui::GetIO();

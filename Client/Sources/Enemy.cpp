@@ -3,10 +3,13 @@
 #include "CollisionDetector.h"
 #include "Constant.h"
 
-Enemy::Enemy(const kepler::Vec2f& position, const kepler::Vec2f& size, std::shared_ptr<Player> pPlayer, std::shared_ptr<Ball> pBall, eColliderType type, eColliderCategory category)
+Enemy::Enemy(const kepler::Vec2f& position, const kepler::Vec2f& size, std::shared_ptr<Level> pLevel, std::shared_ptr<Player> pPlayer, std::shared_ptr<Ball> pBall, eColliderType type, eColliderCategory category)
 	: Player(position, size, type, category)
 {
 	InitSprite();
+	m_pLevel = pLevel;
+	m_pPlayer = pPlayer;
+	m_pBall = pBall; 
 }
 
 void Enemy::Respawn()
@@ -25,7 +28,7 @@ void Enemy::Respawn()
 
 void Enemy::ChangeState(float deltaTime, int vertical, int horizontal)
 {
-
+	Player::ChangeState(deltaTime, vertical, horizontal);
 }
 
 void Enemy::OnEvent(kepler::Event& e)
@@ -42,7 +45,6 @@ void Enemy::OnUpdate(float deltaTime)
 
 	// TODO: Enemy AI 구현하기
 	ChangeState(deltaTime, 0/*vertical*/, 0/*horizontal*/);
-
 
 	//...
 	m_pCurAnim->Update();
