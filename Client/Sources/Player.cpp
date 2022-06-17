@@ -110,6 +110,13 @@ void Player::Respawn()
 
 void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 {
+	static const float SPEED_JUMP_X = 1350.0f;
+	static const float SPEED_WALK_X = 400.0f;
+	static const float SPEED_SLIDE_X = 900.0f;
+	static const float SPEED_SLIDE_Y = 400.0f;
+	static const float SPEED_GRAVITY = 47.5f;
+
+
 	// 점프 또는 슬라이딩 상태가 아닌 경우
 	if (m_bIsGrounded)
 	{
@@ -124,7 +131,7 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 				m_pCurAnim = &m_animation[PlayerStateJump];
 				m_pCurAnim->Start();
 			}
-			m_curDirection = kepler::Vec2f{ horizontal * 5.0f, 10.0f };
+			m_curDirection = kepler::Vec2f{ horizontal * SPEED_WALK_X, SPEED_JUMP_X } * deltaTime;
 		}
 		// 아래쪽 방향키를 누른 경우
 		else if (vertical < 0 && horizontal != 0)
@@ -140,7 +147,7 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 					m_pCurAnim = &m_animation[PlayerStateSlide];
 					m_pCurAnim->Start();
 				}
-				m_curDirection = kepler::Vec2f{ horizontal * 15.0f, 7.5f };
+				m_curDirection = kepler::Vec2f{ horizontal * SPEED_SLIDE_X, SPEED_SLIDE_Y } * deltaTime;
 			}
 		}
 		// 수직 축 입력이 들어오지 않은 경우
@@ -156,14 +163,14 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 					m_pCurAnim = &m_animation[PlayerStateWalk];
 					m_pCurAnim->Start();
 				}
-				m_curDirection = kepler::Vec2f{ horizontal * 5.0f, 0.0f };
+				m_curDirection = kepler::Vec2f{ horizontal * SPEED_WALK_X, 0.0f } * deltaTime;
 			}
 			// 수평축 입력도 없을 경우 가만히 서 있음(idle)
 			else
 			{
 				m_state = ePlayerState::PlayerStateIdle;
 				if (m_pCurAnim != &m_animation[PlayerStateIdle])
-				{
+				{ 
 					m_pCurAnim = &m_animation[PlayerStateIdle];
 					m_pCurAnim->Start();
 				}
@@ -175,7 +182,7 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 	else
 	{
 		// 연직 방향으로 중력 적용
-		m_curDirection.y = m_lastDirection.y - (49.0f * deltaTime);
+		m_curDirection.y = m_lastDirection.y - (SPEED_GRAVITY * deltaTime);
 		switch (m_state)
 		{
 		case ePlayerState::PlayerStateSlide:
@@ -191,7 +198,7 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 				{
 					m_bIsSpiked = true;
 				}
-				m_curDirection.x = horizontal * 5.0f;
+				m_curDirection.x = horizontal * 400.0f * deltaTime;
 			}
 			break;
 		}

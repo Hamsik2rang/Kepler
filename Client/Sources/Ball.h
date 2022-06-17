@@ -13,6 +13,7 @@ private:
 	kepler::Vec2f m_size;
 	kepler::Vec2f m_curDirection;
 	kepler::Vec2f m_lastDirection;
+	float m_deltaTime;
 
 	std::shared_ptr<kepler::ITexture2D> m_pBallSprite;		// 공 스프라이트
 	std::shared_ptr<kepler::ITexture2D> m_pImpactSprite;	// 땅에 닿았을 때의 이펙트 스프라이트
