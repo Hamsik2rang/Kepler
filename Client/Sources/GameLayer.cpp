@@ -333,6 +333,8 @@ void GameLayer::OnGUIRender()
 	ImGuiIO& io = ImGui::GetIO();
 
 	ImGui::Begin("Debug Mode");
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+	ImGui::NewLine();
 	ImGui::Text("Press R to Respaw Ball");
 	ImGui::NewLine();
 	// Player Info
