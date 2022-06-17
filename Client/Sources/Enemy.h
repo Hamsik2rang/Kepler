@@ -26,5 +26,5 @@ public:
 	virtual void OnCollision(CollisionData& data) override;
 
 private:
-	bool MoveToTarget(const float targetX, float& outHorizontal);
+	bool MoveToTarget(const int targetX, int& outHorizontal);
 };

@@ -42,8 +42,8 @@ void Enemy::OnUpdate(float deltaTime)
 	m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 #endif
 	// update AI State
-	float horizontal = 0.0f;
-	float vertical = 0.0f;
+	int horizontal = 0;
+	int vertical = 0;
 	m_bIsSpiked = false;
 	m_curInput = 0;
 
@@ -89,7 +89,7 @@ void Enemy::OnUpdate(float deltaTime)
 					MoveToTarget(targetX, horizontal);
 					m_curInput = kepler::key::Up;
 					m_bIsSpiked = true;
-					vertical += 1.0f;
+					vertical += 1;
 				}
 			}
 			else
@@ -103,7 +103,7 @@ void Enemy::OnUpdate(float deltaTime)
 					float targetX = m_pBall->GetPosition().x;
 					MoveToTarget(targetX, horizontal);
 					m_curInput = kepler::key::Space;
-					vertical -= 1.0f;
+					vertical -= 1;
 				}
 				else
 				{
@@ -143,7 +143,7 @@ void Enemy::OnUpdate(float deltaTime)
 	m_pCurAnim->Update();
 }
 
-bool Enemy::MoveToTarget(const float targetX, float& outHorizontal)
+bool Enemy::MoveToTarget(const int targetX, int& outHorizontal)
 {
 	if (!m_bIsGrounded)
 	{
@@ -159,7 +159,7 @@ bool Enemy::MoveToTarget(const float targetX, float& outHorizontal)
 
 	bool bIsLeft = targetX < GetPosition().x;
 	m_curInput = bIsLeft ? kepler::key::Left : kepler::key::Right;
-	outHorizontal = bIsLeft ? -1.0f : 1.0f;
+	outHorizontal = bIsLeft ? -1 : 1;
 
 	return true;
 }
