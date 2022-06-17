@@ -143,7 +143,7 @@ void Enemy::OnUpdate(float deltaTime)
 	m_pCurAnim->Update();
 }
 
-bool Enemy::MoveToTarget(const int targetX, int& outHorizontal)
+bool Enemy::MoveToTarget(const float targetX, int& outHorizontal)
 {
 	if (!m_bIsGrounded)
 	{
