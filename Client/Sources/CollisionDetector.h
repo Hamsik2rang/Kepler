@@ -8,8 +8,8 @@
 
 struct CollisionData
 {
-	Collider2D* collider;
-	void* bIsSpiked;
+	Collider2D* pCollider;
+	void* pInfo;
 };
 
 // 충돌체들을 관리하며 충돌 여부 감시하는 객체
@@ -19,7 +19,7 @@ private:
 	static std::vector<Collider2D*>s_pColliders;
 
 public:
-	static void AddCollider(Collider2D*  collider);
-	static void DeleteCollider(Collider2D* collider);
+	static void AddCollider(Collider2D*  pCollider);
+	static void DeleteCollider(Collider2D* pCollider);
 	static bool Detection();
 };
