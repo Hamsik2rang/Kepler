@@ -15,6 +15,8 @@ Enemy::Enemy(const kepler::Vec2f& position, const kepler::Vec2f& size, std::shar
 	m_maxX = m_pLevel->GetWidth() / 2.0f;
 	m_minY = m_pLevel->GetHeight() / -2.0f;
 	m_maxY = m_pLevel->GetHeight() / 2.0f;
+
+	m_computeTimer.Init();
 }
 
 void Enemy::Respawn()
@@ -47,94 +49,23 @@ void Enemy::OnUpdate(float deltaTime)
 	m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 #endif
 	// update AI State
-	int horizontal = 0;
-	int vertical = 0;
+	// m_horizontal = 0; 좌, 우 입력은 이전 값 유지하기
+	m_vertical = 0;
 	m_bIsSpiked = false;
 	m_curInput = 0;
 
 	// TODO: Enemy AI 구현하기
-	ComputeBallNextPosition(deltaTime);
-
-	// 예상 위치가 자신 영역일 경우
-	if (m_ballNextPosition.x < 0)
+	// 일정 시간 마다 상황 판단하기
+	if (m_computeTimer.Elapsed() >= 0.3f)
 	{
-		// 공의 x가 자신 영역일 경우
-		if (m_pBall->GetPosition().x < 0)
-		{
-			// 공의 y가 네트의 일정 비율 보다 클 경우
-			if (m_pBall->GetPosition().y > (constant::NET_POSITION + constant::NET_SIZE).y / 2)
-			{
-				// 공x와 자신x가 멀 때
-				float distance = GetPosition().x - m_pBall->GetPosition().x;
-				distance = distance < 0.0f ? distance * -1.0f : distance;
-				if (distance > 50.0f)
-				{
-					// 공 쪽으로 이동하기
-					m_targetX = m_pBall->GetPosition().x - m_pBall->GetSize().x;
-					MoveToTarget(horizontal);
-				}
-				else
-				{
-					// 공 쪽으로 이동하면서 점프하기
-					m_targetX = m_pBall->GetPosition().x - m_pBall->GetSize().x;
-					MoveToTarget(horizontal);
-					m_curInput = kepler::key::Up;
-					m_bIsSpiked = true;
-					vertical += 1;
-				}
-			}
-			else
-			{
-				// 공x와 자신x가 멀 때
-				float distance = GetPosition().x - m_pBall->GetPosition().x;
-				distance = distance < 0.0f ? distance * -1.0f : distance;
-				if (distance > 50.0f)
-				{
-					// 공 쪽으로 슬라이딩
-					m_targetX = m_pBall->GetPosition().x;
-					MoveToTarget(horizontal);
-					m_curInput = kepler::key::Space;
-					vertical -= 1;
-				}
-				else
-				{
-					// 공 쪽으로 이동하면서 점프하기
-					m_targetX = m_pBall->GetPosition().x - m_pBall->GetSize().x;
-					MoveToTarget(horizontal);
-					m_curInput = kepler::key::Up;
-					m_bIsSpiked = true;
-					vertical += 1;
-				}
-			}
-		}
-		else
-		{
-			// 예상 위치의 x쪽으로 이동
-			m_targetX = m_ballNextPosition.x;
-			MoveToTarget(horizontal);
-		}
-	}
-	else
-	{
-		// 공 높이가 낮을 수록 뒤로, 높을 수록 앞(가운데)으로 이동하기
-		float frontX = m_minX / 2.0f;
-		float backX = m_minX + m_size.x;
-		float range = frontX - backX;
-		m_targetX = backX + (range * m_pBall->GetPosition().y / m_maxY);
-		MoveToTarget(horizontal);
-	}
-
-	// 목표 위치와 현재 위치의 거리가 m_targetXRange 이하면 좌우 입력 명령을 포기
-	float distance = GetPosition().x - m_targetX;
-	distance = distance < 0.0f ? distance * -1.0f : distance;
-	if (distance <= m_targetXRange)
-	{
-		horizontal = 0;
+		m_computeTimer.Start();
+		ComputeBallNextPosition(deltaTime);
+		Logic();
 	}
 
 	if (m_state != PlayerStateWin && m_state != PlayerStateLose)
 	{
-		ChangeState(deltaTime, vertical, horizontal);
+		ChangeState(deltaTime, m_vertical, m_horizontal);
 	}
 
 	// 위치, 방향, 충돌체 및 애니메이션 갱신
@@ -172,6 +103,86 @@ bool Enemy::MoveToTarget(int& outHorizontal)
 	outHorizontal = bIsLeft ? -1 : 1;
 
 	return true;
+}
+
+void Enemy::Logic()
+{
+	// 예상 위치가 자신 영역일 경우
+	if (m_ballNextPosition.x < 0)
+	{
+		// 공의 x가 자신 영역일 경우
+		if (m_pBall->GetPosition().x < 0)
+		{
+			// 공의 y가 네트의 일정 비율 보다 클 경우
+			if (m_pBall->GetPosition().y > constant::NET_POSITION.y + constant::NET_SIZE.y / 2)
+			{
+				// 공x와 자신x가 멀 때
+				float distance = GetPosition().x - m_pBall->GetPosition().x;
+				distance = distance < 0.0f ? distance * -1.0f : distance;
+				if (distance > 50.0f)
+				{
+					// 공 쪽으로 이동하기
+					m_targetX = m_pBall->GetPosition().x - m_pBall->GetSize().x;
+					MoveToTarget(m_horizontal);
+				}
+				else
+				{
+					// 공 쪽으로 이동하면서 점프하기
+					m_targetX = m_pBall->GetPosition().x - m_pBall->GetSize().x;
+					MoveToTarget(m_horizontal);
+					m_curInput = kepler::key::Up;
+					m_bIsSpiked = true;
+					m_vertical = 1;
+				}
+			}
+			else
+			{
+				// 공x와 자신x가 멀 때
+				float distance = GetPosition().x - m_pBall->GetPosition().x;
+				distance = distance < 0.0f ? distance * -1.0f : distance;
+				if (distance > 50.0f)
+				{
+					// 공 쪽으로 슬라이딩
+					m_targetX = m_pBall->GetPosition().x;
+					MoveToTarget(m_horizontal);
+					m_curInput = kepler::key::Space;
+					m_vertical = -1;
+				}
+				else
+				{
+					// 공 쪽으로 이동하면서 점프하기
+					m_targetX = m_pBall->GetPosition().x - m_pBall->GetSize().x;
+					MoveToTarget(m_horizontal);
+					m_curInput = kepler::key::Up;
+					m_bIsSpiked = true;
+					m_vertical = 1;
+				}
+			}
+		}
+		else
+		{
+			// 예상 위치의 x쪽으로 이동
+			m_targetX = m_ballNextPosition.x;
+			MoveToTarget(m_horizontal);
+		}
+	}
+	else
+	{
+		// 공 높이가 낮을 수록 뒤로, 높을 수록 앞(가운데)으로 이동하기
+		float frontX = m_minX / 2.0f;
+		float backX = m_minX + m_size.x;
+		float range = frontX - backX;
+		m_targetX = backX + (range * m_pBall->GetPosition().y / m_maxY);
+		MoveToTarget(m_horizontal);
+	}
+
+	// 목표 위치와 현재 위치의 거리가 m_targetXRange 이하면 좌우 입력 명령을 포기
+	float distance = GetPosition().x - m_targetX;
+	distance = distance < 0.0f ? distance * -1.0f : distance;
+	if (distance <= m_targetXRange)
+	{
+		m_horizontal = 0;
+	}
 }
 
 void Enemy::OnRender()
@@ -236,6 +247,12 @@ void Enemy::OnCollision(CollisionData& data)
 			{
 				m_position.x = colliderPos.x + (colliderSize.x + m_size.x) / 2.0f;
 			}
+		}
+		break;
+		// 공과 닿았을 때 충돌처리
+	case eColliderCategory::Ball:
+		{
+
 		}
 		break;
 	}
