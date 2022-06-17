@@ -183,10 +183,10 @@ void Enemy::OnCollision(CollisionData& data)
 #ifdef _DEBUG
 	m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f };
 #endif
-	kepler::Vec2f colliderPos = data.collider->GetPosition();
-	kepler::Vec2f colliderSize = data.collider->GetSize();
+	kepler::Vec2f colliderPos = data.pCollider->GetPosition();
+	kepler::Vec2f colliderSize = data.pCollider->GetSize();
 
-	switch (data.collider->GetCategory())
+	switch (data.pCollider->GetCategory())
 	{
 		// 네트에 닿은 경우 충돌처리
 	case eColliderCategory::Net:

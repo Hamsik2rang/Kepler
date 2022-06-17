@@ -124,7 +124,7 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 				m_pCurAnim = &m_animation[PlayerStateJump];
 				m_pCurAnim->Start();
 			}
-			m_curDirection = { horizontal * 5.0f, 10.0f };
+			m_curDirection = kepler::Vec2f{ horizontal * 5.0f, 10.0f };
 		}
 		// 아래쪽 방향키를 누른 경우
 		else if (vertical < 0 && horizontal != 0)
@@ -140,7 +140,7 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 					m_pCurAnim = &m_animation[PlayerStateSlide];
 					m_pCurAnim->Start();
 				}
-				m_curDirection = { horizontal * 15.0f, 7.5f };
+				m_curDirection = kepler::Vec2f{ horizontal * 15.0f, 7.5f };
 			}
 		}
 		// 수직 축 입력이 들어오지 않은 경우
@@ -156,7 +156,7 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 					m_pCurAnim = &m_animation[PlayerStateWalk];
 					m_pCurAnim->Start();
 				}
-				m_curDirection = { horizontal * 5.0f, 0.0f };
+				m_curDirection = kepler::Vec2f{ horizontal * 5.0f, 0.0f };
 			}
 			// 수평축 입력도 없을 경우 가만히 서 있음(idle)
 			else
@@ -167,7 +167,7 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 					m_pCurAnim = &m_animation[PlayerStateIdle];
 					m_pCurAnim->Start();
 				}
-				m_curDirection = { 0.0f, 0.0f };
+				m_curDirection = kepler::Vec2f{ 0.0f, 0.0f };
 			}
 		}
 	}
@@ -294,10 +294,10 @@ void Player::OnCollision(CollisionData& data)
 #ifdef _DEBUG
 	m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f };
 #endif
-	kepler::Vec2f colliderPos = data.collider->GetPosition();
-	kepler::Vec2f colliderSize = data.collider->GetSize();
+	kepler::Vec2f colliderPos = data.pCollider->GetPosition();
+	kepler::Vec2f colliderSize = data.pCollider->GetSize();
 
-	switch (data.collider->GetCategory())
+	switch (data.pCollider->GetCategory())
 	{
 		// 네트와 닿았을 때의 충돌 처리. 네트와 겹치지 않도록 위치 조정함
 	case eColliderCategory::Net:

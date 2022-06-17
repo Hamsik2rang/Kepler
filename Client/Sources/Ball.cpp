@@ -107,17 +107,17 @@ void Ball::OnCollision(CollisionData& data)
 #ifdef _DEBUG
 	m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f };
 #endif
-	kepler::Vec2f colliderPos = data.collider->GetPosition();
-	kepler::Vec2f colliderDir = data.collider->GetDirection();
-	kepler::Vec2f colliderSize = data.collider->GetSize();
+	kepler::Vec2f colliderPos = data.pCollider->GetPosition();
+	kepler::Vec2f colliderDir = data.pCollider->GetDirection();
+	kepler::Vec2f colliderSize = data.pCollider->GetSize();
 	bool bIsSpiked = false;
 	// collision data 안에 충돌체의 부가정보가 담긴 경우 해석(꼬부기배구에서는 bool타입 외에 받을 일이 없으므로 별도의 데이터 해석 필요 없음)
-	if (data.bIsSpiked)
+	if (data.pInfo)
 	{
-		bIsSpiked = *reinterpret_cast<bool*>(data.bIsSpiked);
+		bIsSpiked = *reinterpret_cast<bool*>(data.pInfo);
 	}
 
-	switch (data.collider->GetCategory())
+	switch (data.pCollider->GetCategory())
 	{
 		// 꼬부기와 충돌한 경우
 	case eColliderCategory::Player:
