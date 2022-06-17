@@ -65,12 +65,13 @@ namespace kepler {
 		, m_pSamplerState{ nullptr }
 	{
 		int channel = 0;
-		unsigned char* pRawImage = stbi_load(filepath.c_str(), reinterpret_cast<int*>(&m_width), reinterpret_cast<int*>(&m_height), &channel, 4);
+		unsigned char* pRawImage = stbi_load(filepath.c_str(), reinterpret_cast<int*>(&m_width), reinterpret_cast<int*>(&m_height), &channel, 0);
 		if (!pRawImage)
 		{
 			KEPLER_CORE_ASSERT(false, "Fail to load ImageFile");
 			return;
 		}
+
 
 		// Temporary
 		D3D11_TEXTURE2D_DESC texDesc{};
@@ -119,7 +120,7 @@ namespace kepler {
 		{
 			KEPLER_CORE_ASSERT(false, "Fail to create Shader Resource View");
 		}
-
+		
 		// mipmap »ý¼º
 		pDeviceContext->GenerateMips(m_pResourceView);
 

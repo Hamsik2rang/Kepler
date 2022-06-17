@@ -95,6 +95,15 @@ namespace kepler {
         }
     }
 
+    DX11VertexBuffer::~DX11VertexBuffer()
+    {
+        if (m_pBuffer)
+        {
+            m_pBuffer->Release();
+            m_pBuffer = nullptr;
+        }
+    }
+
     // 렌더링 파이프라인에 바인딩
     void DX11VertexBuffer::Bind()
     {
@@ -157,6 +166,15 @@ namespace kepler {
         if (FAILED(hr))
         {
             KEPLER_ASSERT_WITH_ERROR_CODE(false);
+        }
+    }
+
+    DX11IndexBuffer::~DX11IndexBuffer()
+    {
+        if (m_pBuffer)
+        {
+            m_pBuffer->Release();
+            m_pBuffer = nullptr;
         }
     }
 
