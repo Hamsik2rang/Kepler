@@ -98,9 +98,12 @@ void Enemy::OnUpdate(float deltaTime)
 				}
 				else
 				{
-					// 공 쪽으로 이동하기
-					m_targetX = m_pBall->GetPosition().x;
+					// 공 쪽으로 이동하면서 점프하기
+					m_targetX = m_pBall->GetPosition().x - 30.0f;
 					MoveToTarget(horizontal);
+					m_curInput = kepler::key::Up;
+					m_bIsSpiked = true;
+					vertical += 1;
 				}
 			}
 		}
@@ -119,6 +122,14 @@ void Enemy::OnUpdate(float deltaTime)
 		float range = frontX - backX;
 		m_targetX = backX + (range * m_pBall->GetPosition().y / m_maxY);
 		MoveToTarget(horizontal);
+	}
+
+	// 목표 위치와 현재 위치의 거리가 m_targetXRange 이하면 좌우 입력 명령을 포기
+	float distance = GetPosition().x - m_targetX;
+	distance = distance < 0.0f ? distance * -1.0f : distance;
+	if (distance <= m_targetXRange)
+	{
+		horizontal = 0;
 	}
 
 	if (m_state != PlayerStateWin && m_state != PlayerStateLose)
@@ -152,13 +163,6 @@ void Enemy::ComputeBallNextPosition(float deltaTime)
 bool Enemy::MoveToTarget(int& outHorizontal)
 {
 	if (!m_bIsGrounded)
-	{
-		return false;
-	}
-
-	float distance = GetPosition().x - m_targetX;
-	distance = distance < 0.0f ? distance * -1.0f : distance;
-	if (distance <= m_targetXRange)
 	{
 		return false;
 	}

@@ -17,7 +17,7 @@ private:
 	// 이동 목표 x 
 	float m_targetX = 0.0f;
 	// 이동 목표 x 달성 취급 버위
-	const float m_targetXRange = 10.0f;
+	const float m_targetXRange = 20.0f;
 	// 자신의 영역 범위
 	float m_minX = 0.0f;
 	float m_maxX = 0.0f;
