@@ -21,6 +21,8 @@ namespace kepler {
 		ID3D11InputLayout*			m_pVertexLayout;
 		std::vector<D3D11_INPUT_ELEMENT_DESC> m_inputElemDescs;
 
+		ID3DBlob*					m_pBlob;	// Binary Shader Code
+		
 		ID3D11Buffer**				m_ppConstantBuffers;
 		uint32_t					m_constantBufferCount;	// 쉐이더에 존재하는 constant buffer의 개수
 		std::vector<uint32_t>		m_constantBufferSize;	// constant buffer별 크기
@@ -30,10 +32,10 @@ namespace kepler {
 		const eShaderType	m_type;
 
 		void Init(const std::string& filepath);
-		void Compile(ID3DBlob* pOutBlob, const std::string& filepath, const std::string& entryPointName = "main");
-		void Create(ID3DBlob* pInBlob);
-		void InitReflection(ID3DBlob* pInBlob);
-		void InitVertexLayout(ID3DBlob* pInBlob);
+		void Compile(const std::string& filepath, const std::string& entryPointName = "main");
+		void Create();
+		void InitReflection();
+		void InitVertexLayout();
 		void InitConstantBuffer();
 		
 		bool GetConstantBufferDataInfo(const std::string& inParamName, int& outIndex, int& outOffset);
@@ -57,6 +59,7 @@ namespace kepler {
 
 		inline virtual void SetName(const std::string& name) override { m_name = name; }
 		inline virtual std::string GetName() const override { return m_name; }
+		inline virtual void* GetRawProgram() const override { return m_pBlob; }
 		inline virtual eShaderType GetType() const override { return m_type; }
 		virtual uint32_t GetInputElementSlot(const std::string& paramName, const uint32_t paramIndex) const override;
 	};
