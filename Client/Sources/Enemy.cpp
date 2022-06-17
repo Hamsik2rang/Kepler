@@ -10,6 +10,11 @@ Enemy::Enemy(const kepler::Vec2f& position, const kepler::Vec2f& size, std::shar
 	m_pLevel = pLevel;
 	m_pPlayer = pPlayer;
 	m_pBall = pBall; 
+
+	m_minX = m_pLevel->GetWidth() / -2.0f;
+	m_maxX = m_pLevel->GetWidth() / 2.0f;
+	m_minY = m_pLevel->GetHeight() / -2.0f;
+	m_maxY = m_pLevel->GetHeight() / 2.0f;
 }
 
 void Enemy::Respawn()
@@ -48,24 +53,10 @@ void Enemy::OnUpdate(float deltaTime)
 	m_curInput = 0;
 
 	// TODO: Enemy AI 구현하기
-	// 공의 예상 위치 계산 (TODO: 추후 수학 공식으로 대체)
-	kepler::Vec2f gravity = { 0, 9.8f };
-	float minX = m_pLevel->GetWidth() / -2.0f;
-	float maxX = m_pLevel->GetWidth() / 2.0f;
-	float minY = m_pLevel->GetHeight() / -2.0f;
-	float maxY = m_pLevel->GetHeight() / 2.0f;
-	kepler::Vec2f curVelocity = m_pBall->GetLastDirection();
-	kepler::Vec2f ballNextPosition = m_pBall->GetPosition();
-	while (ballNextPosition.x > minX && ballNextPosition.x < maxX
-		&& ballNextPosition.y > minY && ballNextPosition.y < maxY)
-	{
-		curVelocity += gravity;
-		// deltaTime은 함수 호출마다 다르기 때문에 예상 값이 실제와 다를 수 있다.
-		ballNextPosition += curVelocity * deltaTime;
-	}
+	ComputeBallNextPosition(deltaTime);
 
 	// 예상 위치가 자신 영역일 경우
-	if (ballNextPosition.x < 0)
+	if (m_ballNextPosition.x < 0)
 	{
 		// 공의 x가 자신 영역일 경우
 		if (m_pBall->GetPosition().x < 0)
@@ -79,14 +70,14 @@ void Enemy::OnUpdate(float deltaTime)
 				if (distance > 50.0f)
 				{
 					// 공 쪽으로 이동하기
-					float targetX = m_pBall->GetPosition().x - 30.0f;
-					MoveToTarget(targetX, horizontal);
+					m_targetX = m_pBall->GetPosition().x - 30.0f;
+					MoveToTarget(horizontal);
 				}
 				else
 				{
 					// 공 쪽으로 이동하면서 점프하기
-					float targetX = m_pBall->GetPosition().x - 30.0f;
-					MoveToTarget(targetX, horizontal);
+					m_targetX = m_pBall->GetPosition().x - 30.0f;
+					MoveToTarget(horizontal);
 					m_curInput = kepler::key::Up;
 					m_bIsSpiked = true;
 					vertical += 1;
@@ -100,34 +91,34 @@ void Enemy::OnUpdate(float deltaTime)
 				if (distance > 50.0f)
 				{
 					// 공 쪽으로 슬라이딩
-					float targetX = m_pBall->GetPosition().x;
-					MoveToTarget(targetX, horizontal);
+					m_targetX = m_pBall->GetPosition().x;
+					MoveToTarget(horizontal);
 					m_curInput = kepler::key::Space;
 					vertical -= 1;
 				}
 				else
 				{
 					// 공 쪽으로 이동하기
-					float targetX = m_pBall->GetPosition().x;
-					MoveToTarget(targetX, horizontal);
+					m_targetX = m_pBall->GetPosition().x;
+					MoveToTarget(horizontal);
 				}
 			}
 		}
 		else
 		{
 			// 예상 위치의 x쪽으로 이동
-			float targetX = ballNextPosition.x;
-			MoveToTarget(targetX, horizontal);
+			m_targetX = m_ballNextPosition.x;
+			MoveToTarget(horizontal);
 		}
 	}
 	else
 	{
 		// 공 높이가 낮을 수록 뒤로, 높을 수록 앞(가운데)으로 이동하기
-		float frontX = minX / 2.0f;
-		float backX = minX + m_size.x;
+		float frontX = m_minX / 2.0f;
+		float backX = m_minX + m_size.x;
 		float range = frontX - backX;
-		float targetX = backX + (range * m_pBall->GetPosition().y / maxY);
-		MoveToTarget(targetX, horizontal);
+		m_targetX = backX + (range * m_pBall->GetPosition().y / m_maxY);
+		MoveToTarget(horizontal);
 	}
 
 	if (m_state != PlayerStateWin && m_state != PlayerStateLose)
@@ -143,21 +134,36 @@ void Enemy::OnUpdate(float deltaTime)
 	m_pCurAnim->Update();
 }
 
-bool Enemy::MoveToTarget(const float targetX, int& outHorizontal)
+void Enemy::ComputeBallNextPosition(float deltaTime)
+{
+	// TODO: 추후 수학 공식으로 대체
+	const kepler::Vec2f gravity = { 0, 9.8f };
+	kepler::Vec2f curVelocity = m_pBall->GetLastDirection();
+	m_ballNextPosition = m_pBall->GetPosition();
+	while (m_ballNextPosition.x > m_minX && m_ballNextPosition.x < m_maxX
+		&& m_ballNextPosition.y > m_minY && m_ballNextPosition.y < m_maxY)
+	{
+		curVelocity += gravity;
+		// deltaTime은 함수 호출마다 다르기 때문에 예상 값이 실제와 다를 수 있다.
+		m_ballNextPosition += curVelocity * deltaTime;
+	}
+}
+
+bool Enemy::MoveToTarget(int& outHorizontal)
 {
 	if (!m_bIsGrounded)
 	{
 		return false;
 	}
 
-	float distance = GetPosition().x - targetX;
+	float distance = GetPosition().x - m_targetX;
 	distance = distance < 0.0f ? distance * -1.0f : distance;
-	if (distance <= m_notMoveRange)
+	if (distance <= m_targetXRange)
 	{
 		return false;
 	}
 
-	bool bIsLeft = targetX < GetPosition().x;
+	bool bIsLeft = m_targetX < GetPosition().x;
 	m_curInput = bIsLeft ? kepler::key::Left : kepler::key::Right;
 	outHorizontal = bIsLeft ? -1 : 1;
 
