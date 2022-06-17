@@ -9,7 +9,6 @@ namespace kepler {
 	DX11Shader::DX11Shader(const eShaderType& type, const std::string& filepath)
 		: m_type{ type }
 		, m_pVoidShader{ nullptr }
-		, m_pBlob{ nullptr }
 		, m_pReflection{ nullptr }
 		, m_pVertexLayout{ nullptr }
 	{
@@ -19,7 +18,6 @@ namespace kepler {
 	DX11Shader::DX11Shader(const eShaderType& type, const std::string& name, const std::string& filepath)
 		: m_type{ type }
 		, m_pVoidShader{ nullptr }
-		, m_pBlob{ nullptr }
 		, m_name{ name }
 		, m_pReflection{ nullptr }
 		, m_pVertexLayout{ nullptr }
@@ -53,12 +51,6 @@ namespace kepler {
 			}
 			m_pVertexShader = nullptr;
 		}
-		// release raw shader program
-		if (m_pBlob)
-		{
-			m_pBlob->Release();
-			m_pBlob = nullptr;
-		}
 		// release constant buffers
 		for (uint32_t i = 0; i < m_constantBufferCount; i++)
 		{
@@ -86,19 +78,26 @@ namespace kepler {
 	// 4. 쉐이더 안의 상수 버퍼 초기화
 	void DX11Shader::Init(const std::string& filepath)
 	{
-		Compile(filepath);
-		Create();
-		InitReflection();
+		ID3DBlob* pBlob = nullptr;
+		Compile(&pBlob, filepath);
+		Create(pBlob);
+		InitReflection(pBlob);
 		if (m_type == eShaderType::Vertex) 
 		{
-			InitVertexLayout();
+			InitVertexLayout(pBlob);
 		}
 		InitConstantBuffer();
+
+		if (pBlob)
+		{
+			pBlob->Release();
+			pBlob = nullptr;
+		}
 	}
 
 	// HLSL 5.0(DirectX 11_0, 11_1 지원 수준)만을 다룬다고 가정하고 컴파일합니다.
 	// TODO: 추후 HLSL Version detection 코드를 작성합시다.
-	void DX11Shader::Compile(const std::string& filepath, const std::string& entryPointName)
+	void DX11Shader::Compile(ID3DBlob** ppOutBlob, const std::string& filepath, const std::string& entryPointName)
 	{
 		std::wstring wFilePath = utility::StringToWstring(filepath);
 		std::string target{ "" };
@@ -132,7 +131,7 @@ namespace kepler {
 #endif
 		ID3DBlob* pErrorBlob = nullptr;
 
-		HRESULT hr = D3DCompileFromFile(wFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, entryPointName.c_str(), target.c_str(), shaderFlags, 0, &m_pBlob, &pErrorBlob);
+		HRESULT hr = D3DCompileFromFile(wFilePath.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, entryPointName.c_str(), target.c_str(), shaderFlags, 0, ppOutBlob, &pErrorBlob);
 		if (FAILED(hr))
 		{
 			KEPLER_CORE_ASSERT(false, "Fail to compile Shader");
@@ -150,7 +149,7 @@ namespace kepler {
 	}
 
 	// 컴파일된 쉐이더 프로그램을 이용해 쉐이더 객체 생성
-	void DX11Shader::Create()
+	void DX11Shader::Create(ID3DBlob* pInBlob)
 	{
 		ID3D11Device* pDevice;
 		GetDX11DeviceAndDeviceContext(&pDevice, nullptr);
@@ -158,22 +157,22 @@ namespace kepler {
 		switch (m_type)
 		{
 		case eShaderType::Vertex:
-			hr = pDevice->CreateVertexShader(m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), nullptr, &m_pVertexShader);
+			hr = pDevice->CreateVertexShader(pInBlob->GetBufferPointer(), pInBlob->GetBufferSize(), nullptr, &m_pVertexShader);
 			break;
 		case eShaderType::Geometry:
-			hr = pDevice->CreateGeometryShader(m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), nullptr, &m_pGeometryShader);
+			hr = pDevice->CreateGeometryShader(pInBlob->GetBufferPointer(), pInBlob->GetBufferSize(), nullptr, &m_pGeometryShader);
 			break;
 		case eShaderType::Pixel:
-			hr = pDevice->CreatePixelShader(m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), nullptr, &m_pPixelShader);
+			hr = pDevice->CreatePixelShader(pInBlob->GetBufferPointer(), pInBlob->GetBufferSize(), nullptr, &m_pPixelShader);
 			break;
 		case eShaderType::Domain:
-			hr = pDevice->CreateDomainShader(m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), nullptr, &m_pDomainShader);
+			hr = pDevice->CreateDomainShader(pInBlob->GetBufferPointer(), pInBlob->GetBufferSize(), nullptr, &m_pDomainShader);
 			break;
 		case eShaderType::Hull:
-			hr = pDevice->CreateHullShader(m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), nullptr, &m_pHullShader);
+			hr = pDevice->CreateHullShader(pInBlob->GetBufferPointer(), pInBlob->GetBufferSize(), nullptr, &m_pHullShader);
 			break;
 		case eShaderType::Compute:
-			hr = pDevice->CreateComputeShader(m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), nullptr, &m_pComputeShader);
+			hr = pDevice->CreateComputeShader(pInBlob->GetBufferPointer(), pInBlob->GetBufferSize(), nullptr, &m_pComputeShader);
 			break;
 		}
 
@@ -184,9 +183,9 @@ namespace kepler {
 	}
 
 	// 쉐이더 리플렉션 초기화
-	void DX11Shader::InitReflection()
+	void DX11Shader::InitReflection(ID3DBlob* pInBlob)
 	{
-		HRESULT hr = D3DReflect(m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), __uuidof(ID3D11ShaderReflection), reinterpret_cast<void**>(&m_pReflection));
+		HRESULT hr = D3DReflect(pInBlob->GetBufferPointer(), pInBlob->GetBufferSize(), __uuidof(ID3D11ShaderReflection), reinterpret_cast<void**>(&m_pReflection));
 		if (FAILED(hr))
 		{
 			KEPLER_CORE_ASSERT(false, "Fail to Get shader reflection");
@@ -196,7 +195,7 @@ namespace kepler {
 
 	// 쉐이더 Vertex Layout 초기화
 	// 리플렉션을 이용해 자동으로 초기화해줌
-	void DX11Shader::InitVertexLayout()
+	void DX11Shader::InitVertexLayout(ID3DBlob* pInBlob)
 	{
 		ID3D11Device* pDevice;
 		GetDX11DeviceAndDeviceContext(&pDevice, nullptr);
@@ -249,7 +248,7 @@ namespace kepler {
 			m_inputElemDescs.push_back(curDesc);
 		}
 
-		HRESULT hr = pDevice->CreateInputLayout(&m_inputElemDescs[0], static_cast<UINT>(m_inputElemDescs.size()), m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), &m_pVertexLayout);
+		HRESULT hr = pDevice->CreateInputLayout(&m_inputElemDescs[0], static_cast<UINT>(m_inputElemDescs.size()), pInBlob->GetBufferPointer(), pInBlob->GetBufferSize(), &m_pVertexLayout);
 		if (FAILED(hr))
 		{
 			KEPLER_CORE_ASSERT(false, "Fail to Create Input Layout");
