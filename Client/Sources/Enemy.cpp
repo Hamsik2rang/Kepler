@@ -70,13 +70,13 @@ void Enemy::OnUpdate(float deltaTime)
 				if (distance > 50.0f)
 				{
 					// 공 쪽으로 이동하기
-					m_targetX = m_pBall->GetPosition().x - 30.0f;
+					m_targetX = m_pBall->GetPosition().x - m_pBall->GetSize().x;
 					MoveToTarget(horizontal);
 				}
 				else
 				{
 					// 공 쪽으로 이동하면서 점프하기
-					m_targetX = m_pBall->GetPosition().x - 30.0f;
+					m_targetX = m_pBall->GetPosition().x - m_pBall->GetSize().x;
 					MoveToTarget(horizontal);
 					m_curInput = kepler::key::Up;
 					m_bIsSpiked = true;
@@ -99,7 +99,7 @@ void Enemy::OnUpdate(float deltaTime)
 				else
 				{
 					// 공 쪽으로 이동하면서 점프하기
-					m_targetX = m_pBall->GetPosition().x - 30.0f;
+					m_targetX = m_pBall->GetPosition().x - m_pBall->GetSize().x;
 					MoveToTarget(horizontal);
 					m_curInput = kepler::key::Up;
 					m_bIsSpiked = true;
