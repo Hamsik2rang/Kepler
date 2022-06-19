@@ -13,7 +13,6 @@ Player::Player(const kepler::Vec2f& position, const kepler::Vec2f& size, eCollid
 	, m_state{ PlayerStateIdle }
 	, m_bIsSpiked{ false }
 	, m_pCollider{ new BoxCollider2D(*this, position, size, false, category) }
-	, m_curInput{ 0 }
 {
 	InitSprite();
 	CollisionDetector::AddCollider(m_pCollider);
@@ -108,13 +107,33 @@ void Player::Respawn()
 	m_pCollider->SetSize(m_size);
 }
 
-void Player::ChangeState(float deltaTime, int vertical, int horizontal)
+void Player::ChangeState(float deltaTime)
 {
 	static const float SPEED_JUMP_X = 1350.0f;
 	static const float SPEED_WALK_X = 400.0f;
 	static const float SPEED_SLIDE_X = 900.0f;
 	static const float SPEED_SLIDE_Y = 400.0f;
 	static const float SPEED_GRAVITY = 47.5f;
+
+	int vertical = 0;
+	int horizontal = 0;
+	bool isSpacePressed = std::find(m_curInputs.begin(), m_curInputs.end(), kepler::key::Space) != m_curInputs.end();
+	if (std::find(m_curInputs.begin(), m_curInputs.end(), kepler::key::Up) != m_curInputs.end())
+	{
+		vertical += 1;
+	}
+	if (std::find(m_curInputs.begin(), m_curInputs.end(), kepler::key::Down) != m_curInputs.end())
+	{
+		vertical -= 1;
+	}
+	if (std::find(m_curInputs.begin(), m_curInputs.end(), kepler::key::Right) != m_curInputs.end())
+	{
+		horizontal += 1;
+	}
+	if (std::find(m_curInputs.begin(), m_curInputs.end(), kepler::key::Left) != m_curInputs.end())
+	{
+		horizontal -= 1;
+	}
 
 
 	// 점프 또는 슬라이딩 상태가 아닌 경우
@@ -137,7 +156,7 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 		else if (vertical < 0 && horizontal != 0)
 		{
 			// 스페이스바도 함께 눌렀다면 해당 시점의 수평축 방향으로 슬라이딩 처리. 아니라면 무시
-			if (m_curInput == kepler::key::Space)
+			if (isSpacePressed)
 			{
 				m_bIsGrounded = false;
 				m_state = ePlayerState::PlayerStateSlide;
@@ -194,7 +213,7 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 		case ePlayerState::PlayerStateJump:
 			{
 				// 스파이크 처리
-				if (m_curInput == kepler::key::Space)
+				if (isSpacePressed)
 				{
 					m_bIsSpiked = true;
 				}
@@ -234,6 +253,7 @@ void Player::OnUpdate(float deltaTime)
 #ifdef _DEBUG
 	m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 #endif
+	m_curInputs.clear();
 	int horizontal = 0;
 	int vertical = 0;
 	m_bIsSpiked = false;
@@ -242,31 +262,31 @@ void Player::OnUpdate(float deltaTime)
 	if (kepler::Input::IsButtonDown(kepler::key::Up))
 	{
 		vertical += 1;
-		m_curInput = kepler::key::Up;
+		m_curInputs.push_back(kepler::key::Up);
 	}
 	if (kepler::Input::IsButtonDown(kepler::key::Down))
 	{
 		vertical -= 1;
-		m_curInput = kepler::key::Down;
+		m_curInputs.push_back(kepler::key::Down);
 	}
 	if (kepler::Input::IsButtonDown(kepler::key::Left))
 	{
 		horizontal -= 1;
-		m_curInput = kepler::key::Left;
+		m_curInputs.push_back(kepler::key::Left);
 	}
 	if (kepler::Input::IsButtonDown(kepler::key::Right))
 	{
 		horizontal += 1;
-		m_curInput = kepler::key::Right;
+		m_curInputs.push_back(kepler::key::Right);
 	}
 	if (kepler::Input::IsButtonDown(kepler::key::Space))
 	{
-		m_curInput = kepler::key::Space;
+		m_curInputs.push_back(kepler::key::Space);
 	}
 
 	if (m_state != PlayerStateWin && m_state != PlayerStateLose)
 	{
-		ChangeState(deltaTime, vertical, horizontal);
+		ChangeState(deltaTime);
 	}
 
 	// 위치, 방향, 충돌체 및 애니메이션 갱신

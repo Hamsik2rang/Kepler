@@ -32,7 +32,7 @@ protected:
 	ePlayerState	m_state;
 	bool			m_bIsGrounded;
 	bool			m_bIsSpiked;
-	kepler::KeyCode m_curInput;
+	std::vector<kepler::KeyCode> m_curInputs;
 
 #ifdef _DEBUG
 	kepler::Vec4f m_debugColor;
@@ -41,7 +41,7 @@ protected:
 	Animation2D m_animation[6];
 	Animation2D* m_pCurAnim;	// 현재 상태에 대한 애니메이션을 가리키기만 하는 참조용 변수
 
-	virtual void ChangeState(float deltaTime, int vertical, int horizontal);
+	virtual void ChangeState(float deltaTime);
 
 public:
 	Player(const kepler::Vec2f& position, const kepler::Vec2f& size, eColliderType type = eColliderType::Box, eColliderCategory category = eColliderCategory::Player);

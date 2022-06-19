@@ -17,8 +17,6 @@ private:
 	// ChangeState() 인자
 	int m_horizontal = 0;
 	int m_vertical = 0;
-	// 이동 목표 x 
-	float m_targetX = 0.0f;
 	// 이동 목표 x 달성 취급 범위
 	float m_targetXRange = 5.0f;
 	// 자신의 영역 범위
@@ -30,7 +28,6 @@ private:
 public:
 	Enemy(const kepler::Vec2f& position, const kepler::Vec2f& size, std::shared_ptr<Level> pLevel, std::shared_ptr<Player> pPlayer, std::shared_ptr<Ball> pBall, eColliderType type = eColliderType::Box, eColliderCategory category = eColliderCategory::Enemy);
 
-	virtual void ChangeState(float deltaTime, int vertical, int horizontal) override;
 	virtual void OnEvent(kepler::Event& e) override;
 	virtual void OnUpdate(float deltaTime) override;
 	virtual void OnRender() override;
@@ -41,6 +38,6 @@ public:
 private:
 	// 공의 예상 위치 계산
 	void ComputeBallNextPosition(float deltaTime);
-	bool MoveToTarget(int& outHorizontal);
+	bool MoveToTarget(std::vector<kepler::KeyCode>& curInputs, const float targetX);
 	void Logic();
 };
