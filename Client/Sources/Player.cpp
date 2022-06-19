@@ -117,24 +117,29 @@ void Player::ChangeState(float deltaTime)
 
 	int vertical = 0;
 	int horizontal = 0;
-	bool isSpacePressed = std::find(m_curInputs.begin(), m_curInputs.end(), kepler::key::Space) != m_curInputs.end();
-	if (std::find(m_curInputs.begin(), m_curInputs.end(), kepler::key::Up) != m_curInputs.end())
-	{
-		vertical += 1;
-	}
-	if (std::find(m_curInputs.begin(), m_curInputs.end(), kepler::key::Down) != m_curInputs.end())
-	{
-		vertical -= 1;
-	}
-	if (std::find(m_curInputs.begin(), m_curInputs.end(), kepler::key::Right) != m_curInputs.end())
-	{
-		horizontal += 1;
-	}
-	if (std::find(m_curInputs.begin(), m_curInputs.end(), kepler::key::Left) != m_curInputs.end())
-	{
-		horizontal -= 1;
-	}
+	bool isSpacePressed = false;
 
+	for (const kepler::KeyCode& input : m_curInputs)
+	{
+		switch (input)
+		{
+		case kepler::key::Space:
+			isSpacePressed = true;
+			break;
+		case kepler::key::Up:
+			vertical += 1;
+			break;
+		case kepler::key::Down:
+			vertical -= 1;
+			break;
+		case kepler::key::Right:
+			horizontal += 1;
+			break;
+		case kepler::key::Left:
+			horizontal -= 1;
+			break;
+		}
+	}
 
 	// 점프 또는 슬라이딩 상태가 아닌 경우
 	if (m_bIsGrounded)
@@ -253,30 +258,26 @@ void Player::OnUpdate(float deltaTime)
 #ifdef _DEBUG
 	m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 #endif
-	m_curInputs.clear();
 	int horizontal = 0;
 	int vertical = 0;
 	m_bIsSpiked = false;
+	m_curInputs.clear();
 
 	// 방향키 입력에 따라 veritcal, horizontal 축 값 지정
 	if (kepler::Input::IsButtonDown(kepler::key::Up))
 	{
-		vertical += 1;
 		m_curInputs.push_back(kepler::key::Up);
 	}
 	if (kepler::Input::IsButtonDown(kepler::key::Down))
 	{
-		vertical -= 1;
 		m_curInputs.push_back(kepler::key::Down);
 	}
 	if (kepler::Input::IsButtonDown(kepler::key::Left))
 	{
-		horizontal -= 1;
 		m_curInputs.push_back(kepler::key::Left);
 	}
 	if (kepler::Input::IsButtonDown(kepler::key::Right))
 	{
-		horizontal += 1;
 		m_curInputs.push_back(kepler::key::Right);
 	}
 	if (kepler::Input::IsButtonDown(kepler::key::Space))
