@@ -79,15 +79,15 @@ void Enemy::OnUpdate(float deltaTime)
 void Enemy::ComputeBallNextPosition(float deltaTime)
 {
 	// TODO: 추후 수학 공식으로 대체
-	const kepler::Vec2f gravity = { 0, 9.8f };
+	const kepler::Vec2f gravity = { 0, -9.8f };
 	kepler::Vec2f curVelocity = m_pBall->GetLastDirection();
 	m_ballNextPosition = m_pBall->GetPosition();
 	while (m_ballNextPosition.x > m_minX && m_ballNextPosition.x < m_maxX
 		&& m_ballNextPosition.y > m_minY && m_ballNextPosition.y < m_maxY)
 	{
-		curVelocity += gravity;
+		curVelocity += gravity * deltaTime;
 		// deltaTime은 함수 호출마다 다르기 때문에 예상 값이 실제와 다를 수 있다.
-		m_ballNextPosition += curVelocity * deltaTime;
+		m_ballNextPosition += curVelocity;
 	}
 }
 
