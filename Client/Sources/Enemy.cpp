@@ -44,15 +44,12 @@ void Enemy::OnUpdate(float deltaTime)
 	m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 #endif
 	// update AI State
-	// m_horizontal = 0; 좌, 우 입력은 이전 값 유지하기
-	m_vertical = 0;
 	m_bIsSpiked = false;
 
 	// TODO: Enemy AI 구현하기
 	// 일정 시간 마다 상황 판단하기
 	if (m_computeTimer.Elapsed() >= 0.1f)
 	{
-		m_curInputs.clear();
 		ComputeBallNextPosition(deltaTime);
 		Logic();
 		m_computeTimer.Start();
@@ -108,6 +105,7 @@ bool Enemy::MoveToTarget(std::vector<kepler::KeyCode>& curInputs, const float ta
 
 void Enemy::Logic()
 {
+	m_curInputs.clear();
 	float targetX = targetX = m_pBall->GetPosition().x - m_pBall->GetSize().x;
 
 	// 예상 위치가 자신 영역일 경우
