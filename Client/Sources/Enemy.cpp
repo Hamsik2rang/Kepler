@@ -136,6 +136,7 @@ void Enemy::OnUpdate(float deltaTime)
 	}
 
 	// 위치, 방향, 충돌체 및 애니메이션 갱신
+	m_lastDeltaTime = deltaTime;
 	m_position += m_curDirection;
 	m_pCollider->SetSize(m_size);
 	m_pCollider->SetPosition(m_position);

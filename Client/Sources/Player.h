@@ -28,6 +28,7 @@ protected:
 	kepler::Vec2f	m_size;
 	kepler::Vec2f	m_curDirection;
 	kepler::Vec2f	m_lastDirection;
+	float			m_lastDeltaTime;
 	BoxCollider2D*	m_pCollider;
 	ePlayerState	m_state;
 	bool			m_bIsGrounded;

@@ -110,7 +110,7 @@ void Player::Respawn()
 
 void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 {
-	static const float SPEED_JUMP_X = 1350.0f;
+	static const float SPEED_JUMP_Y = 1350.0f;
 	static const float SPEED_WALK_X = 400.0f;
 	static const float SPEED_SLIDE_X = 900.0f;
 	static const float SPEED_SLIDE_Y = 400.0f;
@@ -131,7 +131,7 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 				m_pCurAnim = &m_animation[PlayerStateJump];
 				m_pCurAnim->Start();
 			}
-			m_curDirection = kepler::Vec2f{ horizontal * SPEED_WALK_X, SPEED_JUMP_X } * deltaTime;
+			m_curDirection = kepler::Vec2f{ horizontal * SPEED_WALK_X, SPEED_JUMP_Y };
 		}
 		// 아래쪽 방향키를 누른 경우
 		else if (vertical < 0 && horizontal != 0)
@@ -147,7 +147,7 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 					m_pCurAnim = &m_animation[PlayerStateSlide];
 					m_pCurAnim->Start();
 				}
-				m_curDirection = kepler::Vec2f{ horizontal * SPEED_SLIDE_X, SPEED_SLIDE_Y } * deltaTime;
+				m_curDirection = kepler::Vec2f{ horizontal * SPEED_SLIDE_X, SPEED_SLIDE_Y };
 			}
 		}
 		// 수직 축 입력이 들어오지 않은 경우
@@ -163,7 +163,7 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 					m_pCurAnim = &m_animation[PlayerStateWalk];
 					m_pCurAnim->Start();
 				}
-				m_curDirection = kepler::Vec2f{ horizontal * SPEED_WALK_X, 0.0f } * deltaTime;
+				m_curDirection = kepler::Vec2f{ horizontal * SPEED_WALK_X, 0.0f };
 			}
 			// 수평축 입력도 없을 경우 가만히 서 있음(idle)
 			else
@@ -182,13 +182,13 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 	else
 	{
 		// 연직 방향으로 중력 적용
-		m_curDirection.y = m_lastDirection.y - (SPEED_GRAVITY * deltaTime);
+		m_curDirection.y = m_lastDirection.y / m_lastDeltaTime - SPEED_GRAVITY;
 		switch (m_state)
 		{
 		case ePlayerState::PlayerStateSlide:
 			{
 				// 슬라이딩 상태인 경우 바닥에 착지할 때 까지 horizontal 축 입력에 영향을 받으면 안됨.
-				m_curDirection.x = m_lastDirection.x;
+				m_curDirection.x = m_lastDirection.x / m_lastDeltaTime;
 			}
 			break;
 		case ePlayerState::PlayerStateJump:
@@ -198,11 +198,12 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 				{
 					m_bIsSpiked = true;
 				}
-				m_curDirection.x = horizontal * 400.0f * deltaTime;
+				m_curDirection.x = horizontal * 400.0f;
 			}
 			break;
 		}
 	}
+	m_curDirection *= deltaTime;
 }
 
 // 게임 종료 시 승리/패배 상태 설정 함수
@@ -268,7 +269,7 @@ void Player::OnUpdate(float deltaTime)
 	{
 		ChangeState(deltaTime, vertical, horizontal);
 	}
-
+	m_lastDeltaTime = deltaTime;
 	// 위치, 방향, 충돌체 및 애니메이션 갱신
 	m_position += m_curDirection;
 	m_pCollider->SetSize(m_size);
