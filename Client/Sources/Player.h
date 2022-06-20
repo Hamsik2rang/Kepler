@@ -41,7 +41,7 @@ protected:
 	Animation2D m_animation[6];
 	Animation2D* m_pCurAnim;	// 현재 상태에 대한 애니메이션을 가리키기만 하는 참조용 변수
 
-	virtual void ChangeState(float deltaTime);
+	void ChangeState(float deltaTime);
 
 public:
 	Player(const kepler::Vec2f& position, const kepler::Vec2f& size, eColliderType type = eColliderType::Box, eColliderCategory category = eColliderCategory::Player);

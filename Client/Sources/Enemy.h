@@ -35,6 +35,6 @@ public:
 private:
 	// 공의 예상 위치 계산
 	void ComputeBallNextPosition(float deltaTime);
-	bool MoveToTarget(std::vector<kepler::KeyCode>& curInputs, const float targetX);
+	bool MoveToTarget(const float targetX);
 	void Logic();
 };

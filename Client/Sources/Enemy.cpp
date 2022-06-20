@@ -83,7 +83,7 @@ void Enemy::ComputeBallNextPosition(float deltaTime)
 	}
 }
 
-bool Enemy::MoveToTarget(std::vector<kepler::KeyCode>& curInputs, const float targetX)
+bool Enemy::MoveToTarget(const float targetX)
 {
 	if (!m_bIsGrounded)
 	{
@@ -99,7 +99,7 @@ bool Enemy::MoveToTarget(std::vector<kepler::KeyCode>& curInputs, const float ta
 	}
 
 	bool bIsLeft = targetX < GetPosition().x;
-	curInputs.push_back(bIsLeft ? kepler::key::Left : kepler::key::Right);
+	m_curInputs.push_back(bIsLeft ? kepler::key::Left : kepler::key::Right);
 	return true;
 }
 
