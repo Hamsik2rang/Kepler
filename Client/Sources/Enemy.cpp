@@ -115,7 +115,7 @@ void Enemy::Logic()
 		if (m_pBall->GetPosition().x < 0.0f)
 		{
 			// 공 쪽으로 이동하기
-			MoveToTarget(m_curInputs, targetX);
+			MoveToTarget(targetX);
 
 			float distance = GetPosition().x - m_pBall->GetPosition().x;
 			distance = distance < 0.0f ? distance * -1.0f : distance;
@@ -151,7 +151,7 @@ void Enemy::Logic()
 		{
 			// 예상 위치의 x쪽으로 이동
 			targetX = m_ballNextPosition.x;
-			MoveToTarget(m_curInputs, targetX);
+			MoveToTarget(targetX);
 		}
 	}
 	else
@@ -161,7 +161,7 @@ void Enemy::Logic()
 		float backX = m_minX * 0.7f + m_maxX * 0.3f;
 		float range = frontX - backX;
 		targetX = backX + (range * m_pBall->GetPosition().y / m_maxY);
-		MoveToTarget(m_curInputs, targetX);
+		MoveToTarget(targetX);
 	}
 }
 
