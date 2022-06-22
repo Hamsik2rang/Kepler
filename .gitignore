@@ -387,4 +387,7 @@ MigrationBackup/
 *.app
 
 # End of https://www.toptal.com/developers/gitignore/api/c++
+# Custom ignore list
 Client/imgui.ini
+!./Kepler/Kepler/Dependencies/fmod/lib/x64/
+
