@@ -6,7 +6,6 @@
 Enemy::Enemy(const kepler::Vec2f& position, const kepler::Vec2f& size, std::shared_ptr<Level> pLevel, std::shared_ptr<Player> pPlayer, std::shared_ptr<Ball> pBall, eColliderType type, eColliderCategory category)
 	: Player(position, size, type, category)
 {
-	InitSprite();
 	m_pLevel = pLevel;
 	m_pPlayer = pPlayer;
 	m_pBall = pBall; 
@@ -61,6 +60,7 @@ void Enemy::OnUpdate(float deltaTime)
 	}
 
 	// 위치, 방향, 충돌체 및 애니메이션 갱신
+	m_lastDeltaTime = deltaTime;
 	m_position += m_curDirection;
 	m_pCollider->SetSize(m_size);
 	m_pCollider->SetPosition(m_position);

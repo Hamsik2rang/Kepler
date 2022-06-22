@@ -58,7 +58,6 @@ void GameLayer::OnUpdate(float deltaTime)
 {
 	m_time += deltaTime;
 
-
 	if (kepler::Input::IsButtonDown(kepler::key::Escape))
 	{
 		kepler::Application::Get()->Shutdown();
@@ -333,6 +332,8 @@ void GameLayer::OnGUIRender()
 	ImGuiIO& io = ImGui::GetIO();
 
 	ImGui::Begin("Debug Mode");
+	ImGui::Text("Frame : %.3f ms (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+	ImGui::NewLine();
 	ImGui::Text("Press R to Respaw Ball");
 	ImGui::NewLine();
 	// Player Info
