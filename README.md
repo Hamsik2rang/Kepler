@@ -12,11 +12,12 @@ Currently in progress to implement.
 
 ### Libraries
 * DirectX11 - Graphics API for Rendering
-* [GoogleTest](https://github.com/google/googletest) - for Unit Test
-* [ImGui](https://github.com/ocornut/imgui) - for GUI
-* [spdlog](https://github.com/gabime/spdlog) - for Logging System
+* [GoogleTest](https://github.com/google/googletest)
+* [ImGui](https://github.com/ocornut/imgui)
+* [spdlog](https://github.com/gabime/spdlog)
 * [DirectXTK](https://github.com/microsoft/DirectXTK)
-* [stbimage](https://github.com/nothings/stb)  
+* [stbimage](https://github.com/nothings/stb)
+* [FMOD](https://www.fmod.com)  
 
 -TBA-
 
