@@ -28,6 +28,7 @@ protected:
 	kepler::Vec2f	m_size;
 	kepler::Vec2f	m_curDirection;
 	kepler::Vec2f	m_lastDirection;
+	float			m_lastDeltaTime;
 	BoxCollider2D*	m_pCollider;
 	ePlayerState	m_state;
 	bool			m_bIsGrounded;
@@ -38,15 +39,17 @@ protected:
 	kepler::Vec4f m_debugColor;
 #endif
 
+	static std::vector<std::shared_ptr<kepler::ITexture2D>> s_pSprites;
+
 	Animation2D m_animation[6];
 	Animation2D* m_pCurAnim;	// 현재 상태에 대한 애니메이션을 가리키기만 하는 참조용 변수
 
+	void LoadSprites();
 	void ChangeState(float deltaTime);
-
 public:
 	Player(const kepler::Vec2f& position, const kepler::Vec2f& size, eColliderType type = eColliderType::Box, eColliderCategory category = eColliderCategory::Player);
 	virtual ~Player();
-	void InitSprite();
+	void InitAnimation();
 	void OnWin();
 	void OnLose();
 

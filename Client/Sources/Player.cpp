@@ -2,7 +2,8 @@
 #include "Player.h"
 
 #include "CollisionDetector.h"
-#include <DDSTextureLoader.h>
+
+std::vector<std::shared_ptr<kepler::ITexture2D>> Player::s_pSprites;
 
 Player::Player(const kepler::Vec2f& position, const kepler::Vec2f& size, eColliderType type, eColliderCategory category)
 	: GameObject(type, category)
@@ -14,7 +15,11 @@ Player::Player(const kepler::Vec2f& position, const kepler::Vec2f& size, eCollid
 	, m_bIsSpiked{ false }
 	, m_pCollider{ new BoxCollider2D(*this, position, size, false, category) }
 {
-	InitSprite();
+	if (s_pSprites.empty())
+	{
+		LoadSprites();
+	}
+	InitAnimation();
 	CollisionDetector::AddCollider(m_pCollider);
 }
 
@@ -27,59 +32,71 @@ Player::~Player()
 	}
 }
 
-// Sprite 불러오는 함수
-// 부기꼬는 Sprite에 따라 크기가 달라짐.
-// Frame Count는 6프레임당 스프라이트 1장씩 넘기도록 지정하였음. 
-void Player::InitSprite()
+void Player::LoadSprites()
 {
+	// m_pSprites에 애니메이션용 스프라이트를 불러와 다음과 같이 저장합니다.
+	// [0]		[1]		[2]		[3]		[4]		[5]		[6]		[7]		[8]
+	// | Idle |																  |
+	// |        Walk		|												  |
+	//						|	  Jump		| Slide |						  |
+	//										|		  Lose			|	Win	  |
+	//-------------------------------------------------------------------------
 	std::string TextureFilePath = "./Assets/Textures/";
 
-	std::vector<std::shared_ptr<kepler::ITexture2D>> textures;
-	// load and walk & idle textures
+	// load and set walk/idle textures
 	for (int i = 0; i < 3; i++)
 	{
 		std::string moveTexturePath = TextureFilePath + "walk" + std::to_string(i + 1) + ".png";
-		textures.push_back(kepler::ITexture2D::Create(kepler::eTextureDataType::Float, moveTexturePath));
+		s_pSprites.push_back(kepler::ITexture2D::Create(kepler::eTextureDataType::Float, moveTexturePath));
 	}
 
-	m_animation[PlayerStateWalk].AddSprites({ textures[0], textures[1], textures[2] });
-	m_animation[PlayerStateWalk].SetFrameCount(18);
-	m_animation[PlayerStateWalk].SetRepeat(true);
-	// set idle texture
-	m_animation[PlayerStateIdle].AddSprites({ textures[0] });
-	m_animation[PlayerStateIdle].SetFrameCount(4);
-	m_animation[PlayerStateIdle].SetRepeat(false);
-
-	textures.clear();
 	// load and set jump texture
 	for (int i = 0; i < 2; i++)
 	{
 		std::string jumpTexturePath = TextureFilePath + "jump" + std::to_string(i + 1) + ".png";
-		textures.push_back(kepler::ITexture2D::Create(kepler::eTextureDataType::Float, jumpTexturePath));
+		s_pSprites.push_back(kepler::ITexture2D::Create(kepler::eTextureDataType::Float, jumpTexturePath));
 	}
-	m_animation[PlayerStateJump].AddSprites({ textures[1], textures[0] });
-	m_animation[PlayerStateJump].SetFrameCount(12);
-	m_animation[PlayerStateJump].SetRepeat(true);
-	textures.clear();
 
-	// load and sset slide texture
+	// load and set lose/slide texture
 	for (int i = 0; i < 3; i++)
 	{
 		std::string sildeTexturePath = TextureFilePath + "slide" + std::to_string(i + 1) + ".png";
-		textures.push_back(kepler::ITexture2D::Create(kepler::eTextureDataType::Float, sildeTexturePath));
+		s_pSprites.push_back(kepler::ITexture2D::Create(kepler::eTextureDataType::Float, sildeTexturePath));
 	}
-	m_animation[PlayerStateSlide].AddSprites({ textures[0] });
+
+	// load and set win texture
+	s_pSprites.push_back(kepler::ITexture2D::Create(kepler::eTextureDataType::Float, TextureFilePath + "win.png"));
+}
+
+// 불러온 Sprite로 애니메이션 지정하는 함수
+// Frame Count는 6프레임당 스프라이트 1장씩 넘기도록 지정하였습니다.
+void Player::InitAnimation()
+{
+	// set walk animation
+	m_animation[PlayerStateWalk].AddSprites({ s_pSprites[0], s_pSprites[1], s_pSprites[2] });
+	m_animation[PlayerStateWalk].SetFrameCount(18);
+	m_animation[PlayerStateWalk].SetRepeat(true);
+	// set idle animation
+	m_animation[PlayerStateIdle].AddSprites({ s_pSprites[0] });
+	m_animation[PlayerStateIdle].SetFrameCount(4);
+	m_animation[PlayerStateIdle].SetRepeat(false);
+
+	// set jump animation
+	m_animation[PlayerStateJump].AddSprites({ s_pSprites[3], s_pSprites[4] });
+	m_animation[PlayerStateJump].SetFrameCount(12);
+	m_animation[PlayerStateJump].SetRepeat(true);
+
+	m_animation[PlayerStateSlide].AddSprites({ s_pSprites[5] });
 	m_animation[PlayerStateSlide].SetFrameCount(4);
 	m_animation[PlayerStateSlide].SetRepeat(false);
 
 	// load and set lose texture
-	m_animation[PlayerStateLose].AddSprites({ textures [0], textures[1], textures[2] });
+	m_animation[PlayerStateLose].AddSprites({ s_pSprites[5], s_pSprites[6], s_pSprites[7] });
 	m_animation[PlayerStateLose].SetFrameCount(18);
 	m_animation[PlayerStateLose].SetRepeat(false);
 
 	// load and set win texture
-	auto winTexture = kepler::ITexture2D::Create(kepler::eTextureDataType::Float, TextureFilePath + "win.png");
-	m_animation[PlayerStateWin].AddSprites({ winTexture });
+	m_animation[PlayerStateWin].AddSprites({ s_pSprites[8]});
 	m_animation[PlayerStateWin].SetFrameCount(4);
 	m_animation[PlayerStateWin].SetRepeat(false);
 
@@ -109,7 +126,7 @@ void Player::Respawn()
 
 void Player::ChangeState(float deltaTime)
 {
-	static const float SPEED_JUMP_X = 1350.0f;
+	static const float SPEED_JUMP_Y = 1350.0f;
 	static const float SPEED_WALK_X = 400.0f;
 	static const float SPEED_SLIDE_X = 900.0f;
 	static const float SPEED_SLIDE_Y = 400.0f;
@@ -155,7 +172,7 @@ void Player::ChangeState(float deltaTime)
 				m_pCurAnim = &m_animation[PlayerStateJump];
 				m_pCurAnim->Start();
 			}
-			m_curDirection = kepler::Vec2f{ horizontal * SPEED_WALK_X, SPEED_JUMP_X } * deltaTime;
+			m_curDirection = kepler::Vec2f{ horizontal * SPEED_WALK_X, SPEED_JUMP_Y };
 		}
 		// 아래쪽 방향키를 누른 경우
 		else if (vertical < 0 && horizontal != 0)
@@ -171,7 +188,7 @@ void Player::ChangeState(float deltaTime)
 					m_pCurAnim = &m_animation[PlayerStateSlide];
 					m_pCurAnim->Start();
 				}
-				m_curDirection = kepler::Vec2f{ horizontal * SPEED_SLIDE_X, SPEED_SLIDE_Y } * deltaTime;
+				m_curDirection = kepler::Vec2f{ horizontal * SPEED_SLIDE_X, SPEED_SLIDE_Y };
 			}
 		}
 		// 수직 축 입력이 들어오지 않은 경우
@@ -187,7 +204,7 @@ void Player::ChangeState(float deltaTime)
 					m_pCurAnim = &m_animation[PlayerStateWalk];
 					m_pCurAnim->Start();
 				}
-				m_curDirection = kepler::Vec2f{ horizontal * SPEED_WALK_X, 0.0f } * deltaTime;
+				m_curDirection = kepler::Vec2f{ horizontal * SPEED_WALK_X, 0.0f };
 			}
 			// 수평축 입력도 없을 경우 가만히 서 있음(idle)
 			else
@@ -206,13 +223,13 @@ void Player::ChangeState(float deltaTime)
 	else
 	{
 		// 연직 방향으로 중력 적용
-		m_curDirection.y = m_lastDirection.y - (SPEED_GRAVITY * deltaTime);
+		m_curDirection.y = m_lastDirection.y / m_lastDeltaTime - SPEED_GRAVITY;
 		switch (m_state)
 		{
 		case ePlayerState::PlayerStateSlide:
 			{
 				// 슬라이딩 상태인 경우 바닥에 착지할 때 까지 horizontal 축 입력에 영향을 받으면 안됨.
-				m_curDirection.x = m_lastDirection.x;
+				m_curDirection.x = m_lastDirection.x / m_lastDeltaTime;
 			}
 			break;
 		case ePlayerState::PlayerStateJump:
@@ -222,11 +239,12 @@ void Player::ChangeState(float deltaTime)
 				{
 					m_bIsSpiked = true;
 				}
-				m_curDirection.x = horizontal * 400.0f * deltaTime;
+				m_curDirection.x = horizontal * 400.0f;
 			}
 			break;
 		}
 	}
+	m_curDirection *= deltaTime;
 }
 
 // 게임 종료 시 승리/패배 상태 설정 함수
@@ -289,7 +307,7 @@ void Player::OnUpdate(float deltaTime)
 	{
 		ChangeState(deltaTime);
 	}
-
+	m_lastDeltaTime = deltaTime;
 	// 위치, 방향, 충돌체 및 애니메이션 갱신
 	m_position += m_curDirection;
 	m_pCollider->SetSize(m_size);

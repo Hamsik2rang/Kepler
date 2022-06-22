@@ -72,11 +72,24 @@ namespace kepler{
 		MSG msg{};
 		m_timer.Start();
 		float lastTime = 0.0f;
+		float lastFrameTime = 0.0f;
 		while (msg.message != WM_QUIT && m_bIsRunning)
 		{
+			// frame 60으로 고정하기
+			float curFrameTime = m_timer.Elapsed();
+			if (curFrameTime - lastFrameTime < 1.0f / 60.0f)
+			{
+				continue;
+			}
+			else
+			{
+				lastFrameTime = curFrameTime;
+			}
+
 			float curTime = m_timer.Elapsed();
 			float deltaTime = curTime - lastTime;
 			lastTime = curTime;
+
 			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 			{
 				TranslateMessage(&msg);
