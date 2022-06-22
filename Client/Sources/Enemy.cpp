@@ -85,11 +85,6 @@ void Enemy::ComputeBallNextPosition(float deltaTime)
 
 bool Enemy::MoveToTarget(const float targetX)
 {
-	if (!m_bIsGrounded)
-	{
-		return false;
-	}
-
 	// 목표 위치와 현재 위치의 거리가 m_targetXRange 이하면 좌우 입력 명령을 포기
 	float distance = GetPosition().x - targetX;
 	distance = distance < 0.0f ? distance * -1.0f : distance;
@@ -121,7 +116,7 @@ void Enemy::Logic()
 			distance = distance < 0.0f ? distance * -1.0f : distance;
 
 			// 공의 y가 네트의 일정 비율 보다 클 경우
-			if (m_pBall->GetPosition().y > constant::NET_POSITION.y + constant::NET_SIZE.y)
+			if (m_pBall->GetPosition().y > (constant::NET_POSITION.y + constant::NET_SIZE.y) * 0.6f)
 			{
 				// 공x와 자신x가 멀 때
 				if (distance < m_pBall->GetSize().x)
