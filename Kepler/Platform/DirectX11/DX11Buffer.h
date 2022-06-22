@@ -13,7 +13,8 @@ namespace kepler {
 	public:
 		DX11VertexBuffer(const uint32_t size, eBufferUsage usage);
 		DX11VertexBuffer(const void* const vertices, const uint32_t size, eBufferUsage usage);
-		
+		~DX11VertexBuffer();
+
 		// Inherited via IVertexBuffer
 		virtual void Bind() override;
 		virtual void Unbind() override;
@@ -30,6 +31,7 @@ namespace kepler {
 
 	public:
 		DX11IndexBuffer(const uint32_t* const indices, const uint32_t count);
+		~DX11IndexBuffer();
 		
 		// Inherited via IIndexBuffer
 		virtual void Bind() override;

@@ -8,6 +8,7 @@ Ball::Ball(kepler::Vec2f position, float radius, eColliderType type, eColliderCa
 	: m_curDirection{ 0.0f, -1.0f }
 	, m_lastDirection{ 0.0f, 0.0f }
 	, m_size{ radius, radius }
+	, m_deltaTime{ 0.0f }
 	, m_bIsAccelarated{ false }
 	, m_bIsGrounded{ false }
 	, GameObject(type, category)
@@ -56,6 +57,10 @@ void Ball::OnEvent(kepler::Event& e)
 
 void Ball::OnUpdate(float deltaTime)
 {
+	static const float SPEED_GRAVITY = 9.8f;
+
+	m_deltaTime = deltaTime;
+
 #ifdef _DEBUG
 	m_debugColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 #endif
@@ -67,7 +72,7 @@ void Ball::OnUpdate(float deltaTime)
 	}
 	// 직전 방향 그대로 움직이되 연직 방향으로 중력 처리
 	m_curDirection = m_lastDirection;
-	m_curDirection.y -= 9.8f * deltaTime;
+	m_curDirection.y -= SPEED_GRAVITY * deltaTime;
 
 	// 새로 계산된 위상을 deque 앞에 push
 	kepler::Vec2f nextPosition = m_transforms.front().first + m_curDirection;
@@ -101,45 +106,48 @@ void Ball::OnRender()
 
 void Ball::OnCollision(CollisionData& data)
 {
-	static float COEF_OF_RES = 0.8f;	// 반발계수(coefficient of restitution)
-	static float ACCELERATION = 35.0f;
+	static const float COEF_OF_RES = 0.8f;	// 반발계수(coefficient of restitution)
+	static const float SPEED_ACCELERATION = 2000.0f;
+	static const float SPEED_INPULSE = 120.0f;
+	static const float SPEED_IMPULSE_LIMIT = 600.0f;
 
 #ifdef _DEBUG
 	m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f };
 #endif
-	kepler::Vec2f colliderPos = data.collider->GetPosition();
-	kepler::Vec2f colliderDir = data.collider->GetDirection();
-	kepler::Vec2f colliderSize = data.collider->GetSize();
+	kepler::Vec2f colliderPos = data.pCollider->GetPosition();
+	kepler::Vec2f colliderDir = data.pCollider->GetDirection();
+	kepler::Vec2f colliderSize = data.pCollider->GetSize();
 	bool bIsSpiked = false;
 	// collision data 안에 충돌체의 부가정보가 담긴 경우 해석(꼬부기배구에서는 bool타입 외에 받을 일이 없으므로 별도의 데이터 해석 필요 없음)
-	if (data.bIsSpiked)
+	if (data.pInfo)
 	{
-		bIsSpiked = *reinterpret_cast<bool*>(data.bIsSpiked);
+		bIsSpiked = *reinterpret_cast<bool*>(data.pInfo);
 	}
 
-	switch (data.collider->GetCategory())
+	switch (data.pCollider->GetCategory())
 	{
 		// 꼬부기와 충돌한 경우
 	case eColliderCategory::Player:
 	case eColliderCategory::Enemy:
 		{
 			// 현재 공의 속도를 기반으로 충격량 설정
-			float impulse = m_curDirection.Length();
+			float impulse = m_curDirection.Length() * SPEED_INPULSE;
 			// 두 물체의 충돌면에 대한 법선벡터에 충격량 제한
-			kepler::Vec2f nextDirection = (m_transforms.front().first - colliderPos).Normalize() * (impulse < 10.0f ? impulse : 10.0f);
+			kepler::Vec2f nextDirection = (m_transforms.front().first - colliderPos).Normalize() * (impulse < SPEED_IMPULSE_LIMIT ? impulse : SPEED_IMPULSE_LIMIT);
 			// 일반적으로 Player sprite의 가로가 세로보다 짧으므로 x축에 평행하게 공이 충돌했을 때 충돌량을 y축 평행 충돌과 비슷하도록 보정함.
 			nextDirection.x *= 1.5f;
 
-			// 꼬부기와 부딛혔을 때 꼬부기가 스파이크 공격을 시도한 상태라면 가속 처리(이미 가속 중이라면 유지)
+			// 꼬부기와 부딛혔을 때 꼬부기가 스파이크 공격을 시도한 상태라면 가속 처리(이미 가속 중이라면 유지) 
 			if (bIsSpiked)
 			{
-				nextDirection = nextDirection.Normalize() * ACCELERATION;
+				nextDirection = nextDirection.Normalize() * SPEED_ACCELERATION;
 				m_bIsAccelarated = true;
 			}
 			else
 			{
 				m_bIsAccelarated = false;
 			}
+			nextDirection *= m_deltaTime;
 			m_curDirection = nextDirection;
 		}
 		break;
@@ -219,7 +227,7 @@ void Ball::OnCollision(CollisionData& data)
 			}
 			else
 			{
-				m_curDirection = kepler::Vec2f{ m_curDirection.x, -m_curDirection.y } *COEF_OF_RES;
+				m_curDirection = kepler::Vec2f{ m_curDirection.x, -m_curDirection.y } * COEF_OF_RES;
 			}
 			m_bIsAccelarated = false;
 		}

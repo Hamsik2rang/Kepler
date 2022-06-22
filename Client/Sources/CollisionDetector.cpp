@@ -2,16 +2,16 @@
 
 std::vector<Collider2D*> CollisionDetector::s_pColliders;
 
-void CollisionDetector::AddCollider(Collider2D* collider)
+void CollisionDetector::AddCollider(Collider2D* pCollider)
 {
-	s_pColliders.push_back(collider);
+	s_pColliders.push_back(pCollider);
 }
 
-void CollisionDetector::DeleteCollider(Collider2D* collider)
+void CollisionDetector::DeleteCollider(Collider2D* pCollider)
 {
 	for (int i = 0; i < s_pColliders.size(); i++)
 	{
-		if (s_pColliders[i] == collider)
+		if (s_pColliders[i] == pCollider)
 		{
 			s_pColliders.erase(s_pColliders.begin() + i, s_pColliders.begin() + i + 1);
 		}
@@ -41,12 +41,12 @@ bool CollisionDetector::Detection()
 				{
 					//...
 					CollisionData data{};
-					data.collider = s_pColliders[i];
-					data.bIsSpiked = s_pColliders[i]->GetCollisionInfo();
+					data.pCollider = s_pColliders[i];
+					data.pInfo = s_pColliders[i]->GetCollisionInfo();
 					s_pColliders[j]->GetGameObject().OnCollision(data);
 
-					data.collider = s_pColliders[j];
-					data.bIsSpiked = s_pColliders[j]->GetCollisionInfo();
+					data.pCollider = s_pColliders[j];
+					data.pInfo = s_pColliders[j]->GetCollisionInfo();
 					s_pColliders[i]->GetGameObject().OnCollision(data);
 				}
 			}
@@ -58,12 +58,12 @@ bool CollisionDetector::Detection()
 					//...
 					CollisionData data{};
 
-					data.collider = s_pColliders[i];
-					data.bIsSpiked = s_pColliders[i]->GetCollisionInfo();
+					data.pCollider = s_pColliders[i];
+					data.pInfo = s_pColliders[i]->GetCollisionInfo();
 					s_pColliders[j]->GetGameObject().OnCollision(data);
 
-					data.collider = s_pColliders[j];
-					data.bIsSpiked = s_pColliders[j]->GetCollisionInfo();
+					data.pCollider = s_pColliders[j];
+					data.pInfo = s_pColliders[j]->GetCollisionInfo();
 					s_pColliders[i]->GetGameObject().OnCollision(data);
 				}
 			}
@@ -182,12 +182,12 @@ bool CollisionDetector::Detection()
 				{
 					CollisionData data{};
 
-					data.collider = s_pColliders[i];
-					data.bIsSpiked = s_pColliders[i]->GetCollisionInfo();
+					data.pCollider = s_pColliders[i];
+					data.pInfo = s_pColliders[i]->GetCollisionInfo();
 					s_pColliders[j]->GetGameObject().OnCollision(data);
 
-					data.collider = s_pColliders[j];
-					data.bIsSpiked = s_pColliders[j]->GetCollisionInfo();
+					data.pCollider = s_pColliders[j];
+					data.pInfo = s_pColliders[j]->GetCollisionInfo();
 					s_pColliders[i]->GetGameObject().OnCollision(data);
 				}
 			}

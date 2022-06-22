@@ -95,7 +95,6 @@ namespace kepler {
 		virtual void SetName(const std::string& name) = 0;
 		virtual std::string GetName() const = 0;
 		virtual eShaderType GetType() const = 0;
-		virtual void* GetRawProgram() const = 0;	// Raw Shader 프로그램을 호출합니다.
 		virtual uint32_t GetInputElementSlot(const std::string& paramName, const uint32_t paramIndex = 0) const = 0;	// 쉐이더의 Input Layout을 기반으로 InputSlot을 찾아 반환합니다.
 
 		static std::shared_ptr<IShader> Create(const eShaderType& type, const std::string& filepath);

@@ -107,8 +107,40 @@ void Player::Respawn()
 	m_pCollider->SetSize(m_size);
 }
 
-void Player::ChangeState(float deltaTime, int vertical, int horizontal)
+void Player::ChangeState(float deltaTime)
 {
+	static const float SPEED_JUMP_X = 1350.0f;
+	static const float SPEED_WALK_X = 400.0f;
+	static const float SPEED_SLIDE_X = 900.0f;
+	static const float SPEED_SLIDE_Y = 400.0f;
+	static const float SPEED_GRAVITY = 47.5f;
+
+	int vertical = 0;
+	int horizontal = 0;
+	bool isSpacePressed = false;
+
+	for (const kepler::KeyCode& input : m_curInputs)
+	{
+		switch (input)
+		{
+		case kepler::key::Space:
+			isSpacePressed = true;
+			break;
+		case kepler::key::Up:
+			vertical += 1;
+			break;
+		case kepler::key::Down:
+			vertical -= 1;
+			break;
+		case kepler::key::Right:
+			horizontal += 1;
+			break;
+		case kepler::key::Left:
+			horizontal -= 1;
+			break;
+		}
+	}
+
 	// 점프 또는 슬라이딩 상태가 아닌 경우
 	if (m_bIsGrounded)
 	{
@@ -123,13 +155,13 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 				m_pCurAnim = &m_animation[PlayerStateJump];
 				m_pCurAnim->Start();
 			}
-			m_curDirection = { horizontal * 5.0f, 25.0f };
+			m_curDirection = kepler::Vec2f{ horizontal * SPEED_WALK_X, SPEED_JUMP_X } * deltaTime;
 		}
 		// 아래쪽 방향키를 누른 경우
 		else if (vertical < 0 && horizontal != 0)
 		{
 			// 스페이스바도 함께 눌렀다면 해당 시점의 수평축 방향으로 슬라이딩 처리. 아니라면 무시
-			if (kepler::Input::IsButtonDown(kepler::key::Space))
+			if (isSpacePressed)
 			{
 				m_bIsGrounded = false;
 				m_state = ePlayerState::PlayerStateSlide;
@@ -139,7 +171,7 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 					m_pCurAnim = &m_animation[PlayerStateSlide];
 					m_pCurAnim->Start();
 				}
-				m_curDirection = { horizontal * 15.0f, 7.5f };
+				m_curDirection = kepler::Vec2f{ horizontal * SPEED_SLIDE_X, SPEED_SLIDE_Y } * deltaTime;
 			}
 		}
 		// 수직 축 입력이 들어오지 않은 경우
@@ -155,18 +187,18 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 					m_pCurAnim = &m_animation[PlayerStateWalk];
 					m_pCurAnim->Start();
 				}
-				m_curDirection = { horizontal * 5.0f, 0.0f };
+				m_curDirection = kepler::Vec2f{ horizontal * SPEED_WALK_X, 0.0f } * deltaTime;
 			}
 			// 수평축 입력도 없을 경우 가만히 서 있음(idle)
 			else
 			{
 				m_state = ePlayerState::PlayerStateIdle;
 				if (m_pCurAnim != &m_animation[PlayerStateIdle])
-				{
+				{ 
 					m_pCurAnim = &m_animation[PlayerStateIdle];
 					m_pCurAnim->Start();
 				}
-				m_curDirection = { 0.0f, 0.0f };
+				m_curDirection = kepler::Vec2f{ 0.0f, 0.0f };
 			}
 		}
 	}
@@ -174,7 +206,7 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 	else
 	{
 		// 연직 방향으로 중력 적용
-		m_curDirection.y = m_lastDirection.y - (49.0f * deltaTime);
+		m_curDirection.y = m_lastDirection.y - (SPEED_GRAVITY * deltaTime);
 		switch (m_state)
 		{
 		case ePlayerState::PlayerStateSlide:
@@ -186,11 +218,11 @@ void Player::ChangeState(float deltaTime, int vertical, int horizontal)
 		case ePlayerState::PlayerStateJump:
 			{
 				// 스파이크 처리
-				if (kepler::Input::IsButtonDown(kepler::key::Space))
+				if (isSpacePressed)
 				{
 					m_bIsSpiked = true;
 				}
-				m_curDirection.x = horizontal * 5.0f;
+				m_curDirection.x = horizontal * 400.0f * deltaTime;
 			}
 			break;
 		}
@@ -229,28 +261,33 @@ void Player::OnUpdate(float deltaTime)
 	int horizontal = 0;
 	int vertical = 0;
 	m_bIsSpiked = false;
+	m_curInputs.clear();
 
 	// 방향키 입력에 따라 veritcal, horizontal 축 값 지정
 	if (kepler::Input::IsButtonDown(kepler::key::Up))
 	{
-		vertical += 1;
+		m_curInputs.push_back(kepler::key::Up);
 	}
 	if (kepler::Input::IsButtonDown(kepler::key::Down))
 	{
-		vertical -= 1;
+		m_curInputs.push_back(kepler::key::Down);
 	}
 	if (kepler::Input::IsButtonDown(kepler::key::Left))
 	{
-		horizontal -= 1;
+		m_curInputs.push_back(kepler::key::Left);
 	}
 	if (kepler::Input::IsButtonDown(kepler::key::Right))
 	{
-		horizontal += 1;
+		m_curInputs.push_back(kepler::key::Right);
+	}
+	if (kepler::Input::IsButtonDown(kepler::key::Space))
+	{
+		m_curInputs.push_back(kepler::key::Space);
 	}
 
 	if (m_state != PlayerStateWin && m_state != PlayerStateLose)
 	{
-		ChangeState(deltaTime, vertical, horizontal);
+		ChangeState(deltaTime);
 	}
 
 	// 위치, 방향, 충돌체 및 애니메이션 갱신
@@ -285,10 +322,10 @@ void Player::OnCollision(CollisionData& data)
 #ifdef _DEBUG
 	m_debugColor = { 1.0f, 0.0f, 0.0f, 1.0f };
 #endif
-	kepler::Vec2f colliderPos = data.collider->GetPosition();
-	kepler::Vec2f colliderSize = data.collider->GetSize();
+	kepler::Vec2f colliderPos = data.pCollider->GetPosition();
+	kepler::Vec2f colliderSize = data.pCollider->GetSize();
 
-	switch (data.collider->GetCategory())
+	switch (data.pCollider->GetCategory())
 	{
 		// 네트와 닿았을 때의 충돌 처리. 네트와 겹치지 않도록 위치 조정함
 	case eColliderCategory::Net:
