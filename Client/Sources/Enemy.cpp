@@ -6,7 +6,6 @@
 Enemy::Enemy(const kepler::Vec2f& position, const kepler::Vec2f& size, std::shared_ptr<Level> pLevel, std::shared_ptr<Player> pPlayer, std::shared_ptr<Ball> pBall, eColliderType type, eColliderCategory category)
 	: Player(position, size, type, category)
 {
-	InitSprite();
 	m_pLevel = pLevel;
 	m_pPlayer = pPlayer;
 	m_pBall = pBall; 
