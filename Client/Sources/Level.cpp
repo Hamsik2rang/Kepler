@@ -15,6 +15,9 @@ void Level::Init(float width, float height)
 	m_pNet = std::make_shared<Net>(constant::NET_POSITION, kepler::Vec2f{ constant::NET_SIZE.x, 2000.0f });
 	m_pGround = std::make_shared<Ground>(constant::GROUND_POSITION, constant::GROUND_SIZE);
 	m_pSky = std::make_shared<Sky>(constant::SKY_POSITION, constant::SKY_SIZE);
+
+	kepler::Audio::Create(m_bgmAudio, "./Assets/Audios/Background.mp3");
+	kepler::Audio::Play(m_bgmAudio, true);
 }
 
 void Level::OnRender()

@@ -44,9 +44,8 @@ void GameLayer::OnAttach()
 
 void GameLayer::OnDetach()
 {
-
+	kepler::Audio::Release();
 }
-
 
 void GameLayer::OnEvent(kepler::Event& e)
 {

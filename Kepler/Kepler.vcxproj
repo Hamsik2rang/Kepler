@@ -132,8 +132,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
+      <AdditionalDependencies>fmodL_vc.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Kepler\Dependencies\fmod\lib\$(Platform)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -161,15 +160,15 @@
       <AdditionalLibraryDirectories>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Lib>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
+      <AdditionalDependencies>fmodL_vc.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Kepler\Dependencies\fmod\lib\$(Platform)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Audio\AudioSource.h" />
+    <ClInclude Include="Audio\Audio.h" />
+    <ClInclude Include="Audio\AudioSource.hpp" />
     <ClInclude Include="Core\Application.h" />
     <ClInclude Include="Core\Assertion.h" />
     <ClInclude Include="Core\Base.h" />
@@ -227,6 +226,7 @@
     <ClInclude Include="Utility\Timer.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Audio\Audio.cpp" />
     <ClCompile Include="Core\Application.cpp" />
     <ClCompile Include="Core\Input.cpp" />
     <ClCompile Include="ImGui\ImGuiLayer.cpp" />

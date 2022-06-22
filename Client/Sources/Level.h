@@ -139,8 +139,6 @@ public:
 class Level
 {
 private:
-	float m_width;
-	float m_height;
 	std::shared_ptr<kepler::ITexture2D> m_pLevelSprite;
 
 	std::shared_ptr<Wall> m_pLeftWall;
@@ -149,7 +147,13 @@ private:
 	std::shared_ptr<Ground> m_pGround;
 	std::shared_ptr<Sky> m_pSky;
 
+	kepler::AudioSource m_bgmAudio;
+	
+	float m_width;
+	float m_height;
+
 public:
+	Level() = default;
 	void Init(float width, float height);
 	void OnRender();
 	void OnUpdate(float deltaTime);

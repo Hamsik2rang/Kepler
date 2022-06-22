@@ -5,6 +5,7 @@
 #include "Core/Event/ApplicationEvent.hpp"
 #include "Renderer/Renderer.h"
 #include "Platform/DirectX11/DX11Context.h"
+#include "Audio/Audio.h"
 
 namespace kepler{
 
@@ -76,18 +77,12 @@ namespace kepler{
 		while (msg.message != WM_QUIT && m_bIsRunning)
 		{
 			// frame 60으로 고정하기
-			float curFrameTime = m_timer.Elapsed();
-			if (curFrameTime - lastFrameTime < 1.0f / 60.0f)
+			float curTime = m_timer.Elapsed();
+			float deltaTime = curTime - lastTime;
+			if (deltaTime < 1.0f / 60.0f)
 			{
 				continue;
 			}
-			else
-			{
-				lastFrameTime = curFrameTime;
-			}
-
-			float curTime = m_timer.Elapsed();
-			float deltaTime = curTime - lastTime;
 			lastTime = curTime;
 
 			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))

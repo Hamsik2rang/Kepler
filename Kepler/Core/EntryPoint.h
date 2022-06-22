@@ -17,6 +17,7 @@ int APIENTRY wWinMain(
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
+	kepler::Audio::Init();
 
 	kepler::g_hInst = hInstance;
 	kepler::g_nCmdShow = nCmdShow;
@@ -30,6 +31,10 @@ int APIENTRY wWinMain(
 	
 	auto app = kepler::CreateApplication();
 	app->Run();
+	
+	// Release resources
+	kepler::Audio::Release();
+
 	delete app;
 
 	return 0;

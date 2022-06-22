@@ -4,6 +4,8 @@
 #include "CollisionDetector.h"
 
 std::vector<std::shared_ptr<kepler::ITexture2D>> Player::s_pSprites;
+kepler::AudioSource Player::s_jumpAudio;
+kepler::AudioSource Player::s_spikeAudio;
 
 Player::Player(const kepler::Vec2f& position, const kepler::Vec2f& size, eColliderType type, eColliderCategory category)
 	: GameObject(type, category)
@@ -20,6 +22,16 @@ Player::Player(const kepler::Vec2f& position, const kepler::Vec2f& size, eCollid
 		LoadSprites();
 	}
 	InitAnimation();
+
+	if (!s_jumpAudio.GetSound())
+	{
+		kepler::Audio::Create(s_jumpAudio, "./Assets/Audios/Squritle_kor_jump.mp3");
+	}
+	if (!s_spikeAudio.GetSound())
+	{
+		kepler::Audio::Create(s_spikeAudio, "./Assets/Audios/Squritle_kor_spike.mp3");
+	}
+
 	CollisionDetector::AddCollider(m_pCollider);
 }
 
@@ -96,7 +108,7 @@ void Player::InitAnimation()
 	m_animation[PlayerStateLose].SetRepeat(false);
 
 	// load and set win texture
-	m_animation[PlayerStateWin].AddSprites({ s_pSprites[8]});
+	m_animation[PlayerStateWin].AddSprites({ s_pSprites[8] });
 	m_animation[PlayerStateWin].SetFrameCount(4);
 	m_animation[PlayerStateWin].SetRepeat(false);
 
@@ -169,6 +181,7 @@ void Player::ChangeState(float deltaTime)
 			m_size = constant::SQUIRTLE_JUMP_SIZE;
 			if (m_pCurAnim != &m_animation[PlayerStateJump])
 			{
+				kepler::Audio::Play(s_jumpAudio, false);
 				m_pCurAnim = &m_animation[PlayerStateJump];
 				m_pCurAnim->Start();
 			}
@@ -211,7 +224,7 @@ void Player::ChangeState(float deltaTime)
 			{
 				m_state = ePlayerState::PlayerStateIdle;
 				if (m_pCurAnim != &m_animation[PlayerStateIdle])
-				{ 
+				{
 					m_pCurAnim = &m_animation[PlayerStateIdle];
 					m_pCurAnim->Start();
 				}
@@ -238,6 +251,10 @@ void Player::ChangeState(float deltaTime)
 				if (isSpacePressed)
 				{
 					m_bIsSpiked = true;
+					if (!kepler::Audio::IsPlaying(s_spikeAudio))
+					{
+						kepler::Audio::Play(s_spikeAudio, false);
+					}
 				}
 				m_curDirection.x = horizontal * 400.0f;
 			}

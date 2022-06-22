@@ -40,6 +40,8 @@ protected:
 #endif
 
 	static std::vector<std::shared_ptr<kepler::ITexture2D>> s_pSprites;
+	static kepler::AudioSource s_jumpAudio;
+	static kepler::AudioSource s_spikeAudio;
 
 	Animation2D m_animation[6];
 	Animation2D* m_pCurAnim;	// 현재 상태에 대한 애니메이션을 가리키기만 하는 참조용 변수

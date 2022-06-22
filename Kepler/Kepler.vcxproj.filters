@@ -180,7 +180,10 @@
     <ClInclude Include="Math\Vector2.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Audio\AudioSource.h">
+    <ClInclude Include="Audio\AudioSource.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio\Audio.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -303,6 +306,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\ImGuiSource\imgui_widgets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio\Audio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
