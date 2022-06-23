@@ -5,14 +5,12 @@
 
 namespace kepler {
 
-	const uint32_t				Audio::MAX_CHANNEL = 32;
-	std::list<std::thread>		Audio::s_threadList;
-	std::thread					Audio::s_removerThread;
-	std::mutex					Audio::s_mutex;
-	std::queue<std::thread::id>	Audio::s_idQueue;
+	const uint32_t					Audio::MAX_CHANNEL = 32;
+	std::list<std::future<bool>>	Audio::s_futureList;
+	std::thread						Audio::s_removerThread;
 	FMOD::System* Audio::s_pSystem = nullptr;
-	uint32_t					Audio::s_version = 0u;
-	bool						Audio::s_bIsRunning = false;
+	uint32_t						Audio::s_version = 0u;
+	bool							Audio::s_bIsRunning = false;
 
 	void Audio::Init()
 	{
@@ -44,13 +42,6 @@ namespace kepler {
 	void Audio::Release()
 	{
 		s_bIsRunning = false;
-		for (auto& th : s_threadList)
-		{
-			if (th.joinable())
-			{
-				th.join();
-			}
-		}
 
 		s_pSystem->release();
 	}
@@ -59,30 +50,27 @@ namespace kepler {
 	{
 		while (s_bIsRunning)
 		{
-			std::thread::id removeID;
+			for (auto iter = s_futureList.begin(); iter != s_futureList.end(); iter++)
 			{
-				std::lock_guard<std::mutex> lock(s_mutex);
-
-				if (s_idQueue.empty())
-				{
-					continue;
-				}
-				removeID = s_idQueue.front();
-				s_idQueue.pop();
-			}
-
-			for (auto iter = s_threadList.begin(); iter != s_threadList.end(); iter++)
-			{
-				std::thread::id curID = iter->get_id();
-				if (curID == removeID)
-				{
-					if (iter->joinable())
+				//ぬぬぬぬ
+				//std::future_status status = iter->wait_for(std::chrono::milliseconds(3));
+				//if (status == std::future_status::ready)
+				//{
+				//	bool result = iter->get();
+				//	std::swap(*iter, s_threadList.back());
+				//	s_threadList.pop_back();
+				//	break;
+				//}
+				s_futureList.remove_if([](std::future<bool>& f)->bool
 					{
-						iter->join();
-					}
-					s_threadList.remove_if([&removeID](std::thread& th)->bool { return removeID == th.get_id(); });
-					break;
-				}
+						bool result = false;
+						std::future_status status = f.wait_for(std::chrono::milliseconds(3));
+						if (status == std::future_status::ready)
+						{
+							result = f.get();
+						}
+						return result;
+					});
 			}
 		}
 	}
@@ -128,9 +116,6 @@ namespace kepler {
 				pChannel->setPaused(false);
 			}
 		}
-
-		std::lock_guard<std::mutex> lock(s_mutex);
-		s_idQueue.push(std::this_thread::get_id());
 	}
 
 	void Audio::Create(AudioSource& source, const std::string& filepath)
@@ -148,7 +133,8 @@ namespace kepler {
 	void Audio::Play(AudioSource& source, bool bIsRepeat)
 	{
 		source.SetRepeat(bIsRepeat);
-		s_threadList.emplace_back([&source]()->void { Audio::PlayAudio(source); });
+		s_futureList.emplace_back(std::async([&source]()->bool { Audio::PlayAudio(source); return true; }));
+		KEPLER_CORE_INFO("Current AudioSource List Size: {0}", s_futureList.size());
 	}
 
 	bool Audio::IsPlaying(AudioSource& source)

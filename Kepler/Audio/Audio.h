@@ -2,8 +2,7 @@
 
 #include "Core/Base.h"
 
-#include <thread>
-#include <mutex>
+#include <future>
 #include <list>
 #include <queue>
 #include "fmod/inc/fmod.hpp"
@@ -19,14 +18,13 @@ namespace kepler {
 	class Audio
 	{
 	private:
-		static const uint32_t				MAX_CHANNEL;
-		static std::list<std::thread>		s_threadList;
-		static std::thread					s_removerThread;
-		static std::mutex					s_mutex;
-		static std::queue<std::thread::id>	s_idQueue;
-		static FMOD::System*				s_pSystem;
-		static uint32_t						s_version;
-		static bool							s_bIsRunning;
+		static const uint32_t	MAX_CHANNEL;
+
+		static std::list<std::future<bool>> s_futureList;
+		static std::thread		s_removerThread;
+		static FMOD::System*	s_pSystem;
+		static uint32_t			s_version;
+		static bool				s_bIsRunning;
 
 		static void PlayAudio(AudioSource& source);
 		static void RemoveThread();
