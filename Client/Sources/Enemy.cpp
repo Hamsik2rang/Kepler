@@ -56,12 +56,12 @@ void Enemy::OnUpdate(float deltaTime)
 
 	if (m_state != PlayerStateWin && m_state != PlayerStateLose)
 	{
-		ChangeState(deltaTime);
+		ChangeState();
 	}
 
 	// 위치, 방향, 충돌체 및 애니메이션 갱신
 	m_lastDeltaTime = deltaTime;
-	m_position += m_curDirection;
+	m_position += m_curDirection * deltaTime;
 	m_pCollider->SetSize(m_size);
 	m_pCollider->SetPosition(m_position);
 	m_lastDirection = m_curDirection;

@@ -124,7 +124,7 @@ void Player::Respawn()
 	m_pCollider->SetSize(m_size);
 }
 
-void Player::ChangeState(float deltaTime)
+void Player::ChangeState()
 {
 	static const float SPEED_JUMP_Y = 1350.0f;
 	static const float SPEED_WALK_X = 400.0f;
@@ -223,13 +223,13 @@ void Player::ChangeState(float deltaTime)
 	else
 	{
 		// 연직 방향으로 중력 적용
-		m_curDirection.y = m_lastDirection.y / m_lastDeltaTime - SPEED_GRAVITY;
+		m_curDirection.y = m_lastDirection.y - SPEED_GRAVITY;
 		switch (m_state)
 		{
 		case ePlayerState::PlayerStateSlide:
 			{
 				// 슬라이딩 상태인 경우 바닥에 착지할 때 까지 horizontal 축 입력에 영향을 받으면 안됨.
-				m_curDirection.x = m_lastDirection.x / m_lastDeltaTime;
+				m_curDirection.x = m_lastDirection.x;
 			}
 			break;
 		case ePlayerState::PlayerStateJump:
@@ -244,7 +244,6 @@ void Player::ChangeState(float deltaTime)
 			break;
 		}
 	}
-	m_curDirection *= deltaTime;
 }
 
 // 게임 종료 시 승리/패배 상태 설정 함수
@@ -305,11 +304,11 @@ void Player::OnUpdate(float deltaTime)
 
 	if (m_state != PlayerStateWin && m_state != PlayerStateLose)
 	{
-		ChangeState(deltaTime);
+		ChangeState();
 	}
 	m_lastDeltaTime = deltaTime;
 	// 위치, 방향, 충돌체 및 애니메이션 갱신
-	m_position += m_curDirection;
+	m_position += m_curDirection * deltaTime;;
 	m_pCollider->SetSize(m_size);
 	m_pCollider->SetPosition(m_position);
 	m_lastDirection = m_curDirection;
