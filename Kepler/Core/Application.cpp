@@ -43,10 +43,10 @@ namespace kepler {
 	{
 		for (auto it = m_layerStack.end(); it != m_layerStack.begin();)
 		{
-			// ���� ���� ���̾���� �����ؼ� �̺�Ʈ ó��
-			// ������ ���̾ �ڽ��� ó���� �̺�Ʈ�� �ƴ϶�� �׳� �����մϴ�.
+			// 가장 상위 레이어부터 시작해서 이벤트 처리
+			// 각각의 레이어가 자신이 처리할 이벤트가 아니라면 그냥 무시합니다.
 			(*(--it))->OnEvent(e);
-			// �̺�Ʈ�� ���� ������ ���̾ ���� ó���Ǿ��ٸ� �� �̺�Ʈ�� �Ҹ��� �Ͱ� ���������̹Ƿ� �� �̻� ����(�ļ���) ���̾�� �̺�Ʈ�� �����ϸ� �� �˴ϴ�.
+			// 이벤트가 만약 임의의 레이어에 의해 처리되었다면 그 이벤트는 소멸한 것과 마찬가지이므로 더 이상 하위(후순위) 레이어에게 이벤트를 전달하면 안 됩니다.
 			if (e.IsHandled())
 			{
 				break;
@@ -75,7 +75,6 @@ namespace kepler {
 		float lastTime = 0.0f;
 		while (msg.message != WM_QUIT && m_bIsRunning)
 		{
-			// frame 60���� �����ϱ�
 			float curTime = m_timer.Elapsed();
 			float deltaTime = curTime - lastTime;
 			if (deltaTime < 1.0f / 60.0f) 
@@ -109,7 +108,7 @@ namespace kepler {
 				layer->OnGUIRender();
 			}
 
-			// TODO: ���Ŀ� Editor Layer�� �����Ǿ� LayerStack�ȿ� ���� ���� 
+			// TODO: 추후에 Editor Layer가 구현되어 LayerStack안에 들어가면 제거 
 			m_pImGuiLayer->OnGUIRender();
 
 			m_pImGuiLayer->End();

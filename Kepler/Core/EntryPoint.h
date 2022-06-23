@@ -34,11 +34,11 @@ int APIENTRY wWinMain(
 	auto app = kepler::CreateApplication();
 	app->Run();
 	
+
+	delete app;
 	//----- Release Core resources -----
 	kepler::Audio::Release();
-
 	//----------------------------------
-	delete app;
 
 	return 0;
 }

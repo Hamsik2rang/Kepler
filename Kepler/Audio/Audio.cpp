@@ -39,7 +39,6 @@ namespace kepler {
 	void Audio::Release()
 	{
 		s_bIsRunning = false;
-
 		s_pSystem->release();
 	}
 
@@ -65,6 +64,7 @@ namespace kepler {
 				KEPLER_CORE_ASSERT(false, "Fail to update Audio System");
 				return;
 			}
+
 
 			if (pChannel)
 			{
