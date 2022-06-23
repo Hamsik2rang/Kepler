@@ -6,9 +6,7 @@
 namespace kepler {
 
 	const uint32_t					Audio::MAX_CHANNEL = 32;
-	std::list<std::future<bool>>	Audio::s_futureList;
-	std::thread						Audio::s_removerThread;
-	FMOD::System* Audio::s_pSystem = nullptr;
+	FMOD::System*					Audio::s_pSystem = nullptr;
 	uint32_t						Audio::s_version = 0u;
 	bool							Audio::s_bIsRunning = false;
 
@@ -36,7 +34,6 @@ namespace kepler {
 		}
 
 		s_bIsRunning = true;
-		s_removerThread = std::thread([]()->void { Audio::RemoveThread(); });
 	}
 
 	void Audio::Release()
@@ -46,34 +43,6 @@ namespace kepler {
 		s_pSystem->release();
 	}
 
-	void Audio::RemoveThread()
-	{
-		while (s_bIsRunning)
-		{
-			for (auto iter = s_futureList.begin(); iter != s_futureList.end(); iter++)
-			{
-				//ㅜㅜㅜㅜ
-				//std::future_status status = iter->wait_for(std::chrono::milliseconds(3));
-				//if (status == std::future_status::ready)
-				//{
-				//	bool result = iter->get();
-				//	std::swap(*iter, s_threadList.back());
-				//	s_threadList.pop_back();
-				//	break;
-				//}
-				s_futureList.remove_if([](std::future<bool>& f)->bool
-					{
-						bool result = false;
-						std::future_status status = f.wait_for(std::chrono::milliseconds(3));
-						if (status == std::future_status::ready)
-						{
-							result = f.get();
-						}
-						return result;
-					});
-			}
-		}
-	}
 
 	void Audio::PlayAudio(AudioSource& source)
 	{
@@ -133,8 +102,9 @@ namespace kepler {
 	void Audio::Play(AudioSource& source, bool bIsRepeat)
 	{
 		source.SetRepeat(bIsRepeat);
-		s_futureList.emplace_back(std::async([&source]()->bool { Audio::PlayAudio(source); return true; }));
-		KEPLER_CORE_INFO("Current AudioSource List Size: {0}", s_futureList.size());
+		std::thread t{ [&source]()->void { Audio::PlayAudio(source); } };
+		// TODO: Audio가 모든 쓰레드를 관리하는 바람직한 방법을 찾아봅시다
+		t.detach();
 	}
 
 	bool Audio::IsPlaying(AudioSource& source)

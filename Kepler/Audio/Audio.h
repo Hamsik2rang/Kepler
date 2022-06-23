@@ -20,14 +20,11 @@ namespace kepler {
 	private:
 		static const uint32_t	MAX_CHANNEL;
 
-		static std::list<std::future<bool>> s_futureList;
-		static std::thread		s_removerThread;
 		static FMOD::System*	s_pSystem;
 		static uint32_t			s_version;
 		static bool				s_bIsRunning;
 
 		static void PlayAudio(AudioSource& source);
-		static void RemoveThread();
 
 	public:
 		static void Init();
