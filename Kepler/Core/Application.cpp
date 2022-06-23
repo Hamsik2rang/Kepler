@@ -6,7 +6,7 @@
 #include "Renderer/Renderer.h"
 #include "Platform/DirectX11/DX11Context.h"
 
-namespace kepler{
+namespace kepler {
 
 	Application* Application::s_pInstance = nullptr;
 
@@ -18,7 +18,7 @@ namespace kepler{
 		// bind this->OnEvent
 		m_pWindow->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 		s_pInstance = this;
-		
+
 		Renderer::Init();
 
 		m_pImGuiLayer = std::make_unique<ImGuiLayer>();
@@ -72,22 +72,15 @@ namespace kepler{
 		MSG msg{};
 		m_timer.Start();
 		float lastTime = 0.0f;
-		float lastFrameTime = 0.0f;
 		while (msg.message != WM_QUIT && m_bIsRunning)
 		{
 			// frame 60으로 고정하기
-			float curFrameTime = m_timer.Elapsed();
-			if (curFrameTime - lastFrameTime < 1.0f / 60.0f)
+			float curTime = m_timer.Elapsed();
+			float deltaTime = curTime - lastTime;
+			if (deltaTime < 1.0f / 60.0f)
 			{
 				continue;
 			}
-			else
-			{
-				lastFrameTime = curFrameTime;
-			}
-
-			float curTime = m_timer.Elapsed();
-			float deltaTime = curTime - lastTime;
 			lastTime = curTime;
 
 			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -112,9 +105,9 @@ namespace kepler{
 			m_pImGuiLayer->Begin();
 			for (Layer* layer : m_layerStack)
 			{
-			    layer->OnGUIRender();
+				layer->OnGUIRender();
 			}
-			
+
 			// TODO: 추후에 Editor Layer가 구현되어 LayerStack안에 들어가면 제거 
 			m_pImGuiLayer->OnGUIRender();
 

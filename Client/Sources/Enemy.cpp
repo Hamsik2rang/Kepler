@@ -8,7 +8,7 @@ Enemy::Enemy(const kepler::Vec2f& position, const kepler::Vec2f& size, std::shar
 {
 	m_pLevel = pLevel;
 	m_pPlayer = pPlayer;
-	m_pBall = pBall; 
+	m_pBall = pBall;
 
 	m_minX = m_pLevel->GetWidth() / -2.0f;
 	m_maxX = m_pLevel->GetWidth() / 2.0f;
