@@ -3,8 +3,6 @@
 
 #include <imgui.h>
 
-
-
 GameLayer::GameLayer()
 	: m_playerScore{ 0u }
 	, m_enemyScore{ 0u }
@@ -176,13 +174,15 @@ void GameLayer::OnRender()
 
 	// 나중에 그릴수록 위에 그려짐(rendering order)
 	m_pLevel->OnRender();
-	m_pPlayer->OnRender();
-	m_pEnemy->OnRender();
-	if (!m_bIsGameOver)
+	if (m_state != eGameState::Menu)
 	{
-		m_pBall->OnRender();
+		m_pPlayer->OnRender();
+		m_pEnemy->OnRender();
+		if (!m_bIsGameOver)
+		{
+			m_pBall->OnRender();
+		}
 	}
-
 	// 렌더링 종료
 	kepler::Renderer2D::Get()->EndScene();
 }
