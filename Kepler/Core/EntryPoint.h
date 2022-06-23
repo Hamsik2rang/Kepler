@@ -16,12 +16,14 @@ int APIENTRY wWinMain(
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
-
-	kepler::Audio::Init();
-
 	kepler::g_hInst = hInstance;
 	kepler::g_nCmdShow = nCmdShow;
+
+	//----- Initialize Core resources -----
 	kepler::Log::Init();
+	kepler::Audio::Init();
+
+	//-------------------------------------
 
 	int year = 2022;
 	int month = 4;
@@ -32,9 +34,10 @@ int APIENTRY wWinMain(
 	auto app = kepler::CreateApplication();
 	app->Run();
 	
-	// Release resources
+	//----- Release Core resources -----
 	kepler::Audio::Release();
 
+	//----------------------------------
 	delete app;
 
 	return 0;
