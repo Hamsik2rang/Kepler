@@ -31,11 +31,12 @@ namespace kepler {
 		virtual ~WindowsWindow();
 
 		virtual void OnUpdate() override;
-		virtual inline uint32_t GetWidth() const override { return m_data.width; }
-		virtual inline uint32_t GetHeight() const override { return m_data.height; }
+		inline virtual uint32_t GetWidth() const override { return m_data.width; }
+		inline virtual uint32_t GetHeight() const override { return m_data.height; }
+		
 
-		virtual inline void SetVSync(bool isEnabled) override { m_data.bVSync = isEnabled; };
-		virtual inline bool IsVSync() const override { return m_data.bVSync; }
+		inline virtual void SetVSync(bool isEnabled) override { m_data.bVSync = isEnabled; };
+		inline virtual bool IsVSync() const override { return m_data.bVSync; }
 		inline virtual HWND GetWindowHandle() const override { return m_hWnd; }
 		
 		virtual inline void SetEventCallback(const EventCallbackFunc& callback) override { m_data.eventCallback = callback; };

@@ -9,16 +9,17 @@ namespace kepler {
 		Typeless = 0, Int, UInt, Float, NormalizedInt, NormalizedUInt,
 	};
 
+	// Texture Interface
 	class ITexture
 	{
 	public:
 		virtual ~ITexture() = default;
 
 		virtual void Bind(uint32_t slot) = 0;
-
 		virtual void SetData(const void* data, const uint32_t size) = 0;
 	};
 
+	// Texture1D Interface
 	class ITexture1D : public ITexture
 	{
 	public:
@@ -29,7 +30,7 @@ namespace kepler {
 
 		static std::shared_ptr<ITexture1D> Create(const eTextureDataType type, const uint32_t width, const uint8_t channel, const uint8_t bytePerTexel);
 	};
-
+	// Texture2D Interface
 	class ITexture2D : public ITexture
 	{
 	public:
@@ -43,6 +44,7 @@ namespace kepler {
 		static std::shared_ptr<ITexture2D> Create(const eTextureDataType type, const std::string& filepath);
 	};
 
+	// Texture3D Interface
 	// Is it worth?
 	class ITexture3D : public ITexture
 	{

@@ -1,4 +1,4 @@
-#include "Render2DTestLayer.h"
+#include "GameLayer.h"
 
 
 #include <Core/EntryPoint.h>
@@ -7,9 +7,9 @@ class Client : public kepler::Application
 {
 public:
 	Client()
-		:Application(kepler::eGraphicsAPI::DirectX11)
+		: Application(kepler::eGraphicsAPI::DirectX11)
 	{
-		PushLayer(new Render2DTestLayer());
+		PushLayer(new GameLayer());
 	}
 	~Client()
 	{
