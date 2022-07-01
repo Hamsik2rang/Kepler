@@ -30,8 +30,8 @@ namespace kepler {
 		static void Init();
 		static void Release();
 
-		static void Create(AudioSource& source, const std::string& filepath);
-		static void Play(AudioSource& source, bool bIsRepeat);
+		static void Create(AudioSource& source, const std::string& filepath, bool bIsRepeated = false);
+		static void Play(AudioSource& source);
 		static void Pause(AudioSource& source);
 		static void Stop(AudioSource& source);
 		static void Resume(AudioSource& source);

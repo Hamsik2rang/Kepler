@@ -20,13 +20,6 @@ namespace kepler {
 			, m_bIsPaused{ false }
 		{}
 
-		AudioSource(bool bIsRepeated)
-			: m_pChannel{ nullptr }
-			, m_pSound{ nullptr }
-			, m_bIsRepeated(bIsRepeated)
-			, m_bIsPaused{ false }
-		{}
-
 		~AudioSource() = default;
 
 		inline FMOD::Channel* GetChannel() { return m_pChannel; }

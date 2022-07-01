@@ -181,7 +181,7 @@ void Player::ChangeState()
 			m_size = constant::SQUIRTLE_JUMP_SIZE;
 			if (m_pCurAnim != &m_animation[PlayerStateJump])
 			{
-				kepler::Audio::Play(s_jumpAudio, false);
+				kepler::Audio::Play(s_jumpAudio);
 				m_pCurAnim = &m_animation[PlayerStateJump];
 				m_pCurAnim->Start();
 			}
@@ -253,7 +253,7 @@ void Player::ChangeState()
 					m_bIsSpiked = true;
 					if (!kepler::Audio::IsPlaying(s_spikeAudio))
 					{
-						kepler::Audio::Play(s_spikeAudio, false);
+						kepler::Audio::Play(s_spikeAudio);
 					}
 				}
 				m_curDirection.x = horizontal * 400.0f;
@@ -266,6 +266,7 @@ void Player::ChangeState()
 // 게임 종료 시 승리/패배 상태 설정 함수
 void Player::OnWin()
 {
+	m_curInputs.clear();
 	m_state = PlayerStateWin;
 	m_size = constant::SQUIRTLE_WIN_SIZE;
 	m_pCurAnim = &m_animation[PlayerStateWin];
@@ -273,6 +274,7 @@ void Player::OnWin()
 
 void Player::OnLose()
 {
+	m_curInputs.clear();
 	m_position.y = constant::PLAYER_SPAWN_POSITION.y - 50.0f;
 	m_state = PlayerStateLose;
 	m_size = constant::SQUIRTLE_LOSE_SIZE;

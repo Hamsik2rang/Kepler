@@ -5,10 +5,10 @@
 
 namespace kepler {
 
-	const uint32_t					Audio::MAX_CHANNEL = 32;
-	FMOD::System*					Audio::s_pSystem = nullptr;
-	uint32_t						Audio::s_version = 0u;
-	bool							Audio::s_bIsRunning = false;
+	const uint32_t	Audio::MAX_CHANNEL = 32;
+	FMOD::System*	Audio::s_pSystem = nullptr;
+	uint32_t		Audio::s_version = 0u;
+	bool			Audio::s_bIsRunning = false;
 
 	void Audio::Init()
 	{
@@ -87,10 +87,11 @@ namespace kepler {
 		}
 	}
 
-	void Audio::Create(AudioSource& source, const std::string& filepath)
+	void Audio::Create(AudioSource& source, const std::string& filepath, bool bIsRepeated)
 	{
 		FMOD::Sound* pSound = nullptr;
-		FMOD_MODE loop = source.IsRepeated() ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
+		FMOD_MODE loop = bIsRepeated ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
+		source.SetRepeat(bIsRepeated);
 		FMOD_RESULT result = s_pSystem->createSound(filepath.c_str(), loop, nullptr, &pSound);
 		if (result != FMOD_OK)
 		{
@@ -99,9 +100,8 @@ namespace kepler {
 		source.SetSound(pSound);
 	}
 
-	void Audio::Play(AudioSource& source, bool bIsRepeat)
+	void Audio::Play(AudioSource& source)
 	{
-		source.SetRepeat(bIsRepeat);
 		std::thread t{ [&source]()->void { Audio::PlayAudio(source); } };
 		// TODO: Audio가 모든 쓰레드를 관리하는 바람직한 방법을 찾아봅시다
 		t.detach();
