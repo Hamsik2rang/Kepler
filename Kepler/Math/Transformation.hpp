@@ -9,7 +9,7 @@
 namespace kepler {
 	namespace math {
 
-		inline const Mat44f GetTransformMatrix(const Vector3& position)
+		inline const Mat44f GetTranslateMatrix(const Vector3& position)
 		{
 			Mat44f T{
 				1.0f,		0.0f,		0.0f,		0.0f,
@@ -84,7 +84,7 @@ namespace kepler {
 
 		inline const Mat44f GetWorldMatrix(const Vector3& position, const Quaternion& rotation, const Vector3& scale)
 		{
-			return GetScalingMatrix(scale) * GetRotationMatrix(rotation) * GetTransformMatrix(position);
+			return GetScalingMatrix(scale) * GetRotationMatrix(rotation) * GetTranslateMatrix(position);
 		}
 
 		inline const Mat44f LookAt(const Vector3& eye, const Vector3& at, const Vector3& worldUp = { 0.0f, 1.0f, 0.0f })
