@@ -12,7 +12,6 @@ Currently in progress to implement.
 
 ### Libraries
 * DirectX11 - Graphics API for Rendering
-
 * [GoogleTest](https://github.com/google/googletest)
 * [ImGui](https://github.com/ocornut/imgui)
 * [spdlog](https://github.com/gabime/spdlog)
