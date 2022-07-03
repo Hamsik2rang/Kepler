@@ -48,8 +48,6 @@ namespace kepler {
 		return nullptr;
 	}
 
-
-
 	std::shared_ptr<IIndexBuffer> IIndexBuffer::Create(const uint32_t* const indices, const uint32_t count, eBufferUsage usage)
 	{
 		eGraphicsAPI api = IGraphicsAPI::GetAPI();

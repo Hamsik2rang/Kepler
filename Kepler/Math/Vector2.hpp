@@ -61,14 +61,14 @@ namespace kepler {
 		inline const Vector2 operator*(const float rhs) const { Vector2 result{ x * rhs, y * rhs }; return result; }
 		inline const Vector2 operator/(const Vector2& rhs) const 
 		{ 
-			KEPLER_ASSERT_NO_MESSAGE((::fabsf(rhs.x) > math::constant::Epsilon) && (::fabsf(rhs.y) > math::constant::Epsilon));
+			KEPLER_ASSERT_NO_MESSAGE((::fabsf(rhs.x) > math::constant::EPSILON) && (::fabsf(rhs.y) > math::constant::EPSILON));
 			Vector2 result{ x / rhs.x, y / rhs.y }; 
 			return result; 
 		}
 
 		inline const Vector2 operator/(const float rhs) const 
 		{
-			KEPLER_ASSERT_NO_MESSAGE(::fabsf(rhs) > math::constant::Epsilon);
+			KEPLER_ASSERT_NO_MESSAGE(::fabsf(rhs) > math::constant::EPSILON);
 			Vector2 result{ x / rhs, y / rhs }; 
 			return result; 
 		}
@@ -79,7 +79,7 @@ namespace kepler {
 		inline Vector2& operator*=(const float rhs) { x *= rhs; y *= rhs; return *this; }
 		inline Vector2& operator/=(const Vector2& rhs)
 		{
-			KEPLER_ASSERT_NO_MESSAGE((::fabsf(rhs.x) > math::constant::Epsilon) & (::fabsf(rhs.y) > math::constant::Epsilon));
+			KEPLER_ASSERT_NO_MESSAGE((::fabsf(rhs.x) > math::constant::EPSILON) & (::fabsf(rhs.y) > math::constant::EPSILON));
 			
 			x /= rhs.x;
 			y /= rhs.y; 
@@ -88,7 +88,7 @@ namespace kepler {
 
 		inline Vector2& operator/=(const float rhs) 
 		{
-			KEPLER_ASSERT_NO_MESSAGE(::fabsf(rhs) > math::constant::Epsilon);
+			KEPLER_ASSERT_NO_MESSAGE(::fabsf(rhs) > math::constant::EPSILON);
 			
 			x /= rhs; 
 			y /= rhs; 
@@ -99,8 +99,8 @@ namespace kepler {
 		// Friend Operator Overloadings --------------------------
 		inline friend const bool operator==(const Vector2& lhs, const Vector2& rhs) 
 		{
-			return (::fabsf(lhs.x - rhs.x) < math::constant::Epsilon) 
-				&& (::fabsf(lhs.y - rhs.y) < math::constant::Epsilon); 
+			return (::fabsf(lhs.x - rhs.x) < math::constant::EPSILON) 
+				&& (::fabsf(lhs.y - rhs.y) < math::constant::EPSILON); 
 		}
 		inline friend const bool operator!=(const Vector2& lhs, const Vector2& rhs) { return !(lhs == rhs); }
 		inline friend const Vector2 operator*(const float lhs, const Vector2& rhs) { return rhs * lhs; }

@@ -8,8 +8,6 @@
 
 namespace kepler {
 
-	
-
 	DX11Texture::DX11Texture()
 	{
 
@@ -67,47 +65,64 @@ namespace kepler {
 		, m_pSamplerState{ nullptr }
 	{
 		int channel = 0;
-		unsigned char* pRawImage = stbi_load(filepath.c_str(), reinterpret_cast<int*>(&m_width), reinterpret_cast<int*>(&m_height), &channel, 4);
+		unsigned char* pRawImage = stbi_load(filepath.c_str(), reinterpret_cast<int*>(&m_width), reinterpret_cast<int*>(&m_height), &channel, 0);
 		if (!pRawImage)
 		{
 			KEPLER_CORE_ASSERT(false, "Fail to load ImageFile");
 			return;
 		}
 
+
 		// Temporary
 		D3D11_TEXTURE2D_DESC texDesc{};
 		texDesc.Width = m_width;
 		texDesc.Height = m_height;
 		texDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-		texDesc.MipLevels = 1;
+		texDesc.MipLevels = 0;
 		texDesc.ArraySize = 1;
-		texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+		texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
 		texDesc.SampleDesc.Count = 1;
 		texDesc.SampleDesc.Quality = 0;
 		texDesc.CPUAccessFlags = 0;
-
-		D3D11_SUBRESOURCE_DATA initData{};
-		initData.pSysMem = pRawImage;
-		initData.SysMemPitch = m_width * 4;
+		texDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
+		texDesc.Usage = D3D11_USAGE_DEFAULT;
 
 		ID3D11Device* pDevice;
-		GetDX11DeviceAndDeviceContext(&pDevice, nullptr);
+		ID3D11DeviceContext* pDeviceContext;
+		GetDX11DeviceAndDeviceContext(&pDevice, &pDeviceContext);
 
 		// 咆胶贸 积己
-		HRESULT hr = pDevice->CreateTexture2D(&texDesc, &initData, &m_pTexture);
-		if (pRawImage)
-		{
-			stbi_image_free(pRawImage);
-			pRawImage = nullptr;
-		}
+		HRESULT hr = pDevice->CreateTexture2D(&texDesc, nullptr, &m_pTexture);
 		if (FAILED(hr))
 		{
 			KEPLER_CORE_ASSERT(false, "Fail to create texture");
 			return;
 		}
-		
+
+		// 咆胶贸 府家胶 汲沥 棺 raw image 秦力
+		uint32_t pitch = m_width * 4;
+		pDeviceContext->UpdateSubresource(m_pTexture, 0, nullptr, pRawImage, pitch, 0);
+		if (pRawImage)
+		{
+			stbi_image_free(pRawImage);
+			pRawImage = nullptr;
+		}
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+		srvDesc.Format = texDesc.Format;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Texture2D.MostDetailedMip = 0;
+		srvDesc.Texture2D.MipLevels = -1;
+
 		// 府家胶 轰 积己
-		hr = pDevice->CreateShaderResourceView(m_pTexture, nullptr, &m_pResourceView);
+		hr = pDevice->CreateShaderResourceView(m_pTexture, &srvDesc, &m_pResourceView);
+		if (FAILED(hr))
+		{
+			KEPLER_CORE_ASSERT(false, "Fail to create Shader Resource View");
+		}
+		
+		// mipmap 积己
+		pDeviceContext->GenerateMips(m_pResourceView);
 
 		// 基敲矾 积己
 		D3D11_SAMPLER_DESC samplerDesc{};

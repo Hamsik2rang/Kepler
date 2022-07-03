@@ -57,7 +57,7 @@ namespace kepler {
 
 		kepler::ShowWindow(m_hWnd);
 		::SetWindowLongPtr(m_hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(&m_data));
-		
+
 		SetVSync(true);
 	}
 

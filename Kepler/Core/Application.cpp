@@ -5,8 +5,9 @@
 #include "Core/Event/ApplicationEvent.hpp"
 #include "Renderer/Renderer.h"
 #include "Platform/DirectX11/DX11Context.h"
+#include "Audio/Audio.h"
 
-namespace kepler{
+namespace kepler {
 
 	Application* Application::s_pInstance = nullptr;
 
@@ -18,11 +19,13 @@ namespace kepler{
 		// bind this->OnEvent
 		m_pWindow->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 		s_pInstance = this;
-		
+
 		Renderer::Init();
 
 		m_pImGuiLayer = std::make_unique<ImGuiLayer>();
 		m_pImGuiLayer->OnAttach();
+
+		m_bIsRunning = true;
 	}
 
 	Application* Application::Get()
@@ -40,10 +43,10 @@ namespace kepler{
 	{
 		for (auto it = m_layerStack.end(); it != m_layerStack.begin();)
 		{
-			// °¡Àå »óÀ§ ·¹ÀÌ¾îºÎÅÍ ½ÃÀÛÇØ¼­ ÀÌº¥Æ® Ã³¸®
-			// °¢°¢ÀÇ ·¹ÀÌ¾î°¡ ÀÚ½ÅÀÌ Ã³¸®ÇÒ ÀÌº¥Æ®°¡ ¾Æ´Ï¶ó¸é ±×³É ¹«½ÃÇÕ´Ï´Ù.
+			// ê°€ì¥ ìƒìœ„ ë ˆì´ì–´ë¶€í„° ì‹œì‘í•´ì„œ ì´ë²¤íŠ¸ ì²˜ë¦¬
+			// ê°ê°ì˜ ë ˆì´ì–´ê°€ ìì‹ ì´ ì²˜ë¦¬í•  ì´ë²¤íŠ¸ê°€ ì•„ë‹ˆë¼ë©´ ê·¸ëƒ¥ ë¬´ì‹œí•©ë‹ˆë‹¤.
 			(*(--it))->OnEvent(e);
-			// ÀÌº¥Æ®°¡ ¸¸¾à ÀÓÀÇÀÇ ·¹ÀÌ¾î¿¡ ÀÇÇØ Ã³¸®µÇ¾ú´Ù¸é ±× ÀÌº¥Æ®´Â ¼Ò¸êÇÑ °Í°ú ¸¶Âù°¡ÁöÀÌ¹Ç·Î ´õ ÀÌ»ó ÇÏÀ§(ÈÄ¼øÀ§) ·¹ÀÌ¾î¿¡°Ô ÀÌº¥Æ®¸¦ Àü´ŞÇÏ¸é ¾È µË´Ï´Ù.
+			// ì´ë²¤íŠ¸ê°€ ë§Œì•½ ì„ì˜ì˜ ë ˆì´ì–´ì— ì˜í•´ ì²˜ë¦¬ë˜ì—ˆë‹¤ë©´ ê·¸ ì´ë²¤íŠ¸ëŠ” ì†Œë©¸í•œ ê²ƒê³¼ ë§ˆì°¬ê°€ì§€ì´ë¯€ë¡œ ë” ì´ìƒ í•˜ìœ„(í›„ìˆœìœ„) ë ˆì´ì–´ì—ê²Œ ì´ë²¤íŠ¸ë¥¼ ì „ë‹¬í•˜ë©´ ì•ˆ ë©ë‹ˆë‹¤.
 			if (e.IsHandled())
 			{
 				break;
@@ -69,9 +72,17 @@ namespace kepler{
 
 		MSG msg{};
 		m_timer.Start();
-		while (msg.message != WM_QUIT)
+		float lastTime = 0.0f;
+		while (msg.message != WM_QUIT && m_bIsRunning)
 		{
-			float deltaTime = m_timer.Elapsed();
+			float curTime = m_timer.Elapsed();
+			float deltaTime = curTime - lastTime;
+			if (deltaTime < 1.0f / 60.0f) 
+			{
+				continue; 
+			}
+			lastTime = curTime;
+
 			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 			{
 				TranslateMessage(&msg);
@@ -84,15 +95,21 @@ namespace kepler{
 			{
 				layer->OnUpdate(deltaTime);
 			}
+			// Render all layer(and overlay)s
+			for (Layer* layer : m_layerStack)
+			{
+				layer->OnRender();
+			}
+
 			// GUI Update
 			m_pImGuiLayer->Begin();
 			for (Layer* layer : m_layerStack)
 			{
-			    layer->OnRender();
+				layer->OnGUIRender();
 			}
-			
-			// TODO: ÃßÈÄ¿¡ Editor Layer°¡ ±¸ÇöµÇ¾î LayerStack¾È¿¡ µé¾î°¡¸é Á¦°Å 
-			m_pImGuiLayer->OnRender();
+
+			// TODO: ì¶”í›„ì— Editor Layerê°€ êµ¬í˜„ë˜ì–´ LayerStackì•ˆì— ë“¤ì–´ê°€ë©´ ì œê±° 
+			m_pImGuiLayer->OnGUIRender();
 
 			m_pImGuiLayer->End();
 			// Window Update

@@ -37,6 +37,7 @@ namespace kepler {
         ID3D11DeviceContext* pDeviceContext;
         GetDX11DeviceAndDeviceContext(&pDevice, &pDeviceContext);
 
+        // 별도의 정점데이터가 제공되지 않은 빈 buffer의 경우 언제든지 write될 수 있어야 하므로 dynamic usage로 생성
         D3D11_BUFFER_DESC bufferDesc{};
         bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
         bufferDesc.ByteWidth = size;
@@ -94,12 +95,22 @@ namespace kepler {
         }
     }
 
+    DX11VertexBuffer::~DX11VertexBuffer()
+    {
+        if (m_pBuffer)
+        {
+            m_pBuffer->Release();
+            m_pBuffer = nullptr;
+        }
+    }
+
     // 렌더링 파이프라인에 바인딩
     void DX11VertexBuffer::Bind()
     {
         ID3D11DeviceContext* pDeviceContext;
         GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
 
+        // VertexBuffer의 레이아웃 내 element들이 어떻게 chunking되었는지에 따라 offset, stride 계산해 쉐이더 장치에 bind
         for (const auto& e : m_layout)
         {
             UINT stride = m_layout.GetStride();
@@ -155,6 +166,15 @@ namespace kepler {
         if (FAILED(hr))
         {
             KEPLER_ASSERT_WITH_ERROR_CODE(false);
+        }
+    }
+
+    DX11IndexBuffer::~DX11IndexBuffer()
+    {
+        if (m_pBuffer)
+        {
+            m_pBuffer->Release();
+            m_pBuffer = nullptr;
         }
     }
 

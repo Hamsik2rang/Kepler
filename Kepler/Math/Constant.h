@@ -10,7 +10,7 @@ namespace kepler {
 			extern const float PIDIV4;		// PI / 4
 			extern const float PIDIV6;		// PI / 6
 			extern const float E;			// Eluer Number
-			extern const float Epsilon;		// Epsilon (for floating-point comparison)
+			extern const float EPSILON;		// Epsilon (for floating-point comparison)
 		}
 	}
 }

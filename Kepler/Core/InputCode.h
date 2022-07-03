@@ -19,6 +19,7 @@ namespace kepler {
 			
 			Clear			= 12,
 			Return			= 13,
+			Enter			= 13,
 
 			Shift			= 16,
 			Ctrl			= 17,

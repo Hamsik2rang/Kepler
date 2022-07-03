@@ -22,7 +22,7 @@ namespace kepler {
 		Int1 = Int,
 		Matrix = Float44
 	};
-
+	// Buffer Usage
 	enum class eBufferUsage
 	{
 		Default = 0,
@@ -95,6 +95,8 @@ namespace kepler {
 	};
 
 	// Vertex Buffer를 위한 Buffer Layout(Vertex Shader의 Input으로 연결됨)
+	// Vertex Buffer의 데이터가 어떤 Element로 구성되어 있는지
+	// 혹은 Element들이 어떻게 Chunking되어 있는지 관리하는 객체
 	class BufferLayout
 	{
 	private:
