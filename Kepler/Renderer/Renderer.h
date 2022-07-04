@@ -17,17 +17,6 @@ namespace kepler {
 		static Renderer* s_pInstance;
 		IGraphicsAPI* m_pGraphicsAPI;
 		
-		// º°Èñ ÄÚµå
-		//HWND m_hWnd = nullptr;
-		//Camera* m_pCamera = nullptr;
-		//DX11TextureShader* m_pTextureShader = nullptr;
-		//DX11Model* m_pModel = nullptr;
-		//
-		//XMMATRIX m_worldMatrix{};
-		//XMMATRIX m_projectionMatrix{};
-		//XMMATRIX m_orthoMatrix{};
-		//XMMATRIX m_viewMatrix{};
-
 		Renderer();
 		~Renderer();
 
@@ -36,8 +25,6 @@ namespace kepler {
 		static void Init();
 		
 		inline eGraphicsAPI GetAPI() const { return m_pGraphicsAPI->GetAPI(); }
-
-		//bool Render(IWindow* pWindow);
 
 		void ClearColor();
 		void SetColor();
