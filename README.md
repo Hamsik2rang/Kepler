@@ -18,6 +18,7 @@ Currently in progress to implement.
 * [DirectXTK](https://github.com/microsoft/DirectXTK)
 * [stbimage](https://github.com/nothings/stb)
 * [FMOD](https://www.fmod.com)  
+* [KeplerMath](https://github.com/hamsik2rang/keplermath)
 
 -TBA-
 
@@ -39,7 +40,7 @@ Currently in progress to implement.
 
 ### Installation
 
-Currently, Kepler only supprot Windows. so you just need `*.sln` to open and build this project.
+Currently, Kepler only support Windows. so you just need `*.sln` to open and build this project.
 
 Solution file is included in this repository. 
 
@@ -49,4 +50,4 @@ Therefore, **just Clone this repository to your local workspace using git comman
 git clone https://github.com/Hamsik2rang/Kepler.git --recursive
 ```
 
-then.. you'll be ready to go!
+then you'll be ready to go!
