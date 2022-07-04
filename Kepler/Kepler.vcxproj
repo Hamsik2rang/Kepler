@@ -203,6 +203,7 @@
     <ClInclude Include="Renderer\OrthographicCamera.h" />
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="Renderer\Renderer2D.h" />
+    <ClInclude Include="Renderer\RenderState.h" />
     <ClInclude Include="Renderer\Shader.h" />
     <ClInclude Include="Renderer\Texture.h" />
     <ClInclude Include="Renderer\VertexArray.h" />
@@ -247,6 +248,7 @@
     <ClCompile Include="Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="Renderer\Renderer.cpp" />
     <ClCompile Include="Renderer\Renderer2D.cpp" />
+    <ClCompile Include="Renderer\RenderState.cpp" />
     <ClCompile Include="Renderer\Shader.cpp" />
     <ClCompile Include="Renderer\Texture.cpp" />
     <ClCompile Include="Renderer\VertexArray.cpp" />
