@@ -1,10 +1,9 @@
 #include "kepch.h"
 #include "RenderProfiler.h"
 
-#include <imgui.h>
-
-
 namespace kepler {
+
+	RenderProfiler* RenderProfiler::s_pInstance = nullptr;
 
 	void RenderProfiler::Create()
 	{
@@ -45,5 +44,8 @@ namespace kepler {
 		ImGui::PopFont();
 	}
 
+	void RenderProfiler::OnUpdate(float deltaTime)
+	{
 
+	}
 }
