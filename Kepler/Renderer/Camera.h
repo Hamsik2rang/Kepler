@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Math/KeplerMath.h"
+#include "KeplerMath.h"
 
 namespace kepler {
 

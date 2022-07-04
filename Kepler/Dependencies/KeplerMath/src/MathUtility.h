@@ -1,11 +1,12 @@
 #pragma once
 
+#include "Base.h"
 #include "Constant.h"
 
 namespace kepler {
 	namespace math {
 
-		inline float DegToRad(float degree)
+		inline float KEPLER_MATH_API DegToRad(float degree)
 		{
 			// 180' = pi
 			// 1' = pi/180
@@ -13,7 +14,7 @@ namespace kepler {
 			return constant::PI * degree / 180.0f;
 		}
 
-		inline float RadToDeg(float radian)
+		inline float KEPLER_MATH_API RadToDeg(float radian)
 		{
 			// pi(rad) = 180'
 			// 1(rad) = 180' / pi

@@ -2,11 +2,12 @@
 
 #include <stdint.h>
 
+#include "Base.h"
 #include "Intrinsic.h"
 
 namespace kepler {
 
-	struct Vector4
+	struct KEPLER_MATH_API Vector4
 	{
 		union
 		{

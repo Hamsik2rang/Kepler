@@ -120,14 +120,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>KEPLER_ASSERTION_ENABLE;KEPLER_GRAPHICS_API_DIRECTX;KEPLER_PLATFORM_WINDOWS;KEPLER_PLATFORM_WINDOWS_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies;$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;$(SolutionDir)Kepler\Dependencies\spdlog\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies;$(SolutionDir)Kepler\Dependencies\KeplerMath\src;$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;$(SolutionDir)Kepler\Dependencies\spdlog\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Kepler\Dependencies\fmod\lib\$(Platform)\;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Kepler\Dependencies\KeplerMath\lib;$(SolutionDir)Kepler\Dependencies\fmod\lib\$(Platform)\;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -138,7 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>KEPLER_ASSERTION_ENABLE;KEPLER_GRAPHICS_API_DIRECTX;KEPLER_PLATFORM_WINDOWS;KEPLER_PLATFORM_WINDOWSNDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies;$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;$(SolutionDir)Kepler\Dependeices\spdlog\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies;$(SolutionDir)Kepler\Dependencies\KeplerMath\src;$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;$(SolutionDir)Kepler\Dependeices\spdlog\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <Optimization>MaxSpeed</Optimization>
     </ClCompile>
@@ -148,7 +148,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>fmodL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Kepler\Dependencies\fmod\lib\$(Platform)\;$(SolutionDir)Kepler/Dependencies/fmod/lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Kepler\Dependencies\KeplerMath\lib;$(SolutionDir)Kepler\Dependencies\fmod\lib\$(Platform)\;$(SolutionDir)Kepler/Dependencies/fmod/lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
