@@ -26,6 +26,8 @@ namespace kepler {
 	private:
 		static RenderProfile m_profile;
 
+		// GUI Font
+		ImFont* m_pFont;
 	public:
 		static RenderProfiler* s_pInstance;
 		static void Create();
@@ -33,10 +35,8 @@ namespace kepler {
 
 		virtual void OnUpdate(float deltaTime) override;
 
-		// ImGUI 구성을 위한 함수들입니다.
-		virtual void Begin() override;
-		virtual void End() override;
+		// GUI Function
+		virtual void OnAttach() override;
 		virtual void OnGUIRender() override;
-
 	};
 }
