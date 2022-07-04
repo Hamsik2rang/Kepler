@@ -3,13 +3,14 @@
 #include <iostream>
 #include <stdint.h>
 
+#include "Base.h"
 #include "Intrinsic.h"
 #include "Vector4.hpp"
 
 
 namespace kepler {
 	// row-majer matrix
-	struct alignas(16) Matrix44
+	struct KEPLER_MATH_API alignas(16) Matrix44
 	{
 		union
 		{

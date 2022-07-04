@@ -1,4 +1,6 @@
 #include "kepch.h"
+#pragma warning(disable:4819)
+
 
 #include "Application.h"
 #include "Core/Log.h"

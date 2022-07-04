@@ -1,11 +1,12 @@
 #pragma once
 
+#include "Base.h"
 #include "Intrinsic.h"
 #include "Vector3.hpp"
 
 namespace kepler {
 	
-	struct Matrix33
+	struct KEPLER_MATH_API Matrix33
 	{
 		union
 		{

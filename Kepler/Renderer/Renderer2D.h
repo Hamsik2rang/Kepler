@@ -5,7 +5,7 @@
 #include "Renderer/Texture.h"
 #include "Renderer/Shader.h"
 
-#include "Math/KeplerMath.h"
+#include "KeplerMath.h"
 
 namespace kepler {
 

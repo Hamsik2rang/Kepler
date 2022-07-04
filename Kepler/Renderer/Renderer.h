@@ -6,7 +6,7 @@
 #include "Renderer/Camera.h"
 #include "Core/Window.h"
 
-#include "Math/KeplerMath.h"
+#include "KeplerMath.h"
 
 
 namespace kepler {

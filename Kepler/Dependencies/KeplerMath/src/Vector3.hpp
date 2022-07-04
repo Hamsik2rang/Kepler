@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <cstring>
 
+#include "Base.h"
 #include "Intrinsic.h"
 #include "Vector4.hpp"
 
@@ -12,7 +13,7 @@ namespace kepler {
 
 	void StoreM128ToVec3(Vector3& v, const __m128& ps);
 
-	struct Vector3
+	struct KEPLER_MATH_API Vector3
 	{
 		union
 		{

@@ -2,13 +2,14 @@
 
 #include <cmath>
 
+#include "Base.h"
 #include "Intrinsic.h"
 #include "MathUtility.h"
 #include "Vector3.hpp"
 
 namespace kepler {
 
-	struct Quaternion
+	struct KEPLER_MATH_API Quaternion
 	{
 		float w;
 		union

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Base.h"
+
 #include "Constant.h"
 #include "Vector.h"
 #include "Matrix.h"
