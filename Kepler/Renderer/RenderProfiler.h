@@ -8,7 +8,7 @@
 
 namespace kepler {
 	// 프레임 동안 처리한 작업의 개수의 집합
-	struct RenderProfile
+	struct RenderProfileData
 	{
 		// 요구 작업
 		int drawCallsCount; // 호출된 Draw()의 수
@@ -26,7 +26,7 @@ namespace kepler {
 	class RenderProfiler : public Layer
 	{
 	private:
-		static RenderProfile m_profile;
+		RenderProfileData m_profile;
 
 		// GUI Font
 		ImFont* m_pFont;
@@ -40,5 +40,7 @@ namespace kepler {
 		// GUI Function
 		virtual void OnAttach() override;
 		virtual void OnGUIRender() override;
+
+		inline void SetProfile(const RenderProfileData& profile) { m_profile = profile; }
 	};
 }

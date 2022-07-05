@@ -1,10 +1,10 @@
 #include "kepch.h"
 
 #include "Renderer2D.h"
+#include "RenderProfiler.h"
 
 namespace kepler {
 
-	Renderer2D* Renderer2D::s_pInstance = nullptr;
 	// Batch Rendering시 데이터 단위가 되는 Batch Data
 	struct BatchData
 	{
@@ -26,6 +26,8 @@ namespace kepler {
 		std::vector<BatchData> batchObjects;
 	};
 	static RenderData s_data{};
+
+	Renderer2D* Renderer2D::s_pInstance = nullptr;
 
 	Renderer2D::Renderer2D()
 		:m_pGraphicsAPI{ IGraphicsAPI::Create() }
@@ -82,6 +84,8 @@ namespace kepler {
 	// TODO: Batch Rendering 구현해야 함
 	void Renderer2D::Flush()
 	{
+		RenderProfileData profile{ 0, };
+
 		for (const auto& batchData : s_data.batchObjects)
 		{
 			ShaderCache::GetShader(batchData.vertexShader)->Bind();
@@ -97,8 +101,20 @@ namespace kepler {
 				ShaderCache::GetLastCachedShader(eShaderType::Vertex)->SetMatrix("g_World", vt.second.Transpose());
 				vt.first->Bind();
 				m_pGraphicsAPI->DrawIndexed(vt.first);
+
+				// RenderProfiler
+				profile.drawCallsCount++;
+				profile.trianglesCount += vt.first.get()->GetIndexBuffer().get()->GetCount() - 2;
+				for (const auto& vb : vt.first.get()->GetVertexBuffers())
+				{
+					profile.vertexCount += vb.get()->GetLayout().GetElementCount();
+				}
 			}
 		}
+
+		// RenderProfiler
+		profile.batchesCount = s_data.batchObjects.size();
+		RenderProfiler::Get()->SetProfile(profile);
 
 		s_data.batchObjects.clear();
 	}
