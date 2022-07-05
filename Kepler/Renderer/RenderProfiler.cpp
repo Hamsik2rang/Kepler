@@ -35,17 +35,23 @@ namespace kepler {
 		ImGui::PushFont(m_pFont);
 		ImGuiIO& io = ImGui::GetIO();
 
-		ImGui::Begin("Debug Mode");
-		ImGui::Text("Frame : %.3f ms (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+		ImGui::Begin("Render Profiler");
+		ImGui::Text("Frame : %.3f ms (%.1f FPS)", 1000.0f / m_profile.frameRate, m_profile.frameRate);
 		ImGui::NewLine();
+		ImGui::Text("Draw Calls Count : %d", m_profile.drawCallsCount);
 		ImGui::NewLine();
-
+		ImGui::Text("Batches Count : %d", m_profile.batchesCount);
+		ImGui::NewLine();
+		ImGui::Text("Vertex Count : %d", m_profile.vertexCount);
+		ImGui::NewLine();
+		ImGui::Text("Triangles Count : %d", m_profile.trianglesCount);
+		ImGui::NewLine();
 		ImGui::End();
 		ImGui::PopFont();
 	}
 
 	void RenderProfiler::OnUpdate(float deltaTime)
 	{
-
+		m_profile.frameRate = ImGui::GetIO().Framerate;
 	}
 }

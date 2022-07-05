@@ -84,7 +84,9 @@ namespace kepler {
 	// TODO: Batch Rendering 구현해야 함
 	void Renderer2D::Flush()
 	{
+		// RenderProfiler
 		RenderProfileData profile{ 0, };
+		profile.batchesCount = s_data.batchObjects.size();
 
 		for (const auto& batchData : s_data.batchObjects)
 		{
@@ -112,8 +114,6 @@ namespace kepler {
 			}
 		}
 
-		// RenderProfiler
-		profile.batchesCount = s_data.batchObjects.size();
 		RenderProfiler::Get()->SetProfile(profile);
 
 		s_data.batchObjects.clear();
