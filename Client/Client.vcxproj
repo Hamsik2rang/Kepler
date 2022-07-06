@@ -160,26 +160,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Sources\Ball.cpp" />
     <ClCompile Include="Sources\ClientApp.cpp" />
-    <ClCompile Include="Sources\CollisionDetector.cpp" />
-    <ClCompile Include="Sources\Constant.cpp" />
-    <ClCompile Include="Sources\Enemy.cpp" />
-    <ClCompile Include="Sources\GameLayer.cpp" />
-    <ClCompile Include="Sources\Level.cpp" />
-    <ClCompile Include="Sources\Player.cpp" />
+    <ClCompile Include="Sources\ExampleLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sources\Animation2D.hpp" />
-    <ClInclude Include="Sources\Ball.h" />
-    <ClInclude Include="Sources\Collider2D.hpp" />
-    <ClInclude Include="Sources\CollisionDetector.h" />
-    <ClInclude Include="Sources\Constant.h" />
-    <ClInclude Include="Sources\Enemy.h" />
-    <ClInclude Include="Sources\GameLayer.h" />
-    <ClInclude Include="Sources\GameObject.h" />
-    <ClInclude Include="Sources\Level.h" />
-    <ClInclude Include="Sources\Player.h" />
+    <ClInclude Include="Sources\ExampleLayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
