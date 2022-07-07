@@ -1,5 +1,4 @@
 #include "kepch.h"
-#pragma warning(disable:4819)
 
 
 #include "Application.h"
@@ -81,7 +80,7 @@ namespace kepler {
 			float deltaTime = curTime - lastTime;
 			if (deltaTime < 1.0f / 60.0f) 
 			{
-				continue; 
+				continue;
 			}
 			lastTime = curTime;
 

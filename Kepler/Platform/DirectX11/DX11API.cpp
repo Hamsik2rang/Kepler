@@ -46,21 +46,6 @@ void kepler::DX11API::SetViewport(const uint32_t width, const uint32_t height, c
 	pDeviceContext->RSSetViewports(1, &viewport);
 }
 
-void kepler::DX11API::Resize(uint32_t width, uint32_t height)
-{
-	// D3D11_VIEWPORT를 설정합니다
-	D3D11_VIEWPORT viewport{};
-	viewport.Width = (FLOAT)width;
-	viewport.Height = (FLOAT)height;
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
-	viewport.TopLeftX = 0.0f;
-	viewport.TopLeftY = 0.0f;
-	// pImmediateContext에 뷰포트를 설정합니다
-	ID3D11DeviceContext* pImmediateContext = IGraphicsContext::Get()->GetDeviceContext();
-	pImmediateContext->RSSetViewports(1, &viewport);
-}
-
 void kepler::DX11API::DrawIndexed(const std::shared_ptr<IVertexArray>& pVertexArray)
 {
 	ID3D11DeviceContext* pImmediateContext = IGraphicsContext::Get()->GetDeviceContext();
