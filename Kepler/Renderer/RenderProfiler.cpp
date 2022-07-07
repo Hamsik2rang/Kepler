@@ -38,13 +38,22 @@ namespace kepler {
 		ImGui::Begin("Render Profiler");
 		ImGui::Text("Frame : %.3f ms (%.1f FPS)", 1000.0f / m_profile.frameRate, m_profile.frameRate);
 		ImGui::NewLine();
+
 		ImGui::Text("Draw Calls Count : %d", m_profile.drawCallsCount);
+		ImGui::NewLine();
+		ImGui::PlotLines("Draw Calls", m_pDrawCallsCounts.get(), CHART_SIZE);
 		ImGui::NewLine();
 		ImGui::Text("Batches Count : %d", m_profile.batchesCount);
 		ImGui::NewLine();
+		ImGui::PlotLines("Batches", m_pDrawCallsCounts.get(), CHART_SIZE);
+		ImGui::NewLine();
 		ImGui::Text("Vertex Count : %d", m_profile.vertexCount);
 		ImGui::NewLine();
+		ImGui::PlotLines("Vertex", m_pDrawCallsCounts.get(), CHART_SIZE);
+		ImGui::NewLine();
 		ImGui::Text("Triangles Count : %d", m_profile.trianglesCount);
+		ImGui::NewLine();
+		ImGui::PlotLines("Triangles", m_pDrawCallsCounts.get(), CHART_SIZE);
 		ImGui::NewLine();
 		ImGui::End();
 		ImGui::PopFont();
@@ -53,5 +62,18 @@ namespace kepler {
 	void RenderProfiler::OnUpdate(float deltaTime)
 	{
 		m_profile.frameRate = ImGui::GetIO().Framerate;
+
+		for (int i = 1; i < CHART_SIZE; i++)
+		{
+			m_pDrawCallsCounts	[i - 1] = m_pDrawCallsCounts[i];
+			m_pBatchesCounts	[i - 1] = m_pBatchesCounts	[i];
+			m_pVertexCounts		[i - 1] = m_pVertexCounts	[i];
+			m_pTrianglesCounts	[i - 1] = m_pTrianglesCounts[i];
+		}
+
+		m_pDrawCallsCounts	[CHART_SIZE - 1] = m_profile.drawCallsCount;
+		m_pBatchesCounts	[CHART_SIZE - 1] = m_profile.batchesCount;
+		m_pVertexCounts		[CHART_SIZE - 1] = m_profile.vertexCount;
+		m_pTrianglesCounts	[CHART_SIZE - 1] = m_profile.trianglesCount;
 	}
 }
