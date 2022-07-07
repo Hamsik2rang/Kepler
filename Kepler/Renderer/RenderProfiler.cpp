@@ -36,9 +36,8 @@ namespace kepler {
 		ImGuiIO& io = ImGui::GetIO();
 
 		ImGui::Begin("Render Profiler");
-		ImGui::Text("Frame : %.3f ms (%.1f FPS)", 1000.0f / m_profile.frameRate, m_profile.frameRate);
+		ImGui::Text("Frame : %.3f ms (%.1f FPS)", 1000.0f/ io.Framerate, io.Framerate);
 		ImGui::NewLine();
-
 		ImGui::Text("Draw Calls Count : %d", m_profile.drawCallsCount);
 		ImGui::NewLine();
 		ImGui::PlotLines("Draw Calls", m_pDrawCallsCounts.get(), CHART_SIZE);
@@ -61,8 +60,6 @@ namespace kepler {
 
 	void RenderProfiler::OnUpdate(float deltaTime)
 	{
-		m_profile.frameRate = ImGui::GetIO().Framerate;
-
 		for (int i = 1; i < CHART_SIZE; i++)
 		{
 			m_pDrawCallsCounts	[i - 1] = m_pDrawCallsCounts[i];

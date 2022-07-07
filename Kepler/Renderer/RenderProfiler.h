@@ -11,7 +11,6 @@ namespace kepler {
 	struct RenderProfileData
 	{
 		// 요구 작업
-		float frameRate; // frame 속도
 		int drawCallsCount; // 호출된 Draw()의 수
 		int vertexCount; // 처리한 Vertex의 수(차트로 구현)
 		int transferredDataSize; // 전송 데이터 크기

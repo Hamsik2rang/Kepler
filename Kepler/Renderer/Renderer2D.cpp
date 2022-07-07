@@ -86,7 +86,7 @@ namespace kepler {
 	{
 		// RenderProfiler
 		RenderProfileData profile{ 0, };
-		profile.batchesCount = s_data.batchObjects.size();
+		profile.batchesCount = (int)s_data.batchObjects.size();
 
 		for (const auto& batchData : s_data.batchObjects)
 		{
@@ -109,7 +109,7 @@ namespace kepler {
 				profile.trianglesCount += vt.first.get()->GetIndexBuffer().get()->GetCount() - 2;
 				for (const auto& vb : vt.first.get()->GetVertexBuffers())
 				{
-					profile.vertexCount += vb.get()->GetLayout().GetElementCount();
+					profile.vertexCount += (int)vb.get()->GetLayout().GetElementCount();
 				}
 			}
 		}
@@ -194,7 +194,7 @@ namespace kepler {
 			data.pTexture = nullptr;
 
 			s_data.batchObjects.push_back(data);
-			index = s_data.batchObjects.size() - 1;
+			index = (int)s_data.batchObjects.size() - 1;
 		}
 
 		// 정점, 인덱스 데이터 추가
@@ -252,7 +252,7 @@ namespace kepler {
 			data.pTexture = texture;
 
 			s_data.batchObjects.push_back(data);
-			index = s_data.batchObjects.size() - 1;
+			index = (int)s_data.batchObjects.size() - 1;
 		}
 
 		struct QuadVertex
