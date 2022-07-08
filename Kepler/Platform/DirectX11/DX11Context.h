@@ -17,6 +17,7 @@ namespace kepler {
 		ID3D11DeviceContext*		m_pImmediateContext;
 		IDXGISwapChain*				m_pSwapChain;
 		ID3D11RenderTargetView*		m_pRenderTargetView;
+		ID3D11DepthStencilView*		m_pDepthStencilView;
 
 		D3D_FEATURE_LEVEL			m_featureLevel;
 
@@ -29,6 +30,7 @@ namespace kepler {
 		inline virtual ID3D11Device* GetDevice() override { return m_pDevice; }
 		inline virtual ID3D11DeviceContext* GetDeviceContext() override { return m_pImmediateContext; }
 		inline virtual ID3D11RenderTargetView* GetRenderTargetView() override { return m_pRenderTargetView; }
+		inline virtual ID3D11DepthStencilView* GetDepthStencilView() override { return m_pDepthStencilView; }
 		inline virtual IDXGISwapChain* GetSwapChain() override { return m_pSwapChain; }
 
 		// Inherited via IRenderer
@@ -37,20 +39,4 @@ namespace kepler {
 		virtual void Cleanup() override;
 		virtual void SwapBuffer() override;
 	};
-
-	// DX11 조작에 필요한 장치 디바이스와 디바이스컨텍스트를 얻는 함수입니다.
-	// 함수가 호출되면 Out 파라미터들에 해당 장치들의 메모리 주소가 저장됩니다.
-	// 파라미터에 nullptr을 지정할 경우, 해당 객체는 불러오지 않습니다.
-	inline void GetDX11DeviceAndDeviceContext(ID3D11Device** ppOutDevice, ID3D11DeviceContext** ppOutDeviceContext)
-	{
-		DX11Context* pContext = reinterpret_cast<DX11Context*>(IGraphicsContext::Get());
-		if (ppOutDevice)
-		{
-			*ppOutDevice = pContext->GetDevice();
-		}
-		if (ppOutDeviceContext)
-		{
-			*ppOutDeviceContext = pContext->GetDeviceContext();
-		}
-	}
 }

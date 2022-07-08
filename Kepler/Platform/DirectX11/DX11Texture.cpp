@@ -87,9 +87,8 @@ namespace kepler {
 		texDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
 		texDesc.Usage = D3D11_USAGE_DEFAULT;
 
-		ID3D11Device* pDevice;
-		ID3D11DeviceContext* pDeviceContext;
-		GetDX11DeviceAndDeviceContext(&pDevice, &pDeviceContext);
+		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+		ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 
 		// 텍스처 생성
 		HRESULT hr = pDevice->CreateTexture2D(&texDesc, nullptr, &m_pTexture);
@@ -158,8 +157,7 @@ namespace kepler {
 
 	void DX11Texture2D::Bind(const uint32_t slot)
 	{
-		ID3D11DeviceContext* pDeviceContext = nullptr;
-		GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
+		ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 		pDeviceContext->PSSetShaderResources(slot, 1, &m_pResourceView);
 		pDeviceContext->PSSetSamplers(slot, 1, &m_pSamplerState);
 	}

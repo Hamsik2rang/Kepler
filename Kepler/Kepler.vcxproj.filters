@@ -105,7 +105,7 @@
     <ClInclude Include="Platform\DirectX11\DX11Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Camera.h">
+    <ClInclude Include="Renderer\Camera.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\Buffer.h">
@@ -145,6 +145,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\RenderState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform\DirectX11\DX11State.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\PerspectiveCamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\EditorCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -192,9 +201,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Platform\DirectX11\DX11Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\VertexArray.cpp">
@@ -249,6 +255,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\RenderState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform\DirectX11\DX11State.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\PerspectiveCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

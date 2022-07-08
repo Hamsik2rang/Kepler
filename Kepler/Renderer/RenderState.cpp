@@ -7,7 +7,7 @@
 
 namespace kepler {
 
-	std::shared_ptr<IRenderState> IRenderState::s_pInstance = nullptr;
+	std::shared_ptr<IRenderState>	IRenderState::s_pInstance = nullptr;
 
 	std::shared_ptr<IRenderState> IRenderState::Create()
 	{

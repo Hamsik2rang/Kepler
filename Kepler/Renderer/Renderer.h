@@ -3,7 +3,7 @@
 #include "Core/Base.h"
 #include "Renderer/GraphicsAPI.h"
 #include "Renderer/VertexArray.h"
-#include "Renderer/Camera.h"
+#include "Renderer/Camera.hpp"
 #include "Core/Window.h"
 
 #include "KeplerMath.h"
@@ -27,10 +27,12 @@ namespace kepler {
 		inline eGraphicsAPI GetAPI() const { return m_pGraphicsAPI->GetAPI(); }
 
 		void ClearColor();
-		void SetColor();
+		void SetColor(const float* pColor);
 		void SetViewport(const uint32_t width, const uint32_t height, const float minDepth, const float maxDepth);
-		void Resize(uint32_t width, uint32_t height);
 		
+		void BeginScene(Camera& camera);
+		void EndScene();
+
 		// TODO: should be going to define additional function overloadings(T, TR, TRS, shader program, etc.)
 		void Submit(std::shared_ptr<IVertexArray>& pVertexArray, const Mat44f& transform = Mat44f::Identity);
 	};

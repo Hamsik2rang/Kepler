@@ -12,19 +12,24 @@ namespace kepler {
 		None = 0,
 		Point,
 		Line,
-		Triangle,
+		LineAdj,
 		LineStrip,
+		LineStripAdj,
+		Triangle,
+		TriangleAdj,
 		TriangleStrip,
+		TriangleStripAdj,
+		CPPatch,
 	};
 
 	enum class eDepthComparer
 	{
 		None = 0,
 		Never,
-		NotEqual,
 		Less,
 		LessOrEqual,
 		Equal,
+		NotEqual,
 		Greater,
 		GreaterOrEqual,
 		Always,
@@ -37,13 +42,15 @@ namespace kepler {
 		std::shared_ptr<IShader> pDomainShader;
 		std::shared_ptr<IShader> pGeometryShader;
 		std::shared_ptr<IShader> pPixelShader;
-		
+
 		ePrimitiveTopology primitiveTopology;
 		eDepthComparer depthComparer;
+		uint32_t cpCount;
+
 		//TODO: add additional states
-		
 		bool bCullBackFace;
 		bool bDepthTest;
+		bool bIsFrontClockwise;
 		bool bDepthWrite;
 		bool bWireFrame;
 		float lineWidth;
@@ -55,11 +62,13 @@ namespace kepler {
 		static std::shared_ptr<IRenderState> s_pInstance;
 
 	public:
-		virtual ~IRenderState() = 0;
+		virtual ~IRenderState() = default;
 
+		virtual RenderStateDescription GetDescription() = 0;
+		virtual void SetDescription(RenderStateDescription& desc) = 0;
 		virtual void Bind() = 0;
-		virtual void GetStateDescription() = 0;
-		
+
 		static std::shared_ptr<IRenderState> Create();
+		inline static std::shared_ptr<IRenderState> Get() { return s_pInstance; }
 	};
 }
