@@ -26,7 +26,7 @@ namespace kepler {
 	struct ImPlotLineData
 	{
 	public:
-		static const int size = 600;
+		static const int size = 1000;
 		std::unique_ptr<float[]> x_data { new float[size] { 0.0f, } };
 		std::unique_ptr<float[]> y_data { new float[size] { 0.0f, } };
 	};
@@ -36,10 +36,10 @@ namespace kepler {
 	private:
 		RenderProfileData m_profile;
 		
-		ImPlotLineData m_pDrawCallsData;
-		ImPlotLineData m_pBatchesData;
-		ImPlotLineData m_pVertexData;
-		ImPlotLineData m_pTrianglesData;
+		ImPlotLineData m_drawCallsData;
+		ImPlotLineData m_batchesData;
+		ImPlotLineData m_vertexData;
+		ImPlotLineData m_trianglesData;
 
 		// GUI Font
 		ImFont* m_pFont;

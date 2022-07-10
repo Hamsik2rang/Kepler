@@ -37,37 +37,19 @@ namespace kepler {
 
 		ImGui::Begin("Render Profiler");
 		ImGui::Text("Frame : %.3f ms (%.1f FPS)", 1000.0f/ io.Framerate, io.Framerate);
-		ImGui::NewLine();
 		ImGui::Text("Draw Calls Count : %d", m_profile.drawCallsCount);
-		ImGui::NewLine();
-		
-		if (ImPlot::BeginPlot("Draw Calls Plot")) {
-			ImPlot::PlotLine("Draw Calls Plot", m_pDrawCallsData.x_data.get(), m_pDrawCallsData.y_data.get(), ImPlotLineData::size);
-			ImPlot::EndPlot();
-		}
-		ImGui::NewLine();
 		ImGui::Text("Batches Count : %d", m_profile.batchesCount);
-		ImGui::NewLine();
-		if (ImPlot::BeginPlot("Batches Plot")) {
-			ImPlot::PlotLine("Batches Plot", m_pBatchesData.x_data.get(), m_pBatchesData.y_data.get(), ImPlotLineData::size);
-			ImPlot::EndPlot();
-		}
-		ImGui::NewLine();
 		ImGui::Text("Vertex Count : %d", m_profile.vertexCount);
-		ImGui::NewLine();
-		if (ImPlot::BeginPlot("Vertex Plot")) {
-			ImPlot::PlotLine("Vertex Plot", m_pVertexData.x_data.get(), m_pVertexData.y_data.get(), ImPlotLineData::size);
-			ImPlot::EndPlot();
-		}
-		ImGui::NewLine();
 		ImGui::Text("Triangles Count : %d", m_profile.trianglesCount);
-		ImGui::NewLine();
-		if (ImPlot::BeginPlot("Triangles Plot")) {
-			ImPlot::PlotLine("Triangles Plot", m_pTrianglesData.x_data.get(), m_pTrianglesData.y_data.get(), ImPlotLineData::size);
+		if (ImPlot::BeginPlot("Plot")) {
+			ImPlot::SetupAxes("Time [s]", "Signal");
+			ImPlot::SetupAxesLimits(0, ImPlotLineData::size, 0, 100);
+			ImPlot::PlotLine("Draw Calls Plot", m_drawCallsData.x_data.get(), m_drawCallsData.y_data.get(), ImPlotLineData::size);
+			ImPlot::PlotLine("Batches Plot", m_batchesData.x_data.get(), m_batchesData.y_data.get(), ImPlotLineData::size);
+			ImPlot::PlotLine("Vertex Plot", m_vertexData.x_data.get(), m_vertexData.y_data.get(), ImPlotLineData::size);
+			ImPlot::PlotLine("Triangles Plot", m_trianglesData.x_data.get(), m_trianglesData.y_data.get(), ImPlotLineData::size);
 			ImPlot::EndPlot();
 		}
-		
-		ImGui::NewLine();
 		ImGui::End();
 		ImGui::PopFont();
 	}
@@ -76,20 +58,20 @@ namespace kepler {
 	{
 		for (int i = 1; i < ImPlotLineData::size; i++)
 		{
-			m_pDrawCallsData.x_data[i - 1] = (float)(i - 1);
-			m_pBatchesData	.x_data[i - 1] = (float)(i - 1);
-			m_pVertexData	.x_data[i - 1] = (float)(i - 1);
-			m_pTrianglesData.x_data[i - 1] = (float)(i - 1);
+			m_drawCallsData	.x_data[i - 1] = (float)(i - 1);
+			m_batchesData	.x_data[i - 1] = (float)(i - 1);
+			m_vertexData	.x_data[i - 1] = (float)(i - 1);
+			m_trianglesData	.x_data[i - 1] = (float)(i - 1);
 
-			m_pDrawCallsData.y_data[i - 1] = m_pDrawCallsData.y_data[i];
-			m_pBatchesData	.y_data[i - 1] = m_pBatchesData.y_data	[i];
-			m_pVertexData	.y_data[i - 1] = m_pVertexData.y_data	[i];
-			m_pTrianglesData.y_data[i - 1] = m_pTrianglesData.y_data[i];
+			m_drawCallsData	.y_data[i - 1] = m_drawCallsData.y_data	[i];
+			m_batchesData	.y_data[i - 1] = m_batchesData.y_data	[i];
+			m_vertexData	.y_data[i - 1] = m_vertexData.y_data	[i];
+			m_trianglesData	.y_data[i - 1] = m_trianglesData.y_data	[i];
 		}
 
-		m_pDrawCallsData.y_data[ImPlotLineData::size - 1] = m_profile.drawCallsCount;
-		m_pBatchesData	.y_data[ImPlotLineData::size - 1] = m_profile.batchesCount;
-		m_pVertexData	.y_data[ImPlotLineData::size - 1] = m_profile.vertexCount;
-		m_pTrianglesData.y_data[ImPlotLineData::size - 1] = m_profile.trianglesCount;
+		m_drawCallsData	.y_data[ImPlotLineData::size - 1] = m_profile.drawCallsCount;
+		m_batchesData	.y_data[ImPlotLineData::size - 1] = m_profile.batchesCount;
+		m_vertexData	.y_data[ImPlotLineData::size - 1] = m_profile.vertexCount;
+		m_trianglesData	.y_data[ImPlotLineData::size - 1] = m_profile.trianglesCount;
 	}
 }
