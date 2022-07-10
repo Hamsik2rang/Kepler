@@ -12,7 +12,7 @@ namespace kepler {
 		ID3D11DepthStencilState*	m_pDepthStencilState;
 		ID3D11BlendState*			m_pBlendState;
 	
-		bool m_bIsChanged;
+		bool m_bHasChanged;
 
 		void SetRasterizerState();
 		void SetDepthStencilState();
@@ -21,11 +21,11 @@ namespace kepler {
 	public:
 		DX11State();
 
-		virtual ~DX11State() = default;
+		virtual ~DX11State();
 
 		// Inherited via IRenderState
 		virtual void Bind() override;
 		inline virtual RenderStateDescription GetDescription() override { return m_desc; }
-		inline virtual void SetDescription(RenderStateDescription& desc) override { m_desc = desc; m_bIsChanged = true; }
+		inline virtual void SetDescription(RenderStateDescription& desc) override { m_desc = desc; m_bHasChanged = true; }
 	};
 }

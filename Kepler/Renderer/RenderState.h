@@ -49,11 +49,11 @@ namespace kepler {
 
 		//TODO: add additional states
 		bool bCullBackFace;
-		bool bDepthTest;
 		bool bIsFrontClockwise;
-		bool bDepthWrite;
 		bool bWireFrame;
-		float lineWidth;
+		bool bDepthTest;
+		bool bDepthWrite;
+		bool bBlendEnable;
 	};
 
 	class IRenderState
