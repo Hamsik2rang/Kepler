@@ -3,6 +3,7 @@
 #include "DX11Shader.h"
 #include "DX11Context.h"
 #include "Utility/StringUtility.h"
+#include "DX11State.h"
 
 namespace kepler {
 
@@ -358,7 +359,11 @@ namespace kepler {
 		case eShaderType::Compute:	pDeviceContext->CSSetShader(m_pComputeShader, nullptr, 0);	break;
 		}
 
+		IRenderState::Get()->SetShaderState(m_type, ShaderCache::GetShader(m_name));
+		
+		// TODO: RenderState가 Bound Shader를 확실하게 관리하는 것으로 판단되면 삭제할 것
 		ShaderCache::SetLastCachedShader(m_type, m_name);
+		
 	}
 	
 	// DirectX11의 경우 필수적으로 호출할 필요 없음

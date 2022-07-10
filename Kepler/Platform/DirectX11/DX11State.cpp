@@ -38,6 +38,53 @@ namespace kepler {
 		}
 	}
 
+	void DX11State::SetShaderState(ShaderStateDescription& desc)
+	{
+		s_shaderDesc = desc;
+	}
+
+	void DX11State::SetShaderState(const eShaderType& type, const std::shared_ptr<IShader>& pShader)
+	{
+		switch (type)
+		{
+		case eShaderType::Vertex:	s_shaderDesc.pVertexShader		= pShader; break;
+		case eShaderType::Hull:		s_shaderDesc.pHullShader		= pShader; break;
+		case eShaderType::Domain:	s_shaderDesc.pDomainShader		= pShader; break;
+		case eShaderType::Geometry:	s_shaderDesc.pGeometryShader	= pShader; break;
+		case eShaderType::Pixel:	s_shaderDesc.pPixelShader		= pShader; break;
+		}
+	}
+
+	void DX11State::SetRasterizerState(RasterizerStateDescription& desc)
+	{
+		D3D11_RASTERIZER_DESC rsDesc{};
+
+		if (desc.bCullBackFace) rsDesc.CullMode = D3D11_CULL_BACK;
+		else					rsDesc.CullMode = D3D11_CULL_FRONT;
+
+		if (desc.bIsFrontClockwise) rsDesc.FrontCounterClockwise = false;
+		else						rsDesc.FrontCounterClockwise = true;
+
+		if (desc.bWireFrame) rsDesc.FillMode = D3D11_FILL_WIREFRAME;
+		else				 rsDesc.FillMode = D3D11_FILL_SOLID;
+	}
+
+	void DX11State::SetDepthState(DepthStateDescription& desc)
+	{
+
+	}
+
+	void DX11State::SetStencilState(StencilStateDescription& desc)
+	{
+
+	}
+
+	void DX11State::SetBlendState(BlendStateDescription& desc)
+	{
+
+
+	}
+
 	void DX11State::SetRasterizerState()
 	{
 		D3D11_RASTERIZER_DESC desc{};
@@ -77,7 +124,16 @@ namespace kepler {
 	void DX11State::SetDepthStencilState()
 	{
 		D3D11_DEPTH_STENCIL_DESC desc{};
-		//...
+		if (m_desc.bDepthTest) desc.DepthEnable = true;
+		else desc.DepthEnable = false;
+
+
+
+
+
+		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+		ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+
 	}
 
 	void DX11State::Bind()
