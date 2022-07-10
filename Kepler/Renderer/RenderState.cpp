@@ -8,6 +8,11 @@
 namespace kepler {
 
 	std::shared_ptr<IRenderState>	IRenderState::s_pInstance = nullptr;
+	ShaderStateDescription			IRenderState::s_shaderDesc{};
+	RasterizerStateDescription		IRenderState::s_rasterizerDesc{};
+	DepthStateDescription			IRenderState::s_depthDesc{};
+	StencilStateDescription			IRenderState::s_stencilDesc{};
+	BlendStateDescription			IRenderState::s_blendDesc{};
 
 	std::shared_ptr<IRenderState> IRenderState::Create()
 	{

@@ -11,23 +11,26 @@ namespace kepler {
 		ID3D11DepthStencilState* m_pDepthStencilState;
 		ID3D11BlendState* m_pBlendState;
 
-		bool m_bHasChanged;
+		bool m_bShaderStateChaged;
+		bool m_bRasterizerStateChanged;
+		bool m_bDepthStateChanged;
+		bool m_bStencilStateChaged;
+		bool m_bBlendStateChaged;
 
-		void SetRasterizerState();
-		void SetDepthStencilState();
-		void SetBlendState();
-
+		void CreateRasterizerState();
+		void CreateDepthStencilState();
+		void CreateBlendState();
 	public:
 		DX11State();
 
 		virtual ~DX11State();
 
-		virtual void SetShaderState(ShaderStateDescription& desc);
 		virtual void SetShaderState(const eShaderType& type, const std::shared_ptr<IShader>& pShader);
-		virtual void SetRasterizerState(RasterizerStateDescription& desc);
-		virtual void SetDepthState(DepthStateDescription& desc);
-		virtual void SetStencilState(StencilStateDescription& desc);
-		virtual void SetBlendState(BlendStateDescription& desc);
+		inline virtual void SetShaderState(ShaderStateDescription& desc) { s_shaderDesc = desc; }
+		inline virtual void SetRasterizerState(RasterizerStateDescription& desc) { s_rasterizerDesc = desc; }
+		inline virtual void SetDepthState(DepthStateDescription& desc) { s_depthDesc = desc; }
+		inline virtual void SetStencilState(StencilStateDescription& desc) { s_stencilDesc = desc; }
+		inline virtual void SetBlendState(BlendStateDescription& desc) { s_blendDesc = desc; }
 
 		// Inherited via IRenderState
 		virtual void Bind() override;
