@@ -2,7 +2,8 @@
 
 // 외부 오픈소스 라이브러리 Dear ImGui를 이용합니다. ImGuiLayer의 추가 구현을 위한 자세한 설명과 사용법은 아래 링크를 참조하세요.
 // https://github.com/ocornut/ImGui
-#include "imgui.h"
+#include <imgui.h>
+#include <ImPlot/implot.h>
 #include "backends/imgui_impl_dx11.h"
 #include "backends/imgui_impl_win32.h"
 
@@ -36,6 +37,7 @@ namespace kepler {
 		// ImGui context 생성
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
+		ImPlot::CreateContext();
 
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 
@@ -70,6 +72,7 @@ namespace kepler {
 		// TODO: 해제할 리소스들 있으면 해제
 		ImGui_ImplDX11_Shutdown();
 		ImGui_ImplWin32_Shutdown();
+		ImPlot::DestroyContext();
 		ImGui::DestroyContext();
 	}
 

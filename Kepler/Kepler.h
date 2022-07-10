@@ -36,6 +36,8 @@
 #include "Platform/Win32/WinAPI.h"
 #include "Platform/Windows/WindowsWindow.h"
 #include "ImGui/ImGuiLayer.h"
+#include "imgui.h"
+#include "ImPlot/implot.h"
 //-----------------------------------------
 
 //----- Utility --------------------------

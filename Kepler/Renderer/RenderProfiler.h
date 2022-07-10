@@ -1,6 +1,7 @@
 #pragma once
 
 #include <imgui.h>
+#include <ImPlot/implot.h>
 
 #include "Core/Base.h"
 #include "Renderer/Renderer.h"
@@ -22,17 +23,23 @@ namespace kepler {
 		int trianglesCount; // 처리한 삼각형 개수(차트로 구현)
 	};
 
+	struct ImPlotLineData
+	{
+	public:
+		static const int size = 600;
+		std::unique_ptr<float[]> x_data { new float[size] { 0.0f, } };
+		std::unique_ptr<float[]> y_data { new float[size] { 0.0f, } };
+	};
+
 	class RenderProfiler : public Layer
 	{
 	private:
-		const int CHART_SIZE = 600;
-
 		RenderProfileData m_profile;
 		
-		std::unique_ptr<float[]> m_pDrawCallsCounts	{ new float[CHART_SIZE] { 0.0f, } };
-		std::unique_ptr<float[]> m_pBatchesCounts	{ new float[CHART_SIZE] { 0.0f, } };
-		std::unique_ptr<float[]> m_pVertexCounts	{ new float[CHART_SIZE] { 0.0f, } };
-		std::unique_ptr<float[]> m_pTrianglesCounts	{ new float[CHART_SIZE] { 0.0f, } };
+		ImPlotLineData m_pDrawCallsData;
+		ImPlotLineData m_pBatchesData;
+		ImPlotLineData m_pVertexData;
+		ImPlotLineData m_pTrianglesData;
 
 		// GUI Font
 		ImFont* m_pFont;

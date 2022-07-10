@@ -40,19 +40,33 @@ namespace kepler {
 		ImGui::NewLine();
 		ImGui::Text("Draw Calls Count : %d", m_profile.drawCallsCount);
 		ImGui::NewLine();
-		ImGui::PlotLines("Draw Calls", m_pDrawCallsCounts.get(), CHART_SIZE);
+		
+		if (ImPlot::BeginPlot("Draw Calls Plot")) {
+			ImPlot::PlotLine("Draw Calls Plot", m_pDrawCallsData.x_data.get(), m_pDrawCallsData.y_data.get(), ImPlotLineData::size);
+			ImPlot::EndPlot();
+		}
 		ImGui::NewLine();
 		ImGui::Text("Batches Count : %d", m_profile.batchesCount);
 		ImGui::NewLine();
-		ImGui::PlotLines("Batches", m_pDrawCallsCounts.get(), CHART_SIZE);
+		if (ImPlot::BeginPlot("Batches Plot")) {
+			ImPlot::PlotLine("Batches Plot", m_pBatchesData.x_data.get(), m_pBatchesData.y_data.get(), ImPlotLineData::size);
+			ImPlot::EndPlot();
+		}
 		ImGui::NewLine();
 		ImGui::Text("Vertex Count : %d", m_profile.vertexCount);
 		ImGui::NewLine();
-		ImGui::PlotLines("Vertex", m_pDrawCallsCounts.get(), CHART_SIZE);
+		if (ImPlot::BeginPlot("Vertex Plot")) {
+			ImPlot::PlotLine("Vertex Plot", m_pVertexData.x_data.get(), m_pVertexData.y_data.get(), ImPlotLineData::size);
+			ImPlot::EndPlot();
+		}
 		ImGui::NewLine();
 		ImGui::Text("Triangles Count : %d", m_profile.trianglesCount);
 		ImGui::NewLine();
-		ImGui::PlotLines("Triangles", m_pDrawCallsCounts.get(), CHART_SIZE);
+		if (ImPlot::BeginPlot("Triangles Plot")) {
+			ImPlot::PlotLine("Triangles Plot", m_pTrianglesData.x_data.get(), m_pTrianglesData.y_data.get(), ImPlotLineData::size);
+			ImPlot::EndPlot();
+		}
+		
 		ImGui::NewLine();
 		ImGui::End();
 		ImGui::PopFont();
@@ -60,17 +74,22 @@ namespace kepler {
 
 	void RenderProfiler::OnUpdate(float deltaTime)
 	{
-		for (int i = 1; i < CHART_SIZE; i++)
+		for (int i = 1; i < ImPlotLineData::size; i++)
 		{
-			m_pDrawCallsCounts	[i - 1] = m_pDrawCallsCounts[i];
-			m_pBatchesCounts	[i - 1] = m_pBatchesCounts	[i];
-			m_pVertexCounts		[i - 1] = m_pVertexCounts	[i];
-			m_pTrianglesCounts	[i - 1] = m_pTrianglesCounts[i];
+			m_pDrawCallsData.x_data[i - 1] = (float)(i - 1);
+			m_pBatchesData	.x_data[i - 1] = (float)(i - 1);
+			m_pVertexData	.x_data[i - 1] = (float)(i - 1);
+			m_pTrianglesData.x_data[i - 1] = (float)(i - 1);
+
+			m_pDrawCallsData.y_data[i - 1] = m_pDrawCallsData.y_data[i];
+			m_pBatchesData	.y_data[i - 1] = m_pBatchesData.y_data	[i];
+			m_pVertexData	.y_data[i - 1] = m_pVertexData.y_data	[i];
+			m_pTrianglesData.y_data[i - 1] = m_pTrianglesData.y_data[i];
 		}
 
-		m_pDrawCallsCounts	[CHART_SIZE - 1] = m_profile.drawCallsCount;
-		m_pBatchesCounts	[CHART_SIZE - 1] = m_profile.batchesCount;
-		m_pVertexCounts		[CHART_SIZE - 1] = m_profile.vertexCount;
-		m_pTrianglesCounts	[CHART_SIZE - 1] = m_profile.trianglesCount;
+		m_pDrawCallsData.y_data[ImPlotLineData::size - 1] = m_profile.drawCallsCount;
+		m_pBatchesData	.y_data[ImPlotLineData::size - 1] = m_profile.batchesCount;
+		m_pVertexData	.y_data[ImPlotLineData::size - 1] = m_profile.vertexCount;
+		m_pTrianglesData.y_data[ImPlotLineData::size - 1] = m_profile.trianglesCount;
 	}
 }
