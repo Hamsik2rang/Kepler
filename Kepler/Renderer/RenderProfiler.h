@@ -1,7 +1,7 @@
 #pragma once
 
 #include <imgui.h>
-#include <ImPlot/implot.h>
+#include <implot.h>
 
 #include "Core/Base.h"
 #include "Renderer/Renderer.h"

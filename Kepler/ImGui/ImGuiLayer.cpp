@@ -3,7 +3,7 @@
 // 외부 오픈소스 라이브러리 Dear ImGui를 이용합니다. ImGuiLayer의 추가 구현을 위한 자세한 설명과 사용법은 아래 링크를 참조하세요.
 // https://github.com/ocornut/ImGui
 #include <imgui.h>
-#include <ImPlot/implot.h>
+#include <implot.h>
 #include "backends/imgui_impl_dx11.h"
 #include "backends/imgui_impl_win32.h"
 
