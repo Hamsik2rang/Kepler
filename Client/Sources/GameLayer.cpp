@@ -20,7 +20,7 @@ GameLayer::GameLayer()
 
 void GameLayer::OnAttach()
 {
-	kepler::IWindow* window = kepler::Application::Get()->GetWindow();
+	auto window = kepler::Application::Get()->GetWindow();
 	float height = static_cast<float>(window->GetHeight());
 	float width = static_cast<float>(window->GetWidth());
 

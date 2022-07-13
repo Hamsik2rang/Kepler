@@ -27,8 +27,19 @@ namespace kepler {
 	{
 	public:
 		static const int size = 1000;
-		std::unique_ptr<float[]> x_data { new float[size] { 0.0f, } };
-		std::unique_ptr<float[]> y_data { new float[size] { 0.0f, } };
+		std::unique_ptr<float[]> x_data;
+		std::unique_ptr<float[]> y_data;
+
+		ImPlotLineData()
+		{
+			x_data = std::make_unique<float[]>(size);
+			y_data = std::make_unique<float[]>(size);
+			for (int i = 0; i < size; i++)
+			{
+				x_data[i] = 0;
+				y_data[i] = 0;
+			}
+		}
 	};
 
 	class RenderProfiler : public Layer
@@ -41,8 +52,6 @@ namespace kepler {
 		ImPlotLineData m_vertexData;
 		ImPlotLineData m_trianglesData;
 
-		// GUI Font
-		ImFont* m_pFont;
 	public:
 		static RenderProfiler* s_pInstance;
 		static void Create();
@@ -51,7 +60,6 @@ namespace kepler {
 		virtual void OnUpdate(float deltaTime) override;
 
 		// GUI Function
-		virtual void OnAttach() override;
 		virtual void OnGUIRender() override;
 
 		inline void SetProfile(const RenderProfileData& profile) { m_profile = profile; }

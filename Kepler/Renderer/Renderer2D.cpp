@@ -106,10 +106,10 @@ namespace kepler {
 
 				// RenderProfiler
 				profile.drawCallsCount++;
-				profile.trianglesCount += vt.first.get()->GetIndexBuffer().get()->GetCount() - 2;
-				for (const auto& vb : vt.first.get()->GetVertexBuffers())
+				profile.trianglesCount += vt.first->GetIndexBuffer()->GetCount() - 2;
+				for (const auto& vb : vt.first->GetVertexBuffers())
 				{
-					profile.vertexCount += (int)vb.get()->GetLayout().GetElementCount();
+					profile.vertexCount += (int)vb->GetLayout().GetElementCount();
 				}
 			}
 		}

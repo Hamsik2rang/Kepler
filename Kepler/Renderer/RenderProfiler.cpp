@@ -11,28 +11,20 @@ namespace kepler {
 		{
 			return;
 		}
-		s_pInstance = new RenderProfiler;
+		s_pInstance = new RenderProfiler();
 	}
 
 	RenderProfiler* RenderProfiler::Get()
 	{
 		if (!s_pInstance)
 		{
-			s_pInstance = new RenderProfiler;
+			s_pInstance = new RenderProfiler();
 		}
 		return s_pInstance;
 	}
 
-	void RenderProfiler::OnAttach()
-	{
-		// GUI용 폰트 초기화
-		ImGuiIO& io = ImGui::GetIO();
-		m_pFont = io.Fonts->AddFontFromFileTTF("./Assets/OpenSans-Regular.ttf", 18.0f);
-	}
-
 	void RenderProfiler::OnGUIRender()
 	{
-		ImGui::PushFont(m_pFont);
 		ImGuiIO& io = ImGui::GetIO();
 
 		ImGui::Begin("Render Profiler");
@@ -41,7 +33,8 @@ namespace kepler {
 		ImGui::Text("Batches Count : %d", m_profile.batchesCount);
 		ImGui::Text("Vertex Count : %d", m_profile.vertexCount);
 		ImGui::Text("Triangles Count : %d", m_profile.trianglesCount);
-		if (ImPlot::BeginPlot("Plot")) {
+		if (ImPlot::BeginPlot("Plot"))
+		{
 			ImPlot::SetupAxes("Time [s]", "Signal");
 			ImPlot::SetupAxesLimits(0, ImPlotLineData::size, 0, 100);
 			ImPlot::PlotLine("Draw Calls Plot", m_drawCallsData.x_data.get(), m_drawCallsData.y_data.get(), ImPlotLineData::size);
@@ -51,7 +44,6 @@ namespace kepler {
 			ImPlot::EndPlot();
 		}
 		ImGui::End();
-		ImGui::PopFont();
 	}
 
 	void RenderProfiler::OnUpdate(float deltaTime)
@@ -62,16 +54,15 @@ namespace kepler {
 			m_batchesData	.x_data[i - 1] = (float)(i - 1);
 			m_vertexData	.x_data[i - 1] = (float)(i - 1);
 			m_trianglesData	.x_data[i - 1] = (float)(i - 1);
-
-			m_drawCallsData	.y_data[i - 1] = m_drawCallsData.y_data	[i];
-			m_batchesData	.y_data[i - 1] = m_batchesData.y_data	[i];
-			m_vertexData	.y_data[i - 1] = m_vertexData.y_data	[i];
-			m_trianglesData	.y_data[i - 1] = m_trianglesData.y_data	[i];
+			m_drawCallsData	.y_data[i - 1] = m_drawCallsData.y_data[i];
+			m_batchesData	.y_data[i - 1] = m_batchesData	.y_data[i];
+			m_vertexData	.y_data[i - 1] = m_vertexData	.y_data[i];
+			m_trianglesData	.y_data[i - 1] = m_trianglesData.y_data[i];
 		}
 
-		m_drawCallsData	.y_data[ImPlotLineData::size - 1] = m_profile.drawCallsCount;
-		m_batchesData	.y_data[ImPlotLineData::size - 1] = m_profile.batchesCount;
-		m_vertexData	.y_data[ImPlotLineData::size - 1] = m_profile.vertexCount;
-		m_trianglesData	.y_data[ImPlotLineData::size - 1] = m_profile.trianglesCount;
+		m_drawCallsData	.y_data[ImPlotLineData::size - 1] = (float)m_profile.drawCallsCount;
+		m_batchesData	.y_data[ImPlotLineData::size - 1] = (float)m_profile.batchesCount;
+		m_vertexData	.y_data[ImPlotLineData::size - 1] = (float)m_profile.vertexCount;
+		m_trianglesData	.y_data[ImPlotLineData::size - 1] = (float)m_profile.trianglesCount;
 	}
 }
