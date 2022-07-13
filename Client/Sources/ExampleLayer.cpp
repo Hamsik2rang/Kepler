@@ -14,6 +14,26 @@ bool ExampleLayer::OnKeyboardPressed(kepler::KeyPressedEvent& e)
 		nextPos += -m_camera.GetDirection().Normalize() * 0.1f;
 		nextAt += -m_camera.GetDirection().Normalize() * 0.1f;
 	}
+	if (e.GetKeyCode() == kepler::key::F6)
+	{
+		auto rs = kepler::IRenderState::Get()->GetDepthState();
+		rs.bDepthTest = true;
+		rs.bDepthWrite = true;
+		rs.comparer = kepler::eDepthComparer::Less;
+		kepler::IRenderState::Get()->SetDepthState(rs);
+	}
+	m_camera.SetFocus(nextAt);
+	m_camera.SetPosition(nextPos);
+
+
+	if (e.GetKeyCode() == kepler::key::F7)
+	{
+		auto rs = kepler::IRenderState::Get()->GetDepthState();
+		rs.bDepthTest = false;
+		rs.bDepthWrite = false;
+		rs.comparer = kepler::eDepthComparer::Never;
+		kepler::IRenderState::Get()->SetDepthState(rs);
+	}
 	if (e.GetKeyCode() == kepler::key::F8)
 	{
 		auto rs = kepler::IRenderState::Get()->GetRasterizerState();
@@ -26,8 +46,6 @@ bool ExampleLayer::OnKeyboardPressed(kepler::KeyPressedEvent& e)
 		rs.bWireFrame = false;
 		kepler::IRenderState::Get()->SetRasterizerState(rs);
 	}
-	m_camera.SetFocus(nextAt);
-	m_camera.SetPosition(nextPos);
 
 	return true;
 }
@@ -41,35 +59,35 @@ void ExampleLayer::OnAttach()
 	kepler::IRenderState::Get()->SetShaderState(desc);
 
 	float vertices[]{
-		-1.0f, 1.0f, -1.0f,		1.0f, 0.0f, 0.0f, 1.0f,
-		1.0f, 1.0f, -1.0f,		1.0f, 0.0f, 0.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,		1.0f, 0.0f, 0.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,		1.0f, 0.0f, 0.0f, 1.0f,
+		-1.0f, 1.0f, -1.0f,		1.0f, 0.0f, 0.0f, 0.5f,
+		1.0f, 1.0f, -1.0f,		1.0f, 0.0f, 0.0f, 0.5f,
+		1.0f, 1.0f, 1.0f,		1.0f, 0.0f, 0.0f, 0.5f,
+		-1.0f, 1.0f, 1.0f,		1.0f, 0.0f, 0.0f, 0.5f,
 
-		-1.0f, -1.0f, -1.0f,	0.0f, 1.0f, 0.0f, 1.0f,
-		1.0f, -1.0f, -1.0f,		0.0f, 1.0f, 0.0f, 1.0f,
-		1.0f, -1.0f, 1.0f,		0.0f, 1.0f, 0.0f, 1.0f,
-		-1.0f, -1.0f, 1.0f,		0.0f, 1.0f, 0.0f, 1.0f,
+		-1.0f, -1.0f, -1.0f,	0.0f, 1.0f, 0.0f, 0.5f,
+		1.0f, -1.0f, -1.0f,		0.0f, 1.0f, 0.0f, 0.5f,
+		1.0f, -1.0f, 1.0f,		0.0f, 1.0f, 0.0f, 0.5f,
+		-1.0f, -1.0f, 1.0f,		0.0f, 1.0f, 0.0f, 0.5f,
 
-		-1.0f, -1.0f, 1.0f,		0.0f, 0.0f, 1.0f, 1.0f,
-		-1.0f, -1.0f, -1.0f,	0.0f, 0.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f, -1.0f,		0.0f, 0.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,		0.0f, 0.0f, 1.0f, 1.0f,
+		-1.0f, -1.0f, 1.0f,		0.0f, 0.0f, 1.0f, 0.5f,
+		-1.0f, -1.0f, -1.0f,	0.0f, 0.0f, 1.0f, 0.5f,
+		-1.0f, 1.0f, -1.0f,		0.0f, 0.0f, 1.0f, 0.5f,
+		-1.0f, 1.0f, 1.0f,		0.0f, 0.0f, 1.0f, 0.5f,
 
-		1.0f, -1.0f, 1.0f,		0.0f, 1.0f, 1.0f, 1.0f,
-		1.0f, -1.0f, -1.0f,		0.0f, 1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, -1.0f,		0.0f, 1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,		0.0f, 1.0f, 1.0f, 1.0f,
+		1.0f, -1.0f, 1.0f,		0.0f, 1.0f, 1.0f, 0.5f,
+		1.0f, -1.0f, -1.0f,		0.0f, 1.0f, 1.0f, 0.5f,
+		1.0f, 1.0f, -1.0f,		0.0f, 1.0f, 1.0f, 0.5f,
+		1.0f, 1.0f, 1.0f,		0.0f, 1.0f, 1.0f, 0.5f,
 
-		-1.0f, -1.0f, -1.0f,	1.0f, 0.0f, 1.0f, 1.0f,
-		1.0f, -1.0f, -1.0f,		1.0f, 0.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, -1.0f,		1.0f, 0.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f, -1.0f,		1.0f, 0.0f, 1.0f, 1.0f,
+		-1.0f, -1.0f, -1.0f,	1.0f, 0.0f, 1.0f, 0.5f,
+		1.0f, -1.0f, -1.0f,		1.0f, 0.0f, 1.0f, 0.5f,
+		1.0f, 1.0f, -1.0f,		1.0f, 0.0f, 1.0f, 0.5f,
+		-1.0f, 1.0f, -1.0f,		1.0f, 0.0f, 1.0f, 0.5f,
 
-		-1.0f, -1.0f, 1.0f,		1.0f, 1.0f, 0.0f, 1.0f,
-		1.0f, -1.0f, 1.0f,		1.0f, 1.0f, 0.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,		1.0f, 1.0f, 0.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,		1.0f, 1.0f, 0.0f, 1.0f,
+		-1.0f, -1.0f, 1.0f,		1.0f, 1.0f, 0.0f, 0.5f,
+		1.0f, -1.0f, 1.0f,		1.0f, 1.0f, 0.0f, 0.5f,
+		1.0f, 1.0f, 1.0f,		1.0f, 1.0f, 0.0f, 0.5f,
+		-1.0f, 1.0f, 1.0f,		1.0f, 1.0f, 0.0f, 0.5f,
 	};
 
 	uint32_t indices[]{
@@ -112,9 +130,9 @@ void ExampleLayer::OnAttach()
 
 	// TODO: FrameBuffer 구현해서 작동하도록 변경
 	auto ds = kepler::IRenderState::Get()->GetDepthState();
-	ds.bDepthTest = false;
-	ds.bDepthWrite = false;
-	ds.comparer = kepler::eDepthComparer::Never;
+	ds.bDepthTest = true;
+	ds.bDepthWrite = true;
+	ds.comparer = kepler::eDepthComparer::Less;
 	kepler::IRenderState::Get()->SetDepthState(ds);
 }
 
@@ -136,6 +154,9 @@ void ExampleLayer::OnUpdate(const float deltaTime)
 	auto shaderDesc = kepler::IRenderState::Get()->GetShaderState();
 	kepler::Renderer::Get()->BeginScene(m_camera);
 	m_pVertexArray->Bind();
+
 	kepler::Renderer::Get()->Submit(m_pVertexArray, kepler::math::GetRotationMatrixX(m_time) * kepler::math::GetRotationMatrixY(m_time / 3.0f) * kepler::math::GetTranslateMatrix({ 0.0f, 0.0f, 4.0f }));
+	kepler::Renderer::Get()->Submit(m_pVertexArray, kepler::math::GetScalingMatrix({ 2.5f, 2.5f, 2.5f }) * kepler::math::GetRotationMatrixX(m_time/2.0f) * kepler::math::GetRotationMatrixZ(m_time / 1.8f) * kepler::math::GetTranslateMatrix({ 0.0f, 0.0f, 60.0f }));
+
 	kepler::Renderer::Get()->EndScene();
 }

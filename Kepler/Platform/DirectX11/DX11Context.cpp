@@ -125,6 +125,7 @@ bool kepler::DX11Context::Init(const WindowData& data)
 	//uint32_t sampleMask = 0xffffffff;
 	//m_pImmediateContext->OMSetBlendState(blendState, blendFactor, sampleMask);
 
+	// Set Depth Stencil View
 	D3D11_TEXTURE2D_DESC dsDesc{};
 	dsDesc.Width = data.width;
 	dsDesc.Height = data.height;

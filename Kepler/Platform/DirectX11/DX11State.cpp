@@ -105,6 +105,7 @@ namespace kepler {
 		}
 
 		D3D11_DEPTH_STENCIL_DESC desc{};
+		// 기존 description이 존재한다면 파이프라인에서 가져옴
 		if (m_pDepthStencilState)
 		{
 			m_pDepthStencilState->GetDesc(&desc);

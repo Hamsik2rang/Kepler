@@ -24,9 +24,8 @@ void kepler::DX11API::ClearColor()
 	ID3D11RenderTargetView* pRenderTargetView = IGraphicsContext::Get()->GetRenderTargetView();
 	ID3D11DepthStencilView* pDepthStencilView = IGraphicsContext::Get()->GetDepthStencilView();
 
-	pImmediateContext->OMSetRenderTargets(1, &pRenderTargetView, nullptr);
 	pImmediateContext->ClearRenderTargetView(pRenderTargetView, m_clearColor);
-	pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0x00);
+	pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
 void kepler::DX11API::SetColor(const float color[4])
