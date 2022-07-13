@@ -53,10 +53,6 @@ namespace kepler {
 		ImPlotLineData m_trianglesData;
 
 	public:
-		static RenderProfiler* s_pInstance;
-		static void Create();
-		static RenderProfiler* Get();
-
 		virtual void OnUpdate(float deltaTime) override;
 
 		// GUI Function

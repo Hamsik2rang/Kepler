@@ -9,7 +9,7 @@ public:
 	Client()
 		: Application(kepler::eGraphicsAPI::DirectX11)
 	{
-		PushOverlay(kepler::RenderProfiler::Get());
+		PushOverlay(new kepler::RenderProfiler()); // ~LayerStack¿¡¼­ deleteµÊ.
 		PushLayer(new GameLayer());
 	}
 	~Client()

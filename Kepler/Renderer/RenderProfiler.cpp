@@ -2,27 +2,6 @@
 #include "RenderProfiler.h"
 
 namespace kepler {
-
-	RenderProfiler* RenderProfiler::s_pInstance = nullptr;
-
-	void RenderProfiler::Create()
-	{
-		if (s_pInstance)
-		{
-			return;
-		}
-		s_pInstance = new RenderProfiler();
-	}
-
-	RenderProfiler* RenderProfiler::Get()
-	{
-		if (!s_pInstance)
-		{
-			s_pInstance = new RenderProfiler();
-		}
-		return s_pInstance;
-	}
-
 	void RenderProfiler::OnGUIRender()
 	{
 		ImGuiIO& io = ImGui::GetIO();
