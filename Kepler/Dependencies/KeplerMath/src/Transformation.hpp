@@ -89,15 +89,20 @@ namespace kepler {
 
 		inline const Mat44f LookAt(const Vector3& eye, const Vector3& at, const Vector3& worldUp = { 0.0f, 1.0f, 0.0f })
 		{
-			Vec3f right = Cross(worldUp, at).Normalize();
-			Vec3f up = Cross(at, right).Normalize();
-			Vec3f front = Cross(right, up);
+			Vec3f front = (at - eye).Normalize();
+
+			Vec3f right = Cross(worldUp, front).Normalize();
+			Vec3f up = Cross(front, right);
+
+			float tr = Dot(-eye, right);
+			float tu = Dot(-eye, up);
+			float tf = Dot(-eye, front);
 
 			Mat44f view{
-				right.x,	up.x,	front.z,	0.0f,
-				right.y,	up.y,	front.z,	0.0f,
+				right.x,	up.x,	front.x,	0.0f,
+				right.y,	up.y,	front.y,	0.0f,
 				right.z,	up.z,	front.z,	0.0f,
-				-eye.x,		-eye.y,	-eye.z,		1.0f
+				tr,			tu,		tf,			1.0f
 			};
 
 			return view;
@@ -106,10 +111,10 @@ namespace kepler {
 		inline const Mat44f Perspective(const float fovY, const float aspect, const float nearClip, const float farClip)
 		{
 			Mat44f perspective{
-			1.0f / (std::tanf(DegToRad(fovY / 2.0f)) * aspect), 0.0f, 0.0f, 0.0f ,
-			0.0f, 1.0f / std::tanf(DegToRad(fovY / 2.0f)), 0.0f, 0.0f ,
-			0.0f, 0.0f, farClip / (farClip - nearClip), -1.0f,
-			0.0f, 0.0f, nearClip * farClip / (farClip - nearClip), 0.0f
+			1.0f / (std::tanf(DegToRad(fovY / 2.0f)) * aspect), 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f / std::tanf(DegToRad(fovY / 2.0f)), 0.0f, 0.0f,
+			0.0f, 0.0f, farClip / (farClip - nearClip), 1.0f,
+			0.0f, 0.0f, -nearClip * farClip / (farClip - nearClip), 0.0f
 			};
 
 			return perspective;
