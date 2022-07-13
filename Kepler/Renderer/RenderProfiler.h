@@ -11,7 +11,7 @@ namespace kepler {
 	class RenderProfiler : public Layer
 	{
 	private:
-		const struct RenderLog* m_profile;
+		const RenderLog* m_profile;
 
 	public:
 		RenderProfiler();
