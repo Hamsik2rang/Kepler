@@ -201,6 +201,7 @@
     <ClInclude Include="Platform\Win32\WinAPI.h" />
     <ClInclude Include="Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Renderer\OrthographicCamera.h" />
+    <ClInclude Include="Renderer\RenderLog.h" />
     <ClInclude Include="Renderer\RenderProfiler.h" />
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="Renderer\Renderer2D.h" />
@@ -248,6 +249,7 @@
     <ClCompile Include="Renderer\GraphicsContext.cpp" />
     <ClCompile Include="Renderer\GraphicsAPI.cpp" />
     <ClCompile Include="Renderer\OrthographicCamera.cpp" />
+    <ClCompile Include="Renderer\RenderLog.cpp" />
     <ClCompile Include="Renderer\RenderProfiler.cpp" />
     <ClCompile Include="Renderer\Renderer.cpp" />
     <ClCompile Include="Renderer\Renderer2D.cpp" />

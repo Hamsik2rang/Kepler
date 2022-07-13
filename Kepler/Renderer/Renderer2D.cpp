@@ -1,7 +1,6 @@
 #include "kepch.h"
 
 #include "Renderer2D.h"
-#include "RenderProfiler.h"
 
 namespace kepler {
 
@@ -32,7 +31,6 @@ namespace kepler {
 	Renderer2D::Renderer2D()
 		:m_pGraphicsAPI{ IGraphicsAPI::Create() }
 	{
-
 	}
 
 	Renderer2D::~Renderer2D()
@@ -85,8 +83,9 @@ namespace kepler {
 	void Renderer2D::Flush()
 	{
 		// RenderProfiler
-		RenderProfileData profile{ 0, };
-		profile.batchesCount = (int)s_data.batchObjects.size();
+		float drawCallsCount = 0.0f;
+		float trianglesCount = 0.0f;
+		float vertexCount = 0.0f;
 
 		for (const auto& batchData : s_data.batchObjects)
 		{
@@ -105,16 +104,17 @@ namespace kepler {
 				m_pGraphicsAPI->DrawIndexed(vt.first);
 
 				// RenderProfiler
-				profile.drawCallsCount++;
-				profile.trianglesCount += vt.first->GetIndexBuffer()->GetCount() - 2;
+				drawCallsCount++;
+				trianglesCount += vt.first->GetIndexBuffer()->GetCount() - 2;
 				for (const auto& vb : vt.first->GetVertexBuffers())
 				{
-					profile.vertexCount += (int)vb->GetLayout().GetElementCount();
+					vertexCount += (int)vb->GetLayout().GetElementCount();
 				}
 			}
 		}
-
-		RenderProfiler::Get()->SetProfile(profile);
+		m_renderLog.batchesCount.Add((float)s_data.batchObjects.size());
+		m_renderLog.trianglesCount.Add(trianglesCount);
+		m_renderLog.vertexCount.Add(vertexCount);
 
 		s_data.batchObjects.clear();
 	}
