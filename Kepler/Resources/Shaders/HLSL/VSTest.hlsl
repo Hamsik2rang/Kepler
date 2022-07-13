@@ -1,3 +1,4 @@
+#include "Global/VSGlobal.hlsli"
 // Test Vertex Shader
 
 struct VS_INPUT
@@ -17,8 +18,7 @@ struct VS_OUTPUT
 VS_OUTPUT main(VS_INPUT input)
 {
     VS_OUTPUT output = (VS_OUTPUT) 0;
-    output.Pos = float4(input.Pos, 1.0f);
-    
+    output.Pos = mul(g_ViewProjection, mul(g_World, float4(input.Pos, 1.0f)));
     output.Color = input.Color;
     output.NDCPos = input.Pos.xy;
     

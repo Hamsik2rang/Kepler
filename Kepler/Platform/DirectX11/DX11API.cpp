@@ -6,7 +6,7 @@
 #include "Core/Application.h"
 
 kepler::DX11API::DX11API()
-	: m_clearColor{0.1f, 0.1f, 0.1f, 1.0f}
+	: m_clearColor{ 0.1f, 0.1f, 0.1f, 1.0f }
 {
 	Init();
 }
@@ -22,9 +22,11 @@ void kepler::DX11API::ClearColor()
 {
 	ID3D11DeviceContext* pImmediateContext = IGraphicsContext::Get()->GetDeviceContext();
 	ID3D11RenderTargetView* pRenderTargetView = IGraphicsContext::Get()->GetRenderTargetView();
+	ID3D11DepthStencilView* pDepthStencilView = IGraphicsContext::Get()->GetDepthStencilView();
 
 	pImmediateContext->OMSetRenderTargets(1, &pRenderTargetView, nullptr);
 	pImmediateContext->ClearRenderTargetView(pRenderTargetView, m_clearColor);
+	pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0x00);
 }
 
 void kepler::DX11API::SetColor(const float color[4])

@@ -9,6 +9,14 @@ namespace kepler {
 
 	//----- Enum Types--------------------
 	// TODO: 추후 Stencil Comparer와 Depth Comparer가 다른 API를 엔진이 지원할 경우 별도로 분리해야 함
+	enum class eCullMode
+	{
+		None = 0,
+		Off,
+		Front,
+		Back
+	};
+	 
 	enum class eFrameBufferComparer
 	{
 		None = 0,
@@ -84,7 +92,7 @@ namespace kepler {
 	//----- Rasterizer State--------------
 	struct RasterizerStateDescription
 	{
-		bool bCullBackFace;
+		eCullMode cullMode;
 		bool bIsFrontClockwise;
 		bool bWireFrame;
 		bool bScissssor;
@@ -92,6 +100,7 @@ namespace kepler {
 		bool bAntiAliasedLine;
 		bool bDepthClip;
 		float depthBias;
+		float depthSlopedBias;
 		float depthClampBias;
 	};
 	//------------------------------------
@@ -115,11 +124,11 @@ namespace kepler {
 		uint8_t	writeMask;
 
 		eStencilOperator frontFailOperator;
-		eStencilOperator frontFailWithDepthOperator;
+		eStencilOperator frontFailDepthOperator;
 		eStencilOperator frontPassOperator;
 
 		eStencilOperator backFailOperation;
-		eStencilOperator backFailWithDepthOperation;
+		eStencilOperator backFailDepthOperation;
 		eStencilOperator backPassOperation;
 
 		eStencilComparer comparer;
@@ -129,8 +138,8 @@ namespace kepler {
 	//----- Blend State-------------------
 	struct BlendStateDescription
 	{
-		bool bAlphaToCoverageEnable;
-		bool bIndependentBlendEnable;
+		bool bUseAlphaToCoverage;
+		bool bIndependentBlend;
 		// TODO: 추후 FrameBuffer 객체를 만들게 되면 포함 관계를 다시 결정할 예정(각 FrameBuffer가 이 디스크립션을 가지게 하고 BlendStateDesc는 FrameBuffer 포인터를 가지게 할 수 있음)
 		struct RenderTargetDescription
 		{
@@ -145,7 +154,7 @@ namespace kepler {
 			eBlendOperator colorBlendOperator;
 			eBlendOperator alphaBlendOperator;
 			float customFactor[4];
-		} RTDesc[8];
+		} renderTarget[8];
 	};
 	//------------------------------------
 
@@ -165,7 +174,7 @@ namespace kepler {
 		virtual ~IRenderState() = default;
 
 		virtual const ShaderStateDescription& GetShaderState() const { return s_shaderDesc; }
-		virtual const RasterizerStateDescription& GetRasterizer() const { return s_rasterizerDesc; }
+		virtual const RasterizerStateDescription& GetRasterizerState() const { return s_rasterizerDesc; }
 		virtual const DepthStateDescription& GetDepthState() const { return s_depthDesc; }
 		virtual const StencilStateDescription& GetStencilState() const { return s_stencilDesc; }
 		virtual const BlendStateDescription& GetBlendState() const { return s_blendDesc; }

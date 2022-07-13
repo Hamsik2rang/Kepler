@@ -6,6 +6,7 @@
 #include "Platform/DirectX11/DX11Context.h"
 #include "Platform/DirectX11/DX11API.h"
 #include "Renderer/Camera.hpp"
+#include "Renderer/RenderState.h"
 
 #include "Renderer/Shader.h"
 
@@ -31,9 +32,9 @@ namespace kepler {
 	}
 
 	Renderer::Renderer()
-		:m_pGraphicsAPI{ IGraphicsAPI::Create() }
+		: m_pGraphicsAPI{ IGraphicsAPI::Create() }
 	{
-
+		IRenderState::Create();
 	}
 
 	Renderer::~Renderer()
@@ -58,16 +59,24 @@ namespace kepler {
 
 	void Renderer::BeginScene(Camera& camera)
 	{
+		Mat44f view = camera.GetViewMatrix();
 		Mat44f proj = camera.GetProjectionMatrix();
+		Mat44f viewProj = camera.GetViewProjectionMatrix();
+		auto shaderDesc = IRenderState::Get()->GetShaderState();
+		shaderDesc.pVertexShader->SetMatrix("g_ViewProjection", viewProj.Transpose());
+		shaderDesc.pVertexShader->SetMatrix("g_View", view.Transpose());
+		shaderDesc.pVertexShader->SetMatrix("g_Projection", proj.Transpose());
 	}
 
 	void Renderer::EndScene()
 	{
-	
+		
 	}
 
 	void Renderer::Submit(std::shared_ptr<IVertexArray>& pVertexArray, const Mat44f& transform)
 	{
+		auto shaderDesc = IRenderState::Get()->GetShaderState();
+		shaderDesc.pVertexShader->SetMatrix("g_World", transform.Transpose());
 		m_pGraphicsAPI->DrawIndexed(pVertexArray);
 	}
 }

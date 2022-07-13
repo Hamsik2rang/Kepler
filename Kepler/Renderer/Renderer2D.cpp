@@ -1,6 +1,7 @@
 #include "kepch.h"
 
 #include "Renderer2D.h"
+#include "RenderState.h"
 
 namespace kepler {
 
@@ -30,7 +31,7 @@ namespace kepler {
 	Renderer2D::Renderer2D()
 		:m_pGraphicsAPI{ IGraphicsAPI::Create() }
 	{
-
+		IRenderState::Create();
 	}
 
 	Renderer2D::~Renderer2D()

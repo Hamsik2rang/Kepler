@@ -1,5 +1,9 @@
 #include "kepch.h"
+
 #include "DX11Context.h"
+#include "Renderer/RenderState.h"
+#include "Renderer/Renderer.h"
+#include "Renderer/Renderer2D.h"
 
 kepler::DX11Context::DX11Context(const HWND hWnd)
 	: m_hWnd{ hWnd }
@@ -8,6 +12,8 @@ kepler::DX11Context::DX11Context(const HWND hWnd)
 	, m_pImmediateContext{ nullptr }
 	, m_pSwapChain{ nullptr }
 	, m_pRenderTargetView{ nullptr }
+	, m_pDepthStencilView{ nullptr }
+	, m_pDepthStencilBuffer{ nullptr }
 	, m_featureLevel{ D3D_FEATURE_LEVEL_11_0 }
 {
 
@@ -101,23 +107,55 @@ bool kepler::DX11Context::Init(const WindowData& data)
 	}
 
 	// Set Blend State
-	ID3D11BlendState* blendState = nullptr;
-	D3D11_BLEND_DESC blendDesc{};
-	
-	blendDesc.RenderTarget[0].BlendEnable = true;
-	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	//ID3D11BlendState* blendState = nullptr;
+	//D3D11_BLEND_DESC blendDesc{};
+	//
+	//blendDesc.RenderTarget[0].BlendEnable = true;
+	//blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	//blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
 
-	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_INV_DEST_ALPHA;
-	blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
-	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	//blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	//blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_INV_DEST_ALPHA;
+	//blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+	//blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	//blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 
-	m_pDevice->CreateBlendState(&blendDesc, &blendState);
-	float blendFactor[4]{ 0.0f, 0.0f, 0.0f, 0.0f };
-	uint32_t sampleMask = 0xffffffff;
-	m_pImmediateContext->OMSetBlendState(blendState, blendFactor, sampleMask);
+	//m_pDevice->CreateBlendState(&blendDesc, &blendState);
+	//float blendFactor[4]{ 0.0f, 0.0f, 0.0f, 0.0f };
+	//uint32_t sampleMask = 0xffffffff;
+	//m_pImmediateContext->OMSetBlendState(blendState, blendFactor, sampleMask);
+
+	D3D11_TEXTURE2D_DESC dsDesc{};
+	dsDesc.Width = data.width;
+	dsDesc.Height = data.height;
+	dsDesc.MipLevels = 1;
+	dsDesc.ArraySize = 1;
+	dsDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	dsDesc.SampleDesc.Count = 1;
+	dsDesc.SampleDesc.Quality = 0;
+	dsDesc.Usage = D3D11_USAGE_DEFAULT;
+	dsDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	dsDesc.CPUAccessFlags = 0;
+	dsDesc.MiscFlags = 0;
+
+	hr = m_pDevice->CreateTexture2D(&dsDesc, nullptr, &m_pDepthStencilBuffer);
+	if (FAILED(hr))
+	{
+		KEPLER_CORE_ASSERT(false, "Fail to create Depth Stencil Buffer");
+		return false;
+	}
+	D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
+	dsvDesc.Format = dsDesc.Format;
+	dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	dsvDesc.Texture2D.MipSlice = 0;
+	hr = m_pDevice->CreateDepthStencilView(m_pDepthStencilBuffer, &dsvDesc, &m_pDepthStencilView);
+	if (FAILED(hr))
+	{
+		KEPLER_CORE_ASSERT(false, "Fail to create Depth Stencil View");
+		return false;
+	}
+
+	m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
 
 	return true;
 }

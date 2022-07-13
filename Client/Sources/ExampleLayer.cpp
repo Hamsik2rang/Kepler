@@ -1,20 +1,95 @@
 #include "ExampleLayer.h"
 
+bool ExampleLayer::OnKeyboardPressed(kepler::KeyPressedEvent& e)
+{
+	kepler::Vec3f nextPos = m_camera.GetPosition();
+	kepler::Vec3f nextAt = m_camera.GetFocus();
+	if (e.GetKeyCode() == kepler::key::W)
+	{
+		nextPos += m_camera.GetDirection().Normalize() * 0.1f;
+		nextAt += m_camera.GetDirection().Normalize() * 0.1f;
+	}
+	if (e.GetKeyCode() == kepler::key::S)
+	{
+		nextPos += -m_camera.GetDirection().Normalize() * 0.1f;
+		nextAt += -m_camera.GetDirection().Normalize() * 0.1f;
+	}
+	if (e.GetKeyCode() == kepler::key::F8)
+	{
+		auto rs = kepler::IRenderState::Get()->GetRasterizerState();
+		rs.bWireFrame = true;
+		kepler::IRenderState::Get()->SetRasterizerState(rs);
+	}
+	if (e.GetKeyCode() == kepler::key::F9)
+	{
+		auto rs = kepler::IRenderState::Get()->GetRasterizerState();
+		rs.bWireFrame = false;
+		kepler::IRenderState::Get()->SetRasterizerState(rs);
+	}
+	m_camera.SetFocus(nextAt);
+	m_camera.SetPosition(nextPos);
+
+	return true;
+}
+
 void ExampleLayer::OnAttach()
 {
-	kepler::ShaderCache::Load(kepler::eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSTest.hlsl");
-	kepler::ShaderCache::Load(kepler::eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PSTest.hlsl");
+	kepler::ShaderStateDescription desc{};
+	desc.pVertexShader = kepler::ShaderCache::Load(kepler::eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSSolid.hlsl");
+	desc.pPixelShader = kepler::ShaderCache::Load(kepler::eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PSSolid.hlsl");
+
+	kepler::IRenderState::Get()->SetShaderState(desc);
 
 	float vertices[]{
-		-1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-		1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-		-1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f
+		-1.0f, 1.0f, -1.0f,		1.0f, 0.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, -1.0f,		1.0f, 0.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,		1.0f, 0.0f, 0.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,		1.0f, 0.0f, 0.0f, 1.0f,
+
+		-1.0f, -1.0f, -1.0f,	0.0f, 1.0f, 0.0f, 1.0f,
+		1.0f, -1.0f, -1.0f,		0.0f, 1.0f, 0.0f, 1.0f,
+		1.0f, -1.0f, 1.0f,		0.0f, 1.0f, 0.0f, 1.0f,
+		-1.0f, -1.0f, 1.0f,		0.0f, 1.0f, 0.0f, 1.0f,
+
+		-1.0f, -1.0f, 1.0f,		0.0f, 0.0f, 1.0f, 1.0f,
+		-1.0f, -1.0f, -1.0f,	0.0f, 0.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f, -1.0f,		0.0f, 0.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,		0.0f, 0.0f, 1.0f, 1.0f,
+
+		1.0f, -1.0f, 1.0f,		0.0f, 1.0f, 1.0f, 1.0f,
+		1.0f, -1.0f, -1.0f,		0.0f, 1.0f, 1.0f, 1.0f,
+		1.0f, 1.0f, -1.0f,		0.0f, 1.0f, 1.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,		0.0f, 1.0f, 1.0f, 1.0f,
+
+		-1.0f, -1.0f, -1.0f,	1.0f, 0.0f, 1.0f, 1.0f,
+		1.0f, -1.0f, -1.0f,		1.0f, 0.0f, 1.0f, 1.0f,
+		1.0f, 1.0f, -1.0f,		1.0f, 0.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f, -1.0f,		1.0f, 0.0f, 1.0f, 1.0f,
+
+		-1.0f, -1.0f, 1.0f,		1.0f, 1.0f, 0.0f, 1.0f,
+		1.0f, -1.0f, 1.0f,		1.0f, 1.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,		1.0f, 1.0f, 0.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,		1.0f, 1.0f, 0.0f, 1.0f,
 	};
 
 	uint32_t indices[]{
-		0, 1, 2,
-		0, 2, 3
+		3,1,0,
+		2,1,3,
+
+		6,4,5,
+		7,4,6,
+
+		11,9,8,
+		10,9,11,
+
+		14,12,13,
+		15,12,14,
+
+		19,17,16,
+		18,17,19,
+
+		22,20,21,
+		23,20,22
 	};
 
 	std::shared_ptr<kepler::IVertexBuffer> pVB = kepler::IVertexBuffer::Create(vertices, sizeof(vertices), kepler::eBufferUsage::Default);
@@ -24,10 +99,23 @@ void ExampleLayer::OnAttach()
 		});
 
 	std::shared_ptr<kepler::IIndexBuffer> pIB = kepler::IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), kepler::eBufferUsage::Default);
-	
+
 	m_pVertexArray = kepler::IVertexArray::Create();
 	m_pVertexArray->AddVertexBuffer(pVB);
 	m_pVertexArray->SetIndexBuffer(pIB);
+
+	auto rs = kepler::IRenderState::Get()->GetRasterizerState();
+	rs.bWireFrame = true;
+	rs.cullMode = kepler::eCullMode::Front;
+	rs.bIsFrontClockwise = false;
+	kepler::IRenderState::Get()->SetRasterizerState(rs);
+
+	// TODO: FrameBuffer 구현해서 작동하도록 변경
+	auto ds = kepler::IRenderState::Get()->GetDepthState();
+	ds.bDepthTest = false;
+	ds.bDepthWrite = false;
+	ds.comparer = kepler::eDepthComparer::Never;
+	kepler::IRenderState::Get()->SetDepthState(ds);
 }
 
 void ExampleLayer::OnDetach()
@@ -37,17 +125,17 @@ void ExampleLayer::OnDetach()
 
 void ExampleLayer::OnEvent(kepler::Event& e)
 {
-
+	kepler::EventDispatcher dispatch(e);
+	dispatch.Dispatch<kepler::KeyPressedEvent>(std::bind(&ExampleLayer::OnKeyboardPressed, this, std::placeholders::_1));
 }
 
 void ExampleLayer::OnUpdate(const float deltaTime)
 {
 	m_time += deltaTime;
-	kepler::ShaderCache::GetShader("VSTest")->Bind();
-	kepler::ShaderCache::GetShader("PSTest")->Bind();
-
-	kepler::ShaderCache::GetShader("PSTest")->SetFloat("g_Time", m_time);
-
+	kepler::IRenderState::Get()->Bind();
+	auto shaderDesc = kepler::IRenderState::Get()->GetShaderState();
+	kepler::Renderer::Get()->BeginScene(m_camera);
 	m_pVertexArray->Bind();
-	kepler::Renderer::Get()->Submit(m_pVertexArray, kepler::Mat44f::Identity);
+	kepler::Renderer::Get()->Submit(m_pVertexArray, kepler::math::GetRotationMatrixX(m_time) * kepler::math::GetRotationMatrixY(m_time / 3.0f) * kepler::math::GetTranslateMatrix({ 0.0f, 0.0f, 4.0f }));
+	kepler::Renderer::Get()->EndScene();
 }

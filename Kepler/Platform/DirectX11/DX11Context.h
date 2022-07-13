@@ -17,8 +17,10 @@ namespace kepler {
 		ID3D11DeviceContext*		m_pImmediateContext;
 		IDXGISwapChain*				m_pSwapChain;
 		ID3D11RenderTargetView*		m_pRenderTargetView;
-		ID3D11DepthStencilView*		m_pDepthStencilView;
 
+		// TODO: FrameBuffer 구현 시 이동시켜야 합니다.
+		ID3D11DepthStencilView*		m_pDepthStencilView;
+		ID3D11Texture2D*			m_pDepthStencilBuffer;
 		D3D_FEATURE_LEVEL			m_featureLevel;
 
 		HWND m_hWnd;

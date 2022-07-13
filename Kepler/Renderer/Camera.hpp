@@ -9,9 +9,10 @@ namespace kepler {
 	protected:
 		Mat44f m_viewMatrix;
 		Mat44f m_projectionMatrix;
-		
+		Mat44f m_viewProjectionMatrix;
+
 	public:
-		Camera() 
+		Camera()
 			: m_viewMatrix{ Mat44f::Identity }
 			, m_projectionMatrix{ Mat44f::Identity }
 		{}
@@ -19,6 +20,6 @@ namespace kepler {
 
 		inline const Mat44f& GetViewMatrix() const { return m_viewMatrix; }
 		inline const Mat44f& GetProjectionMatrix() const { return m_projectionMatrix; }
-		inline const Mat44f& GetViewProjectionMatrix() const { return m_viewMatrix * m_projectionMatrix; }
+		inline const Mat44f& GetViewProjectionMatrix() const { return m_viewProjectionMatrix; }
 	};
 }
