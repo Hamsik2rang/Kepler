@@ -4,7 +4,6 @@
 
 namespace kepler {
 
-	Renderer2D* Renderer2D::s_pInstance = nullptr;
 	// Batch Rendering시 데이터 단위가 되는 Batch Data
 	struct BatchData
 	{
@@ -27,10 +26,11 @@ namespace kepler {
 	};
 	static RenderData s_data{};
 
+	Renderer2D* Renderer2D::s_pInstance = nullptr;
+
 	Renderer2D::Renderer2D()
 		:m_pGraphicsAPI{ IGraphicsAPI::Create() }
 	{
-
 	}
 
 	Renderer2D::~Renderer2D()
@@ -82,6 +82,11 @@ namespace kepler {
 	// TODO: Batch Rendering 구현해야 함
 	void Renderer2D::Flush()
 	{
+		// RenderProfiler
+		float drawCallsCount = 0.0f;
+		float trianglesCount = 0.0f;
+		float vertexCount = 0.0f;
+
 		for (const auto& batchData : s_data.batchObjects)
 		{
 			ShaderCache::GetShader(batchData.vertexShader)->Bind();
@@ -97,8 +102,19 @@ namespace kepler {
 				ShaderCache::GetLastCachedShader(eShaderType::Vertex)->SetMatrix("g_World", vt.second.Transpose());
 				vt.first->Bind();
 				m_pGraphicsAPI->DrawIndexed(vt.first);
+
+				// RenderProfiler
+				drawCallsCount++;
+				trianglesCount += vt.first->GetIndexBuffer()->GetCount() - 2;
+				for (const auto& vb : vt.first->GetVertexBuffers())
+				{
+					vertexCount += (int)vb->GetLayout().GetElementCount();
+				}
 			}
 		}
+		m_renderLog.batchesCount.Add((float)s_data.batchObjects.size());
+		m_renderLog.trianglesCount.Add(trianglesCount);
+		m_renderLog.vertexCount.Add(vertexCount);
 
 		s_data.batchObjects.clear();
 	}
@@ -178,7 +194,7 @@ namespace kepler {
 			data.pTexture = nullptr;
 
 			s_data.batchObjects.push_back(data);
-			index = s_data.batchObjects.size() - 1;
+			index = (int)s_data.batchObjects.size() - 1;
 		}
 
 		// 정점, 인덱스 데이터 추가
@@ -236,7 +252,7 @@ namespace kepler {
 			data.pTexture = texture;
 
 			s_data.batchObjects.push_back(data);
-			index = s_data.batchObjects.size() - 1;
+			index = (int)s_data.batchObjects.size() - 1;
 		}
 
 		struct QuadVertex

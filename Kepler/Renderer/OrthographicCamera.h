@@ -24,7 +24,7 @@ namespace kepler {
 			, m_viewProjectionMatrix{ Mat44f::Identity }
 			, m_aspect{ 16.0f / 9.0f }
 		{
-			IWindow* pWindow = Application::Get()->GetWindow();
+			auto pWindow = Application::Get()->GetWindow();
 			m_aspect = static_cast<float>(pWindow->GetWidth()) / static_cast<float>(pWindow->GetHeight());
 		}
 		~OrthographicCamera() = default;

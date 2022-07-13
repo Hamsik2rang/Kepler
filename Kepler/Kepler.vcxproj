@@ -123,7 +123,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>kepch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies;$(SolutionDir)Kepler\Dependencies\KeplerMath\src;$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies;$(SolutionDir)Kepler\Dependencies\KeplerMath\src;$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\implot\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -149,7 +149,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>kepch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies;$(SolutionDir)Kepler\Dependencies\KeplerMath\src;$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies;$(SolutionDir)Kepler\Dependencies\KeplerMath\src;$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\ImGui\ImPlot\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -201,6 +201,8 @@
     <ClInclude Include="Platform\Win32\WinAPI.h" />
     <ClInclude Include="Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Renderer\OrthographicCamera.h" />
+    <ClInclude Include="Renderer\RenderLog.h" />
+    <ClInclude Include="Renderer\RenderProfiler.h" />
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="Renderer\Renderer2D.h" />
     <ClInclude Include="Renderer\Shader.h" />
@@ -225,6 +227,8 @@
     <ClCompile Include="ImGui\ImGuiSource\imgui_impl_win32.cpp" />
     <ClCompile Include="ImGui\ImGuiSource\imgui_tables.cpp" />
     <ClCompile Include="ImGui\ImGuiSource\imgui_widgets.cpp" />
+    <ClCompile Include="ImGui\ImPlotSource\implot.cpp" />
+    <ClCompile Include="ImGui\ImPlotSource\implot_items.cpp" />
     <ClCompile Include="kepch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -245,6 +249,8 @@
     <ClCompile Include="Renderer\GraphicsContext.cpp" />
     <ClCompile Include="Renderer\GraphicsAPI.cpp" />
     <ClCompile Include="Renderer\OrthographicCamera.cpp" />
+    <ClCompile Include="Renderer\RenderLog.cpp" />
+    <ClCompile Include="Renderer\RenderProfiler.cpp" />
     <ClCompile Include="Renderer\Renderer.cpp" />
     <ClCompile Include="Renderer\Renderer2D.cpp" />
     <ClCompile Include="Renderer\Shader.cpp" />

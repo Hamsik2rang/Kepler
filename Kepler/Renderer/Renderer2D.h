@@ -4,16 +4,17 @@
 #include "Renderer/OrthographicCamera.h"
 #include "Renderer/Texture.h"
 #include "Renderer/Shader.h"
+#include "Renderer/RenderLog.h"
 
 #include "KeplerMath.h"
 
 namespace kepler {
-
 	class Renderer2D
 	{
 	private:
 		static Renderer2D* s_pInstance;
 		IGraphicsAPI* m_pGraphicsAPI;
+		RenderLog m_renderLog;
 
 		Renderer2D();
 		~Renderer2D();
@@ -22,6 +23,7 @@ namespace kepler {
 		static Renderer2D* Get();
 		static void Init();
 		inline eGraphicsAPI GetAPI() const { return m_pGraphicsAPI->GetAPI(); }
+		inline RenderLog& GetRenderLog() { return m_renderLog; }
 
 		void BeginScene(OrthographicCamera& camera);
 		void EndScene();
