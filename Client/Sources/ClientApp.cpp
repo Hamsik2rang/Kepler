@@ -1,5 +1,5 @@
-#include "GameLayer.h"
-
+#include "Kepler.h"
+#include "ExampleLayer.h"
 
 #include <Core/EntryPoint.h>
 
@@ -9,8 +9,7 @@ public:
 	Client()
 		: Application(kepler::eGraphicsAPI::DirectX11)
 	{
-		PushOverlay(new kepler::RenderProfiler()); // ~LayerStack¿¡¼­ deleteµÊ.
-		PushLayer(new GameLayer());
+		PushLayer(new ExampleLayer());
 	}
 	~Client()
 	{

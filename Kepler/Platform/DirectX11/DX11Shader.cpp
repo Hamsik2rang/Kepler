@@ -3,6 +3,7 @@
 #include "DX11Shader.h"
 #include "DX11Context.h"
 #include "Utility/StringUtility.h"
+#include "DX11State.h"
 
 namespace kepler {
 
@@ -127,7 +128,7 @@ namespace kepler {
 
 		UINT shaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #ifdef _DEBUG
-		shaderFlags |= D3DCOMPILE_DEBUG;
+		shaderFlags |= D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
 #endif
 		ID3DBlob* pErrorBlob = nullptr;
 
@@ -151,8 +152,7 @@ namespace kepler {
 	// 컴파일된 쉐이더 프로그램을 이용해 쉐이더 객체 생성
 	void DX11Shader::Create(ID3DBlob* pInBlob)
 	{
-		ID3D11Device* pDevice;
-		GetDX11DeviceAndDeviceContext(&pDevice, nullptr);
+		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
 		HRESULT hr = S_OK;
 		switch (m_type)
 		{
@@ -197,8 +197,7 @@ namespace kepler {
 	// 리플렉션을 이용해 자동으로 초기화해줌
 	void DX11Shader::InitVertexLayout(ID3DBlob* pInBlob)
 	{
-		ID3D11Device* pDevice;
-		GetDX11DeviceAndDeviceContext(&pDevice, nullptr);
+		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
 
 		D3D11_SHADER_DESC shaderDesc{};
 		m_pReflection->GetDesc(&shaderDesc);
@@ -258,8 +257,7 @@ namespace kepler {
 	//쉐이더 리플렉션을 이용해 쉐이더 내 ConstantBuffer 정보 자동으로 불러오는 함수
 	void DX11Shader::InitConstantBuffer()
 	{
-		ID3D11Device* pDevice = nullptr;
-		GetDX11DeviceAndDeviceContext(&pDevice, nullptr);
+		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
 
 		// 쉐이더 디스크립션 받아오기
 		D3D11_SHADER_DESC shaderDesc{};
@@ -349,8 +347,7 @@ namespace kepler {
 
 	void DX11Shader::Bind()
 	{
-		ID3D11DeviceContext* pDeviceContext = nullptr;
-		GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
+		ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 		switch (m_type)
 		{
 		case eShaderType::Vertex:	pDeviceContext->IASetInputLayout(m_pVertexLayout); 
@@ -362,14 +359,17 @@ namespace kepler {
 		case eShaderType::Compute:	pDeviceContext->CSSetShader(m_pComputeShader, nullptr, 0);	break;
 		}
 
+		IRenderState::Get()->SetShaderState(m_type, ShaderCache::GetShader(m_name));
+		
+		// TODO: RenderState가 Bound Shader를 확실하게 관리하는 것으로 판단되면 삭제할 것
 		ShaderCache::SetLastCachedShader(m_type, m_name);
+		
 	}
 	
 	// DirectX11의 경우 필수적으로 호출할 필요 없음
 	void DX11Shader::Unbind()
 	{
-		ID3D11DeviceContext* pDeviceContext = nullptr;
-		GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
+		ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 		switch (m_type)
 		{
 		case eShaderType::Vertex:	pDeviceContext->IASetInputLayout(nullptr); 
@@ -421,8 +421,7 @@ namespace kepler {
 	// constant buffer 갱신 함수
 	void DX11Shader::UpdateConstantBuffer(const int index)
 	{
-		ID3D11DeviceContext* pDeviceContext{ nullptr };
-		GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
+		ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 
 		// If constantbuffer isn't initialized dynamic usage
 		//pDeviceContext->UpdateSubresource(m_ppConstantBuffers[index], 0, nullptr, m_pBufferBytes[index], 0, 0);

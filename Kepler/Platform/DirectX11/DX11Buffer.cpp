@@ -33,9 +33,8 @@ namespace kepler {
 		: m_layout{}
 		, m_pBuffer{ nullptr }
     {
-        ID3D11Device* pDevice;
-        ID3D11DeviceContext* pDeviceContext;
-        GetDX11DeviceAndDeviceContext(&pDevice, &pDeviceContext);
+        ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+        ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 
         // 별도의 정점데이터가 제공되지 않은 빈 buffer의 경우 언제든지 write될 수 있어야 하므로 dynamic usage로 생성
         D3D11_BUFFER_DESC bufferDesc{};
@@ -57,9 +56,8 @@ namespace kepler {
         : m_layout{}
         , m_pBuffer{ nullptr }
     {
-        ID3D11Device* pDevice;
-        ID3D11DeviceContext* pDeviceContext;
-        GetDX11DeviceAndDeviceContext(&pDevice, &pDeviceContext);
+        ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+        ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 
         D3D11_BUFFER_DESC bufferDesc{};
         bufferDesc.ByteWidth = size;
@@ -107,8 +105,7 @@ namespace kepler {
     // 렌더링 파이프라인에 바인딩
     void DX11VertexBuffer::Bind()
     {
-        ID3D11DeviceContext* pDeviceContext;
-        GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
+        ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 
         // VertexBuffer의 레이아웃 내 element들이 어떻게 chunking되었는지에 따라 offset, stride 계산해 쉐이더 장치에 bind
         for (const auto& e : m_layout)
@@ -124,8 +121,7 @@ namespace kepler {
     // 렌더링 파이프라인에서 바인딩 해제
     void DX11VertexBuffer::Unbind()
     {
-        ID3D11DeviceContext* pDeviceContext;
-        GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
+        ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 
 		pDeviceContext->IASetVertexBuffers(0, 0, nullptr, nullptr, nullptr);
     }
@@ -133,9 +129,8 @@ namespace kepler {
     // VertexBuffer의 정점 데이터 변경
     void DX11VertexBuffer::SetData(const void* data, uint32_t size)
     {
-        ID3D11Device* pDevice;
-        ID3D11DeviceContext* pDeviceContext;
-        GetDX11DeviceAndDeviceContext(&pDevice, &pDeviceContext);
+        ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+        ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 
         // TODO: 추후 마저 구현
     }
@@ -150,9 +145,8 @@ namespace kepler {
         : m_count{count}
         , m_pBuffer{ nullptr }
     {
-        ID3D11Device* pDevice;
-        ID3D11DeviceContext* pDeviceContext;
-        GetDX11DeviceAndDeviceContext(&pDevice, &pDeviceContext);
+        ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+        ID3D11DeviceContext* pDeviceContext= IGraphicsContext::Get()->GetDeviceContext();
 
         D3D11_BUFFER_DESC bufferDesc{};
         bufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -181,8 +175,7 @@ namespace kepler {
     // 렌더링 파이프라인에 바인딩
     void DX11IndexBuffer::Bind()
     {
-        ID3D11DeviceContext* pDeviceContext;
-        GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
+        ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 
         pDeviceContext->IASetIndexBuffer(m_pBuffer, DXGI_FORMAT_R32_UINT, 0);
         pDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -191,9 +184,8 @@ namespace kepler {
     // 렌더링 파이프라인에서 바인딩 해제
     void DX11IndexBuffer::Unbind()
     {
-        ID3D11Device* pDevice;
-        ID3D11DeviceContext* pDeviceContext;
-        GetDX11DeviceAndDeviceContext(&pDevice, &pDeviceContext);
+        ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+        ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 
         pDeviceContext->IASetIndexBuffer(nullptr, DXGI_FORMAT_R32_UINT, 0);
     }

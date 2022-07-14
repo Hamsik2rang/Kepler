@@ -5,9 +5,8 @@
 #include "Platform/Windows/WindowsWindow.h"
 #include "Platform/DirectX11/DX11Context.h"
 #include "Platform/DirectX11/DX11API.h"
-#include "Platform/DirectX11/DX11Model.h"
-#include "Platform/DirectX11/DX11TextureShader.h"
-#include "Renderer/Camera.h"
+#include "Renderer/Camera.hpp"
+#include "Renderer/RenderState.h"
 
 #include "Renderer/Shader.h"
 
@@ -33,22 +32,12 @@ namespace kepler {
 	}
 
 	Renderer::Renderer()
-		:m_pGraphicsAPI{ IGraphicsAPI::Create() }
+		: m_pGraphicsAPI{ IGraphicsAPI::Create() }
 	{
-
+		IRenderState::Create();
 	}
 
 	Renderer::~Renderer()
-	{
-
-	}
-
-	void Renderer::ClearColor()
-	{
-		m_pGraphicsAPI->ClearColor();
-	}
-
-	void Renderer::SetColor()
 	{
 
 	}
@@ -58,13 +47,26 @@ namespace kepler {
 		m_pGraphicsAPI->SetViewport(width, height, minDepth, maxDepth);
 	}
 
-	void Renderer::Resize(uint32_t width, uint32_t height)
+	void Renderer::BeginScene(Camera& camera)
 	{
+		Mat44f view = camera.GetViewMatrix();
+		Mat44f proj = camera.GetProjectionMatrix();
+		Mat44f viewProj = camera.GetViewProjectionMatrix();
+		auto shaderDesc = IRenderState::Get()->GetShaderState();
+		shaderDesc.pVertexShader->SetMatrix("g_View", view.Transpose());
+		shaderDesc.pVertexShader->SetMatrix("g_Projection", proj.Transpose());
+		shaderDesc.pVertexShader->SetMatrix("g_ViewProjection", viewProj.Transpose());
+	}
 
+	void Renderer::EndScene()
+	{
+		
 	}
 
 	void Renderer::Submit(std::shared_ptr<IVertexArray>& pVertexArray, const Mat44f& transform)
 	{
+		auto shaderDesc = IRenderState::Get()->GetShaderState();
+		shaderDesc.pVertexShader->SetMatrix("g_World", transform.Transpose());
 		m_pGraphicsAPI->DrawIndexed(pVertexArray);
 	}
 }

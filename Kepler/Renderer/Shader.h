@@ -75,9 +75,6 @@ namespace kepler {
 	// Shader Interface
 	class IShader
 	{
-	protected:
-		friend void ShaderCache::SetLastCachedShader(const eShaderType& type, const std::string& name);
-
 	public:
 		virtual ~IShader() = default;
 

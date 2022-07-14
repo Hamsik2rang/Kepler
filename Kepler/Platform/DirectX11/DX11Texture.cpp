@@ -7,42 +7,6 @@
 #include "DDSTextureLoader.h"
 
 namespace kepler {
-
-	DX11Texture::DX11Texture()
-	{
-
-	}
-
-	DX11Texture::DX11Texture(const DX11Texture& other)
-	{
-
-	}
-
-	DX11Texture::~DX11Texture()
-	{
-
-	}
-
-	bool DX11Texture::Init(ID3D11Device* pDevice, const WCHAR* pFilename)
-	{
-		// 텍스처를 파일로부터 읽어온다
-		if (FAILED(CreateDDSTextureFromFile(pDevice, pFilename, nullptr, &m_pTexture)))
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	void DX11Texture::Shutdown()
-	{
-		//텍스처 뷰 리소스를 해제한다.
-		if (m_pTexture) { m_pTexture->Release(); m_pTexture = nullptr; }
-	}
-
-
-	//----------------------------------------------------------------
-	
 	// 나중에 더 다듬어서 사용
 	static DXGI_FORMAT GetDXGIFormatFromInfo(const eTextureDataType type, const uint8_t channel, const uint8_t bytePerTexel);
 	 
@@ -87,9 +51,8 @@ namespace kepler {
 		texDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
 		texDesc.Usage = D3D11_USAGE_DEFAULT;
 
-		ID3D11Device* pDevice;
-		ID3D11DeviceContext* pDeviceContext;
-		GetDX11DeviceAndDeviceContext(&pDevice, &pDeviceContext);
+		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+		ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 
 		// 텍스처 생성
 		HRESULT hr = pDevice->CreateTexture2D(&texDesc, nullptr, &m_pTexture);
@@ -158,8 +121,7 @@ namespace kepler {
 
 	void DX11Texture2D::Bind(const uint32_t slot)
 	{
-		ID3D11DeviceContext* pDeviceContext = nullptr;
-		GetDX11DeviceAndDeviceContext(nullptr, &pDeviceContext);
+		ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 		pDeviceContext->PSSetShaderResources(slot, 1, &m_pResourceView);
 		pDeviceContext->PSSetSamplers(slot, 1, &m_pSamplerState);
 	}

@@ -19,11 +19,7 @@ int APIENTRY wWinMain(
 	kepler::g_hInst = hInstance;
 	kepler::g_nCmdShow = nCmdShow;
 
-	//----- Initialize Core resources -----
-	kepler::Log::Init();
-	kepler::Audio::Init();
-
-	//-------------------------------------
+	auto app = kepler::CreateApplication();
 
 	int year = 2022;
 	int month = 4;
@@ -31,14 +27,9 @@ int APIENTRY wWinMain(
 	KEPLER_CORE_WARNING("Initializing Log System");
 	KEPLER_CORE_INFO("Welcome to Kepler Engine, this code written in {0}/{1:02}/{2:02}", year, month, day);
 	
-	auto app = kepler::CreateApplication();
 	app->Run();
 	
-
 	delete app;
-	//----- Release Core resources -----
-	kepler::Audio::Release();
-	//----------------------------------
 
 	return 0;
 }
