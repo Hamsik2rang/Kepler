@@ -5,15 +5,21 @@
 #include "Core/Log.h"
 #include "Core/Event/ApplicationEvent.hpp"
 #include "Renderer/Renderer.h"
-#include "Platform/DirectX11/DX11Context.h"
+#include "Renderer/FrameBuffer.h"
+#include "Renderer/GraphicsContext.h"
+#include "Renderer/RenderState.h"
 #include "Audio/Audio.h"
 
 namespace kepler {
 
 	Application* Application::s_pInstance = nullptr;
 
+	// Initialize Core resources
 	Application::Application(eGraphicsAPI api)
 	{
+		kepler::Log::Init();
+		kepler::Audio::Init();
+
 		IGraphicsAPI::SetAPI(api);
 		m_pWindow = std::unique_ptr<IWindow>(IWindow::Create());
 
@@ -22,6 +28,8 @@ namespace kepler {
 		s_pInstance = this;
 
 		Renderer::Init();
+		IRenderState::Create();
+		IFrameBuffer::Create();
 
 		m_pImGuiLayer = std::make_unique<ImGuiLayer>();
 		m_pImGuiLayer->OnAttach();
@@ -29,15 +37,16 @@ namespace kepler {
 		m_bIsRunning = true;
 	}
 
+	// Release Core resources
+	Application::~Application()
+	{
+		kepler::Audio::Release();
+	}
+
 	Application* Application::Get()
 	{
 		KEPLER_ASSERT(s_pInstance, "Application not constructed!");
 		return s_pInstance;
-	}
-
-	Application::~Application()
-	{
-
 	}
 
 	void Application::OnEvent(Event& e)
@@ -78,7 +87,7 @@ namespace kepler {
 		{
 			float curTime = m_timer.Elapsed();
 			float deltaTime = curTime - lastTime;
-			if (deltaTime < 1.0f / 60.0f) 
+			if (deltaTime < 1.0f / 60.0f)
 			{
 				continue;
 			}
@@ -89,8 +98,10 @@ namespace kepler {
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
-
-			Renderer::Get()->ClearColor();
+			// clear Render Target and Depth Stencil Buffer
+			float color[4]{ 0.1f, 0.1f, 0.1f, 0.1f };
+			IFrameBuffer::Get()->ClearColor(color);
+			IFrameBuffer::Get()->ClearDepthStencil(true, true, 1.0f, 0);
 			// Update all layer(and overlay)s
 			for (Layer* layer : m_layerStack)
 			{

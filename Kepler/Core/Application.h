@@ -30,7 +30,7 @@ namespace kepler {
 
 		static Application* Get();
 		inline IWindow* GetWindow() { return m_pWindow.get(); }
-
+		
 		void OnEvent(Event& e);
 
 		void PushLayer(Layer* layer);
