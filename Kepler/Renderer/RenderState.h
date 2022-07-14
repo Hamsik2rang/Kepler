@@ -4,6 +4,7 @@
 
 #include "Core/Base.h"
 #include "Shader.h"
+#include "FrameBuffer.h"
 
 namespace kepler {
 
@@ -122,6 +123,7 @@ namespace kepler {
 		bool	bStencilTest;
 		uint8_t	readMask;
 		uint8_t	writeMask;
+		uint32_t stencilRef;
 
 		eStencilOperator frontFailOperator;
 		eStencilOperator frontFailDepthOperator;

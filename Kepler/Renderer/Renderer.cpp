@@ -42,16 +42,6 @@ namespace kepler {
 
 	}
 
-	void Renderer::ClearColor()
-	{
-		m_pGraphicsAPI->ClearColor();
-	}
-
-	void Renderer::SetColor(const float* pColor)
-	{
-		m_pGraphicsAPI->SetColor(pColor);
-	}
-
 	void Renderer::SetViewport(const uint32_t width, const uint32_t height, const float minDepth, const float maxDepth)
 	{
 		m_pGraphicsAPI->SetViewport(width, height, minDepth, maxDepth);
@@ -63,9 +53,9 @@ namespace kepler {
 		Mat44f proj = camera.GetProjectionMatrix();
 		Mat44f viewProj = camera.GetViewProjectionMatrix();
 		auto shaderDesc = IRenderState::Get()->GetShaderState();
-		shaderDesc.pVertexShader->SetMatrix("g_ViewProjection", viewProj.Transpose());
 		shaderDesc.pVertexShader->SetMatrix("g_View", view.Transpose());
 		shaderDesc.pVertexShader->SetMatrix("g_Projection", proj.Transpose());
+		shaderDesc.pVertexShader->SetMatrix("g_ViewProjection", viewProj.Transpose());
 	}
 
 	void Renderer::EndScene()

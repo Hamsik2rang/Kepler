@@ -5,25 +5,6 @@
 #include "Renderer/Shader.h"
 
 namespace kepler {
-
-	class DX11Texture
-	{
-	public:
-		DX11Texture();
-		DX11Texture(const DX11Texture& other);
-		~DX11Texture();
-
-		bool Init(ID3D11Device* pDevice, const WCHAR* pFilename);
-		void Shutdown();
-
-		inline ID3D11ShaderResourceView* GetTexture() { return m_pTexture; }
-
-	private:
-		ID3D11ShaderResourceView*	m_pTexture = nullptr;
-		ID3D11SamplerState*			m_pSamplerState = nullptr;
-	};
-
-
 	// Texture1D, Texture3D는 나중에 필요할 때 구현합시다.
 	class DX11Texture2D : public ITexture2D
 	{

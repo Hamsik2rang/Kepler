@@ -1,6 +1,7 @@
 #include "kepch.h"
 
 #include "DX11State.h"
+#include "DX11FrameBuffer.h"
 #include "Renderer/GraphicsContext.h"
 
 namespace kepler {
@@ -15,7 +16,7 @@ namespace kepler {
 		, m_bDepthStateChanged{ false }
 		, m_bStencilStateChaged{ false }
 	{
-
+		
 	}
 
 	DX11State::~DX11State()
@@ -296,7 +297,7 @@ namespace kepler {
 			// NOTE: Stencil test sudo code:
 			// if ( StencilRef & StencilReadMask StencilOP(Front/Back) Value & StencilReadMask)
 			// TODO: 적절한 StencilRef를 넘기기 위한 방법 강구하기
-			pContext->OMSetDepthStencilState(m_pDepthStencilState, 0xff);
+			pContext->OMSetDepthStencilState(m_pDepthStencilState, s_stencilDesc.stencilRef);
 
 			m_bDepthStateChanged = false;
 			m_bStencilStateChaged = false;

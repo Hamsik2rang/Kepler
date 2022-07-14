@@ -186,6 +186,7 @@
     <ClInclude Include="Platform\DirectX11\DX11Buffer.h" />
     <ClInclude Include="Platform\DirectX11\DX11Context.h" />
     <ClInclude Include="Platform\DirectX11\DX11API.h" />
+    <ClInclude Include="Platform\DirectX11\DX11FrameBuffer.h" />
     <ClInclude Include="Platform\DirectX11\DX11Shader.h" />
     <ClInclude Include="Platform\DirectX11\DX11State.h" />
     <ClInclude Include="Platform\DirectX11\DX11Texture.h" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Renderer\Buffer.h" />
     <ClInclude Include="Renderer\Camera.hpp" />
     <ClInclude Include="Renderer\EditorCamera.h" />
+    <ClInclude Include="Renderer\FrameBuffer.h" />
     <ClInclude Include="Renderer\GraphicsAPI.h" />
     <ClInclude Include="Renderer\GraphicsContext.h" />
     <ClInclude Include="Core\Window.h" />
@@ -239,6 +241,7 @@
     <ClCompile Include="Platform\DirectX11\DX11API.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Buffer.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Context.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11FrameBuffer.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Shader.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11State.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Texture.cpp" />
@@ -246,6 +249,7 @@
     <ClCompile Include="Platform\Win32\WinAPI.cpp" />
     <ClCompile Include="Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="Renderer\Buffer.cpp" />
+    <ClCompile Include="Renderer\FrameBuffer.cpp" />
     <ClCompile Include="Renderer\GraphicsContext.cpp" />
     <ClCompile Include="Renderer\GraphicsAPI.cpp" />
     <ClCompile Include="Renderer\OrthographicCamera.cpp" />

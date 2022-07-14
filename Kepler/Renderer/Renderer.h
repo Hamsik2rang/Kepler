@@ -26,8 +26,6 @@ namespace kepler {
 		
 		inline eGraphicsAPI GetAPI() const { return m_pGraphicsAPI->GetAPI(); }
 
-		void ClearColor();
-		void SetColor(const float* pColor);
 		void SetViewport(const uint32_t width, const uint32_t height, const float minDepth, const float maxDepth);
 		
 		void BeginScene(Camera& camera);

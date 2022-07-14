@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Renderer/RenderState.h"
+#include "DX11FrameBuffer.h"
 
 namespace kepler {
 
@@ -10,6 +11,8 @@ namespace kepler {
 		ID3D11RasterizerState* m_pRasterizerState;
 		ID3D11DepthStencilState* m_pDepthStencilState;
 		ID3D11BlendState* m_pBlendState;
+
+		DX11FrameBuffer m_frameBuffer;
 
 		bool m_bShaderStateChaged;
 		bool m_bRasterizerStateChanged;

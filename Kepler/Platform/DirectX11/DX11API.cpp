@@ -18,21 +18,6 @@ void kepler::DX11API::Init()
 	SetViewport(window->GetWidth(), window->GetHeight());
 }
 
-void kepler::DX11API::ClearColor()
-{
-	ID3D11DeviceContext* pImmediateContext = IGraphicsContext::Get()->GetDeviceContext();
-	ID3D11RenderTargetView* pRenderTargetView = IGraphicsContext::Get()->GetRenderTargetView();
-	ID3D11DepthStencilView* pDepthStencilView = IGraphicsContext::Get()->GetDepthStencilView();
-
-	pImmediateContext->ClearRenderTargetView(pRenderTargetView, m_clearColor);
-	pImmediateContext->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-}
-
-void kepler::DX11API::SetColor(const float color[4])
-{
-	memcpy(m_clearColor, color, sizeof(color));
-}
-
 void kepler::DX11API::SetViewport(const uint32_t width, const uint32_t height, const float minDepth, const float maxDepth)
 {
 	D3D11_VIEWPORT viewport{};
