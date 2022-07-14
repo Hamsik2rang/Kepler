@@ -84,7 +84,7 @@ namespace kepler {
 		}
 
 		// Create Depth Stencil View
-		IWindow* pWindow = Application::Get()->GetWindow();
+		std::shared_ptr<IWindow> pWindow = Application::Get()->GetWindow();
 		uint32_t width = pWindow->GetWidth();
 		uint32_t height = pWindow->GetHeight();
 
@@ -211,7 +211,7 @@ namespace kepler {
 		KEPLER_CORE_ASSERT(count < 8, "Maximum G-Buffer available count is 8.");
 
 		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
-		IWindow* pWindow = Application::Get()->GetWindow();
+		std::shared_ptr<IWindow> pWindow = Application::Get()->GetWindow();
 		uint32_t width = pWindow->GetWidth();
 		uint32_t height = pWindow->GetHeight();
 
