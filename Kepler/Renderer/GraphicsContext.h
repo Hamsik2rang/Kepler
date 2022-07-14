@@ -24,8 +24,6 @@ namespace kepler {
 		// Interface for DirectX11 
 		virtual ID3D11Device* GetDevice() { return nullptr; }
 		virtual ID3D11DeviceContext* GetDeviceContext() { return nullptr; }
-		virtual ID3D11RenderTargetView* GetRenderTargetView() { return nullptr; }
-		virtual ID3D11DepthStencilView* GetDepthStencilView() { return nullptr; }
 		virtual IDXGISwapChain* GetSwapChain() { return nullptr; }
 
 		// TODO: 추후 API사양을 인자로 받아 적절한 컨텍스트를 생성하도록 변경할 것(현재는 DX11만 생성 가능)

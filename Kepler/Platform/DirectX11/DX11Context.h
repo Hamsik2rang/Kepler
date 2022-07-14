@@ -14,13 +14,8 @@ namespace kepler {
 	{
 	private:
 		ID3D11Device*				m_pDevice;
-		ID3D11DeviceContext*		m_pImmediateContext;
+		ID3D11DeviceContext*		m_pDeviceContext;
 		IDXGISwapChain*				m_pSwapChain;
-		ID3D11RenderTargetView*		m_pRenderTargetView;
-
-		// TODO: FrameBuffer 구현 시 이동시켜야 합니다.
-		ID3D11DepthStencilView*		m_pDepthStencilView;
-		ID3D11Texture2D*			m_pDepthStencilBuffer;
 		D3D_FEATURE_LEVEL			m_featureLevel;
 
 		HWND m_hWnd;
@@ -30,9 +25,7 @@ namespace kepler {
 		DX11Context(const HWND hWnd);
 
 		inline virtual ID3D11Device* GetDevice() override { return m_pDevice; }
-		inline virtual ID3D11DeviceContext* GetDeviceContext() override { return m_pImmediateContext; }
-		inline virtual ID3D11RenderTargetView* GetRenderTargetView() override { return m_pRenderTargetView; }
-		inline virtual ID3D11DepthStencilView* GetDepthStencilView() override { return m_pDepthStencilView; }
+		inline virtual ID3D11DeviceContext* GetDeviceContext() override { return m_pDeviceContext; }
 		inline virtual IDXGISwapChain* GetSwapChain() override { return m_pSwapChain; }
 
 		// Inherited via IRenderer

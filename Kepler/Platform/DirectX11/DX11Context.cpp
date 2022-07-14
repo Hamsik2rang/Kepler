@@ -9,11 +9,8 @@ kepler::DX11Context::DX11Context(const HWND hWnd)
 	: m_hWnd{ hWnd }
 	, m_bVSync{ false }
 	, m_pDevice{ nullptr }
-	, m_pImmediateContext{ nullptr }
+	, m_pDeviceContext{ nullptr }
 	, m_pSwapChain{ nullptr }
-	, m_pRenderTargetView{ nullptr }
-	, m_pDepthStencilView{ nullptr }
-	, m_pDepthStencilBuffer{ nullptr }
 	, m_featureLevel{ D3D_FEATURE_LEVEL_11_0 }
 {
 
@@ -23,8 +20,7 @@ void kepler::DX11Context::Cleanup()
 {
 	// 종료 전 윈도우 모드로 설정하지 않으면 스왑 체인을 해제 할 때 예외가 발생합니다.
 	if (m_pSwapChain) { m_pSwapChain->SetFullscreenState(false, nullptr); }
-	if (m_pRenderTargetView) { m_pRenderTargetView->Release(); m_pRenderTargetView = nullptr; }
-	if (m_pImmediateContext) { m_pImmediateContext->Release(); m_pImmediateContext = nullptr; }
+	if (m_pDeviceContext) { m_pDeviceContext->Release(); m_pDeviceContext = nullptr; }
 	if (m_pDevice) { m_pDevice->Release(); m_pDevice = nullptr; }
 	if (m_pSwapChain) { m_pSwapChain->Release(); m_pSwapChain = nullptr; }
 }
@@ -80,7 +76,7 @@ bool kepler::DX11Context::Init(const WindowData& data)
 		&m_pSwapChain,
 		&m_pDevice,
 		&m_featureLevel,
-		&m_pImmediateContext);
+		&m_pDeviceContext);
 
 	if (FAILED(hr))
 	{
