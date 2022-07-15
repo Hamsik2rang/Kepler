@@ -100,7 +100,7 @@ namespace kepler {
 		bool bMultiSampling;
 		bool bAntiAliasedLine;
 		bool bDepthClip;
-		float depthBias;
+		int depthBias;
 		float depthSlopedBias;
 		float depthClampBias;
 	};
