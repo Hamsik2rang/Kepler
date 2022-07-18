@@ -14,7 +14,7 @@ namespace kepler {
 
 		Float, Float2, Float3, Float4,
 		Int, Int2, Int3, Int4,
-		
+
 		Float33,
 		Float44,
 
@@ -66,9 +66,9 @@ namespace kepler {
 		BufferElement() = default;
 		BufferElement(const std::string& _name, const uint32_t _index, eShaderDataType _type, uint32_t offset, uint32_t stride)
 			: name{ _name }
-			, index{_index}
+			, index{ _index }
 			, type{ _type }
-			, size{ ShaderDataTypeSize(_type)}
+			, size{ ShaderDataTypeSize(_type) }
 			, offset{ 0 }
 		{}
 
@@ -116,7 +116,7 @@ namespace kepler {
 		}
 	public:
 		BufferLayout(std::initializer_list<BufferElement> elements)
-			: m_elements{elements}
+			: m_elements{ elements }
 		{
 			CalcOffsetAndStride();
 		}
@@ -136,16 +136,16 @@ namespace kepler {
 	{
 	public:
 		virtual ~IVertexBuffer() = default;
-	
+
 		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
 
 		virtual void SetData(const void* data, uint32_t size) = 0;
 		virtual void SetLayout(const BufferLayout& bufferLayout) = 0;
 		virtual const BufferLayout& GetLayout() const = 0;
-	
+
 		static std::shared_ptr<IVertexBuffer> Create(const uint32_t size, eBufferUsage usage);
-		static std::shared_ptr<IVertexBuffer> Create(const void* const vertices, const uint32_t size,eBufferUsage usage);
+		static std::shared_ptr<IVertexBuffer> Create(const void* const vertices, const uint32_t size, eBufferUsage usage);
 	};
 
 	// Index Buffer Interface
@@ -160,5 +160,22 @@ namespace kepler {
 		virtual uint32_t GetCount() const = 0;
 
 		static std::shared_ptr<IIndexBuffer> Create(const uint32_t* const indices, const uint32_t count, eBufferUsage usage);
+	};
+
+	// Instance Buffer Interface
+	class IInstanceBuffer
+	{
+	public:
+		virtual ~IInstanceBuffer() = default;
+
+		virtual void Bind() = 0;
+		virtual void Unbind() = 0;
+
+		virtual void SetData(const void* data, uint32_t size, uint32_t count) = 0;
+		virtual void SetLayout(const BufferLayout& layout) = 0;
+		virtual const BufferLayout& GetLayout() const = 0;
+
+		static std::shared_ptr<IInstanceBuffer> Create(const uint32_t size, const uint32_t count, eBufferUsage usage);
+		static std::shared_ptr<IInstanceBuffer> Create(const void* const data, const uint32_t size, const uint32_t count, eBufferUsage usage);
 	};
 }

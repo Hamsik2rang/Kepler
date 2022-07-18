@@ -31,8 +31,9 @@ namespace kepler {
 		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
 
-		virtual void AddVertexBuffer(const std::shared_ptr<IVertexBuffer> vertexBuffer) = 0;
-		virtual void SetIndexBuffer(const std::shared_ptr<IIndexBuffer> indexBuffer) = 0;
+		virtual void AddVertexBuffer(const std::shared_ptr<IVertexBuffer> pVertexBuffer) = 0;
+		virtual void SetIndexBuffer(const std::shared_ptr<IIndexBuffer> pIndexBuffer) = 0;
+		virtual void SetInstanceBuffer(const std::shared_ptr<IInstanceBuffer> pInstanceBuffer) = 0;
 		virtual void SetPrimitiveType(ePrimitiveType type, uint8_t cpCount = 0) = 0;
 
 		virtual const std::vector<std::shared_ptr<IVertexBuffer>>& GetVertexBuffers() const = 0;

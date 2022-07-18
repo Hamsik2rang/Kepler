@@ -22,6 +22,7 @@ namespace kepler {
 		virtual void SetViewport(const uint32_t width, const uint32_t height, const float minDepth = 0.0f, const float maxDepth = 1.0f) = 0;
 		// TODO: should be going to get buffer(vertex, index) params
 		virtual void DrawIndexed(const std::shared_ptr<IVertexArray>& pVertexArray) = 0;
+		virtual void DrawIndexedInstanced(const std::shared_ptr<IVertexArray>& pVertexArray) = 0;
 
 		inline static void SetAPI(eGraphicsAPI api) { s_API = api; }
 		inline static eGraphicsAPI GetAPI() { return s_API; }

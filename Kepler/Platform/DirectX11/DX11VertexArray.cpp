@@ -15,12 +15,14 @@ namespace kepler {
 
 	void DX11VertexArray::Bind()
 	{
+		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+
 		for (uint32_t i = 0; i < m_pVertexBuffers.size(); i++)
 		{
 			m_pVertexBuffers[i]->Bind();
 		}
+		m_pInstanceBuffer->Bind();
 		m_pIndexBuffer->Bind();
-		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
 		pContext->IASetPrimitiveTopology(m_primitiveTopology);
 	}
 
@@ -30,17 +32,8 @@ namespace kepler {
 		{
 			vb->Unbind();
 		}
+		m_pInstanceBuffer->Unbind();
 		m_pIndexBuffer->Unbind();
-	}
-
-	void DX11VertexArray::AddVertexBuffer(const std::shared_ptr<IVertexBuffer> vertexBuffer)
-	{
-		m_pVertexBuffers.push_back(vertexBuffer);
-	}
-
-	void DX11VertexArray::SetIndexBuffer(const std::shared_ptr<IIndexBuffer> indexBuffer)
-	{
-		m_pIndexBuffer = indexBuffer;
 	}
 
 	void DX11VertexArray::SetPrimitiveType(ePrimitiveType type, uint8_t cpCount)
