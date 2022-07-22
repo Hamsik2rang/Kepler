@@ -211,9 +211,21 @@ namespace kepler {
 			curDesc.SemanticName = paramDesc.SemanticName;
 			curDesc.SemanticIndex = paramDesc.SemanticIndex;
 			curDesc.InputSlot = paramIndex;
-			curDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 			curDesc.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
-			curDesc.InstanceDataStepRate = 0;
+			// TODO: Reflected된 변수의 InputClass를 구분하는 더 좋은 방법 찾아보기
+			// 현재 semantic name이 INST로 시작하는 경우에만 인스턴스 데이터로 규정하는데 
+			// 이 경우 실수로 쉐이더 코드의 데이터 이름이 잘못 설정되면 인식하지 못하게 됨.
+			std::string semanticName{ curDesc.SemanticName };
+			if (semanticName.substr(0, 4) == "INST")
+			{
+				curDesc.InputSlotClass = D3D11_INPUT_PER_INSTANCE_DATA;
+				curDesc.InstanceDataStepRate = 1;
+			}
+			else
+			{
+				curDesc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+				curDesc.InstanceDataStepRate = 0;
+			}
 
 			// 0b0001
 			if (paramDesc.Mask == 1)		
@@ -542,6 +554,21 @@ namespace kepler {
 		}
 		// 해당 메모리에 값을 쓴 후 constant buffer update
 		memcpy(m_pByteBuffer[index] + offset, &value, sizeof(value));
+		UpdateConstantBuffer(index);
+	}
+
+	void DX11Shader::SetArray(const std::string& paramName, const void* pValue, const size_t size)
+	{
+		int index = 0;
+		int offset = 0;
+		// 쉐이더 변수 이름을 이용해 매핑된 memory의 인덱스와 offset을 찾음
+		if (index < 0)
+		{
+			KEPLER_WARNING("Invalid shader parameter");
+			return;
+		}
+		// 해당 메모리 값을 쓴 후 constant buffer update
+		memcpy(m_pByteBuffer[index] + offset, pValue, size);
 		UpdateConstantBuffer(index);
 	}
 

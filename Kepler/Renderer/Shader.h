@@ -88,6 +88,7 @@ namespace kepler {
 		virtual void SetFloat4(const std::string& paramName, const Vec4f& value) = 0;
 		virtual void SetVector(const std::string& paramName, const Vec4f& value) = 0;
 		virtual void SetMatrix(const std::string& paramName, const Mat44f& value) = 0;
+		virtual void SetArray(const std::string& paramName, const void* pValue, const size_t size) = 0;
 
 		virtual void SetName(const std::string& name) = 0;
 		virtual std::string GetName() const = 0;
