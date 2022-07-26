@@ -18,7 +18,7 @@ bool InstLayer::OnMouseMovedEvent(kepler::MouseMovedEvent& e)
 
 	kepler::Vec2f position = { curCursorX, curCursorY };
 	kepler::Vec2f velocity = { m_lastCursorX - curCursorX, m_lastCursorY - curCursorY };
-	velocity *= 0.1f;
+	velocity * 10.0f;
 	kepler::Vec4f colorBegin = { 0.0f, 0.8f, 1.0f, 1.0f };
 	kepler::Vec4f colorEnd = { 0.0f, 0.8f, 1.0f, 0.0f };
 	float sizeBegin = 2.0f;
@@ -36,8 +36,6 @@ bool InstLayer::OnMouseMovedEvent(kepler::MouseMovedEvent& e)
 
 	m_lastCursorX = curCursorX;
 	m_lastCursorY = curCursorY;
-
-	//TODO: Alpha Blend State 추가하기
 }
 
 void InstLayer::OnAttach()
@@ -46,13 +44,31 @@ void InstLayer::OnAttach()
 	m_screenHeight = static_cast<float>(window.GetHeight());
 	m_screenWidth = static_cast<float>(window.GetWidth());
 
-	auto ds = kepler::IRenderState::Get()->GetDepthState();
-	ds.bDepthTest = false;
-	ds.bDepthWrite = false;
-	kepler::IRenderState::Get()->SetDepthState(ds);
+	//auto ds = kepler::IRenderState::Get()->GetDepthState();
+	//ds.bDepthTest = false;
+	//ds.bDepthWrite = false;
+	//kepler::IRenderState::Get()->SetDepthState(ds);
 
 	m_camera.SetProjection(0, m_screenWidth, 0, m_screenHeight, 0.0f, 1.0f);
 	m_camera.SetPosition({ 0.0f, 0.0f, 0.0f });
+
+	//TODO: Alpha Blend State 추가하기
+	auto blendDesc = kepler::IRenderState::Get()->GetBlendState();
+	blendDesc.renderTarget[0].bBlendEnable = true;
+	blendDesc.renderTarget[0].writeMask = 0b00001111;
+	blendDesc.renderTarget[0].srcColorFactor = kepler::eBlendFactor::SrcAlpha;
+	blendDesc.renderTarget[0].destColorFactor = kepler::eBlendFactor::InvSrcAlpha;
+	blendDesc.renderTarget[0].srcAlphaFactor = kepler::eBlendFactor::InvDestAlpha;
+	blendDesc.renderTarget[0].destAlphaFactor = kepler::eBlendFactor::One;
+	blendDesc.renderTarget[0].colorBlendOperator = kepler::eBlendOperator::Add;
+	blendDesc.renderTarget[0].alphaBlendOperator = kepler::eBlendOperator::Add;
+	blendDesc.customFactor[0] = 0.0f;
+	blendDesc.customFactor[1] = 0.0f;
+	blendDesc.customFactor[2] = 0.0f;
+	blendDesc.customFactor[3] = 0.0f;
+	blendDesc.sampleMask = 0xffffffff;
+	kepler::IRenderState::Get()->SetBlendState(blendDesc);
+	kepler::IRenderState::Get()->Bind();
 }
 
 void InstLayer::OnDetach()

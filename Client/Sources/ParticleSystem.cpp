@@ -25,9 +25,8 @@ void ParticleSystem::Emit(
 	}
 
 	particle.position = position;
-	//particle.position = kepler::Vec2f::Zero;
-	particle.velocity = velocity * 0.01f;
-	particle.velocityAdd = velocityAdd * 0.01f;
+	particle.velocity = velocity * 0.1f;
+	particle.velocityAdd = velocityAdd * 0.1f;
 	particle.colorBegin = colorBegin;
 	particle.colorEnd = colorEnd;
 	particle.rotation = rotation;
@@ -50,7 +49,7 @@ void ParticleSystem::OnUpdate(const float deltaTime)
 			e.bIsActived = false;
 			continue;
 		}
-		
+
 		e.velocity += e.velocityAdd;
 		e.position += e.velocity;
 	}
@@ -58,7 +57,6 @@ void ParticleSystem::OnUpdate(const float deltaTime)
 
 void ParticleSystem::OnRender()
 {
-
 	for (const auto& e : m_particlePool)
 	{
 		if (!e.bIsActived)
@@ -68,7 +66,10 @@ void ParticleSystem::OnRender()
 		float t = e.lifeRemaining / e.lifeTime;
 		float size = (e.sizeBegin * t) + (e.sizeEnd * (1.0f - t));
 
-		kepler::Vec4f color = kepler::math::Lerp(e.colorBegin, e.colorEnd, t);
+		kepler::Vec4f color = kepler::math::Lerp(e.colorEnd, e.colorBegin, t);
+#ifdef _DEBUG
+		KEPLER_INFO("{0} {1} {2} {3}", color.r, color.g, color.b, color.a);
+#endif
 		kepler::Renderer2D::Get()->DrawQuad(e.position, e.rotation, { size,size }, color);
 	}
 }

@@ -17,7 +17,7 @@ namespace kepler {
 		Front,
 		Back
 	};
-	 
+
 	enum class eFrameBufferComparer
 	{
 		None = 0,
@@ -30,9 +30,9 @@ namespace kepler {
 		GreaterOrEqual,
 		Always,
 	};
-	using eDepthComparer	= eFrameBufferComparer;
-	using eStencilComparer	= eFrameBufferComparer;
-	
+	using eDepthComparer = eFrameBufferComparer;
+	using eStencilComparer = eFrameBufferComparer;
+
 	enum class eStencilOperator
 	{
 		None = 0,
@@ -155,8 +155,9 @@ namespace kepler {
 
 			eBlendOperator colorBlendOperator;
 			eBlendOperator alphaBlendOperator;
-			float customFactor[4];
 		} renderTarget[8];
+		float customFactor[4];
+		uint32_t sampleMask;
 	};
 	//------------------------------------
 

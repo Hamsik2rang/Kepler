@@ -51,22 +51,6 @@ namespace kepler {
 
 			return gen;
 		}
-
-		static int64_t Int64(int64_t min = std::numeric_limits<int64_t>::min(), int64_t max = std::numeric_limits<int64_t>::max())
-		{
-			std::uniform_int_distribution<> dis(min, max);
-			int64_t gen = static_cast<int64_t>(dis(s_engine));
-
-			return gen;
-		}
-
-		static uint64_t Uint64(uint64_t min = std::numeric_limits<uint64_t>::max(), uint64_t max = std::numeric_limits<uint64_t>::max())
-		{
-			std::uniform_int_distribution<> dis(min, max);
-			uint64_t gen = static_cast<uint64_t>(dis(s_engine));
-
-			return gen;
-		}
 #pragma pop_macro("max")
 #pragma pop_macro("min")
 	};
