@@ -30,7 +30,7 @@ void ParticleSystem::Emit(
 	particle.colorBegin = colorBegin;
 	particle.colorEnd = colorEnd;
 	particle.rotation = rotation;
-	particle.sizeBegin = sizeBegin * kepler::Random::Float(0.5f, 1.0f);
+	particle.sizeBegin = sizeBegin * kepler::Random::Float(0.1f, 1.0f);
 	particle.sizeEnd = sizeEnd;
 	particle.lifeTime = lifeTime;
 	particle.lifeRemaining = lifeTime;
@@ -65,8 +65,9 @@ void ParticleSystem::OnRender()
 		}
 		float t = e.lifeRemaining / e.lifeTime;
 		float size = (e.sizeBegin * t) + (e.sizeEnd * (1.0f - t));
+		float rotation = (e.rotation * t) + ((e.rotation + 90.0f) * (1.0f - t));
 
 		kepler::Vec4f color = kepler::math::Lerp(e.colorEnd, e.colorBegin, t);
-		kepler::Renderer2D::Get()->DrawQuad(e.position, e.rotation, { size,size }, color);
+		kepler::Renderer2D::Get()->DrawQuad(e.position, rotation, { size,size }, color);
 	}
 }

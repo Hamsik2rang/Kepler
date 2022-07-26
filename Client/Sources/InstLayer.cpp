@@ -19,11 +19,12 @@ bool InstLayer::OnMouseMovedEvent(kepler::MouseMovedEvent& e)
 	kepler::Vec2f position = { curCursorX, curCursorY };
 	kepler::Vec2f velocity = { m_lastCursorX - curCursorX, m_lastCursorY - curCursorY };
 	velocity = velocity.Normalize() * 1000.0f;
-	kepler::Vec4f colorBegin = { 0.0f, 0.8f, 1.0f, 1.0f };
-	kepler::Vec4f colorEnd = { 0.0f, 0.8f, 1.0f, 0.0f };
+	kepler::Vec4f colorBegin = { kepler::Random::Float(0.0f, 1.0f), kepler::Random::Float(0.0f, 1.0f), kepler::Random::Float(0.0f, 1.0f), 1.0f };
+	kepler::Vec4f colorEnd = { colorBegin.x, colorBegin.y, colorBegin.z, 0.0f };
 	float sizeBegin = 2.0f;
 	float sizeEnd = 20.0f;
-	float rotation = kepler::math::DegToRad(kepler::Random::Float(0.0f, 45.0f));
+	//TODO: Rotation이 안되고 있음
+	float rotation = kepler::Random::Float(0.0f, 90.0f);
 	for (int i = 0; i < 5; i++)
 	{
 		auto curVelocity = velocity;
@@ -87,7 +88,7 @@ void InstLayer::OnRender()
 	kepler::IRenderState::Get()->Bind();
 
 	m_particleEngine.OnRender();
-
+	
 	kepler::Renderer2D::Get()->EndScene();
 }
 
