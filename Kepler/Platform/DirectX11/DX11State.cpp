@@ -304,6 +304,7 @@ namespace kepler {
 		}
 		if (m_bBlendStateChaged)
 		{
+			CreateBlendState();
 			// TODO: 추후 MRT 지원 시 로직이 바뀌어야함
 			pContext->OMSetBlendState(m_pBlendState, s_blendDesc.customFactor, s_blendDesc.sampleMask);
 

@@ -50,8 +50,8 @@ void ParticleSystem::OnUpdate(const float deltaTime)
 			continue;
 		}
 
-		e.velocity += e.velocityAdd;
-		e.position += e.velocity;
+		e.velocity += e.velocityAdd * deltaTime;
+		e.position += e.velocity * deltaTime;
 	}
 }
 
@@ -67,9 +67,6 @@ void ParticleSystem::OnRender()
 		float size = (e.sizeBegin * t) + (e.sizeEnd * (1.0f - t));
 
 		kepler::Vec4f color = kepler::math::Lerp(e.colorEnd, e.colorBegin, t);
-#ifdef _DEBUG
-		KEPLER_INFO("{0} {1} {2} {3}", color.r, color.g, color.b, color.a);
-#endif
 		kepler::Renderer2D::Get()->DrawQuad(e.position, e.rotation, { size,size }, color);
 	}
 }
