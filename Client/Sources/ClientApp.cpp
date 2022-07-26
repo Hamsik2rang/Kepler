@@ -1,5 +1,6 @@
 #include "Kepler.h"
 #include "ExampleLayer.h"
+#include "InstLayer.h"
 
 #include <Core/EntryPoint.h>
 
@@ -9,7 +10,7 @@ public:
 	Client()
 		: Application(kepler::eGraphicsAPI::DirectX11)
 	{
-		PushLayer(new ExampleLayer());
+		PushLayer(new InstLayer);
 	}
 	~Client()
 	{

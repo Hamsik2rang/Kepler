@@ -15,7 +15,7 @@ namespace kepler {
 	private:
 		static	Application*		s_pInstance;
 
-		std::shared_ptr<IWindow>	m_pWindow;
+		std::unique_ptr<IWindow>	m_pWindow;
 		std::unique_ptr<ImGuiLayer> m_pImGuiLayer;
 		LayerStack					m_layerStack;
 		Timer						m_timer;
@@ -29,7 +29,7 @@ namespace kepler {
 		~Application();
 
 		static Application* Get();
-		inline std::shared_ptr<IWindow> GetWindow() { return m_pWindow; }
+		inline IWindow& GetWindow() { return *m_pWindow; }
 
 		void OnEvent(Event& e);
 

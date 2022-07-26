@@ -562,6 +562,7 @@ namespace kepler {
 		int index = 0;
 		int offset = 0;
 		// 쉐이더 변수 이름을 이용해 매핑된 memory의 인덱스와 offset을 찾음
+		GetConstantBufferDataInfo(paramName, index, offset);
 		if (index < 0)
 		{
 			KEPLER_WARNING("Invalid shader parameter");

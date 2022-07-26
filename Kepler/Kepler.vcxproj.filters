@@ -168,6 +168,9 @@
     <ClInclude Include="Renderer\RenderProfiler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Utility\Random.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Application.cpp">
@@ -293,6 +296,9 @@
     <ClCompile Include="Renderer\RenderProfiler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Utility\Random.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kepler.rc">
@@ -319,5 +325,9 @@
     <FxCompile Include="Resources\Shaders\HLSL\PSSolid.hlsl" />
     <FxCompile Include="Resources\Shaders\HLSL\VSTest.hlsl" />
     <FxCompile Include="Resources\Shaders\HLSL\PSTest.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\VS2DTextureInst.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\PS2DTextureInst.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\VS2DSolidInst.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\PS2DSolidInst.hlsl" />
   </ItemGroup>
 </Project>

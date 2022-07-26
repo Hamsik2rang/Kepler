@@ -15,9 +15,9 @@ namespace kepler {
 
 	void DX11API::Init()
 	{
-		auto window = Application::Get()->GetWindow();
+		auto& window = Application::Get()->GetWindow();
 
-		SetViewport(window->GetWidth(), window->GetHeight());
+		SetViewport(window.GetWidth(), window.GetHeight());
 	}
 
 	void DX11API::SetViewport(const uint32_t width, const uint32_t height, const float minDepth, const float maxDepth)
@@ -37,11 +37,15 @@ namespace kepler {
 	void DX11API::DrawIndexed(const std::shared_ptr<IVertexArray>& pVertexArray)
 	{
 		ID3D11DeviceContext* pImmediateContext = IGraphicsContext::Get()->GetDeviceContext();
+		pVertexArray->Bind();
 		pImmediateContext->DrawIndexed(pVertexArray->GetIndexBuffer()->GetCount(), 0, 0);
 	}
 
-	void DX11API::DrawIndexedInstanced(const std::shared_ptr<IVertexArray>& pVertexArray)
+	void DX11API::DrawIndexedInstanced(const std::shared_ptr<IVertexArray>& pVertexArray, const std::shared_ptr<IInstanceBuffer>& pInstanceBuffer)
 	{
-		
+		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+		pVertexArray->Bind();
+		pInstanceBuffer->Bind();
+		pContext->DrawIndexedInstanced(pVertexArray->GetIndexBuffer()->GetCount(), pInstanceBuffer->GetCount(), 0, 0, 0);
 	}
 }

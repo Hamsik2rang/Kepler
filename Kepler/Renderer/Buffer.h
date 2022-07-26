@@ -174,8 +174,19 @@ namespace kepler {
 		virtual void SetData(const void* data, uint32_t size, uint32_t count) = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
 		virtual const BufferLayout& GetLayout() const = 0;
-
+		virtual uint32_t GetCount() const = 0;
+		
+		//! 현재 Graphics API에 맞는 Instance Buffer를 생성합니다.
+		//! \param size : 인스턴스 데이터의 전체 크기.
+		//! \param count : 인스턴스 개체 수.
+		//! \param usage : Buffer usage(default/dynamic/static/staging).
 		static std::shared_ptr<IInstanceBuffer> Create(const uint32_t size, const uint32_t count, eBufferUsage usage);
+
+		//! 현재 Graphics API에 맞는 Instance Buffer를 생성합니다.
+		//! \param data : 인스턴스 데이터
+		//! \param size : 인스턴스 데이터의 전체 크기.
+		//! \param count : 인스턴스 개체 수.
+		//! \param usage : Buffer usage(default/dynamic/static/staging).
 		static std::shared_ptr<IInstanceBuffer> Create(const void* const data, const uint32_t size, const uint32_t count, eBufferUsage usage);
 	};
 }

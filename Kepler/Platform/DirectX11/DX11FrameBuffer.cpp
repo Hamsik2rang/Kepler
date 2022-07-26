@@ -84,9 +84,9 @@ namespace kepler {
 		}
 
 		// Create Depth Stencil View
-		std::shared_ptr<IWindow> pWindow = Application::Get()->GetWindow();
-		uint32_t width = pWindow->GetWidth();
-		uint32_t height = pWindow->GetHeight();
+		auto& window = Application::Get()->GetWindow();
+		uint32_t width = window.GetWidth();
+		uint32_t height = window.GetHeight();
 
 		D3D11_TEXTURE2D_DESC dsDesc{};
 		dsDesc.Width = width;
@@ -116,7 +116,6 @@ namespace kepler {
 		dsvDesc.Texture2D.MipSlice = 0;
 
 		hr = pDevice->CreateDepthStencilView(pDepthStencilBuffer, &dsvDesc, &m_pDepthStencilView);
-		//TODO: DepthStencilBuffer가 릴리즈 되면 안될 시 멤버 변수로 변경할 것
 		pDepthStencilBuffer->Release();
 		pDepthStencilBuffer = nullptr;
 		if (FAILED(hr))
@@ -211,9 +210,9 @@ namespace kepler {
 		KEPLER_CORE_ASSERT(count < 8, "Maximum G-Buffer available count is 8.");
 
 		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
-		std::shared_ptr<IWindow> pWindow = Application::Get()->GetWindow();
-		uint32_t width = pWindow->GetWidth();
-		uint32_t height = pWindow->GetHeight();
+		auto& window = Application::Get()->GetWindow();
+		uint32_t width = window.GetWidth();
+		uint32_t height = window.GetHeight();
 
 		D3D11_TEXTURE2D_DESC texDesc{};
 		texDesc.Width = width;

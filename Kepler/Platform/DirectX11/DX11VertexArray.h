@@ -11,7 +11,6 @@ namespace kepler {
 	private:
 		std::vector<std::shared_ptr<IVertexBuffer>> m_pVertexBuffers;
 		std::shared_ptr<IIndexBuffer> m_pIndexBuffer;
-		std::shared_ptr<IInstanceBuffer> m_pInstanceBuffer;
 
 		ePrimitiveType m_primitiveType;
 		uint8_t m_cpCount;
@@ -27,7 +26,6 @@ namespace kepler {
 		virtual void SetPrimitiveType(ePrimitiveType type, uint8_t cpCount) override;
 		inline virtual void AddVertexBuffer(const std::shared_ptr<IVertexBuffer> pVertexBuffer) override { m_pVertexBuffers.push_back(pVertexBuffer); }
 		inline virtual void SetIndexBuffer(const std::shared_ptr<IIndexBuffer> pIndexBuffer) override { m_pIndexBuffer = pIndexBuffer; }
-		inline virtual void SetInstanceBuffer(const std::shared_ptr<IInstanceBuffer> pInstanceBuffer) override { m_pInstanceBuffer = pInstanceBuffer; }
 
 		inline virtual const std::vector<std::shared_ptr<IVertexBuffer>>& GetVertexBuffers() const override { return m_pVertexBuffers; }
 		inline virtual const std::shared_ptr<IIndexBuffer> GetIndexBuffer() const override { return m_pIndexBuffer; }

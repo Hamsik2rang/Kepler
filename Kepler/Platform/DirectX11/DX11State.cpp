@@ -130,7 +130,7 @@ namespace kepler {
 		case eDepthComparer::LessOrEqual:		desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;		break;
 		case eDepthComparer::None:
 			{
-				KEPLER_CORE_ASSERT(static_cast<bool>(desc.DepthEnable) == true, "None Depth Comparer is not supported when Depth test is enabled");
+				KEPLER_CORE_ASSERT(static_cast<bool>(desc.DepthEnable) == false, "None Depth Comparer is not supported when Depth test is enabled");
 			}
 			break;
 		}

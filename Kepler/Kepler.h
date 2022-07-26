@@ -44,6 +44,7 @@
 
 //----- Utility --------------------------
 #include "Utility/Timer.hpp"
+#include "Utility/Random.hpp"
 //-----------------------------------------
 
 //----- Global Variables-------------------

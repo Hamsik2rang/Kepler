@@ -57,5 +57,6 @@ namespace kepler {
 		virtual void SetData(const void* data, uint32_t size, uint32_t count) override;
 		inline virtual void SetLayout(const BufferLayout& layout) override { m_layout = layout; }
 		inline virtual const BufferLayout& GetLayout() const override { return m_layout; }
+		inline virtual uint32_t GetCount() const override { return m_count; }
 	};
 }

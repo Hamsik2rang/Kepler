@@ -21,7 +21,6 @@ namespace kepler {
 		{
 			m_pVertexBuffers[i]->Bind();
 		}
-		m_pInstanceBuffer->Bind();
 		m_pIndexBuffer->Bind();
 		pContext->IASetPrimitiveTopology(m_primitiveTopology);
 	}
@@ -32,7 +31,6 @@ namespace kepler {
 		{
 			vb->Unbind();
 		}
-		m_pInstanceBuffer->Unbind();
 		m_pIndexBuffer->Unbind();
 	}
 
