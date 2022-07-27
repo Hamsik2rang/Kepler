@@ -11,6 +11,7 @@ public:
 		: Application(kepler::eGraphicsAPI::DirectX11)
 	{
 		PushLayer(new InstLayer);
+		PushOverlay(new kepler::RenderProfiler);
 	}
 	~Client()
 	{

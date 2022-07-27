@@ -133,6 +133,7 @@ namespace kepler {
 	{
 		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
 		pContext->ClearRenderTargetView(m_pColorBufferView, color);
+		pContext->OMSetRenderTargets(1, &m_pColorBufferView, m_pDepthStencilView);
 	}
 
 	void DX11FrameBuffer::ClearDepthStencil(bool bDepthClear, bool bStencilClear, const float depth, const uint8_t stencil)
