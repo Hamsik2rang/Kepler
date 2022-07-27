@@ -51,7 +51,6 @@
 #include "PostProcess.h"
 #include "PrimitiveBatch.h"
 #include "ScreenGrab.h"
-#include "SimpleMath.h"
 #include "SpriteBatch.h"
 #include "SpriteFont.h"
 #include "VertexTypes.h"

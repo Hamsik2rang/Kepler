@@ -2,10 +2,11 @@
 #include "RenderLog.h"
 
 namespace kepler {
+
 	ImPlotLineData::ImPlotLineData()
-		: m_pKey(new float[s_size])
-		, m_pValue(new float[s_size])
-		, m_curSize(-1)
+		: m_pKey{ new float[s_size] }
+		, m_pValue{ new float[s_size] }
+		, m_curSize{ 0 }
 	{
 		for (int i = 0; i < s_size; i++)
 		{
@@ -22,8 +23,7 @@ namespace kepler {
 
 	void ImPlotLineData::Add(const float value)
 	{
-		m_curSize++;
-		if (m_curSize >= s_size)
+		if (m_curSize >= s_size - 1)
 		{
 			m_curSize = s_size - 1;
 			for (int i = 0; i < ImPlotLineData::s_size - 1; i++)
@@ -34,5 +34,6 @@ namespace kepler {
 		}
 		m_pKey[m_curSize] = (float)m_curSize;
 		m_pValue[m_curSize] = value;
+		m_curSize++;
 	}
 }

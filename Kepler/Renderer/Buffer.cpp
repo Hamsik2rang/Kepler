@@ -69,4 +69,43 @@ namespace kepler {
 		return nullptr;
 	}
 
+	std::shared_ptr<IInstanceBuffer> IInstanceBuffer::Create(const uint32_t count, const uint32_t size, eBufferUsage usage)
+	{
+		eGraphicsAPI api = IGraphicsAPI::GetAPI();
+		switch (api)
+		{
+		case eGraphicsAPI::None:
+			{
+				KEPLER_ASSERT(false, "None Graphics API is not suppotted");
+				return nullptr;
+			}
+		case eGraphicsAPI::DirectX11:
+			{
+				return std::make_shared<DX11InstanceBuffer>(count, size, usage);
+			}
+			//...
+		}
+		KEPLER_ASSERT(false, "Invalid Graphics API");
+		return nullptr;
+	}
+
+	std::shared_ptr<IInstanceBuffer> IInstanceBuffer::Create(const void* const data, const uint32_t count, const uint32_t size, eBufferUsage usage)
+	{
+		eGraphicsAPI api = IGraphicsAPI::GetAPI();
+		switch (api)
+		{
+		case eGraphicsAPI::None:
+			{
+				KEPLER_ASSERT(false, "None Graphics API is not suppotted");
+				return nullptr;
+			}
+		case eGraphicsAPI::DirectX11:
+			{
+				return std::make_shared<DX11InstanceBuffer>(data, count, size, usage);
+			}
+			//...
+		}
+		KEPLER_ASSERT(false, "Invalid Graphics API");
+		return nullptr;
+	}
 }

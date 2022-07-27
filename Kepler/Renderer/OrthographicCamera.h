@@ -20,8 +20,8 @@ namespace kepler {
 			, m_rotation{ 0.0f }
 			, m_aspect{ 16.0f / 9.0f }
 		{
-			auto pWindow = Application::Get()->GetWindow();
-			m_aspect = static_cast<float>(pWindow->GetWidth()) / static_cast<float>(pWindow->GetHeight());
+			auto& window = Application::Get()->GetWindow();
+			m_aspect = static_cast<float>(window.GetWidth()) / static_cast<float>(window.GetHeight());
 		}
 		~OrthographicCamera() = default;
 

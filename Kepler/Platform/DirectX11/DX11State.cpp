@@ -130,7 +130,7 @@ namespace kepler {
 		case eDepthComparer::LessOrEqual:		desc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;		break;
 		case eDepthComparer::None:
 			{
-				KEPLER_CORE_ASSERT(static_cast<bool>(desc.DepthEnable) == true, "None Depth Comparer is not supported when Depth test is enabled");
+				KEPLER_CORE_ASSERT(static_cast<bool>(desc.DepthEnable) == false, "None Depth Comparer is not supported when Depth test is enabled");
 			}
 			break;
 		}
@@ -304,8 +304,9 @@ namespace kepler {
 		}
 		if (m_bBlendStateChaged)
 		{
+			CreateBlendState();
 			// TODO: 추후 MRT 지원 시 로직이 바뀌어야함
-			pContext->OMSetBlendState(m_pBlendState, s_blendDesc.renderTarget[0].customFactor, s_blendDesc.renderTarget[0].writeMask);
+			pContext->OMSetBlendState(m_pBlendState, s_blendDesc.customFactor, s_blendDesc.sampleMask);
 
 			m_bBlendStateChaged = false;
 		}

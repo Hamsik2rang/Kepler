@@ -14,10 +14,10 @@ namespace kepler {
 
 		ImGui::Begin("Render Profiler");
 		ImGui::Text("Frame : %.3f ms (%.1f FPS)", 1000.0f/ io.Framerate, io.Framerate);
-		ImGui::Text("Draw Calls Count : %d", m_profile->drawCallsCount.GetBackValue());
-		ImGui::Text("Batches Count : %d", m_profile->batchesCount.GetBackValue());
-		ImGui::Text("Vertex Count : %d", m_profile->vertexCount.GetBackValue());
-		ImGui::Text("Triangles Count : %d", m_profile->trianglesCount.GetBackValue());
+		ImGui::Text("Draw Calls Count : %d", (int)m_profile->drawCallsCount.GetBackValue());
+		ImGui::Text("Batches Count : %d", (int)m_profile->batchesCount.GetBackValue());
+		ImGui::Text("Vertex Count : %d", (int)m_profile->vertexCount.GetBackValue());
+		ImGui::Text("Triangles Count : %d", (int)m_profile->trianglesCount.GetBackValue());
 		if (ImPlot::BeginPlot("Plot"))
 		{
 			ImPlot::SetupAxes("Time [s]", "Signal");

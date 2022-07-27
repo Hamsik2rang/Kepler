@@ -56,7 +56,7 @@ namespace kepler {
 		}
 
 		Application* pApp = Application::Get();
-		HWND hWnd = pApp->GetWindow()->GetWindowHandle();
+		HWND hWnd = pApp->GetWindow().GetWindowHandle();
 
 		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
 		ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();

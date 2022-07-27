@@ -54,6 +54,7 @@ namespace kepler {
 		virtual void SetFloat4(const std::string& paramName, const Vec4f& value) override;
 		virtual void SetVector(const std::string& paramName, const Vec4f& value) override;
 		virtual void SetMatrix(const std::string& paramName, const Mat44f& value) override;
+		virtual void SetArray(const std::string& paramName, const void* pValue, const size_t size) override;
 
 		inline virtual void SetName(const std::string& name) override { m_name = name; }
 		inline virtual std::string GetName() const override { return m_name; }

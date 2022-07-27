@@ -4,6 +4,7 @@
 #include "Core/Log.h"
 #include "Core/Event/ApplicationEvent.hpp"
 #include "Renderer/Renderer.h"
+#include "Renderer/Renderer2D.h"
 #include "Renderer/FrameBuffer.h"
 #include "Renderer/GraphicsContext.h"
 #include "Renderer/RenderState.h"
@@ -27,6 +28,8 @@ namespace kepler {
 		s_pInstance = this;
 
 		Renderer::Init();
+		Renderer2D::Init();
+
 		IRenderState::Create();
 		IFrameBuffer::Create();
 
@@ -98,7 +101,7 @@ namespace kepler {
 				DispatchMessage(&msg);
 			}
 			// clear Render Target and Depth Stencil Buffer
-			float color[4]{ 0.1f, 0.1f, 0.1f, 0.1f };
+			float color[4]{ 0.1f, 0.1f, 0.1f, 1.0f };
 			IFrameBuffer::Get()->ClearColor(color);
 			IFrameBuffer::Get()->ClearDepthStencil(true, true, 1.0f, 0);
 			// Update all layer(and overlay)s

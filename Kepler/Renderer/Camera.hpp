@@ -15,6 +15,7 @@ namespace kepler {
 		Camera()
 			: m_viewMatrix{ Mat44f::Identity }
 			, m_projectionMatrix{ Mat44f::Identity }
+			, m_viewProjectionMatrix{ Mat44f::Identity }
 		{}
 		virtual ~Camera() = default;
 

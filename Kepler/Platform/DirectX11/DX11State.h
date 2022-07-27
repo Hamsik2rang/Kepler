@@ -12,8 +12,6 @@ namespace kepler {
 		ID3D11DepthStencilState* m_pDepthStencilState;
 		ID3D11BlendState* m_pBlendState;
 
-		DX11FrameBuffer m_frameBuffer;
-
 		bool m_bShaderStateChaged;
 		bool m_bRasterizerStateChanged;
 		bool m_bDepthStateChanged;
