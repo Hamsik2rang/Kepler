@@ -104,17 +104,17 @@ bool InstLayer::OnMouseMovedEvent(kepler::MouseMovedEvent& e)
 	kepler::Vec2f position = { curCursorX, curCursorY };
 	kepler::Vec2f velocity = { m_lastCursorX - curCursorX, m_lastCursorY - curCursorY };
 	velocity = velocity.Normalize() * 1000.0f;
-	kepler::Vec4f colorBegin = { kepler::Random::Float(0.0f, 1.0f), kepler::Random::Float(0.0f, 1.0f), kepler::Random::Float(0.0f, 1.0f), 1.0f };
-	kepler::Vec4f colorEnd = { colorBegin.x, colorBegin.y, colorBegin.z, 0.0f };
 	float sizeBegin = 2.0f;
 	float sizeEnd = 20.0f;
 	float rotation = kepler::Random::Float(0.0f, 90.0f);
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		auto curVelocity = velocity;
 		curVelocity.x *= kepler::Random::Float(0.2f, 1.8f);
 		curVelocity.y *= kepler::Random::Float(0.2f, 1.8f);
 		auto velocityAdd = velocity * kepler::Random::Float(-0.02f, 0.02f);
+		kepler::Vec4f colorBegin = { kepler::Random::Float(0.0f, 1.0f), kepler::Random::Float(0.0f, 1.0f), kepler::Random::Float(0.0f, 1.0f), 1.0f };
+		kepler::Vec4f colorEnd = { colorBegin.x, colorBegin.y, colorBegin.z, 0.0f };
 
 		m_particleEngine.Emit(position, curVelocity, velocityAdd, colorBegin, colorEnd, rotation, sizeBegin, sizeEnd);
 	}
