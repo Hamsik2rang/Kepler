@@ -43,5 +43,5 @@ public:
 	);
 
 	void OnUpdate(const float deltaTime);
-	void OnRender();
+	void OnRender(bool bBatching);
 };

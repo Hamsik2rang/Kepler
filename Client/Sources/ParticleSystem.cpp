@@ -55,7 +55,7 @@ void ParticleSystem::OnUpdate(const float deltaTime)
 	}
 }
 
-void ParticleSystem::OnRender()
+void ParticleSystem::OnRender(bool bBatching)
 {
 	for (const auto& e : m_particlePool)
 	{
@@ -68,6 +68,13 @@ void ParticleSystem::OnRender()
 		float rotation = (e.rotation * t) + ((e.rotation + 90.0f) * (1.0f - t));
 
 		kepler::Vec4f color = kepler::math::Lerp(e.colorEnd, e.colorBegin, t);
-		kepler::Renderer2D::Get()->DrawQuad(e.position, rotation, { size,size }, color);
+		if (bBatching)
+		{
+			kepler::Renderer2D::Get()->DrawQuad(e.position, rotation, { size,size }, color);
+		}
+		else
+		{
+			kepler::Renderer2D::Get()->DrawNonBatchedQuad(e.position, rotation, { size, size }, color);
+		}
 	}
 }

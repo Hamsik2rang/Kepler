@@ -6,6 +6,9 @@
 namespace kepler {
 
 	static constexpr uint32_t MAX_INSTANCE_COUNT{ 1000 };
+	static int drawCallsCount = 0;
+	static int trianglesCount = 0;
+	static int vertexCount = 0;
 
 	// Batch Rendering시 데이터 단위가 되는 Batch Data
 	struct BatchData
@@ -36,7 +39,8 @@ namespace kepler {
 	Renderer2D* Renderer2D::s_pInstance = nullptr;
 
 	Renderer2D::Renderer2D()
-		:m_pGraphicsAPI{ IGraphicsAPI::Create() }
+		: m_pGraphicsAPI{ IGraphicsAPI::Create() }
+		, m_renderLog{}
 	{
 
 	}
@@ -71,7 +75,11 @@ namespace kepler {
 			ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PS2DSolidInst.hlsl");
 			// Texture Shader - 텍스처가 주어진 사각형을 그릴 때 사용
 			ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VS2DTextureInst.hlsl");
-			ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PS2DTextureInst.hlsl"); \
+			ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PS2DTextureInst.hlsl");
+
+			// Non-Batch Solid Shader - 테스트용
+			ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSSolid.hlsl");
+			ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PSSolid.hlsl");
 		}
 	}
 
@@ -79,6 +87,10 @@ namespace kepler {
 	{
 		s_data.sceneData.viewProjection = camera.GetViewProjectionMatrix();
 		s_data.sceneData.aspect = camera.GetAspect();
+		drawCallsCount = 0;
+		trianglesCount = 0;
+		vertexCount = 0;
+
 	}
 
 	void Renderer2D::EndScene()
@@ -91,9 +103,9 @@ namespace kepler {
 	void Renderer2D::Flush()
 	{
 		// RenderProfiler
-		float drawCallsCount = 0.0f;
-		float trianglesCount = 0.0f;
-		float vertexCount = 0.0f;
+		//int drawCallsCount = 0;
+		//int trianglesCount = 0;
+		//int vertexCount = 0;
 
 		for (const auto& batchData : s_data.batchObjects)
 		{
@@ -126,14 +138,15 @@ namespace kepler {
 					});
 			}
 			drawCallsCount++;
-			trianglesCount += batchData.pVertexArray->GetIndexBuffer()->GetCount() / 3;
-			vertexCount = 0;
+			trianglesCount += (batchData.pVertexArray->GetIndexBuffer()->GetCount() / 3) * batchData.instanceCount;
+			vertexCount += 4 * batchData.instanceCount;
 
 			m_pGraphicsAPI->DrawIndexedInstanced(batchData.pVertexArray, pIB);
 		}
-		m_renderLog.batchesCount.Add((float)s_data.batchObjects.size());
-		m_renderLog.trianglesCount.Add(trianglesCount);
-		m_renderLog.vertexCount.Add(vertexCount);
+		m_renderLog.batchesCount.Add(static_cast<float>(s_data.batchObjects.size()));
+		m_renderLog.trianglesCount.Add(static_cast<float>(trianglesCount));
+		m_renderLog.vertexCount.Add(static_cast<float>(vertexCount));
+		m_renderLog.drawCallsCount.Add(static_cast<float>(drawCallsCount));
 
 		s_data.batchObjects.clear();
 	}
@@ -243,7 +256,7 @@ namespace kepler {
 		std::shared_ptr<IVertexArray> pVA = IVertexArray::Create();
 		pVA->AddVertexBuffer(pVB);
 		pVA->SetIndexBuffer(pIB);
-		
+
 		s_data.batchObjects[index].worldMatrices.push_back(transform);
 		s_data.batchObjects[index].pVertexArray = pVA;
 
@@ -342,5 +355,53 @@ namespace kepler {
 		// TODO: UV를 인스턴싱으로 넘기는 방법 고민하기
 		size_t instanceSize = sizeof(colors) + sizeof(UVs);
 		//...
+	}
+
+	void Renderer2D::DrawNonBatchedQuad(const Vec2f& position, const float rotation, const Vec2f& size, const Vec4f& color)
+	{
+		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::FromEuler({ 0.0f,  0.0f, rotation }), { size.x, size.y, 1.0f });
+		auto shaderDesc = IRenderState::Get()->GetShaderState();
+
+		ShaderCache::GetShader("VSSolid")->Bind();
+		ShaderCache::GetShader("PSSolid")->Bind();
+
+		shaderDesc = IRenderState::Get()->GetShaderState();
+		shaderDesc.pVertexShader->SetMatrix("g_World", transform);
+		shaderDesc.pVertexShader->SetMatrix("g_ViewProjection", s_data.sceneData.viewProjection.Transpose());
+
+
+		float positions[]{
+			0.5f, 0.5f, 0.0f,
+			0.5f, -0.5f, 0.0f,
+			-0.5f, -0.5f, 0.0f,
+			-0.5f, 0.5f, 0.0f
+		};
+
+		Vec4f colors[]{ color, color, color, color };
+
+		uint32_t indices[]{
+			0, 1, 2,
+			0, 2, 3
+		};
+
+		std::shared_ptr<IVertexBuffer> pPosBuffer = IVertexBuffer::Create(positions, sizeof(positions), eBufferUsage::Default);
+		pPosBuffer->SetLayout({
+			{ "POSITION", 0, eShaderDataType::Float3, 0, sizeof(float) * 3 }
+			});
+		std::shared_ptr<IVertexBuffer> pColorBuffer = IVertexBuffer::Create(colors, sizeof(colors), eBufferUsage::Default);
+		pColorBuffer->SetLayout({
+			{"COLOR", 0, eShaderDataType::Float4, 0, sizeof(Vec4f)}
+			});
+		std::shared_ptr<IIndexBuffer> pIB = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), eBufferUsage::Default);
+		std::shared_ptr<IVertexArray> pVA = IVertexArray::Create();
+		pVA->AddVertexBuffer(pPosBuffer);
+		pVA->AddVertexBuffer(pColorBuffer);
+		pVA->SetIndexBuffer(pIB);
+
+		m_pGraphicsAPI->DrawIndexed(pVA);
+		drawCallsCount++;
+		trianglesCount += 2;
+		vertexCount += 4;
+
 	}
 }
