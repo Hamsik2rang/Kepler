@@ -23,7 +23,7 @@ namespace kepler {
 		bool m_bIsRunning;
 
 	protected:
-		Application(eGraphicsAPI api);
+		Application(eGraphicsAPI api, const WindowProperty& props = WindowProperty());
 
 	public:
 		~Application();

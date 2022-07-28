@@ -15,13 +15,13 @@ namespace kepler {
 	Application* Application::s_pInstance = nullptr;
 
 	// Initialize Core resources
-	Application::Application(eGraphicsAPI api)
+	Application::Application(eGraphicsAPI api, const WindowProperty& props)
 	{
 		kepler::Log::Init();
 		kepler::Audio::Init();
 
 		IGraphicsAPI::SetAPI(api);
-		m_pWindow = std::unique_ptr<IWindow>(IWindow::Create());
+		m_pWindow = std::unique_ptr<IWindow>(IWindow::Create(props));
 
 		// bind this->OnEvent
 		m_pWindow->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
