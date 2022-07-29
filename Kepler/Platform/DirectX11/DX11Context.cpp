@@ -35,22 +35,22 @@ bool kepler::DX11Context::Init(const WindowData& data)
 	m_bVSync = data.bVSync;
 
 	// Start Init Adapter Info
-	IDXGIFactory* factory = nullptr;
-	if (FAILED(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory)))
+	IDXGIFactory* pFactory = nullptr;
+	if (FAILED(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&pFactory)))
 	{
 		KEPLER_ASSERT(false, "Fail to Initialize IDXGIFactory");
 		return false;
 	}
-	IDXGIAdapter* adapter = nullptr;
-	if (FAILED(factory->EnumAdapters(0, &adapter)))
+	IDXGIAdapter* pAdapter = nullptr;
+	if (FAILED(pFactory->EnumAdapters(0, &pAdapter)))
 	{
 		KEPLER_ASSERT(false, "Fail to Initialize IDXGIAdapter");
 		return false;
 	}
 	DXGI_ADAPTER_DESC adapterDesc;
-	if (FAILED(adapter->GetDesc(&adapterDesc)))
+	if (FAILED(pAdapter->GetDesc(&adapterDesc)))
 	{
-		KEPLER_ASSERT(false, "Fail to Initialize DXGI_ADAPTER_DESC");
+		KEPLER_ASSERT(false, "Fail to Get DXGI Adapter Description(DXGI_ADAPTER_DESC)");
 		return false;
 	}
 	
@@ -69,10 +69,10 @@ bool kepler::DX11Context::Init(const WindowData& data)
 	KEPLER_CORE_INFO("Video Card Memory : {0}", videoCardMemory);
 	KEPLER_CORE_INFO("Video Card Description : {0}", videoCardDescription);
 
-	adapter->Release();
-	adapter = 0;
-	factory->Release();
-	factory = 0;
+	pAdapter->Release();
+	pAdapter = nullptr;
+	pFactory->Release();
+	pFactory = nullptr;
 	// End Init Adapter Info
 
 	DXGI_SWAP_CHAIN_DESC scDesc{};
