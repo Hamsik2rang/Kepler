@@ -34,6 +34,47 @@ bool kepler::DX11Context::Init(const WindowData& data)
 {
 	m_bVSync = data.bVSync;
 
+	// Start Init Adapter Info
+	IDXGIFactory* pFactory = nullptr;
+	if (FAILED(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&pFactory)))
+	{
+		KEPLER_ASSERT(false, "Fail to Initialize IDXGIFactory");
+		return false;
+	}
+	IDXGIAdapter* pAdapter = nullptr;
+	if (FAILED(pFactory->EnumAdapters(0, &pAdapter)))
+	{
+		KEPLER_ASSERT(false, "Fail to Initialize IDXGIAdapter");
+		return false;
+	}
+	DXGI_ADAPTER_DESC adapterDesc;
+	if (FAILED(pAdapter->GetDesc(&adapterDesc)))
+	{
+		KEPLER_ASSERT(false, "Fail to Get DXGI Adapter Description(DXGI_ADAPTER_DESC)");
+		return false;
+	}
+	
+	int vendorId = adapterDesc.VendorId;
+	int videoCardMemory = (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
+	char videoCardDescription[128] = { 0, };
+	size_t stringLength = 0;
+	if (wcstombs_s(&stringLength, videoCardDescription, 128, adapterDesc.Description, 128) != 0)
+	{
+		KEPLER_ASSERT(false, "Fail to Get Video Card Description");
+		return false;
+	}
+
+	// Logging Adapter Info
+	KEPLER_CORE_INFO("Video Card Vendor Id : {0}", vendorId);
+	KEPLER_CORE_INFO("Video Card Memory : {0}", videoCardMemory);
+	KEPLER_CORE_INFO("Video Card Description : {0}", videoCardDescription);
+
+	pAdapter->Release();
+	pAdapter = nullptr;
+	pFactory->Release();
+	pFactory = nullptr;
+	// End Init Adapter Info
+
 	DXGI_SWAP_CHAIN_DESC scDesc{};
 	scDesc.BufferCount = 2;
 	scDesc.BufferDesc.Width = 0;
