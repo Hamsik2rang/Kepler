@@ -5,3 +5,5 @@
 #else
 	#define KEPLER_MATH_API __declspec(dllimport)
 #endif
+
+#include "Constant.h"
