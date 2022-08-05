@@ -53,6 +53,7 @@ namespace kepler {
 		Mat44f proj = camera.GetProjectionMatrix();
 		Mat44f viewProj = camera.GetViewProjectionMatrix();
 		auto shaderDesc = IRenderState::Get()->GetShaderState();
+
 		shaderDesc.pVertexShader->SetMatrix("g_View", view.Transpose());
 		shaderDesc.pVertexShader->SetMatrix("g_Projection", proj.Transpose());
 		shaderDesc.pVertexShader->SetMatrix("g_ViewProjection", viewProj.Transpose());

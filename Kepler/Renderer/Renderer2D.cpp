@@ -138,12 +138,11 @@ namespace kepler {
 					});
 			}
 			drawCallsCount++;
-			trianglesCount += (batchData.pVertexArray->GetIndexBuffer()->GetCount() / 3) * batchData.instanceCount;
-			vertexCount += 4 * batchData.instanceCount;
+			trianglesCount += static_cast<int>((batchData.pVertexArray->GetIndexBuffer()->GetCount() / 3) * batchData.instanceCount);
+			vertexCount += static_cast<int>(4 * batchData.instanceCount);
 
 			m_pGraphicsAPI->DrawIndexedInstanced(batchData.pVertexArray, pIB);
 		}
-		m_renderLog.batchesCount.Add(static_cast<float>(s_data.batchObjects.size()));
 		m_renderLog.trianglesCount.Add(static_cast<float>(trianglesCount));
 		m_renderLog.vertexCount.Add(static_cast<float>(vertexCount));
 		m_renderLog.drawCallsCount.Add(static_cast<float>(drawCallsCount));

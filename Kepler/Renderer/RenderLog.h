@@ -38,7 +38,6 @@ namespace kepler {
 
 		// TODO: 추가로 구현할 만한 것
 		ImPlotLineData setPassCallsCount; // shader path를 전환한 수(차트로 구현)
-		ImPlotLineData batchesCount; // Renderer가 처리한 batch의 수(차트로 구현)
 		ImPlotLineData trianglesCount; // 처리한 삼각형 개수(차트로 구현)
 	};
 }
