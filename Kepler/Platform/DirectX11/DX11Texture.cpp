@@ -4,7 +4,6 @@
 
 #include "DX11Texture.h"
 #include "DX11Context.h"
-#include "DDSTextureLoader.h"
 
 namespace kepler {
 	// 나중에 더 다듬어서 사용

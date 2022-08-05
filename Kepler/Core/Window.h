@@ -30,6 +30,7 @@ namespace kepler {
 		virtual void OnUpdate() = 0;
 		virtual uint32_t GetWidth() const = 0;
 		virtual uint32_t GetHeight() const = 0;
+		virtual void GetCursorPos(uint32_t& outXPos, uint32_t& outYPos) = 0;
 
 		virtual void SetEventCallback(const EventCallbackFunc& callback) = 0;
 		virtual void SetVSync(bool isEnabled) = 0;

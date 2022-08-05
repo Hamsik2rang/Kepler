@@ -1,19 +1,7 @@
 #include "ExampleLayer.h"
 
-bool ExampleLayer::OnKeyboardPressed(kepler::KeyPressedEvent& e)
+bool ExampleLayer::OnKeyboardPressedEvent(kepler::KeyPressedEvent& e)
 {
-	kepler::Vec3f nextPos = m_camera.GetPosition();
-	kepler::Vec3f nextAt = m_camera.GetFocus();
-	if (e.GetKeyCode() == kepler::key::W)
-	{
-		nextPos += m_camera.GetDirection().Normalize() * 0.1f;
-		nextAt += m_camera.GetDirection().Normalize() * 0.1f;
-	}
-	if (e.GetKeyCode() == kepler::key::S)
-	{
-		nextPos += -m_camera.GetDirection().Normalize() * 0.1f;
-		nextAt += -m_camera.GetDirection().Normalize() * 0.1f;
-	}
 	if (e.GetKeyCode() == kepler::key::F6)
 	{
 		auto rs = kepler::IRenderState::Get()->GetDepthState();
@@ -22,10 +10,6 @@ bool ExampleLayer::OnKeyboardPressed(kepler::KeyPressedEvent& e)
 		rs.comparer = kepler::eDepthComparer::Less;
 		kepler::IRenderState::Get()->SetDepthState(rs);
 	}
-	m_camera.SetFocus(nextAt);
-	m_camera.SetPosition(nextPos);
-
-
 	if (e.GetKeyCode() == kepler::key::F7)
 	{
 		auto rs = kepler::IRenderState::Get()->GetDepthState();
@@ -144,19 +128,23 @@ void ExampleLayer::OnDetach()
 void ExampleLayer::OnEvent(kepler::Event& e)
 {
 	kepler::EventDispatcher dispatch(e);
-	dispatch.Dispatch<kepler::KeyPressedEvent>(std::bind(&ExampleLayer::OnKeyboardPressed, this, std::placeholders::_1));
+	dispatch.Dispatch<kepler::KeyPressedEvent>(std::bind(&ExampleLayer::OnKeyboardPressedEvent, this, std::placeholders::_1));
+	m_camera.OnEvent(e);
 }
 
 void ExampleLayer::OnUpdate(const float deltaTime)
 {
 	m_time += deltaTime;
 	kepler::IRenderState::Get()->Bind();
-	auto shaderDesc = kepler::IRenderState::Get()->GetShaderState();
+	m_camera.OnUpdate(deltaTime);
+}
+
+void ExampleLayer::OnRender()
+{
 	kepler::Renderer::Get()->BeginScene(m_camera);
-	m_pVertexArray->Bind();
 
 	kepler::Renderer::Get()->Submit(m_pVertexArray, kepler::math::GetRotationMatrixX(m_time) * kepler::math::GetRotationMatrixY(m_time / 3.0f) * kepler::math::GetTranslateMatrix({ 0.0f, 0.0f, 4.0f }));
-	kepler::Renderer::Get()->Submit(m_pVertexArray, kepler::math::GetScalingMatrix({ 2.5f, 2.5f, 2.5f }) * kepler::math::GetRotationMatrixX(m_time/2.0f) * kepler::math::GetRotationMatrixZ(m_time / 1.8f) * kepler::math::GetTranslateMatrix({ 0.0f, 0.0f, 60.0f }));
+	kepler::Renderer::Get()->Submit(m_pVertexArray, kepler::math::GetScalingMatrix({ 2.5f, 2.5f, 2.5f }) * kepler::math::GetRotationMatrixX(m_time / 2.0f) * kepler::math::GetRotationMatrixZ(m_time / 1.8f) * kepler::math::GetTranslateMatrix({ 0.0f, 0.0f, 60.0f }));
 
 	kepler::Renderer::Get()->EndScene();
 }

@@ -10,7 +10,7 @@ public:
 	Client()
 		: Application(kepler::eGraphicsAPI::DirectX11)
 	{
-		PushLayer(new InstLayer);
+		PushLayer(new ExampleLayer);
 		PushOverlay(new kepler::RenderProfiler);
 	}
 	~Client()

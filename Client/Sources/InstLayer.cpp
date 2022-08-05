@@ -121,4 +121,6 @@ bool InstLayer::OnMouseMovedEvent(kepler::MouseMovedEvent& e)
 
 	m_lastCursorX = curCursorX;
 	m_lastCursorY = curCursorY;
+
+	return true;
 }

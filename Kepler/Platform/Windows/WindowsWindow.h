@@ -31,14 +31,14 @@ namespace kepler {
 		virtual ~WindowsWindow();
 
 		virtual void OnUpdate() override;
+		virtual void GetCursorPos(uint32_t& outXPos, uint32_t& outYPos) override;
 		inline virtual uint32_t GetWidth() const override { return m_data.width; }
 		inline virtual uint32_t GetHeight() const override { return m_data.height; }
-		
 
 		inline virtual void SetVSync(bool isEnabled) override { m_data.bVSync = isEnabled; };
 		inline virtual bool IsVSync() const override { return m_data.bVSync; }
 		inline virtual HWND GetWindowHandle() const override { return m_hWnd; }
-		
+
 		virtual inline void SetEventCallback(const EventCallbackFunc& callback) override { m_data.eventCallback = callback; };
 	};
 }

@@ -10,10 +10,6 @@ namespace kepler {
 	protected:
 		Vec3f m_position;
 		Vec3f m_at;
-
-		float m_pitch;
-		float m_yaw;
-
 		float m_distance;
 		float m_fovY;
 		float m_aspect;
@@ -24,7 +20,7 @@ namespace kepler {
 
 	public:
 		PerspectiveCamera();
-		PerspectiveCamera(const Vec3f& position, const Vec3f& focalPoint, float distance, float fovY, float aspect, float nearClip, float farClip);
+		PerspectiveCamera(const Vec3f& position, const Vec3f& focalPoint, const float distance, float fovY, float aspect, float nearClip, float farClip);
 		~PerspectiveCamera() = default;
 
 		inline float GetDistance() const { return m_distance; }
@@ -34,7 +30,5 @@ namespace kepler {
 		inline Vec3f GetFocus() const { return m_at; }
 		inline void SetFocus(const Vec3f& focalPoint) { m_at = focalPoint; }
 		inline Vec3f GetDirection() const { return m_at - m_position; }
-		inline float GetPitch() const { return m_pitch; }
-		inline float GetYaw() const { return m_yaw; }
 	};
 }

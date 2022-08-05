@@ -28,9 +28,11 @@ public:
 		, m_lastCursorY{ 0.0f }
 		, m_screenHeight{ 0.0f }
 		, m_screenWidth{ 0.0f }
+		, m_font{ nullptr }
 	{
 
 	}
+
 	bool OnKeyPressedEvent(kepler::KeyPressedEvent& e);
 	bool OnMouseMovedEvent(kepler::MouseMovedEvent& e);
 
