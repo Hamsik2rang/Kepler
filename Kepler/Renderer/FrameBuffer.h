@@ -5,6 +5,15 @@
 
 namespace kepler {
 
+	enum class eFrameBufferType
+	{
+		R32G32B32A32 = 0,
+		Uint8Unorm24,
+
+		Color = R32G32B32A32,
+		DepthStencil = Uint8Unorm24
+	};
+
 	class IFrameBuffer
 	{
 	private:
@@ -23,12 +32,14 @@ namespace kepler {
 
 		virtual void BindColorBuffer() = 0;
 		virtual void UnbindColorBuffer() = 0;
-		
+
 		virtual void BindGBuffer(uint8_t startSlot, uint8_t count) = 0;
 		virtual void UnbindGBuffer(uint8_t startSlot, uint8_t count) = 0;
 
 		virtual void AddGBuffer(uint8_t startSlot, uint8_t count) = 0;
 		virtual void DeleteGBuffer(uint8_t startSlot, uint8_t count) = 0;
+
+		virtual void* GetBuffer(eFrameBufferType type, uint8_t index) = 0;
 
 		static std::shared_ptr<IFrameBuffer> Create();
 		static std::shared_ptr<IFrameBuffer> Get();

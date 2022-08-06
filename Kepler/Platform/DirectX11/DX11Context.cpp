@@ -54,13 +54,9 @@ bool kepler::DX11Context::Init(const WindowData& data)
 #ifdef _DEBUG
 	//createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
-
-	// 추후 feature level 11.1 까지 지원할 것
 	const D3D_FEATURE_LEVEL featureLevels[]{
-		/*D3D_FEATURE_LEVEL_11_1,*/
+		D3D_FEATURE_LEVEL_11_1,
 		D3D_FEATURE_LEVEL_11_0,
-		D3D_FEATURE_LEVEL_10_1,
-		D3D_FEATURE_LEVEL_10_0
 	};
 	UINT featureLevelCount = ARRAYSIZE(featureLevels);
 
