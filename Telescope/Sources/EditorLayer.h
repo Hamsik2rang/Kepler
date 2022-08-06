@@ -6,9 +6,10 @@
 class EditorLayer : public kepler::Layer
 {
 private:
-
+	kepler::EditorCamera m_camera;
 
 public:
+
 	virtual void OnAttach() override;
 	virtual void OnDetach() override;
 	virtual void OnUpdate(const float deltaTime) override;

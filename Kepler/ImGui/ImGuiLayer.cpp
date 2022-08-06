@@ -41,10 +41,10 @@ namespace kepler {
 
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
 		ImGui::StyleColorsDark();
 
@@ -114,7 +114,7 @@ namespace kepler {
 	{
 		// GUI 예제 확인용
 		// GUI 붙이다 헷갈리는거 있을때 주석 풀고 데모 GUI 확인하세요.
-		//ShowDemo();
+		ShowDemo();
 	}
 
 	LRESULT ImGuiLayer::ImGuiEventHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)

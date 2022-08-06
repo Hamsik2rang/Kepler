@@ -56,6 +56,8 @@
     <ClCompile Include="Renderer\VertexArray.cpp" />
     <ClCompile Include="Utility\Random.cpp" />
     <ClCompile Include="Utility\StringUtility.cpp" />
+    <ClCompile Include="Renderer\Sampler.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11Sampler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio\Audio.h" />
@@ -110,6 +112,8 @@
     <ClInclude Include="Utility\Random.hpp" />
     <ClInclude Include="Utility\StringUtility.h" />
     <ClInclude Include="Utility\Timer.hpp" />
+    <ClInclude Include="Renderer\Sampler.h" />
+    <ClInclude Include="Platform\DirectX11\DX11Sampler.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kepler.rc" />
