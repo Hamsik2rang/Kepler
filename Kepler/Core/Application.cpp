@@ -102,6 +102,7 @@ namespace kepler {
 			}
 			// clear Render Target and Depth Stencil Buffer
 			float color[4]{ 0.1f, 0.1f, 0.1f, 1.0f };
+			IFrameBuffer::Get()->ClearGBuffer(color);
 			IFrameBuffer::Get()->ClearColor(color);
 			IFrameBuffer::Get()->ClearDepthStencil(true, true, 1.0f, 0);
 			// Update all layer(and overlay)s

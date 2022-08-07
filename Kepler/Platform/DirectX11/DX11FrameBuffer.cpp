@@ -108,7 +108,8 @@ namespace kepler {
 	{
 		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
 		pContext->ClearRenderTargetView(m_pRenderTargetViews[0], color);
-		pContext->OMSetRenderTargets(s_maxGBufferCount, m_pRenderTargetViews, m_pDepthStencilView);
+		
+		pContext->OMSetRenderTargets(1, &m_pRenderTargetViews[0], m_pDepthStencilView);
 	}
 
 	void DX11FrameBuffer::ClearDepthStencil(bool bDepthClear, bool bStencilClear, const float depth, const uint8_t stencil)
@@ -160,7 +161,7 @@ namespace kepler {
 	void DX11FrameBuffer::BindColorBuffer()
 	{
 		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
-		pContext->OMSetRenderTargets(s_maxGBufferCount, m_pRenderTargetViews, m_pDepthStencilView);
+		pContext->OMSetRenderTargets(1, &m_pRenderTargetViews[0], m_pDepthStencilView);
 	}
 
 	void DX11FrameBuffer::UnbindColorBuffer()
@@ -177,7 +178,7 @@ namespace kepler {
 
 	void DX11FrameBuffer::UnbindGBuffer(uint8_t startSlot, uint8_t count)
 	{
-		// NOTE: null targetview를 전달할 경우 color buffer도 unbind될 수 있으므로 잠시 함수 비활성화합니다.
+		// NOTE: null targetview를 전달할 경우 color buffer도 unbind될 수 있으므로 잠시 함수 비활성화합니다.		
 		//ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
 		//pContext->OMSetRenderTargets(count, nullptr, nullptr);
 	}
@@ -243,9 +244,10 @@ namespace kepler {
 
 	void* DX11FrameBuffer::GetBuffer(eFrameBufferType type, uint8_t index)
 	{
+		// TODO: 임시 코드이므로 추후 개선해야 함.
 		if (type == eFrameBufferType::Color)
 		{
-			return m_pRenderTargetViews;
+			return m_pTextures[index]->GetData();
 		}
 		else
 		{

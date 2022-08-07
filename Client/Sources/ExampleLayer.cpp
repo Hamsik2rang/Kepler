@@ -112,7 +112,6 @@ void ExampleLayer::OnAttach()
 	rs.bIsFrontClockwise = false;
 	kepler::IRenderState::Get()->SetRasterizerState(rs);
 
-	// TODO: FrameBuffer 구현해서 작동하도록 변경
 	auto ds = kepler::IRenderState::Get()->GetDepthState();
 	ds.bDepthTest = true;
 	ds.bDepthWrite = true;

@@ -1,8 +1,91 @@
 #include "EditorLayer.h"
+#include <d3d11.h>
 
 void EditorLayer::OnAttach()
 {
 	kepler::IFrameBuffer::Get()->AddGBuffer(1, 1);
+
+	kepler::ShaderStateDescription desc{};
+	desc.pVertexShader = kepler::ShaderCache::Load(kepler::eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSSolid.hlsl");
+	desc.pPixelShader = kepler::ShaderCache::Load(kepler::eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PSSolid.hlsl");
+
+	kepler::IRenderState::Get()->SetShaderState(desc);
+
+	float vertices[]{
+		-1.0f, 1.0f, -1.0f,		1.0f, 0.0f, 0.0f, 0.5f,
+		1.0f, 1.0f, -1.0f,		1.0f, 0.0f, 0.0f, 0.5f,
+		1.0f, 1.0f, 1.0f,		1.0f, 0.0f, 0.0f, 0.5f,
+		-1.0f, 1.0f, 1.0f,		1.0f, 0.0f, 0.0f, 0.5f,
+
+		-1.0f, -1.0f, -1.0f,	0.0f, 1.0f, 0.0f, 0.5f,
+		1.0f, -1.0f, -1.0f,		0.0f, 1.0f, 0.0f, 0.5f,
+		1.0f, -1.0f, 1.0f,		0.0f, 1.0f, 0.0f, 0.5f,
+		-1.0f, -1.0f, 1.0f,		0.0f, 1.0f, 0.0f, 0.5f,
+
+		-1.0f, -1.0f, 1.0f,		0.0f, 0.0f, 1.0f, 0.5f,
+		-1.0f, -1.0f, -1.0f,	0.0f, 0.0f, 1.0f, 0.5f,
+		-1.0f, 1.0f, -1.0f,		0.0f, 0.0f, 1.0f, 0.5f,
+		-1.0f, 1.0f, 1.0f,		0.0f, 0.0f, 1.0f, 0.5f,
+
+		1.0f, -1.0f, 1.0f,		0.0f, 1.0f, 1.0f, 0.5f,
+		1.0f, -1.0f, -1.0f,		0.0f, 1.0f, 1.0f, 0.5f,
+		1.0f, 1.0f, -1.0f,		0.0f, 1.0f, 1.0f, 0.5f,
+		1.0f, 1.0f, 1.0f,		0.0f, 1.0f, 1.0f, 0.5f,
+
+		-1.0f, -1.0f, -1.0f,	1.0f, 0.0f, 1.0f, 0.5f,
+		1.0f, -1.0f, -1.0f,		1.0f, 0.0f, 1.0f, 0.5f,
+		1.0f, 1.0f, -1.0f,		1.0f, 0.0f, 1.0f, 0.5f,
+		-1.0f, 1.0f, -1.0f,		1.0f, 0.0f, 1.0f, 0.5f,
+
+		-1.0f, -1.0f, 1.0f,		1.0f, 1.0f, 0.0f, 0.5f,
+		1.0f, -1.0f, 1.0f,		1.0f, 1.0f, 0.0f, 0.5f,
+		1.0f, 1.0f, 1.0f,		1.0f, 1.0f, 0.0f, 0.5f,
+		-1.0f, 1.0f, 1.0f,		1.0f, 1.0f, 0.0f, 0.5f,
+	};
+
+	uint32_t indices[]{
+		3,1,0,
+		2,1,3,
+
+		6,4,5,
+		7,4,6,
+
+		11,9,8,
+		10,9,11,
+
+		14,12,13,
+		15,12,14,
+
+		19,17,16,
+		18,17,19,
+
+		22,20,21,
+		23,20,22
+	};
+
+	std::shared_ptr<kepler::IVertexBuffer> pVB = kepler::IVertexBuffer::Create(vertices, sizeof(vertices), kepler::eBufferUsage::Default);
+	pVB->SetLayout({
+		{"POSITION", 0, kepler::eShaderDataType::Float3, 0, sizeof(float) * 3},
+		{"COLOR", 0, kepler::eShaderDataType::Float4, sizeof(float) * 3, sizeof(float) * 4}
+		});
+
+	std::shared_ptr<kepler::IIndexBuffer> pIB = kepler::IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), kepler::eBufferUsage::Default);
+
+	m_pCubeVA = kepler::IVertexArray::Create();
+	m_pCubeVA->AddVertexBuffer(pVB);
+	m_pCubeVA->SetIndexBuffer(pIB);
+
+	auto rs = kepler::IRenderState::Get()->GetRasterizerState();
+	rs.bWireFrame = true;
+	rs.cullMode = kepler::eCullMode::Front;
+	rs.bIsFrontClockwise = false;
+	kepler::IRenderState::Get()->SetRasterizerState(rs);
+
+	auto ds = kepler::IRenderState::Get()->GetDepthState();
+	ds.bDepthTest = true;
+	ds.bDepthWrite = true;
+	ds.comparer = kepler::eDepthComparer::Less;
+	kepler::IRenderState::Get()->SetDepthState(ds);
 
 }
 
@@ -13,12 +96,23 @@ void EditorLayer::OnDetach()
 
 void EditorLayer::OnUpdate(const float deltaTime)
 {
-
+	m_time += deltaTime;
+	kepler::IRenderState::Get()->Bind();
+	kepler::IFrameBuffer::Get()->BindGBuffer(1, 1);
+	m_camera.OnUpdate(deltaTime);
 }
 
 void EditorLayer::OnRender()
 {
+	kepler::Renderer::Get()->BeginScene(m_camera);
 
+	kepler::Renderer::Get()->Submit(m_pCubeVA);
+
+	kepler::Renderer::Get()->EndScene();
+
+	auto shaderDesc = kepler::IRenderState::Get()->GetShaderState();
+	kepler::IRenderState::Get()->SetShaderState(shaderDesc);
+	kepler::IFrameBuffer::Get()->BindColorBuffer();
 }
 
 void EditorLayer::OnGUIRender()
@@ -108,13 +202,24 @@ void EditorLayer::OnGUIRender()
 			if (ImGui::MenuItem("Flag: AutoHideTabBar", "", (dockspaceFlags & ImGuiDockNodeFlags_AutoHideTabBar) != 0)) { dockspaceFlags ^= ImGuiDockNodeFlags_AutoHideTabBar; }
 			if (ImGui::MenuItem("Flag: PassthruCentralNode", "", (dockspaceFlags & ImGuiDockNodeFlags_PassthruCentralNode) != 0, bFullDockspace)) { dockspaceFlags ^= ImGuiDockNodeFlags_PassthruCentralNode; }
 			//ImGui::Separator();
-			
+
 			ImGui::EndMenu();
 		}
 
 		ImGui::EndMenuBar();
 	}
 
+	ImGui::End();
+
+
+	ImGui::Begin("Test Scene",nullptr, ImGuiWindowFlags_NoScrollbar );
+	ImGui::SetScrollY(0);
+	ID3D11ShaderResourceView* buffer = (ID3D11ShaderResourceView*)kepler::IFrameBuffer::Get()->GetBuffer(kepler::eFrameBufferType::Color, 1);
+	ImGui::Image(buffer, { 640, 360 }, { 0, 1 }, { 1, 0 });
+	ImGui::End();
+
+	ImGui::Begin("Hierarchy");
+	ImGui::Text("Cube");
 	ImGui::End();
 }
 
