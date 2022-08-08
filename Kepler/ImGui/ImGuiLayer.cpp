@@ -46,8 +46,9 @@ namespace kepler {
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
-		ImGui::StyleColorsDark();
-
+		//ImGui::StyleColorsDark();
+		//SetDarkThemeColors();
+		ImGui::StyleColorsLight();
 		ImGuiStyle& style = ImGui::GetStyle();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
@@ -117,10 +118,7 @@ namespace kepler {
 		ShowDemo();
 	}
 
-	LRESULT ImGuiLayer::ImGuiEventHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
-	{
-		return ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
-	}
+	
 
 	void ImGuiLayer::ShowDemo()
 	{
@@ -187,5 +185,11 @@ namespace kepler {
 		colors[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+	}
+
+
+	LRESULT ImGuiLayer::ImGuiEventHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	{
+		return ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
 	}
 }

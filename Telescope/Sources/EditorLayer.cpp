@@ -3,7 +3,7 @@
 
 void EditorLayer::OnAttach()
 {
-	kepler::IFrameBuffer::Get()->AddGBuffer(1, 1);
+	kepler::IFrameBuffer::Get()->AddGBuffer(0, 1);
 
 	kepler::ShaderStateDescription desc{};
 	desc.pVertexShader = kepler::ShaderCache::Load(kepler::eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSSolid.hlsl");
@@ -76,7 +76,7 @@ void EditorLayer::OnAttach()
 	m_pCubeVA->SetIndexBuffer(pIB);
 
 	auto rs = kepler::IRenderState::Get()->GetRasterizerState();
-	rs.bWireFrame = true;
+	rs.bWireFrame = false;
 	rs.cullMode = kepler::eCullMode::Front;
 	rs.bIsFrontClockwise = false;
 	kepler::IRenderState::Get()->SetRasterizerState(rs);
@@ -86,7 +86,6 @@ void EditorLayer::OnAttach()
 	ds.bDepthWrite = true;
 	ds.comparer = kepler::eDepthComparer::Less;
 	kepler::IRenderState::Get()->SetDepthState(ds);
-
 }
 
 void EditorLayer::OnDetach()
@@ -98,20 +97,17 @@ void EditorLayer::OnUpdate(const float deltaTime)
 {
 	m_time += deltaTime;
 	kepler::IRenderState::Get()->Bind();
-	kepler::IFrameBuffer::Get()->BindGBuffer(1, 1);
+	kepler::IFrameBuffer::Get()->BindGBuffer(0, 1);
+
 	m_camera.OnUpdate(deltaTime);
 }
 
 void EditorLayer::OnRender()
 {
 	kepler::Renderer::Get()->BeginScene(m_camera);
-
 	kepler::Renderer::Get()->Submit(m_pCubeVA);
-
 	kepler::Renderer::Get()->EndScene();
 
-	auto shaderDesc = kepler::IRenderState::Get()->GetShaderState();
-	kepler::IRenderState::Get()->SetShaderState(shaderDesc);
 	kepler::IFrameBuffer::Get()->BindColorBuffer();
 }
 
@@ -212,14 +208,24 @@ void EditorLayer::OnGUIRender()
 	ImGui::End();
 
 
-	ImGui::Begin("Test Scene",nullptr, ImGuiWindowFlags_NoScrollbar );
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+	ImGui::Begin("Test Scene", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar);
+
 	ImGui::SetScrollY(0);
-	ID3D11ShaderResourceView* buffer = (ID3D11ShaderResourceView*)kepler::IFrameBuffer::Get()->GetBuffer(kepler::eFrameBufferType::Color, 1);
-	ImGui::Image(buffer, { 640, 360 }, { 0, 1 }, { 1, 0 });
+	ID3D11ShaderResourceView* buffer = (ID3D11ShaderResourceView*)kepler::IFrameBuffer::Get()->GetBuffer(kepler::eFrameBufferType::Color, 0);
+	auto size = ImGui::GetWindowSize();
+	ImGui::Image(buffer, size, { 0, 1 }, { 1, 0 });
+	m_bIsSceneFocuced = ImGui::IsWindowFocused();
 	ImGui::End();
+	ImGui::PopStyleVar();
 
 	ImGui::Begin("Hierarchy");
+	ImGui::Text("This is Hierarchy Panel");
 	ImGui::Text("Cube");
+	ImGui::End();
+
+	ImGui::Begin("Inspector");
+	ImGui::Text("This is Inspector Panel");
 	ImGui::End();
 }
 
