@@ -74,18 +74,6 @@ void EditorLayer::OnAttach()
 	m_pCubeVA = kepler::IVertexArray::Create();
 	m_pCubeVA->AddVertexBuffer(pVB);
 	m_pCubeVA->SetIndexBuffer(pIB);
-
-	auto rs = kepler::IRenderState::Get()->GetRasterizerState();
-	rs.bWireFrame = false;
-	rs.cullMode = kepler::eCullMode::Front;
-	rs.bIsFrontClockwise = false;
-	kepler::IRenderState::Get()->SetRasterizerState(rs);
-
-	auto ds = kepler::IRenderState::Get()->GetDepthState();
-	ds.bDepthTest = true;
-	ds.bDepthWrite = true;
-	ds.comparer = kepler::eDepthComparer::Less;
-	kepler::IRenderState::Get()->SetDepthState(ds);
 }
 
 void EditorLayer::OnDetach()
@@ -97,6 +85,19 @@ void EditorLayer::OnUpdate(const float deltaTime)
 {
 	m_time += deltaTime;
 	kepler::IRenderState::Get()->Bind();
+	if (m_viewportWidth != m_lastViewportWidth || m_viewportHeight != m_lastViewportHeight)
+	{
+		// 1. FrameBuffer(Scene RenderTarget) Resizing and clear it's background.
+		kepler::IFrameBuffer::Get()->ResizeGBuffer(0, 1, m_viewportWidth, m_viewportHeight);
+		float col[]{ 0.1f, 0.1f, 0.1f, 1.0f };
+		kepler::IFrameBuffer::Get()->ClearGBuffer(0, 1, col);
+		// 2. Set Aspect
+		m_camera.SetAspect((float)m_viewportWidth / (float)m_viewportHeight);
+		
+		m_lastViewportWidth = m_viewportWidth;
+		m_lastViewportHeight = m_viewportHeight;
+	}
+
 	kepler::IFrameBuffer::Get()->BindGBuffer(0, 1);
 
 	m_camera.OnUpdate(deltaTime);
@@ -104,10 +105,15 @@ void EditorLayer::OnUpdate(const float deltaTime)
 
 void EditorLayer::OnRender()
 {
+	kepler::Renderer::Get()->SetViewport(m_viewportWidth, m_viewportHeight, 0.0f, 1.0f);
 	kepler::Renderer::Get()->BeginScene(m_camera);
-	kepler::Renderer::Get()->Submit(m_pCubeVA);
+
+	kepler::Renderer::Get()->Submit(m_pCubeVA, kepler::math::GetRotationMatrixX(m_time) * kepler::math::GetRotationMatrixY(m_time / 3.0f) * kepler::math::GetTranslateMatrix({ 0.0f, 0.0f, 4.0f }));
+	kepler::Renderer::Get()->Submit(m_pCubeVA, kepler::math::GetScalingMatrix({ 2.5f, 2.5f, 2.5f }) * kepler::math::GetRotationMatrixX(m_time / 2.0f) * kepler::math::GetRotationMatrixZ(m_time / 1.8f) * kepler::math::GetTranslateMatrix({ 0.0f, 0.0f, 60.0f }));
+
 	kepler::Renderer::Get()->EndScene();
 
+	kepler::Renderer::Get()->SetViewport(1280, 720, 0.0f, 1.0f);
 	kepler::IFrameBuffer::Get()->BindColorBuffer();
 }
 
@@ -209,24 +215,37 @@ void EditorLayer::OnGUIRender()
 
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-	ImGui::Begin("Test Scene", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar);
+	ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollWithMouse);
 
+	// Scene View Begin
 	ImGui::SetScrollY(0);
 	ID3D11ShaderResourceView* buffer = (ID3D11ShaderResourceView*)kepler::IFrameBuffer::Get()->GetBuffer(kepler::eFrameBufferType::Color, 0);
 	auto size = ImGui::GetWindowSize();
-	ImGui::Image(buffer, size, { 0, 1 }, { 1, 0 });
 	m_bIsSceneFocuced = ImGui::IsWindowFocused();
+	m_viewportWidth = size.x;
+	m_viewportHeight = size.y;
+	ImGui::Image(buffer, size, { 0, 1 }, { 1, 0 });
+
 	ImGui::End();
 	ImGui::PopStyleVar();
+	// Scene View End
 
+	// Hierarchy View Begin
 	ImGui::Begin("Hierarchy");
-	ImGui::Text("This is Hierarchy Panel");
-	ImGui::Text("Cube");
-	ImGui::End();
 
-	ImGui::Begin("Inspector");
-	ImGui::Text("This is Inspector Panel");
+	ImGui::Text("Cube");
+	ImGui::Text("Cube(1)");
+
 	ImGui::End();
+	// Hierarchy View End
+
+	// Inspector View Begin
+	ImGui::Begin("Inspector");
+
+	ImGui::Text("There will be an Inspector Panel");
+
+	ImGui::End();
+	// Inspector View End
 }
 
 void EditorLayer::OnEvent(kepler::Event& e)

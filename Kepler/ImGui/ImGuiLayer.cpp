@@ -134,7 +134,8 @@ namespace kepler {
 		static float f = 0.0f;
 
 		ImGui::Begin("Hello Kepler!");
-		ImGui::Text("This is Test..");
+		ImGui::Text("Welcome to Kepler Engine!");
+		ImGui::Text("This is Test Panel.");
 		ImGui::Checkbox("demo window", &bIsShownDemo);
 
 		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);

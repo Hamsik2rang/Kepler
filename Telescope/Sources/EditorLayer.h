@@ -10,6 +10,11 @@ private:
 	std::shared_ptr<kepler::IVertexArray> m_pCubeVA;
 	float m_time;
 	bool m_bIsSceneFocuced;
+
+	uint32_t m_viewportWidth;
+	uint32_t m_viewportHeight;
+	uint32_t m_lastViewportWidth;
+	uint32_t m_lastViewportHeight;
 public:
 
 	EditorLayer()
@@ -18,6 +23,10 @@ public:
 		, m_pCubeVA{ nullptr }
 		, m_time{ 0.0f }
 		, m_bIsSceneFocuced{false}
+		, m_viewportWidth{ 0 }
+		, m_viewportHeight{ 0 }
+		, m_lastViewportWidth{ 0 }
+		, m_lastViewportHeight{ 0 }
 	{}
 
 	virtual void OnAttach() override;

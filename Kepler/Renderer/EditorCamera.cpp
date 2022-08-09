@@ -35,7 +35,6 @@ namespace kepler {
 		Vec3f deltaPos = (deltaRight + deltaUp + deltaFront) * 10.0f * deltaTime;
 
 		m_position += deltaPos;
-
 		m_at = m_position + (front * m_distance);
 		CalcViewProjectionMatrix();
 

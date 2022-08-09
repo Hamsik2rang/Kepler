@@ -24,7 +24,6 @@ namespace kepler {
 		bool OnMouseMovedEvent(MouseMovedEvent& e);
 		bool OnMouseScrolledEvent(MouseScrolledEvent& e);
 		bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& e);
-		bool OnKeyPressedEvent(KeyPressedEvent& e);
 
 		void UpdatePosition();
 
