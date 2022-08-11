@@ -58,6 +58,7 @@
     <ClCompile Include="Utility\StringUtility.cpp" />
     <ClCompile Include="Renderer\Sampler.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Sampler.cpp" />
+    <ClCompile Include="Core\ECS\Entity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio\Audio.h" />
@@ -114,6 +115,10 @@
     <ClInclude Include="Utility\Timer.hpp" />
     <ClInclude Include="Renderer\Sampler.h" />
     <ClInclude Include="Platform\DirectX11\DX11Sampler.h" />
+    <ClInclude Include="Core\ECS\Component.hpp" />
+    <ClInclude Include="Core\ECS\Entity.h" />
+    <ClInclude Include="Core\ECS\Scene.h" />
+    <ClInclude Include="Core\ECS\ComponentType.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kepler.rc" />

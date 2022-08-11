@@ -107,7 +107,7 @@ void ExampleLayer::OnAttach()
 	m_pVertexArray->SetIndexBuffer(pIB);
 
 	auto rs = kepler::IRenderState::Get()->GetRasterizerState();
-	rs.bWireFrame = true;
+	rs.bWireFrame = false;
 	rs.cullMode = kepler::eCullMode::Front;
 	rs.bIsFrontClockwise = false;
 	kepler::IRenderState::Get()->SetRasterizerState(rs);

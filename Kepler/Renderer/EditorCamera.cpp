@@ -101,7 +101,6 @@ namespace kepler {
 
 	bool EditorCamera::OnMouseMovedEvent(MouseMovedEvent& e)
 	{
-		// x, y moved에 맞게 회전
 		if (Input::IsButtonUp(mouse::Right))
 		{
 			return false;
