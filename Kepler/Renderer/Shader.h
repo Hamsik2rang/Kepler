@@ -54,12 +54,6 @@ namespace kepler {
 	{
 	private:
 		static std::unordered_map<std::string, std::shared_ptr<IShader>> s_shaderTable;
-		static std::shared_ptr<IShader> s_pLastCachedVertexShader;
-		static std::shared_ptr<IShader> s_pLastCachedPixelShader;
-		static std::shared_ptr<IShader> s_pLastCachedGeometryShader;
-		static std::shared_ptr<IShader> s_pLastCachedHullShader;
-		static std::shared_ptr<IShader> s_pLastCachedDomainShader;
-		static std::shared_ptr<IShader> s_pLastCachedComputeShader;
 
 		static void Add(const std::string& name, const std::shared_ptr<IShader>& shader);	// 로드한 쉐이더 프로그램을 table에 추가합니다
 	public:

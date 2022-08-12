@@ -110,13 +110,14 @@ namespace kepler {
 	void DX11VertexBuffer::Bind()
 	{
 		ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+		auto& desc = IRenderState::Get()->GetShaderState();
 
 		// VertexBuffer의 레이아웃 내 element들이 어떻게 chunking되었는지에 따라 offset, stride 계산해 쉐이더 장치에 bind
 		for (const auto& e : m_layout)
 		{
 			UINT stride = m_layout.GetStride();
 			UINT offset = e.offset;
-			uint32_t slot = ShaderCache::GetLastCachedShader(eShaderType::Vertex)->GetInputElementSlot(e.name, e.index);
+			uint32_t slot = desc.pVertexShader->GetInputElementSlot(e.name, e.index);
 
 			pDeviceContext->IASetVertexBuffers(slot, 1, &m_pBuffer, &stride, &offset);
 		}
@@ -127,14 +128,13 @@ namespace kepler {
 	{
 		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
 
-		auto& shaderState = IRenderState::Get()->GetShaderState();
-		auto& pVertexShader = shaderState.pVertexShader;
+		auto& desc = IRenderState::Get()->GetShaderState();
 
 		for (const auto& e : m_layout)
 		{
 			UINT stride = m_layout.GetStride();
 			UINT offset = e.offset;
-			uint32_t slot = pVertexShader->GetInputElementSlot(e.name, e.index);
+			uint32_t slot = desc.pVertexShader->GetInputElementSlot(e.name, e.index);
 
 			pContext->IASetVertexBuffers(slot, 1, nullptr, nullptr, nullptr);
 		}
