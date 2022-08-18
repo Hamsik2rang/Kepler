@@ -33,12 +33,12 @@ namespace kepler {
 
 	enum eEventCategory
 	{
-		None						= 0,		// 0x00000000
-		EventCategoryApplication	= BIT(0),	// 0x00000001
-		EventCategoryInput			= BIT(1),	// 0x00000010
-		EventCategoryKeyboard		= BIT(2),	// 0x00000100
-		EventCategoryMouse			= BIT(3),	// 0x00001000
-		EventCategoryMouseButton	= BIT(4),	// 0x00010000
+		None						= 0,		// 0b 0000 0000
+		EventCategoryApplication	= BIT(0),	// 0b 0000 0001
+		EventCategoryInput			= BIT(1),	// 0b 0000 0010
+		EventCategoryKeyboard		= BIT(2),	// 0b 0000 0100
+		EventCategoryMouse			= BIT(3),	// 0b 0000 1000
+		EventCategoryMouseButton	= BIT(4),	// 0b 0001 0000
 	};
 
 #define EVENT_CLASS_TYPE(type) static eEventType GetStaticType() { return eEventType::##type; }\
