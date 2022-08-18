@@ -8,6 +8,3 @@
 [submodule "implot"]
 	path = Kepler/Dependencies/implot
 	url = https://github.com/MistarJo/implot
-[submodule "entt"]
-	path = Kepler/Dependencies/entt
-	url = https://github.com/Hamsik2rang/entt
