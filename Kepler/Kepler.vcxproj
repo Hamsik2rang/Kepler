@@ -174,10 +174,6 @@
     <ClInclude Include="Core\Application.h" />
     <ClInclude Include="Core\Assertion.h" />
     <ClInclude Include="Core\Base.h" />
-    <ClInclude Include="Core\ECS\Component.hpp" />
-    <ClInclude Include="Core\ECS\ComponentType.h" />
-    <ClInclude Include="Core\ECS\Entity.h" />
-    <ClInclude Include="Core\ECS\Scene.h" />
     <ClInclude Include="Core\EntryPoint.h" />
     <ClInclude Include="Core\Event\ApplicationEvent.hpp" />
     <ClInclude Include="Core\Event\Event.hpp" />
@@ -188,6 +184,7 @@
     <ClInclude Include="Core\Layer.hpp" />
     <ClInclude Include="Core\LayerStack.h" />
     <ClInclude Include="Core\Log.h" />
+    <ClInclude Include="Core\UUID.h" />
     <ClInclude Include="Dependencies\stbimage\stb_image.h" />
     <ClInclude Include="Platform\DirectX11\DX11Buffer.h" />
     <ClInclude Include="Platform\DirectX11\DX11Context.h" />
@@ -231,7 +228,6 @@
   <ItemGroup>
     <ClCompile Include="Audio\Audio.cpp" />
     <ClCompile Include="Core\Application.cpp" />
-    <ClCompile Include="Core\ECS\Entity.cpp" />
     <ClCompile Include="Core\Input.cpp" />
     <ClCompile Include="ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="Core\LayerStack.cpp" />
