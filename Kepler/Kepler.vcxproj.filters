@@ -58,6 +58,10 @@
     <ClCompile Include="Utility\StringUtility.cpp" />
     <ClCompile Include="Renderer\Sampler.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Sampler.cpp" />
+    <ClCompile Include="Scene\Scene.cpp" />
+    <ClCompile Include="Scene\Entity.cpp" />
+    <ClCompile Include="Scene\ECManager.cpp" />
+    <ClCompile Include="Core\UUID.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio\Audio.h" />
@@ -115,6 +119,12 @@
     <ClInclude Include="Renderer\Sampler.h" />
     <ClInclude Include="Platform\DirectX11\DX11Sampler.h" />
     <ClInclude Include="Core\UUID.h" />
+    <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Scene\Component.hpp" />
+    <ClInclude Include="Scene\Entity.h" />
+    <ClInclude Include="Scene\ComponentType.h" />
+    <ClInclude Include="Scene\ECManager.hpp" />
+    <ClInclude Include="Core\ECS.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kepler.rc" />
