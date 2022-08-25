@@ -174,7 +174,6 @@
     <ClInclude Include="Core\Application.h" />
     <ClInclude Include="Core\Assertion.h" />
     <ClInclude Include="Core\Base.h" />
-    <ClInclude Include="Core\ECS.hpp" />
     <ClInclude Include="Core\EntryPoint.h" />
     <ClInclude Include="Core\Event\ApplicationEvent.hpp" />
     <ClInclude Include="Core\Event\Event.hpp" />
@@ -223,7 +222,6 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene\Component.hpp" />
     <ClInclude Include="Scene\ComponentType.h" />
-    <ClInclude Include="Scene\ECManager.hpp" />
     <ClInclude Include="Scene\Entity.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="targetver.h" />
@@ -282,7 +280,6 @@
     <ClCompile Include="Renderer\Shader.cpp" />
     <ClCompile Include="Renderer\Texture.cpp" />
     <ClCompile Include="Renderer\VertexArray.cpp" />
-    <ClCompile Include="Scene\ECManager.cpp" />
     <ClCompile Include="Scene\Entity.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Utility\Random.cpp" />

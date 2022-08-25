@@ -18,6 +18,7 @@
 
 	#define KEPLER_ASSERT_NO_MESSAGE(x) {if(!(x)) { KEPLER_ERROR("Assertion Failed: {0}(line: {1}", __FILE__, __LINE__); __debugbreak(); } }
 	#define KEPLER_CORE_ASSERT_EXCEPT_MESSAGE(x) {if(!(x)) { KEPLER_CORE_ERROR("Assertion Failed: {0}(line: {1}", __FILE__, __LINE__); __debugbreak(); } }
+
 	
 	#define KEPLER_ASSERT_WITH_ERROR_CODE(x) \
 	{ \

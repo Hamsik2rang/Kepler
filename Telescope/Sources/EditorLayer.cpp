@@ -71,9 +71,13 @@ void EditorLayer::OnAttach()
 
 	std::shared_ptr<kepler::IIndexBuffer> pIB = kepler::IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), kepler::eBufferUsage::Default);
 
-	m_pCubeVA = kepler::IVertexArray::Create();
-	m_pCubeVA->AddVertexBuffer(pVB);
-	m_pCubeVA->SetIndexBuffer(pIB);
+	auto pCubeVA = kepler::IVertexArray::Create();
+	pCubeVA->AddVertexBuffer(pVB);
+	pCubeVA->SetIndexBuffer(pIB);
+
+	m_pCubeEntity = m_scene.CreateEntity();
+	m_pCubeEntity->AddComponent<kepler::component::Transform>(kepler::Vec3f{ 0.0f, 0.0f, 4.0f }, kepler::Vec3f{ 0.0f, 0.0f, 0.0f }, kepler::Vec3f{ 1.0f, 1.0f, 1.0f});
+	m_pCubeEntity->AddComponent<kepler::component::MeshRenderer>(pCubeVA);
 }
 
 void EditorLayer::OnDetach()
@@ -93,7 +97,7 @@ void EditorLayer::OnUpdate(const float deltaTime)
 		kepler::IFrameBuffer::Get()->ClearGBuffer(0, 1, col);
 		// 2. Set Aspect
 		m_camera.SetAspect((float)m_viewportWidth / (float)m_viewportHeight);
-		
+
 		m_lastViewportWidth = m_viewportWidth;
 		m_lastViewportHeight = m_viewportHeight;
 	}
@@ -108,8 +112,18 @@ void EditorLayer::OnRender()
 	kepler::Renderer::Get()->SetViewport(m_viewportWidth, m_viewportHeight, 0.0f, 1.0f);
 	kepler::Renderer::Get()->BeginScene(m_camera);
 
-	kepler::Renderer::Get()->Submit(m_pCubeVA, kepler::math::GetRotationMatrixX(m_time) * kepler::math::GetRotationMatrixY(m_time / 3.0f) * kepler::math::GetTranslateMatrix({ 0.0f, 0.0f, 4.0f }));
-	kepler::Renderer::Get()->Submit(m_pCubeVA, kepler::math::GetScalingMatrix({ 2.5f, 2.5f, 2.5f }) * kepler::math::GetRotationMatrixX(m_time / 2.0f) * kepler::math::GetRotationMatrixZ(m_time / 1.8f) * kepler::math::GetTranslateMatrix({ 0.0f, 0.0f, 60.0f }));
+	auto entities = m_scene.GetAllEntitiesWith<kepler::component::Transform, kepler::component::MeshRenderer>();
+	for (auto entity : entities)
+	{
+		auto transform = entity->GetComponent<kepler::component::Transform>();
+		auto mesh = entity->GetComponent<kepler::component::MeshRenderer>();
+
+		kepler::Renderer::Get()->Submit(mesh->pVertexArray,
+			kepler::math::GetScalingMatrix(transform->scale) *
+			kepler::math::GetRotationMatrix(kepler::Quaternion::FromEuler(transform->rotation)) *
+			kepler::math::GetTranslateMatrix(transform->translation));
+	}
+
 
 	kepler::Renderer::Get()->EndScene();
 

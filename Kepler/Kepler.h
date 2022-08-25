@@ -35,6 +35,12 @@
 #include "KeplerMath.h"
 //-----------------------------------------
 
+//----- Scene -----------------------------
+#include "Scene/Entity.h"
+#include "Scene/Component.hpp"
+#include "Scene/Scene.h"
+//-----------------------------------------
+
 //----- Platform --------------------------
 #include "Platform/Win32/WinAPI.h"
 #include "Platform/Windows/WindowsWindow.h"

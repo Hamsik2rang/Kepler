@@ -2,72 +2,78 @@
 
 #include <vector>
 #include <list>
+#include <memory>
 #include <unordered_map>
 
 #include "Core/Base.h"
+#include "Core/UUID.h"
 #include "Component.hpp"
-#include "ECManager.hpp"
 
 namespace kepler {
 
 	class Entity;
-	class ECManager;
 
 	class Scene
 	{
 		friend class Entity;
 
 	private:
-		std::unique_ptr<ECManager> m_pManager;
+		std::vector<std::vector<component::Base*>> m_pComponentTable;
+		std::list<Entity*> m_pEntityList;
 		std::string m_name;
 
 	private:
-		template <typename TComponent, typename ... Args>
-		void Emplace(const Entity& entity, Args&& ... args)
-		{
-			m_pManager->Emplace<TComponent, Args>(entity.GetID(), args...);
-		}
-		
-		template <typename TComponent>
-		void Remove(const Entity& entity)
-		{
-			m_pManager->Remove<TComponent>(entity.GetID());
-		}
-		
-		template <typename TComponent>
-		void Patch(const Entity& entity, TComponent* pComponent)
-		{
-			m_pManager->Patch(entity.GetID(), pComponent);
-		}
-		
-		// NOTE: 추후 구현될 때까지 사용할 수 없습니다.
-		template <typename TComponent, typename ... TOther>
-		[[deprecated]]
-		std::shared_ptr<Entity[]> GetAllEntitiesWith()
-		{
-			//return m_pManager->View();
-			return nullptr;
-		}
-		
-		template <typename TComponent>
-		TComponent* Get(const Entity& entity)
-		{
-			return m_pManager->Get<TComponent>(entity.GetID());
-		}
-		
-		template <typename TComponent>
-		bool Has(const Entity& entity)
-		{
-			return m_pManager->Has<TComponent>(entity.GetID());
-		}
+		// \brief Entity에 새 Component를 귀속시킵니다.
+		// \param entity 새 Component를 할당받은 Entity
+		// \param pComponent 귀속된 Component의 주소
+		// \param index 귀속된 Component의 Component Table Index
+		void Register(Entity* entity, component::Base* pComponent, component::eComponentIndex index);
+
+		// \brief Entity가 가진 특정 컴포넌트를 제거합니다.
+		// \param entity Component를 소유한 Entity
+		// \param index 제거할 Component의 Component Table Index
+		void Remove(Entity* entity, component::eComponentIndex index);
 
 	public:
 		Scene();
 		Scene(const std::string& name);
 		~Scene();
 
-		Entity CreateEntity();
-		void DestroyEntity(const Entity& entity);
+		// \brief 새로운 Entity를 생성합니다.
+		// \return 생성된 빈 Entity
+		Entity* CreateEntity();
+
+		// \brief 지정된 UUID를 가지는 새로운 Entity를 생성합니다.
+		// \return 생성된 빈 Entity
+		Entity* CreateEntityWithUUID(UUID uuid);
+
+		// \brief 존재하는 Entity를 파괴합니다.
+		// 파괴된 Entity는 사용할 수 없습니다.
+		// \param entity 파괴할 Entity
+		void DestroyEntity(Entity* entity);
+
+		// \brief Scene 전체를 파괴합니다.
+		// 포함된 모든 Entity와 Component도 함께 제거됩니다.
 		void Destroy();
+
+		// \brief 탬플릿 파라미터로 전달받은 컴포넌트들을 모두 가진 모든 Entity를 리턴합니다.
+		// \tparam ...TComponent Entity가 가지고 있어야 하는 컴포넌트들
+		// \return 조건을 만족하는 Entity*의 std::vector 컨테이너
+		template <typename ... TComponent>
+		std::vector<Entity*> GetAllEntitiesWith()
+		{
+			uint64_t flag = 0;
+			std::vector<Entity*> view;
+			flag = component::ConvertTypeToFlag<TComponent...>();
+			for (const auto entity : m_pEntityList)
+			{
+				if ((entity->GetComponentFlag() & flag) == flag)
+				{
+					view.emplace_back(entity);
+				}
+			}
+
+			return view;
+		}
 	};
 }
