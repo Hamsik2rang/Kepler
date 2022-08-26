@@ -23,7 +23,7 @@ namespace kepler {
 		// Scene이 존재하는 경우 Scene에 파괴를 맡깁니다.
 		if (m_pScene)
 		{
-			m_pScene->DestroyEntity(this);
+			m_pScene->RemoveEntity(this);
 		}
 		// 만약 Scene이 존재하지 않는 경우 직접 컴포넌트를 제거합니다.
 		else

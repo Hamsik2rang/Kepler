@@ -36,18 +36,10 @@ namespace kepler {
 		return pEntity;
 	}
 
-	void Scene::DestroyEntity(Entity* entity)
+	void Scene::DestroyEntity(Entity* pEntity)
 	{
-		for (uint32_t i = 0; i < component::componentCount; i++)
-		{
-			auto flag = entity->GetComponentFlag();
-			if (flag & BIT_UINT64(i))
-			{
-				Remove(entity, static_cast<eComponentIndex>(i));
-			}
-		}
-		m_pEntityList.remove(entity);
-		delete entity;
+		RemoveEntity(pEntity);
+		delete pEntity;
 	}
 
 	void Scene::Destroy()
@@ -58,16 +50,16 @@ namespace kepler {
 		}
 	}
 
-	void Scene::Register(Entity* entity, IComponent* pComponent, eComponentIndex index)
+	void Scene::Register(Entity* pEntity, IComponent* pComponent, eComponentIndex index)
 	{
 		m_pComponentTable[index].push_back(pComponent);
 	}
 
-	void Scene::Remove(Entity* entity, eComponentIndex index)
+	void Scene::Remove(Entity* pEntity, eComponentIndex index)
 	{
 		for (auto component : m_pComponentTable[index])
 		{
-			if (component->GetOwner() == entity)
+			if (component->GetOwner() == pEntity)
 			{
 				delete component;
 				component = nullptr;
@@ -78,5 +70,18 @@ namespace kepler {
 				break;
 			}
 		}
+	}
+
+	void Scene::RemoveEntity(Entity* pEntity)
+	{
+		for (uint32_t i = 0; i < component::componentCount; i++)
+		{
+			auto flag = pEntity->GetComponentFlag();
+			if (flag & BIT_UINT64(i))
+			{
+				Remove(pEntity, static_cast<eComponentIndex>(i));
+			}
+		}
+		m_pEntityList.remove(pEntity);
 	}
 }
