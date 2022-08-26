@@ -16,7 +16,7 @@ namespace kepler {
 	{
 	private:
 		UUID m_uuid;
-		std::vector<component::Base*> m_pComponents;
+		std::vector<IComponent*> m_pComponents;
 		uint64_t m_componentFlag;
 		Scene* m_pScene;
 
@@ -40,7 +40,7 @@ namespace kepler {
 		bool HasComponent()
 		{
 			KEPLER_CORE_ASSERT(std::is_abstract_v<TComponent> == false, "Kepler not support abstract component type.");
-			static_assert(std::is_base_of_v<component::Base, TComponent>);
+			static_assert(std::is_base_of_v<IComponent, TComponent>);
 
 			auto flag = TComponent::GetStaticFlag();
 			return m_componentFlag & flag;
@@ -99,7 +99,7 @@ namespace kepler {
 		TComponent* GetComponent()
 		{
 			KEPLER_CORE_ASSERT(std::is_abstract_v<TComponent> == false, "Kepler not support abstract component type.");
-			static_assert(std::is_base_of_v<component::Base, TComponent>);
+			static_assert(std::is_base_of_v<IComponent, TComponent>);
 
 			auto index = TComponent::GetStaticIndex();
 			if (HasComponent<TComponent>())

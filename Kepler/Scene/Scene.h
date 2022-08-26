@@ -18,7 +18,7 @@ namespace kepler {
 		friend class Entity;
 
 	private:
-		std::vector<std::vector<component::Base*>> m_pComponentTable;
+		std::vector<std::vector<IComponent*>> m_pComponentTable;
 		std::list<Entity*> m_pEntityList;
 		std::string m_name;
 
@@ -27,12 +27,12 @@ namespace kepler {
 		// \param entity 새 Component를 할당받은 Entity
 		// \param pComponent 귀속된 Component의 주소
 		// \param index 귀속된 Component의 Component Table Index
-		void Register(Entity* entity, component::Base* pComponent, component::eComponentIndex index);
+		void Register(Entity* entity, IComponent* pComponent, eComponentIndex index);
 
 		// \brief Entity가 가진 특정 컴포넌트를 제거합니다.
 		// \param entity Component를 소유한 Entity
 		// \param index 제거할 Component의 Component Table Index
-		void Remove(Entity* entity, component::eComponentIndex index);
+		void Remove(Entity* entity, eComponentIndex index);
 
 	public:
 		Scene();
@@ -64,7 +64,7 @@ namespace kepler {
 		{
 			uint64_t flag = 0;
 			std::vector<Entity*> view;
-			flag = component::ConvertTypeToFlag<TComponent...>();
+			flag = ConvertTypeToFlag<TComponent...>();
 			for (const auto entity : m_pEntityList)
 			{
 				if ((entity->GetComponentFlag() & flag) == flag)

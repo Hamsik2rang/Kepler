@@ -76,8 +76,8 @@ void EditorLayer::OnAttach()
 	pCubeVA->SetIndexBuffer(pIB);
 
 	m_pCubeEntity = m_scene.CreateEntity();
-	m_pCubeEntity->AddComponent<kepler::component::Transform>(kepler::Vec3f{ 0.0f, 0.0f, 4.0f }, kepler::Vec3f{ 0.0f, 0.0f, 0.0f }, kepler::Vec3f{ 1.0f, 1.0f, 1.0f});
-	m_pCubeEntity->AddComponent<kepler::component::MeshRenderer>(pCubeVA);
+	m_pCubeEntity->AddComponent<kepler::TransformComponent>(kepler::Vec3f{ 0.0f, 0.0f, 4.0f }, kepler::Vec3f{ 0.0f, 0.0f, 0.0f }, kepler::Vec3f{ 1.0f, 1.0f, 1.0f});
+	m_pCubeEntity->AddComponent<kepler::MeshRendererComponent>(pCubeVA);
 }
 
 void EditorLayer::OnDetach()
@@ -112,11 +112,11 @@ void EditorLayer::OnRender()
 	kepler::Renderer::Get()->SetViewport(m_viewportWidth, m_viewportHeight, 0.0f, 1.0f);
 	kepler::Renderer::Get()->BeginScene(m_camera);
 
-	auto entities = m_scene.GetAllEntitiesWith<kepler::component::Transform, kepler::component::MeshRenderer>();
+	auto entities = m_scene.GetAllEntitiesWith<kepler::TransformComponent, kepler::MeshRendererComponent>();
 	for (auto entity : entities)
 	{
-		auto transform = entity->GetComponent<kepler::component::Transform>();
-		auto mesh = entity->GetComponent<kepler::component::MeshRenderer>();
+		auto transform = entity->GetComponent<kepler::TransformComponent>();
+		auto mesh = entity->GetComponent<kepler::MeshRendererComponent>();
 
 		kepler::Renderer::Get()->Submit(mesh->pVertexArray,
 			kepler::math::GetScalingMatrix(transform->scale) *
