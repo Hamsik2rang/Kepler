@@ -34,11 +34,6 @@ namespace kepler {
 		// \param index 제거할 Component의 Component Table Index
 		void Remove(Entity* pEntity, eComponentIndex index);
 
-		// \brief Entity를 리스트에서 제외합니다.
-		// DestroyEntity와 달리 실제 메모리에서 파괴하지 않습니다.
-		// \param pEntity 리스트에서 제외할 Entity
-		void RemoveEntity(Entity* pEntity);
-
 	public:
 		Scene();
 		Scene(const std::string& name);

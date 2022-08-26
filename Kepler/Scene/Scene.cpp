@@ -38,7 +38,16 @@ namespace kepler {
 
 	void Scene::DestroyEntity(Entity* pEntity)
 	{
-		RemoveEntity(pEntity);
+		for (uint32_t i = 0; i < component::componentCount; i++)
+		{
+			auto flag = pEntity->GetComponentFlag();
+			if (flag & BIT_UINT64(i))
+			{
+				Remove(pEntity, static_cast<eComponentIndex>(i));
+			}
+		}
+		m_pEntityList.remove(pEntity);
+
 		delete pEntity;
 	}
 
@@ -70,18 +79,5 @@ namespace kepler {
 				break;
 			}
 		}
-	}
-
-	void Scene::RemoveEntity(Entity* pEntity)
-	{
-		for (uint32_t i = 0; i < component::componentCount; i++)
-		{
-			auto flag = pEntity->GetComponentFlag();
-			if (flag & BIT_UINT64(i))
-			{
-				Remove(pEntity, static_cast<eComponentIndex>(i));
-			}
-		}
-		m_pEntityList.remove(pEntity);
 	}
 }
