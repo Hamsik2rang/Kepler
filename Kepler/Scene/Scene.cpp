@@ -53,9 +53,9 @@ namespace kepler {
 
 	void Scene::Destroy()
 	{
-		for (auto entity : m_pEntityList)
+		for (int i = 0; i < m_pEntityList.size(); i++)
 		{
-			DestroyEntity(entity);
+			DestroyEntity(m_pEntityList.front());
 		}
 	}
 
