@@ -5,13 +5,8 @@
 
 namespace kepler {
 
-	// (Im Yongsik)정의된 컴포넌트 개수를 어떻게 식별할 것인가??
-	// 매직 넘버로 사용하는건 좋지 않은듯함(컴포넌트 하나 새로 정의할 때마다 수 고치고... X)
-	// 추후 새로운 방법을 찾을 때까지만 임시로 매직 넘버 상수를 사용합니다.
 	namespace component {
 		extern const uint16_t componentCount;
-
-		void InitComponentSystem();
 	}
 
 	enum class eComponentType
