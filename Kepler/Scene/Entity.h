@@ -81,7 +81,7 @@ namespace kepler {
 				return;
 			}
 
-			TComponent* pComponent = new TComponent(std::forward<Args>(args)...);
+			TComponent* pComponent = new TComponent(this, std::forward<Args>(args)...);
 			auto index = TComponent::GetStaticIndex();
 			m_pComponents.push_back(pComponent);
 			pComponent->SetOwner(this);

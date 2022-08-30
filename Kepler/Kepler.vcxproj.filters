@@ -61,6 +61,7 @@
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Scene\Entity.cpp" />
     <ClCompile Include="Core\UUID.cpp" />
+    <ClCompile Include="Scene\ComponentType.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio\Audio.h" />

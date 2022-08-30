@@ -14,18 +14,6 @@ namespace kepler {
 
 	class Entity;
 
-#define COMPONENT_CLASS_TYPE(type) \
-	static eComponentType GetStaticType() { return eComponentType::##type; } \
-	virtual eComponentType GetType() const override { return GetStaticType(); }
-
-#define COMPONENT_CLASS_INDEX(index) \
-	static eComponentIndex GetStaticIndex() { return eComponentIndex::##index; } \
-	virtual eComponentIndex GetIndex() const override { return GetStaticIndex(); }
-
-#define COMPONENT_CLASS_FLAG(flag) \
-	static eComponentFlag GetStaticFlag() { return eComponentFlag::##flag; } \
-	virtual eComponentFlag GetFlag() const override { return GetStaticFlag(); }
-
 	class IComponent
 	{
 	private:
@@ -36,6 +24,7 @@ namespace kepler {
 		virtual eComponentIndex GetIndex() const = 0;
 		virtual eComponentFlag GetFlag() const = 0;
 
+		IComponent(Entity* pEntity) : m_pOwner{ pEntity } {}
 		// \brief Component를 지정한 Entity가 소유하도록 합니다.
 		// \param pInEntity 이 Component를 소유할 Entity의 주소
 		void SetOwner(Entity* pInEntity) { m_pOwner = pInEntity; }
@@ -50,10 +39,16 @@ namespace kepler {
 	public:
 		std::string name{ "Unknown" };
 
-		TagComponent() = default;
-		TagComponent(const TagComponent& _tag) = default;
-		TagComponent(const std::string& _name)
+		TagComponent(Entity* pOwner) 
+			: IComponent(pOwner) 
+		{}
+		TagComponent(Entity* pOwner, const TagComponent& _tag) 
+			: name{ _tag.name }
+			, IComponent(pOwner) 
+		{}
+		TagComponent(Entity* pOwner, const std::string& _name)
 			: name{ _name }
+			, IComponent(pOwner)
 		{}
 
 		COMPONENT_CLASS_TYPE(TagComponent)
@@ -68,12 +63,20 @@ namespace kepler {
 		Vec3f rotation{ 0.0f, 0.0f, 0.0f };
 		Vec3f scale{ 1.0f, 1.0f, 1.0f };
 
-		TransformComponent() = default;
-		TransformComponent(const TransformComponent& _transform) = default;
-		TransformComponent(const Vec3f& _translation, const Vec3f& _rotation, const Vec3f& _scale)
+		TransformComponent(Entity* pOwner)
+			: IComponent(pOwner)
+		{}
+		TransformComponent(Entity* pOwner, const TransformComponent& _transform)
+			: translation{ _transform.translation }
+			, rotation{ _transform.rotation }
+			, scale{ _transform.scale }
+			, IComponent(pOwner)
+		{}
+		TransformComponent(Entity* pOwner, const Vec3f& _translation, const Vec3f& _rotation, const Vec3f& _scale)
 			: translation{ _translation }
 			, rotation{ _rotation }
 			, scale{ _scale }
+			, IComponent(pOwner)
 		{}
 
 		COMPONENT_CLASS_TYPE(TransformComponent)
@@ -86,10 +89,16 @@ namespace kepler {
 	public:
 		std::shared_ptr<IVertexArray> pVertexArray;
 
-		MeshRendererComponent() = default;
-		MeshRendererComponent(const MeshRendererComponent& _mesh) = default;
-		MeshRendererComponent(const std::shared_ptr<IVertexArray>& _pVertexArrray)
-			:pVertexArray{ _pVertexArrray }
+		MeshRendererComponent(Entity* pOwner)
+			: IComponent(pOwner)
+		{}
+		MeshRendererComponent(Entity* pOwner, const MeshRendererComponent& _mesh)
+			: pVertexArray{ _mesh.pVertexArray }
+			, IComponent(pOwner)
+		{}
+		MeshRendererComponent(Entity* pOwner,const std::shared_ptr<IVertexArray>& _pVertexArrray)
+			: pVertexArray{ _pVertexArrray }
+			, IComponent(pOwner)
 		{}
 
 		COMPONENT_CLASS_TYPE(MeshRendererComponent)
@@ -103,43 +112,22 @@ namespace kepler {
 		std::shared_ptr<ITexture2D> pTexture;
 		Vec4f color;
 
-		SpriteRendererComponent() = default;
-		SpriteRendererComponent(const SpriteRendererComponent& _sprite) = default;
-		SpriteRendererComponent(const std::shared_ptr<ITexture2D>& _pTexture, const Vec4f& _color)
+		SpriteRendererComponent(Entity* pOwner)
+			: IComponent(pOwner)
+		{}
+		SpriteRendererComponent(Entity* pOwner, const SpriteRendererComponent& _sprite)
+			: pTexture{ _sprite.pTexture }
+			, color{ _sprite.color }
+			, IComponent(pOwner)
+		{}
+		SpriteRendererComponent(Entity* pOwner,const std::shared_ptr<ITexture2D>& _pTexture, const Vec4f& _color)
 			: pTexture{ _pTexture }
 			, color{ _color }
+			, IComponent(pOwner)
 		{}
 
 		COMPONENT_CLASS_TYPE(SpriteRendererComponent)
 			COMPONENT_CLASS_INDEX(SpriteRendererIndex)
 			COMPONENT_CLASS_FLAG(SpriteRendererFlag)
 	};
-
-	template <typename ... TComponent>
-	struct TypeToFlag;
-
-	template <>
-	struct TypeToFlag<>
-	{
-		uint64_t  operator()() const
-		{
-			return 0;
-		}
-	};
-
-	template <typename TComponent, typename ... TOther>
-	struct TypeToFlag<TComponent, TOther...>
-	{
-		uint64_t operator()() const
-		{
-			uint64_t bitset = (uint64_t)TComponent::GetStaticFlag() | (uint64_t)TypeToFlag<TOther...>()();
-			return bitset;
-		}
-	};
-
-	template <typename ... TComponent>
-	eComponentFlag ConvertTypeToFlag()
-	{
-		return (eComponentFlag)TypeToFlag<TComponent...>()();
-	}
 }
