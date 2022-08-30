@@ -5,6 +5,6 @@
 namespace kepler {
 	namespace component {
 
-		const uint16_t componentCount = static_cast<int>(eComponentType::InvalidComponent) - 1;
+		const uint16_t componentCount = static_cast<const uint16_t>(eComponentType::InvalidComponent) - 1;
 	}
 }
