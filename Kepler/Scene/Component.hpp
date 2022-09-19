@@ -39,12 +39,12 @@ namespace kepler {
 	public:
 		std::string name{ "Unknown" };
 
-		TagComponent(Entity* pOwner) 
-			: IComponent(pOwner) 
+		TagComponent(Entity* pOwner)
+			: IComponent(pOwner)
 		{}
-		TagComponent(Entity* pOwner, const TagComponent& _tag) 
+		TagComponent(Entity* pOwner, const TagComponent& _tag)
 			: name{ _tag.name }
-			, IComponent(pOwner) 
+			, IComponent(pOwner)
 		{}
 		TagComponent(Entity* pOwner, const std::string& _name)
 			: name{ _name }
@@ -96,7 +96,7 @@ namespace kepler {
 			: pVertexArray{ _mesh.pVertexArray }
 			, IComponent(pOwner)
 		{}
-		MeshRendererComponent(Entity* pOwner,const std::shared_ptr<IVertexArray>& _pVertexArrray)
+		MeshRendererComponent(Entity* pOwner, const std::shared_ptr<IVertexArray>& _pVertexArrray)
 			: pVertexArray{ _pVertexArrray }
 			, IComponent(pOwner)
 		{}
@@ -120,7 +120,7 @@ namespace kepler {
 			, color{ _sprite.color }
 			, IComponent(pOwner)
 		{}
-		SpriteRendererComponent(Entity* pOwner,const std::shared_ptr<ITexture2D>& _pTexture, const Vec4f& _color)
+		SpriteRendererComponent(Entity* pOwner, const std::shared_ptr<ITexture2D>& _pTexture, const Vec4f& _color)
 			: pTexture{ _pTexture }
 			, color{ _color }
 			, IComponent(pOwner)
@@ -129,5 +129,22 @@ namespace kepler {
 		COMPONENT_CLASS_TYPE(SpriteRendererComponent)
 			COMPONENT_CLASS_INDEX(SpriteRendererIndex)
 			COMPONENT_CLASS_FLAG(SpriteRendererFlag)
+	};
+
+	class ScriptableEntity;
+
+	class NativeScriptableComponent : public IComponent
+	{
+		ScriptableEntity* pInstance;
+
+		std::function<ScriptableEntity* ()> Instantiate;
+		std::function<void()> Destroy;
+
+		template <typename T>
+		void Bind()
+		{
+			Instantiate = []()->ScriptableEntity* { return new T; };
+			Destroy = []()->void { delete dynamic_cast<T*>(pInstance); pInstance = nullptr; }
+		}
 	};
 }

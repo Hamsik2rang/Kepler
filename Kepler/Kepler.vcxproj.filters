@@ -121,8 +121,9 @@
     <ClInclude Include="Core\UUID.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Scene\Component.hpp" />
-    <ClInclude Include="Scene\Entity.h" />
+    <ClInclude Include="Scene\Entity.hpp" />
     <ClInclude Include="Scene\ComponentType.h" />
+    <ClInclude Include="Scene\ScriptableEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kepler.rc" />

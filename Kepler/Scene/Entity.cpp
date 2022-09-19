@@ -1,6 +1,6 @@
 #include "kepch.h"
 
-#include "Entity.h"
+#include "Entity.hpp"
 
 namespace kepler {
 

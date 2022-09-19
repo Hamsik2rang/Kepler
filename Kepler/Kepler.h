@@ -36,9 +36,10 @@
 //-----------------------------------------
 
 //----- Scene -----------------------------
-#include "Scene/Entity.h"
+#include "Scene/Entity.hpp"
 #include "Scene/Component.hpp"
 #include "Scene/Scene.h"
+#include "Scene/ScriptableEntity.h"
 //-----------------------------------------
 
 //----- Platform --------------------------

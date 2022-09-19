@@ -31,7 +31,7 @@ namespace kepler {
 
 		// \brief Entity가 가진 특정 컴포넌트를 제거합니다.
 		// \param pEntity Component를 소유한 Entity
-		// \param index 제거할 Component의 Component Table Index
+		// \param index 제거할 Component의 ComponentIndex
 		void Remove(Entity* pEntity, eComponentIndex index);
 
 	public:

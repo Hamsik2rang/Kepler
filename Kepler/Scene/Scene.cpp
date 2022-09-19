@@ -1,7 +1,7 @@
 #include "kepch.h"
 
 #include "Scene.h"
-#include "Entity.h"
+#include "Entity.hpp"
 
 namespace kepler {
 
