@@ -3,7 +3,7 @@
 
 cbuffer ChangedEveryFrame : register(b1)
 {
-    row_major matrix g_World[MAX_INSTANCE_COUNT];
+    row_major matrix g_Worlds[MAX_INSTANCE_COUNT];
     matrix g_View;
     matrix g_Projection;
     matrix g_ViewProjection;
@@ -12,10 +12,12 @@ cbuffer ChangedEveryFrame : register(b1)
 struct VS_INPUT
 {
     float3  Pos         : POSITION0;
+    float2  UV          : TEXCOORD0;
     uint    InstID      : SV_InstanceID;
     
     float4  InstColor   : INST_COLOR0;
-    float2  InstUV      : INST_TEXCOORD0;
+    bool InstUVFlipX      : INST_BOOL0;
+    bool InstUVFlipY      : INST_BOOL1;
 };
 
 struct VS_OUTPUT
@@ -28,11 +30,19 @@ struct VS_OUTPUT
 VS_OUTPUT main(VS_INPUT input)
 {
     VS_OUTPUT output = (VS_OUTPUT) 0;
-    output.Pos = mul(float4(input.Pos, 1.0f), g_World[input.InstID]);
+    output.Pos = mul(float4(input.Pos, 1.0f), g_Worlds[input.InstID]);
     output.Pos = mul(output.Pos, g_ViewProjection);
     
     output.Color = input.InstColor;
-    output.UV = input.InstUV;
+    if (input.InstUVFlipX)
+    {
+        input.UV.x *= -1.0f;
+    }
+    if (input.InstUVFlipY)
+    {
+        input.UV.y *= -1.0f;
+    }
+    output.UV = input.UV;
     
 	return output;
 }

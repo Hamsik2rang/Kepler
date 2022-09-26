@@ -67,7 +67,7 @@ namespace kepler {
 	void Renderer::Submit(std::shared_ptr<IVertexArray>& pVertexArray, const Mat44f& transform)
 	{
 		auto shaderDesc = IRenderState::Get()->GetShaderState();
-		shaderDesc.pVertexShader->SetMatrix("g_World", transform.Transpose());
+		shaderDesc.pVertexShader->SetMatrix("g_World", transform);
 		m_pGraphicsAPI->DrawIndexed(pVertexArray);
 	}
 }

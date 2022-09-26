@@ -21,6 +21,8 @@ namespace kepler {
 		char* pInstBuffer;
 		size_t instanceCount;
 		size_t sizePerInstance;
+		bool bUVFlipX;
+		bool bUVFlipY;
 	};
 
 	// 화면 렌더링에 필요한 정보들
@@ -70,16 +72,22 @@ namespace kepler {
 		{
 			s_pInstance = new Renderer2D;
 			// Renderer2D는 엔진 내장 쉐이더를 이용해 간단히 그려줌.
+
 			// Solid Shader - 텍스처 없이 간단한 사각형을 그릴 때 사용
 			ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VS2DSolidInst.hlsl");
 			ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PS2DSolidInst.hlsl");
+
 			// Texture Shader - 텍스처가 주어진 사각형을 그릴 때 사용
 			ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VS2DTextureInst.hlsl");
 			ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PS2DTextureInst.hlsl");
 
-			// Non-Batch Solid Shader - 테스트용
+			// Non-Batch Solid Shader
 			ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSSolid.hlsl");
 			ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PSSolid.hlsl");
+
+			// Non-Batch Texture Shader
+			ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSTexture.hlsl");
+			ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PSTexture.hlsl");
 		}
 	}
 
@@ -128,7 +136,9 @@ namespace kepler {
 				batchData.pTexture->Bind(0);
 				pIB->SetLayout({
 					{"INST_COLOR", 0, eShaderDataType::Float4, 0, sizeof(float) * 4},
-					{"INST_TEXCOORD", 0, eShaderDataType::Float2, sizeof(float) * 4, sizeof(float) * 2}
+					// sizeof(bool) == 4 in HLSL
+					{"INST_BOOL", 0, eShaderDataType::Bool, sizeof(float) * 4, sizeof(int32_t)},
+					{"INST_BOOL", 1, eShaderDataType::Bool, sizeof(float) * 4 + sizeof(int32_t), sizeof(int32_t)}
 					});
 			}
 			else
@@ -273,7 +283,6 @@ namespace kepler {
 
 		::memcpy(pInstBuffer + (instanceIndex * instanceSize), &color, instanceSize);
 		s_data.batchObjects[index].instanceCount++;
-
 	}
 
 	// 텍스처가 지정된 Texture Quad
@@ -316,23 +325,17 @@ namespace kepler {
 			0.0f, 0.0f
 		};
 
-		Vec4f colors[4]{ color, color, color, color };
+		// 인스턴스 데이터를 담는 구조체
+		struct InstData
+		{
+			Vec4f color;
+			int32_t bUVFlipX;
+			int32_t bUVFlipY;
+		};
 
 		// Texture Flip
-		if (bFlipX)
-		{
-			for (int i = 0; i < 8; i += 2)
-			{
-				UVs[i] *= -1;
-			}
-		}
-		if (bFlipY)
-		{
-			for (int i = 0; i < 8; i += 2)
-			{
-				UVs[i + 1] *= -1;
-			}
-		}
+		s_data.batchObjects[index].bUVFlipX = bFlipX;
+		s_data.batchObjects[index].bUVFlipY = bFlipY;
 
 		uint32_t indices[6]{
 			0, 1, 2,
@@ -341,7 +344,8 @@ namespace kepler {
 
 		std::shared_ptr<IVertexBuffer> pVB = IVertexBuffer::Create(positions, sizeof(positions), eBufferUsage::Default);
 		pVB->SetLayout({
-			{ "POSITION", 0, eShaderDataType::Float3, 0, sizeof(float) * 3 }
+			{ "POSITION", 0, eShaderDataType::Float3, 0, sizeof(float) * 3 },
+			{ "TEXCOORD", 0, eShaderDataType::Float2, sizeof(float) * 3, sizeof(float) * 2}
 			});
 		std::shared_ptr<IIndexBuffer> pIB = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), eBufferUsage::Default);
 		std::shared_ptr<IVertexArray> pVA = IVertexArray::Create();
@@ -350,24 +354,35 @@ namespace kepler {
 
 		s_data.batchObjects[index].pVertexArray = pVA;
 		s_data.batchObjects[index].worldMatrices.push_back(transform);
+		size_t instanceSize = sizeof(InstData);
+
 		// REFACTOR: 개선 방안 찾아보기
-		// TODO: UV를 인스턴싱으로 넘기는 방법 고민하기
-		size_t instanceSize = sizeof(colors) + sizeof(UVs);
-		//...
+		if (!s_data.batchObjects[index].pInstBuffer)
+		{
+			s_data.batchObjects[index].pInstBuffer = new char[instanceSize * MAX_INSTANCE_COUNT];
+			s_data.batchObjects[index].sizePerInstance = instanceSize;
+			s_data.batchObjects[index].instanceCount = 0;
+		}
+		char* pInstBuffer = s_data.batchObjects[index].pInstBuffer;
+		size_t instanceCount = s_data.batchObjects[index].instanceCount;
+		InstData data{ color, bFlipX, bFlipY };
+
+		// 인스턴스 데이터를 인스턴스 버퍼의 해당 인스턴스 인덱스에 카피
+		::memcpy(pInstBuffer + (instanceSize * instanceCount), &data, sizeof(data));
+		s_data.batchObjects[index].instanceCount++;
 	}
 
 	void Renderer2D::DrawNonBatchedQuad(const Vec2f& position, const float rotation, const Vec2f& size, const Vec4f& color)
 	{
 		Mat44f transform = math::GetWorldMatrix({ position.x, position.y, 0.0f }, Quaternion::FromEuler({ 0.0f,  0.0f, rotation }), { size.x, size.y, 1.0f });
-		auto shaderDesc = IRenderState::Get()->GetShaderState();
 
 		ShaderCache::GetShader("VSSolid")->Bind();
 		ShaderCache::GetShader("PSSolid")->Bind();
 
-		shaderDesc = IRenderState::Get()->GetShaderState();
+		// TODO: empty shader!!
+		auto shaderDesc = IRenderState::Get()->GetShaderState();
 		shaderDesc.pVertexShader->SetMatrix("g_World", transform);
 		shaderDesc.pVertexShader->SetMatrix("g_ViewProjection", s_data.sceneData.viewProjection.Transpose());
-
 
 		float positions[]{
 			0.5f, 0.5f, 0.0f,
