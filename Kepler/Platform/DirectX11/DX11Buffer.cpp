@@ -8,21 +8,21 @@
 namespace kepler {
 
 	// 추상화된 쉐이더 데이터 타입을 DirectX11 쉐이더 데이터 타입으로 변경하는 함수
-	static DXGI_FORMAT ShaderDataTypeToDXGIFormat(eShaderDataType type)
+	static DXGI_FORMAT ShaderDataTypeToDXGIFormat(EShaderDataType type)
 	{
 		switch (type)
 		{
-		case eShaderDataType::Bool:     return DXGI_FORMAT_R8_UINT;
-		case eShaderDataType::Float:    return DXGI_FORMAT_R32_FLOAT;
-		case eShaderDataType::Float2:   return DXGI_FORMAT_R32G32_FLOAT;
-		case eShaderDataType::Float3:   return DXGI_FORMAT_R32G32B32_FLOAT;
-		case eShaderDataType::Float4:   return DXGI_FORMAT_R32G32B32A32_FLOAT;
-		case eShaderDataType::Int:      return DXGI_FORMAT_R32_SINT;
-		case eShaderDataType::Int2:     return DXGI_FORMAT_R32G32_SINT;
-		case eShaderDataType::Int3:     return DXGI_FORMAT_R32G32B32_SINT;
-		case eShaderDataType::Int4:     return DXGI_FORMAT_R32G32B32A32_SINT;
-		case eShaderDataType::Float33:  return DXGI_FORMAT_R32G32B32_FLOAT;
-		case eShaderDataType::Float44:  return DXGI_FORMAT_R32G32B32A32_FLOAT;
+		case EShaderDataType::Bool:     return DXGI_FORMAT_R8_UINT;
+		case EShaderDataType::Float:    return DXGI_FORMAT_R32_FLOAT;
+		case EShaderDataType::Float2:   return DXGI_FORMAT_R32G32_FLOAT;
+		case EShaderDataType::Float3:   return DXGI_FORMAT_R32G32B32_FLOAT;
+		case EShaderDataType::Float4:   return DXGI_FORMAT_R32G32B32A32_FLOAT;
+		case EShaderDataType::Int:      return DXGI_FORMAT_R32_SINT;
+		case EShaderDataType::Int2:     return DXGI_FORMAT_R32G32_SINT;
+		case EShaderDataType::Int3:     return DXGI_FORMAT_R32G32B32_SINT;
+		case EShaderDataType::Int4:     return DXGI_FORMAT_R32G32B32A32_SINT;
+		case EShaderDataType::Float33:  return DXGI_FORMAT_R32G32B32_FLOAT;
+		case EShaderDataType::Float44:  return DXGI_FORMAT_R32G32B32A32_FLOAT;
 		}
 
 		KEPLER_ASSERT(false, "Invalid ShaderDataType");
@@ -30,7 +30,7 @@ namespace kepler {
 	}
 
 	/////////// VertexBuffer Member Functions ///////////
-	DX11VertexBuffer::DX11VertexBuffer(const uint32_t size, eBufferUsage usage)
+	DX11VertexBuffer::DX11VertexBuffer(const uint32_t size, EBufferUsage usage)
 		: m_layout{}
 		, m_pBuffer{ nullptr }
 	{
@@ -54,7 +54,7 @@ namespace kepler {
 		}
 	}
 
-	DX11VertexBuffer::DX11VertexBuffer(const void* const vertices, const uint32_t size, eBufferUsage usage)
+	DX11VertexBuffer::DX11VertexBuffer(const void* const vertices, const uint32_t size, EBufferUsage usage)
 		: m_layout{}
 		, m_pBuffer{ nullptr }
 	{
@@ -69,20 +69,20 @@ namespace kepler {
 		
 		switch (usage)
 		{
-		case eBufferUsage::Default:
-		case eBufferUsage::Static:
+		case EBufferUsage::Default:
+		case EBufferUsage::Static:
 			bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 			bufferDesc.CPUAccessFlags = 0;
 			break;
-		case eBufferUsage::Immutable:
+		case EBufferUsage::Immutable:
 			bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
 			bufferDesc.CPUAccessFlags = 0;
 			break;
-		case eBufferUsage::Dynamic:
+		case EBufferUsage::Dynamic:
 			bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 			bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 			break;
-		case eBufferUsage::Staging:
+		case EBufferUsage::Staging:
 			bufferDesc.Usage = D3D11_USAGE_STAGING;
 			bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
 			break;
@@ -200,7 +200,7 @@ namespace kepler {
 	}
 
 	/////////// InstanceBuffer Member Functions ///////////
-	DX11InstanceBuffer::DX11InstanceBuffer(const uint32_t size, const uint32_t count, const eBufferUsage usage)
+	DX11InstanceBuffer::DX11InstanceBuffer(const uint32_t size, const uint32_t count, const EBufferUsage usage)
 		: m_layout{}
 		, m_pBuffer{ nullptr }
 		, m_count{ count }
@@ -225,7 +225,7 @@ namespace kepler {
 		}
 	}
 
-	DX11InstanceBuffer::DX11InstanceBuffer(const void* const data, const uint32_t size, const uint32_t count, const eBufferUsage usage)
+	DX11InstanceBuffer::DX11InstanceBuffer(const void* const data, const uint32_t size, const uint32_t count, const EBufferUsage usage)
 		: m_layout{}
 		, m_pBuffer{ nullptr }
 		, m_count{ count }
@@ -241,20 +241,20 @@ namespace kepler {
 
 		switch (usage)
 		{
-		case eBufferUsage::Default:
-		case eBufferUsage::Static:
+		case EBufferUsage::Default:
+		case EBufferUsage::Static:
 			bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 			bufferDesc.CPUAccessFlags = 0;
 			break;
-		case eBufferUsage::Immutable:
+		case EBufferUsage::Immutable:
 			bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
 			bufferDesc.CPUAccessFlags = 0;
 			break;
-		case eBufferUsage::Dynamic:
+		case EBufferUsage::Dynamic:
 			bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 			bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 			break;
-		case eBufferUsage::Staging:
+		case EBufferUsage::Staging:
 			bufferDesc.Usage = D3D11_USAGE_STAGING;
 			bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
 			break;

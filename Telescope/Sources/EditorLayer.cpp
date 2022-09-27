@@ -233,7 +233,7 @@ void EditorLayer::OnGUIRender()
 
 	// Scene View Begin
 	ImGui::SetScrollY(0);
-	ID3D11ShaderResourceView* buffer = (ID3D11ShaderResourceView*)kepler::IFrameBuffer::Get()->GetBuffer(kepler::eFrameBufferType::Color, 0);
+	ID3D11ShaderResourceView* buffer = (ID3D11ShaderResourceView*)kepler::IFrameBuffer::Get()->GetBuffer(kepler::EFrameBufferType::Color, 0);
 	auto size = ImGui::GetWindowSize();
 	m_bIsSceneFocuced = ImGui::IsWindowFocused();
 	m_viewportWidth = size.x;

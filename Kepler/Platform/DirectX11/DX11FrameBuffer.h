@@ -43,6 +43,6 @@ namespace kepler {
 		virtual void ResizeColorBuffer(uint32_t width, uint32_t height) override;
 		virtual void ResizeGBuffer(uint8_t startSlot, uint8_t count, uint32_t width, uint32_t height) override;
 
-		virtual void* GetBuffer(eFrameBufferType type, uint8_t index) override;
+		virtual void* GetBuffer(EFrameBufferType type, uint8_t index) override;
 	};
 }

@@ -5,7 +5,7 @@
 
 namespace kepler {
 
-	enum class eTexelComparer
+	enum class ETexelComparer
 	{
 		None = 0,
 		Comparison,
@@ -13,7 +13,7 @@ namespace kepler {
 		Maximum
 	};
 
-	enum class eSamplerFilter
+	enum class ESamplerFilter
 	{
 		None = 0,
 		Point,
@@ -21,7 +21,7 @@ namespace kepler {
 		Anisotropic,
 	};
 
-	enum class eSamplerAddress
+	enum class ESamplerAddress
 	{
 		Wrap = 1,
 		Mirror,
@@ -30,7 +30,7 @@ namespace kepler {
 		MirrorOnce,
 	};
 
-	using eSamplerComparer = eFrameBufferComparer;
+	using ESamplerComparer = EFrameBufferComparer;
 
 	class ISampler
 	{
@@ -43,14 +43,14 @@ namespace kepler {
 		virtual void GetSampler(void* pOutSampler) = 0;
 
 		static std::shared_ptr<ISampler> Create(
-			eTexelComparer texelComparer,
-			eSamplerFilter minFilter,
-			eSamplerFilter magFilter,
-			eSamplerFilter mipFilter,
-			eSamplerAddress addressU,
-			eSamplerAddress addressV,
-			eSamplerAddress addressW,
-			eSamplerComparer comparer,
+			ETexelComparer texelComparer,
+			ESamplerFilter minFilter,
+			ESamplerFilter magFilter,
+			ESamplerFilter mipFilter,
+			ESamplerAddress addressU,
+			ESamplerAddress addressV,
+			ESamplerAddress addressW,
+			ESamplerComparer comparer,
 			float minLOD,
 			float maxLOD
 		);

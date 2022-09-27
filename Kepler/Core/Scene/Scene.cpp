@@ -43,7 +43,7 @@ namespace kepler {
 			auto flag = pEntity->GetComponentFlag();
 			if (flag & BIT_UINT64(i))
 			{
-				Remove(pEntity, static_cast<eComponentIndex>(i));
+				Remove(pEntity, static_cast<ComponentIndex>(i));
 			}
 		}
 		m_pEntityList.remove(pEntity);
@@ -59,12 +59,12 @@ namespace kepler {
 		}
 	}
 
-	void Scene::Register(Entity* pEntity, IComponent* pComponent, eComponentIndex index)
+	void Scene::Register(Entity* pEntity, IComponent* pComponent, ComponentIndex index)
 	{
 		m_pComponentTable[index].push_back(pComponent);
 	}
 
-	void Scene::Remove(Entity* pEntity, eComponentIndex index)
+	void Scene::Remove(Entity* pEntity, ComponentIndex index)
 	{
 		for (auto component : m_pComponentTable[index])
 		{

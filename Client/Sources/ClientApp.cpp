@@ -1,5 +1,5 @@
 #include "Kepler.h"
-#include "ExampleLayer.h"
+#include "ResearchLayer.h"
 #include "InstLayer.h"
 
 #include <Core/EntryPoint.h>
@@ -8,10 +8,9 @@ class Client : public kepler::Application
 {
 public:
 	Client()
-		: Application(kepler::eGraphicsAPI::DirectX11)
+		: Application(kepler::EGraphicsAPI::DirectX11)
 	{
-		PushLayer(new ExampleLayer);
-		PushOverlay(new kepler::RenderProfiler);
+		PushLayer(new ResearchLayer);
 	}
 	~Client()
 	{

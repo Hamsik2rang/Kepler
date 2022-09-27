@@ -5,7 +5,7 @@
 
 namespace kepler {
 
-	enum class eGraphicsAPI
+	enum class EGraphicsAPI
 	{
 		None		= 0,
 		DirectX11	= 1,
@@ -14,7 +14,7 @@ namespace kepler {
 	class IGraphicsAPI
 	{
 	private:
-		static eGraphicsAPI s_API;
+		static EGraphicsAPI s_API;
 
 	public:
 		virtual void Init() = 0;
@@ -24,8 +24,8 @@ namespace kepler {
 		virtual void DrawIndexed(const std::shared_ptr<IVertexArray>& pVertexArray) = 0;
 		virtual void DrawIndexedInstanced(const std::shared_ptr<IVertexArray>& pVertexArray, const std::shared_ptr<IInstanceBuffer>& pInstanceBuffer)= 0;
 
-		inline static void SetAPI(eGraphicsAPI api) { s_API = api; }
-		inline static eGraphicsAPI GetAPI() { return s_API; }
+		inline static void SetAPI(EGraphicsAPI api) { s_API = api; }
+		inline static EGraphicsAPI GetAPI() { return s_API; }
 		static IGraphicsAPI* Create();
 	};
 

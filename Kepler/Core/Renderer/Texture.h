@@ -4,9 +4,13 @@
 
 namespace kepler {
 
-	enum class eTextureDataType
+	enum class ETextureDataType
 	{
-		Typeless = 0, Int, UInt, Float, NormalizedInt, NormalizedUInt,
+		None = 0,
+		Float_RGBA16,
+		Float_RGB32,
+		Float_RGBA32,
+		UNorm_RGBA8
 	};
 
 	// Texture Interface
@@ -18,6 +22,7 @@ namespace kepler {
 		virtual void Bind(uint32_t slot) = 0;
 		virtual void* GetData() = 0;
 		virtual void* GetTexture() = 0;
+		virtual ETextureDataType GetType() = 0;
 	};
 
 	// Texture1D Interface
@@ -30,8 +35,9 @@ namespace kepler {
 		virtual void SetData(const void* pData, const uint32_t size) = 0;
 		virtual void* GetData() = 0;
 		virtual void* GetTexture() = 0;
+		virtual ETextureDataType GetType() = 0;
 
-		static std::shared_ptr<ITexture1D> Create(const eTextureDataType type, const uint32_t width, const uint8_t channel, const uint8_t bytePerTexel);
+		static std::shared_ptr<ITexture1D> Create(const ETextureDataType type, const uint32_t width, const uint8_t channel, const uint8_t bytePerTexel);
 	};
 	// Texture2D Interface
 	class ITexture2D : public ITexture
@@ -44,9 +50,10 @@ namespace kepler {
 		virtual void SetData(const void* pData, const uint32_t width, const uint32_t height) = 0;
 		virtual void* GetData() = 0;
 		virtual void* GetTexture()= 0;
+		virtual ETextureDataType GetType() = 0;
 
-		static std::shared_ptr<ITexture2D> Create(const eTextureDataType type, const uint32_t width, const uint32_t height, const uint8_t channel = 0, const uint8_t bytePerTexel = 4);
-		static std::shared_ptr<ITexture2D> Create(const eTextureDataType type, const std::string& filepath);
+		static std::shared_ptr<ITexture2D> Create(const ETextureDataType type, const uint32_t width, const uint32_t height, const uint8_t channel = 0, const uint8_t bytePerTexel = 4);
+		static std::shared_ptr<ITexture2D> Create(const ETextureDataType type, const std::string& filepath);
 	};
 
 	// Texture3D Interface
@@ -62,8 +69,9 @@ namespace kepler {
 		virtual void SetData(const void* pData, const uint32_t size) = 0;
 		virtual void* GetData() = 0;
 		virtual void* GetTexture() = 0;
+		virtual ETextureDataType GetType() = 0;
 
-		static std::shared_ptr<ITexture3D> Create(const eTextureDataType type,
+		static std::shared_ptr<ITexture3D> Create(const ETextureDataType type,
 			const uint32_t width,
 			const uint32_t height,
 			const uint32_t depth,

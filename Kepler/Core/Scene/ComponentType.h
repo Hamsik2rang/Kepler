@@ -9,7 +9,7 @@ namespace kepler {
 		extern const uint16_t componentCount;
 	}
 
-	enum class eComponentType
+	enum class EComponentType
 	{
 		IComponent = 0,
 		TagComponent,
@@ -21,7 +21,7 @@ namespace kepler {
 		InvalidComponent // (Im Yongsik) 타입 개수 표시자의 역할이므로 type enum의 가장 마지막에 위치해야 합니다.
 	};
 
-	enum eComponentIndex
+	enum ComponentIndex
 	{
 		TagIndex = 0,
 		TransformIndex,
@@ -29,7 +29,7 @@ namespace kepler {
 		SpriteRendererIndex,
 	};
 
-	enum eComponentFlag : uint64_t
+	enum ComponentFlag : uint64_t
 	{
 		BaseFlag = 0,
 		TagFlag = BIT_UINT64(0),
@@ -40,16 +40,16 @@ namespace kepler {
 
 
 #define COMPONENT_CLASS_TYPE(type) \
-	static eComponentType GetStaticType() { return eComponentType::##type; } \
-	virtual eComponentType GetType() const override { return GetStaticType(); }
+	static EComponentType GetStaticType() { return EComponentType::##type; } \
+	virtual EComponentType GetType() const override { return GetStaticType(); }
 
 #define COMPONENT_CLASS_INDEX(index) \
-	static eComponentIndex GetStaticIndex() { return eComponentIndex::##index; } \
-	virtual eComponentIndex GetIndex() const override { return GetStaticIndex(); }
+	static ComponentIndex GetStaticIndex() { return ComponentIndex::##index; } \
+	virtual ComponentIndex GetIndex() const override { return GetStaticIndex(); }
 
 #define COMPONENT_CLASS_FLAG(flag) \
-	static eComponentFlag GetStaticFlag() { return eComponentFlag::##flag; } \
-	virtual eComponentFlag GetFlag() const override { return GetStaticFlag(); }
+	static ComponentFlag GetStaticFlag() { return ComponentFlag::##flag; } \
+	virtual ComponentFlag GetFlag() const override { return GetStaticFlag(); }
 
 	template <typename ... TComponent>
 	struct TypeToFlag;
@@ -74,8 +74,8 @@ namespace kepler {
 	};
 
 	template <typename ... TComponent>
-	eComponentFlag ConvertTypeToFlag()
+	ComponentFlag ConvertTypeToFlag()
 	{
-		return (eComponentFlag)TypeToFlag<TComponent...>()();
+		return (ComponentFlag)TypeToFlag<TComponent...>()();
 	}
 }

@@ -23,7 +23,7 @@ namespace kepler {
 		bool m_bIsRunning;
 
 	protected:
-		Application(eGraphicsAPI api);
+		Application(EGraphicsAPI api);
 
 	public:
 		~Application();

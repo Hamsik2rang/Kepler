@@ -6,17 +6,17 @@
 
 namespace kepler {
 
-	std::shared_ptr<IVertexBuffer> IVertexBuffer::Create(const uint32_t size, eBufferUsage usage)
+	std::shared_ptr<IVertexBuffer> IVertexBuffer::Create(const uint32_t size, EBufferUsage usage)
 	{
-		eGraphicsAPI api = IGraphicsAPI::GetAPI();
+		EGraphicsAPI api = IGraphicsAPI::GetAPI();
 		switch (api)
 		{
-		case eGraphicsAPI::None:
+		case EGraphicsAPI::None:
 			{
 				KEPLER_ASSERT(false, "None Graphics API is not suppotted");
 				return nullptr;
 			}
-		case eGraphicsAPI::DirectX11:
+		case EGraphicsAPI::DirectX11:
 			{
 				return std::make_shared<DX11VertexBuffer>(size, usage);
 			}
@@ -27,17 +27,17 @@ namespace kepler {
 		return nullptr;
 	}
 
-	std::shared_ptr<IVertexBuffer> IVertexBuffer::Create(const void* const vertices, uint32_t size, eBufferUsage usage)
+	std::shared_ptr<IVertexBuffer> IVertexBuffer::Create(const void* const vertices, uint32_t size, EBufferUsage usage)
 	{
-		eGraphicsAPI api = IGraphicsAPI::GetAPI();
+		EGraphicsAPI api = IGraphicsAPI::GetAPI();
 		switch (api)
 		{
-		case eGraphicsAPI::None:
+		case EGraphicsAPI::None:
 			{
 				KEPLER_ASSERT(false, "None Graphics API is not suppotted");
 				return nullptr;
 			}
-		case eGraphicsAPI::DirectX11:
+		case EGraphicsAPI::DirectX11:
 			{
 				return std::make_shared<DX11VertexBuffer>(vertices, size, usage);
 			}
@@ -48,17 +48,17 @@ namespace kepler {
 		return nullptr;
 	}
 
-	std::shared_ptr<IIndexBuffer> IIndexBuffer::Create(const uint32_t* const indices, const uint32_t count, eBufferUsage usage)
+	std::shared_ptr<IIndexBuffer> IIndexBuffer::Create(const uint32_t* const indices, const uint32_t count, EBufferUsage usage)
 	{
-		eGraphicsAPI api = IGraphicsAPI::GetAPI();
+		EGraphicsAPI api = IGraphicsAPI::GetAPI();
 		switch (api)
 		{
-		case eGraphicsAPI::None:
+		case EGraphicsAPI::None:
 			{
 				KEPLER_ASSERT(false, "None Graphics API is not suppotted");
 				return nullptr;
 			}
-		case eGraphicsAPI::DirectX11:
+		case EGraphicsAPI::DirectX11:
 			{
 				return std::make_shared<DX11IndexBuffer>(indices, count);
 			}
@@ -69,17 +69,17 @@ namespace kepler {
 		return nullptr;
 	}
 
-	std::shared_ptr<IInstanceBuffer> IInstanceBuffer::Create(const uint32_t count, const uint32_t size, eBufferUsage usage)
+	std::shared_ptr<IInstanceBuffer> IInstanceBuffer::Create(const uint32_t count, const uint32_t size, EBufferUsage usage)
 	{
-		eGraphicsAPI api = IGraphicsAPI::GetAPI();
+		EGraphicsAPI api = IGraphicsAPI::GetAPI();
 		switch (api)
 		{
-		case eGraphicsAPI::None:
+		case EGraphicsAPI::None:
 			{
 				KEPLER_ASSERT(false, "None Graphics API is not suppotted");
 				return nullptr;
 			}
-		case eGraphicsAPI::DirectX11:
+		case EGraphicsAPI::DirectX11:
 			{
 				return std::make_shared<DX11InstanceBuffer>(count, size, usage);
 			}
@@ -89,17 +89,17 @@ namespace kepler {
 		return nullptr;
 	}
 
-	std::shared_ptr<IInstanceBuffer> IInstanceBuffer::Create(const void* const data, const uint32_t count, const uint32_t size, eBufferUsage usage)
+	std::shared_ptr<IInstanceBuffer> IInstanceBuffer::Create(const void* const data, const uint32_t count, const uint32_t size, EBufferUsage usage)
 	{
-		eGraphicsAPI api = IGraphicsAPI::GetAPI();
+		EGraphicsAPI api = IGraphicsAPI::GetAPI();
 		switch (api)
 		{
-		case eGraphicsAPI::None:
+		case EGraphicsAPI::None:
 			{
 				KEPLER_ASSERT(false, "None Graphics API is not suppotted");
 				return nullptr;
 			}
-		case eGraphicsAPI::DirectX11:
+		case EGraphicsAPI::DirectX11:
 			{
 				return std::make_shared<DX11InstanceBuffer>(data, count, size, usage);
 			}

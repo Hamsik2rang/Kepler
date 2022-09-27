@@ -27,12 +27,12 @@ namespace kepler {
 		// \param pEntity 새 Component를 할당받은 Entity
 		// \param pComponent 귀속된 Component의 주소
 		// \param index 귀속된 Component의 Component Table Index
-		void Register(Entity* pEntity, IComponent* pComponent, eComponentIndex index);
+		void Register(Entity* pEntity, IComponent* pComponent, ComponentIndex index);
 
 		// \brief Entity가 가진 특정 컴포넌트를 제거합니다.
 		// \param pEntity Component를 소유한 Entity
 		// \param index 제거할 Component의 ComponentIndex
-		void Remove(Entity* pEntity, eComponentIndex index);
+		void Remove(Entity* pEntity, ComponentIndex index);
 
 	public:
 		Scene();

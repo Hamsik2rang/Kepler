@@ -5,7 +5,7 @@
 
 namespace kepler {
 
-	enum class eFrameBufferType
+	enum class EFrameBufferType
 	{
 		R32G32B32A32 = 0,
 		Uint8Unorm24,
@@ -42,7 +42,7 @@ namespace kepler {
 		virtual void ResizeGBuffer(uint8_t startSlot, uint8_t count, uint32_t width, uint32_t height) = 0;
 		virtual void ResizeColorBuffer(uint32_t width, uint32_t height) = 0;
 
-		virtual void* GetBuffer(eFrameBufferType type, uint8_t index) = 0;
+		virtual void* GetBuffer(EFrameBufferType type, uint8_t index) = 0;
 
 		static std::shared_ptr<IFrameBuffer> Create();
 		static std::shared_ptr<IFrameBuffer> Get();

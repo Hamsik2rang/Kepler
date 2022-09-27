@@ -20,15 +20,15 @@ namespace kepler {
 
 	std::shared_ptr<IFrameBuffer> IFrameBuffer::Create()
 	{
-		eGraphicsAPI api = IGraphicsAPI::GetAPI();
+		EGraphicsAPI api = IGraphicsAPI::GetAPI();
 		switch (api)
 		{
-		case eGraphicsAPI::None:
+		case EGraphicsAPI::None:
 			{
 				KEPLER_CORE_ASSERT(false, "None Graphics API is not supported.");
 			}
 			break;
-		case eGraphicsAPI::DirectX11:
+		case EGraphicsAPI::DirectX11:
 			{
 				s_pInstance = std::make_shared<DX11FrameBuffer>();
 			}

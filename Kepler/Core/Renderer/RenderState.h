@@ -10,7 +10,7 @@ namespace kepler {
 
 	//----- Enum Types--------------------
 	// TODO: 추후 Stencil Comparer와 Depth Comparer가 다른 API를 엔진이 지원할 경우 별도로 분리해야 함
-	enum class eCullMode
+	enum class ECullMode
 	{
 		None = 0,
 		Off,
@@ -18,7 +18,7 @@ namespace kepler {
 		Back
 	};
 
-	enum class eFrameBufferComparer
+	enum class EFrameBufferComparer
 	{
 		None = 0,
 		Never,
@@ -30,10 +30,10 @@ namespace kepler {
 		GreaterOrEqual,
 		Always,
 	};
-	using eDepthComparer = eFrameBufferComparer;
-	using eStencilComparer = eFrameBufferComparer;
+	using EDepthComparer = EFrameBufferComparer;
+	using EStencilComparer = EFrameBufferComparer;
 
-	enum class eStencilOperator
+	enum class EStencilOperator
 	{
 		None = 0,
 		Keep,
@@ -46,7 +46,7 @@ namespace kepler {
 		Decrease,
 	};
 
-	enum class eBlendFactor
+	enum class EBlendFactor
 	{
 		None = 0,
 		Zero,
@@ -68,7 +68,7 @@ namespace kepler {
 		DualInvSrcAlpha
 	};
 
-	enum class eBlendOperator
+	enum class EBlendOperator
 	{
 		None = 0,
 		Add,
@@ -93,7 +93,7 @@ namespace kepler {
 	//----- Rasterizer State--------------
 	struct RasterizerStateDescription
 	{
-		eCullMode cullMode;
+		ECullMode cullMode;
 		bool bIsFrontClockwise;
 		bool bWireFrame;
 		bool bScissssor;
@@ -113,7 +113,7 @@ namespace kepler {
 		bool bDepthWrite;
 		uint8_t readMask;
 		uint8_t writeMask;
-		eDepthComparer comparer;
+		EDepthComparer comparer;
 	};
 	//------------------------------------
 
@@ -125,15 +125,15 @@ namespace kepler {
 		uint8_t	writeMask;
 		uint32_t stencilRef;
 
-		eStencilOperator frontFailOperator;
-		eStencilOperator frontFailDepthOperator;
-		eStencilOperator frontPassOperator;
+		EStencilOperator frontFailOperator;
+		EStencilOperator frontFailDepthOperator;
+		EStencilOperator frontPassOperator;
 
-		eStencilOperator backFailOperation;
-		eStencilOperator backFailDepthOperation;
-		eStencilOperator backPassOperation;
+		EStencilOperator backFailOperation;
+		EStencilOperator backFailDepthOperation;
+		EStencilOperator backPassOperation;
 
-		eStencilComparer comparer;
+		EStencilComparer comparer;
 	};
 	//------------------------------------
 
@@ -148,13 +148,13 @@ namespace kepler {
 			bool bBlendEnable;
 			uint8_t writeMask;
 
-			eBlendFactor srcColorFactor;
-			eBlendFactor destColorFactor;
-			eBlendFactor srcAlphaFactor;
-			eBlendFactor destAlphaFactor;
+			EBlendFactor srcColorFactor;
+			EBlendFactor destColorFactor;
+			EBlendFactor srcAlphaFactor;
+			EBlendFactor destAlphaFactor;
 
-			eBlendOperator colorBlendOperator;
-			eBlendOperator alphaBlendOperator;
+			EBlendOperator colorBlendOperator;
+			EBlendOperator alphaBlendOperator;
 		} renderTarget[8];
 		float customFactor[4];
 		uint32_t sampleMask;

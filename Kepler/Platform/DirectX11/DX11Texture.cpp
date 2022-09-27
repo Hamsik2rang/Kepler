@@ -5,14 +5,18 @@
 #include "DX11Texture.h"
 #include "DX11Context.h"
 
+
 namespace kepler {
 
+	static DXGI_FORMAT ConvertTextureDataType(const ETextureDataType type);
+
 	// DX11Texture2D
-	DX11Texture2D::DX11Texture2D(const eTextureDataType type, const uint32_t width, const uint32_t height, const uint8_t channel, const uint8_t bytePerTexel)
-		: m_width{ width }
-		, m_height{ height }
-		, m_pResourceView{ nullptr }
+	DX11Texture2D::DX11Texture2D(const ETextureDataType type, const uint32_t width, const uint32_t height, const uint8_t channel, const uint8_t bytePerTexel)
+		: m_pResourceView{ nullptr }
 		, m_pTexture{ nullptr }
+		, m_type{ type }
+		, m_width{ width }
+		, m_height{ height }
 	{
 		// 임시 텍스처 혹은 렌더링 정보 저장용으로 주로 사용될 수 있음.
 		D3D11_TEXTURE2D_DESC texDesc{};
@@ -20,7 +24,7 @@ namespace kepler {
 		texDesc.Height = height;
 		texDesc.MipLevels = 1;
 		texDesc.ArraySize = 1;
-		texDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		texDesc.Format = ConvertTextureDataType(type);
 		texDesc.SampleDesc.Count = 1;
 		texDesc.SampleDesc.Quality = 0;
 		texDesc.CPUAccessFlags = 0;
@@ -49,11 +53,12 @@ namespace kepler {
 		}
 	}
 
-	DX11Texture2D::DX11Texture2D(const eTextureDataType type, const std::string& filepath)
-		: m_width{ 0 }
-		, m_height{ 0 }
-		, m_pResourceView{ nullptr }
+	DX11Texture2D::DX11Texture2D(const ETextureDataType type, const std::string& filepath)
+		: m_pResourceView{ nullptr }
 		, m_pTexture{ nullptr }
+		, m_type{ type }
+		, m_width{ 0 }
+		, m_height{ 0 }
 	{
 		int channel = 0;
 		unsigned char* pRawImage = stbi_load(filepath.c_str(), reinterpret_cast<int*>(&m_width), reinterpret_cast<int*>(&m_height), &channel, 0);
@@ -67,7 +72,7 @@ namespace kepler {
 		D3D11_TEXTURE2D_DESC texDesc{};
 		texDesc.Width = m_width;
 		texDesc.Height = m_height;
-		texDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		texDesc.Format = ConvertTextureDataType(type);
 		texDesc.MipLevels = 0;
 		texDesc.ArraySize = 1;
 		texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
@@ -109,7 +114,7 @@ namespace kepler {
 		{
 			KEPLER_CORE_ASSERT(false, "Fail to create Shader Resource View");
 		}
-		
+
 		// mipmap 생성
 		pDeviceContext->GenerateMips(m_pResourceView);
 	}
@@ -145,5 +150,22 @@ namespace kepler {
 		uint32_t pitch = m_width * 4;
 		auto pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 		pDeviceContext->UpdateSubresource(m_pTexture, 0, nullptr, pData, pitch, 0);
+	}
+
+	DXGI_FORMAT ConvertTextureDataType(const ETextureDataType type)
+	{
+		switch (type)
+		{
+		case ETextureDataType::Float_RGBA16:
+			return DXGI_FORMAT_R16G16B16A16_FLOAT;
+		case ETextureDataType::Float_RGBA32:
+			return DXGI_FORMAT_R32G32B32A32_FLOAT;
+		case ETextureDataType::Float_RGB32:
+			return DXGI_FORMAT_R32G32B32_FLOAT;
+		case ETextureDataType::UNorm_RGBA8:
+			return DXGI_FORMAT_R8G8B8A8_UNORM;
+			//...
+		}
+		return DXGI_FORMAT_UNKNOWN;
 	}
 }

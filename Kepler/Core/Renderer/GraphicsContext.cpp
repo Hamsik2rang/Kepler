@@ -12,16 +12,16 @@ namespace kepler {
 		{
 			return s_pInstance;
 		}
-		eGraphicsAPI api = IGraphicsAPI::GetAPI();
+		EGraphicsAPI api = IGraphicsAPI::GetAPI();
 
 		switch (api)
 		{
-		case eGraphicsAPI::None:
+		case EGraphicsAPI::None:
 			{
 				KEPLER_CORE_ASSERT(false, "None API not supported");
 			}
 			break;
-		case eGraphicsAPI::DirectX11:
+		case EGraphicsAPI::DirectX11:
 			{
 				const HWND* phWnd = reinterpret_cast<const HWND*>(hWindow);
 				s_pInstance = new DX11Context(*phWnd);

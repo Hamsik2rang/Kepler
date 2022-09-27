@@ -12,14 +12,14 @@ namespace kepler {
 		ID3D11SamplerState* m_pSamplerState;
 
 	public:
-		DX11Sampler(eTexelComparer texelComparer,
-			eSamplerFilter minFilter,
-			eSamplerFilter magFilter,
-			eSamplerFilter mipFilter,
-			eSamplerAddress addressU,
-			eSamplerAddress addressV,
-			eSamplerAddress addressW,
-			eSamplerComparer comparer,
+		DX11Sampler(ETexelComparer texelComparer,
+			ESamplerFilter minFilter,
+			ESamplerFilter magFilter,
+			ESamplerFilter mipFilter,
+			ESamplerAddress addressU,
+			ESamplerAddress addressV,
+			ESamplerAddress addressW,
+			ESamplerComparer comparer,
 			float minLOD,
 			float maxLOD);
 

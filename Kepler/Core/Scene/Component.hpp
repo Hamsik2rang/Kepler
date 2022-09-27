@@ -20,9 +20,9 @@ namespace kepler {
 		Entity* m_pOwner;
 
 	public:
-		virtual eComponentType GetType() const = 0;
-		virtual eComponentIndex GetIndex() const = 0;
-		virtual eComponentFlag GetFlag() const = 0;
+		virtual EComponentType GetType() const = 0;
+		virtual ComponentIndex GetIndex() const = 0;
+		virtual ComponentFlag GetFlag() const = 0;
 
 		IComponent(Entity* pEntity) : m_pOwner{ pEntity } {}
 		// \brief Component를 지정한 Entity가 소유하도록 합니다.

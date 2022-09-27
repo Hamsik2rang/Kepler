@@ -22,7 +22,7 @@ namespace kepler {
 	public:
 		static Renderer2D* Get();
 		static void Init();
-		inline eGraphicsAPI GetAPI() const { return m_pGraphicsAPI->GetAPI(); }
+		inline EGraphicsAPI GetAPI() const { return m_pGraphicsAPI->GetAPI(); }
 		inline RenderLog& GetRenderLog() { return m_renderLog; }
 
 		void BeginScene(OrthographicCamera& camera);
