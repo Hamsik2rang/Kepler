@@ -4,8 +4,8 @@
 #include <implot.h>
 
 #include "Core/Base.h"
-#include "Renderer/Renderer.h"
-#include "Renderer/Renderer2D.h"
+#include "Core/Renderer/Renderer.h"
+#include "Core/Renderer/Renderer2D.h"
 
 namespace kepler {
 	class RenderProfiler : public Layer

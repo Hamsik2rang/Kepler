@@ -5,8 +5,8 @@
 
 #include "Core/Base.h"
 #include "KeplerMath.h"
-#include "Renderer/VertexArray.h"
-#include "Renderer/Texture.h"
+#include "Core/Renderer/VertexArray.h"
+#include "Core/Renderer/Texture.h"
 #include "ComponentType.h"
 
 
@@ -144,7 +144,7 @@ namespace kepler {
 		void Bind()
 		{
 			Instantiate = []()->ScriptableEntity* { return new T; };
-			Destroy = []()->void { delete dynamic_cast<T*>(pInstance); pInstance = nullptr; }
+			Destroy = []()->void { delete dynamic_cast<T*>(pInstance); pInstance = nullptr; };
 		}
 	};
 }

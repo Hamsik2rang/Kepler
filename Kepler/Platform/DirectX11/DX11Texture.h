@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Renderer/Texture.h"
+#include "Core/Renderer/Texture.h"
 #include "DX11Texture.h"
-#include "Renderer/Shader.h"
+#include "Core/Renderer/Shader.h"
 
 namespace kepler {
 	// Texture1D, Texture3D는 나중에 필요할 때 구현합시다.
@@ -23,7 +23,7 @@ namespace kepler {
 
 		// Inherited via ITexture2D
 		virtual void Bind(const uint32_t slot) override;
-		virtual void SetData(const void* pData, const uint32_t size) override;
+		virtual void SetData(const void* pData, const uint32_t width, const uint32_t height) override;
 		virtual void* GetData() override { return m_pResourceView; }
 		virtual void* GetTexture() override { return m_pTexture; }
 		inline virtual uint32_t GetWidth() const override { return m_width; }

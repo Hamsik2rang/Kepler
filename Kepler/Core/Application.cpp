@@ -3,11 +3,11 @@
 #include "Application.h"
 #include "Core/Log.h"
 #include "Core/Event/ApplicationEvent.hpp"
-#include "Renderer/Renderer.h"
-#include "Renderer/Renderer2D.h"
-#include "Renderer/FrameBuffer.h"
-#include "Renderer/GraphicsContext.h"
-#include "Renderer/RenderState.h"
+#include "Core/Renderer/Renderer.h"
+#include "Core/Renderer/Renderer2D.h"
+#include "Core/Renderer/FrameBuffer.h"
+#include "Core/Renderer/GraphicsContext.h"
+#include "Core/Renderer/RenderState.h"
 #include "Audio/Audio.h"
 
 namespace kepler {

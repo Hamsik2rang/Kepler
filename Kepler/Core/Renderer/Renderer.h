@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Core/Base.h"
-#include "Renderer/GraphicsAPI.h"
-#include "Renderer/VertexArray.h"
-#include "Renderer/Camera.hpp"
+#include "Core/Renderer/GraphicsAPI.h"
+#include "Core/Renderer/VertexArray.h"
+#include "Core/Renderer/Camera.hpp"
 #include "Core/Window.h"
 
 #include "KeplerMath.h"

@@ -1,7 +1,7 @@
 #include "kepch.h"
 
 #include "Texture.h"
-#include "Renderer/GraphicsAPI.h"
+#include "Core/Renderer/GraphicsAPI.h"
 #include "Platform/DirectX11/DX11Texture.h"
 
 namespace kepler {

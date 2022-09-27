@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Core/Base.h"
-#include "Renderer/FrameBuffer.h"
-#include "Renderer/Texture.h"
+#include "Core/Renderer/FrameBuffer.h"
+#include "Core/Renderer/Texture.h"
 
 namespace kepler {
 

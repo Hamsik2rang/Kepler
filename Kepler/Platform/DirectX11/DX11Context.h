@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Renderer/GraphicsContext.h"
+#include "Core/Renderer/GraphicsContext.h"
 #include <Windows.h>
 #include <d3d11.h>
 #include <DirectXMath.h>

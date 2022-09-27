@@ -1,6 +1,6 @@
 #include "kepch.h"
 #define STB_IMAGE_IMPLEMENTATION
-#include "Dependencies/stbimage/stb_image.h"
+#include "stbimage/stb_image.h"
 
 #include "DX11Texture.h"
 #include "DX11Context.h"
@@ -134,8 +134,16 @@ namespace kepler {
 		pDeviceContext->PSSetShaderResources(slot, 1, &m_pResourceView);
 	}
 
-	void DX11Texture2D::SetData(const void* data, const uint32_t size)
+	void DX11Texture2D::SetData(const void* pData, const uint32_t width, const uint32_t height)
 	{
-		//TODO: 추후 구현
+		KEPLER_CORE_ASSERT(width == m_width && height == m_height, "Texture data size is not same with texture view");
+
+		m_width = width;
+		m_height = height;
+
+		// TODO: Access Violance
+		uint32_t pitch = m_width * 4;
+		auto pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+		pDeviceContext->UpdateSubresource(m_pTexture, 0, nullptr, pData, pitch, 0);
 	}
 }

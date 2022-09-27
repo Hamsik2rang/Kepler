@@ -16,7 +16,6 @@ namespace kepler {
 		virtual ~ITexture() = default;
 
 		virtual void Bind(uint32_t slot) = 0;
-		virtual void SetData(const void* pData, const uint32_t size) = 0;
 		virtual void* GetData() = 0;
 		virtual void* GetTexture() = 0;
 	};
@@ -42,7 +41,7 @@ namespace kepler {
 		virtual uint32_t GetHeight() const = 0;
 
 		virtual void Bind(const uint32_t slot = 0) = 0;
-		virtual void SetData(const void* pData, const uint32_t size) = 0;
+		virtual void SetData(const void* pData, const uint32_t width, const uint32_t height) = 0;
 		virtual void* GetData() = 0;
 		virtual void* GetTexture()= 0;
 

@@ -29,6 +29,7 @@
 #include "resource.h"
 
 #endif
+
 // for DirectX
 #ifdef KEPLER_GRAPHICS_API_DIRECTX
 #pragma comment(lib, "d3d11.lib")
@@ -36,3 +37,5 @@
 #include <dxgi.h>
 #include <d3dcompiler.h>
 #endif
+
+// Dependencies

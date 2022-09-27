@@ -10,7 +10,7 @@
 #include "ImGuiLayer.h"
 #include "Core/Application.h"
 #include "Platform/Windows/WindowsWindow.h"
-#include "Renderer/GraphicsContext.h"
+#include "Core/Renderer/GraphicsContext.h"
 
 
 	// Forward declare message handler from imgui_impl_win32.cpp

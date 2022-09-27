@@ -1,7 +1,7 @@
 #include "kepch.h"
 
 #include "Shader.h"
-#include "Renderer/GraphicsAPI.h"
+#include "Core/Renderer/GraphicsAPI.h"
 #include "Platform/DirectX11/DX11Shader.h"
 
 namespace kepler {

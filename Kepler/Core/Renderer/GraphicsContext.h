@@ -3,7 +3,7 @@
 #include <memory>
 #include <Windows.h>
 #include "Core/Base.h"
-#include "Renderer/GraphicsAPI.h"
+#include "Core/Renderer/GraphicsAPI.h"
 #include "Platform/Windows/WindowsWindow.h"
 
 namespace kepler {

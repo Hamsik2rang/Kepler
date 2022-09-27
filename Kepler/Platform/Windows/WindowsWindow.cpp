@@ -1,8 +1,8 @@
 #include "kepch.h"
 
 #include "WindowsWindow.h"
-#include "Renderer/GraphicsContext.h"
-#include "Renderer/Renderer.h"
+#include "Core/Renderer/GraphicsContext.h"
+#include "Core/Renderer/Renderer.h"
 
 namespace kepler {
 	extern HINSTANCE	g_hInst;

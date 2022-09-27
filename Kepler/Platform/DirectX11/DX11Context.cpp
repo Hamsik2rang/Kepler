@@ -1,9 +1,9 @@
 #include "kepch.h"
 
 #include "DX11Context.h"
-#include "Renderer/RenderState.h"
-#include "Renderer/Renderer.h"
-#include "Renderer/Renderer2D.h"
+#include "Core/Renderer/RenderState.h"
+#include "Core/Renderer/Renderer.h"
+#include "Core/Renderer/Renderer2D.h"
 
 kepler::DX11Context::DX11Context(const HWND hWnd)
 	: m_hWnd{ hWnd }

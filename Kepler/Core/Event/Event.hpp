@@ -31,7 +31,7 @@ namespace kepler {
 		AppRender,
 	};
 
-	enum eEventCategory
+	enum EventCategory
 	{
 		None						= 0,		// 0b 0000 0000
 		EventCategoryApplication	= BIT(0),	// 0b 0000 0001
@@ -61,7 +61,7 @@ namespace kepler {
 		virtual std::string ToString() const { return std::string(GetName()); }
 
 		inline bool IsHandled() const { return m_bIsHandled; };
-		inline bool IsInCategory(eEventCategory category) { return GetCategoryFlags() & category; }
+		inline bool IsInCategory(EventCategory category) { return GetCategoryFlags() & category; }
 	};
 
 	class EventDispatcher
