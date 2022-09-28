@@ -152,6 +152,7 @@ namespace kepler {
 			vertexCount += static_cast<int>(4 * batchData.instanceCount);
 
 			m_pGraphicsAPI->DrawIndexedInstanced(batchData.pVertexArray, pIB);
+			delete[] batchData.pInstBuffer;
 		}
 		m_renderLog.trianglesCount.Add(static_cast<float>(trianglesCount));
 		m_renderLog.vertexCount.Add(static_cast<float>(vertexCount));
