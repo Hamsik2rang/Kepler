@@ -123,7 +123,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>kepch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)kepch.pch</PrecompiledHeaderOutputFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies;$(SolutionDir)Kepler\Dependencies\implot;$(SolutionDir)Kepler\Dependencies\KeplerMath\src;$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\implot\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Kepler\Dependencies;$(SolutionDir)Kepler\Dependencies\entt\src;$(SolutionDir)Kepler\Dependencies\implot;$(SolutionDir)Kepler\Dependencies\KeplerMath\src;$(SolutionDir)Kepler\Dependencies\ImGui\;$(SolutionDir)Kepler\Dependencies\implot\;$(SolutionDir)Kepler\Dependencies\spdlog\include\;$(SolutionDir)Kepler\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4819;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
@@ -184,11 +184,13 @@
     <ClInclude Include="Core\Layer.hpp" />
     <ClInclude Include="Core\LayerStack.h" />
     <ClInclude Include="Core\Log.h" />
+    <ClInclude Include="Core\UUID.h" />
     <ClInclude Include="Dependencies\stbimage\stb_image.h" />
     <ClInclude Include="Platform\DirectX11\DX11Buffer.h" />
     <ClInclude Include="Platform\DirectX11\DX11Context.h" />
     <ClInclude Include="Platform\DirectX11\DX11API.h" />
     <ClInclude Include="Platform\DirectX11\DX11FrameBuffer.h" />
+    <ClInclude Include="Platform\DirectX11\DX11Sampler.h" />
     <ClInclude Include="Platform\DirectX11\DX11Shader.h" />
     <ClInclude Include="Platform\DirectX11\DX11State.h" />
     <ClInclude Include="Platform\DirectX11\DX11Texture.h" />
@@ -213,10 +215,16 @@
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="Renderer\Renderer2D.h" />
     <ClInclude Include="Renderer\RenderState.h" />
+    <ClInclude Include="Renderer\Sampler.h" />
     <ClInclude Include="Renderer\Shader.h" />
     <ClInclude Include="Renderer\Texture.h" />
     <ClInclude Include="Renderer\VertexArray.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Scene\Component.hpp" />
+    <ClInclude Include="Scene\ComponentType.h" />
+    <ClInclude Include="Scene\Entity.hpp" />
+    <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Scene\ScriptableEntity.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Utility\Random.hpp" />
     <ClInclude Include="Utility\StringUtility.h" />
@@ -226,6 +234,7 @@
     <ClCompile Include="Audio\Audio.cpp" />
     <ClCompile Include="Core\Application.cpp" />
     <ClCompile Include="Core\Input.cpp" />
+    <ClCompile Include="Core\UUID.cpp" />
     <ClCompile Include="ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="Core\LayerStack.cpp" />
     <ClCompile Include="Core\Log.cpp" />
@@ -249,6 +258,7 @@
     <ClCompile Include="Platform\DirectX11\DX11Buffer.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Context.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11FrameBuffer.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11Sampler.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Shader.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11State.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Texture.cpp" />
@@ -256,6 +266,7 @@
     <ClCompile Include="Platform\Win32\WinAPI.cpp" />
     <ClCompile Include="Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="Renderer\Buffer.cpp" />
+    <ClCompile Include="Renderer\EditorCamera.cpp" />
     <ClCompile Include="Renderer\FrameBuffer.cpp" />
     <ClCompile Include="Renderer\GraphicsContext.cpp" />
     <ClCompile Include="Renderer\GraphicsAPI.cpp" />
@@ -266,9 +277,13 @@
     <ClCompile Include="Renderer\Renderer.cpp" />
     <ClCompile Include="Renderer\Renderer2D.cpp" />
     <ClCompile Include="Renderer\RenderState.cpp" />
+    <ClCompile Include="Renderer\Sampler.cpp" />
     <ClCompile Include="Renderer\Shader.cpp" />
     <ClCompile Include="Renderer\Texture.cpp" />
     <ClCompile Include="Renderer\VertexArray.cpp" />
+    <ClCompile Include="Scene\ComponentType.cpp" />
+    <ClCompile Include="Scene\Entity.cpp" />
+    <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Utility\Random.cpp" />
     <ClCompile Include="Utility\StringUtility.cpp" />
   </ItemGroup>
@@ -280,7 +295,6 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="Resources\Shaders\HLSL\Global\PSGlobal.hlsli" />
     <None Include="Resources\Shaders\HLSL\Global\VSGlobal.hlsli" />
   </ItemGroup>
@@ -367,15 +381,5 @@
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\Microsoft.XAudio2.Redist.1.2.8\build\native\Microsoft.XAudio2.Redist.targets" Condition="Exists('..\packages\Microsoft.XAudio2.Redist.1.2.8\build\native\Microsoft.XAudio2.Redist.targets')" />
-    <Import Project="..\packages\directxtk_desktop_2017.2022.3.24.2\build\native\directxtk_desktop_2017.targets" Condition="Exists('..\packages\directxtk_desktop_2017.2022.3.24.2\build\native\directxtk_desktop_2017.targets')" />
-  </ImportGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.XAudio2.Redist.1.2.8\build\native\Microsoft.XAudio2.Redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.XAudio2.Redist.1.2.8\build\native\Microsoft.XAudio2.Redist.targets'))" />
-    <Error Condition="!Exists('..\packages\directxtk_desktop_2017.2022.3.24.2\build\native\directxtk_desktop_2017.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtk_desktop_2017.2022.3.24.2\build\native\directxtk_desktop_2017.targets'))" />
-  </Target>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

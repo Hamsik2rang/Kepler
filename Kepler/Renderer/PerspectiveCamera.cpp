@@ -5,29 +5,25 @@
 namespace kepler {
 
 	PerspectiveCamera::PerspectiveCamera()
-		: m_aspect{ 16.0f / 9.0f }
+		: m_position{ 0.0f, 0.0f, 0.0f }
+		, m_at{ 0.0f, 0.0f, 0.0f }
+		, m_distance{ 10.0f }
 		, m_fovY{ 45.0f }
+		, m_aspect{ 16.0f / 9.0f }
 		, m_nearClip{ 0.1f }
 		, m_farClip{ 1000.0f }
-		, m_pitch{ 0.0f }
-		, m_yaw{ 0.0f }
-		, m_position{ 0.0f,0.0f, 0.0f }
-		, m_at{ 0.0f,0.0f, 0.0f }
-		, m_distance{ 10.0f }
 	{
 		CalcViewProjectionMatrix();
 	}
 
-	PerspectiveCamera::PerspectiveCamera(const Vec3f& position, const Vec3f& focalPoint, float distance, float fovY, float aspect, float nearClip, float farClip)
-		: m_aspect{ aspect }
+	PerspectiveCamera::PerspectiveCamera(const Vec3f& position, const Vec3f& focalPoint, const float distance, float fovY, float aspect, float nearClip, float farClip)
+		: m_position{ position }
+		, m_at{ focalPoint }
+		, m_distance{ distance }
 		, m_fovY{ fovY }
+		, m_aspect{ aspect }
 		, m_nearClip{ nearClip }
 		, m_farClip{ farClip }
-		, m_pitch{ 0.0f }
-		, m_yaw{ 0.0f }
-		, m_position{ position }
-		, m_at{ focalPoint }
-		, m_distance{ 10.0f }
 	{
 		CalcViewProjectionMatrix();
 	}

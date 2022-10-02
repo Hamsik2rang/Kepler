@@ -114,14 +114,14 @@ namespace kepler {
 			{
 				int repeatCount = LOWORD(lParam);
 				KeyPressedEvent lastEvent(static_cast<int>(wParam), repeatCount);
-				Input::SetButtonDown(static_cast<kepler::MouseCode>(wParam));
+				Input::SetButtonDown(static_cast<kepler::KeyCode>(wParam));
 				data->eventCallback(lastEvent);
 			}
 			break;
 		case WM_KEYUP:
 			{
 				KeyReleasedEvent lastEvent(static_cast<int>(wParam));
-				Input::SetButtonUp(static_cast<kepler::MouseCode>(wParam));
+				Input::SetButtonUp(static_cast<kepler::KeyCode>(wParam));
 				
 				data->eventCallback(lastEvent);
 			}
@@ -171,7 +171,7 @@ namespace kepler {
 				if (msg == WM_MBUTTONUP) { releasedButton = mouse::Middle; }
 				if (msg == WM_RBUTTONUP) { releasedButton = mouse::Right; }
 				MouseButtonReleasedEvent laseEvent(releasedButton);
-				Input::SetButtonDown(releasedButton);
+				Input::SetButtonUp(releasedButton);
 				data->eventCallback(laseEvent);
 			}
 			break;

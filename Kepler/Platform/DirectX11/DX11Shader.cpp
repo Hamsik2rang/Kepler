@@ -372,10 +372,6 @@ namespace kepler {
 		}
 
 		IRenderState::Get()->SetShaderState(m_type, ShaderCache::GetShader(m_name));
-		
-		// TODO: RenderState가 Bound Shader를 확실하게 관리하는 것으로 판단되면 삭제할 것
-		ShaderCache::SetLastCachedShader(m_type, m_name);
-		
 	}
 	
 	// DirectX11의 경우 필수적으로 호출할 필요 없음
@@ -392,6 +388,8 @@ namespace kepler {
 		case eShaderType::Hull:		pDeviceContext->HSSetShader(nullptr, nullptr, 0);	break;
 		case eShaderType::Compute:	pDeviceContext->CSSetShader(nullptr, nullptr, 0);	break;
 		}
+
+		IRenderState::Get()->SetShaderState(m_type, nullptr);
 	}
 
 	// 파라미터 이름을 기반으로 해당 파라미터가 존재하는 constant buffer의 index와 constantbuffer 메모리의 시작 지점으로부터의 offset 반환하는 함수 

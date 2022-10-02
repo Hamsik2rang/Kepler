@@ -17,6 +17,7 @@
 #include "Renderer/RenderState.h"
 #include "Renderer/OrthographicCamera.h"
 #include "Renderer/PerspectiveCamera.h"
+#include "Renderer/EditorCamera.h"
 #include "Renderer/GraphicsAPI.h"
 #include "Renderer/Buffer.h"
 #include "Renderer/VertexArray.h"
@@ -32,6 +33,13 @@
 
 //----- Math ------------------------------
 #include "KeplerMath.h"
+//-----------------------------------------
+
+//----- Scene -----------------------------
+#include "Scene/Entity.hpp"
+#include "Scene/Component.hpp"
+#include "Scene/Scene.h"
+#include "Scene/ScriptableEntity.h"
 //-----------------------------------------
 
 //----- Platform --------------------------
@@ -59,9 +67,5 @@ namespace kepler {
 	#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
 #else
 	#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
-#endif
-// NOTICE: 반드시 가장 마지막에 선언해야 합니다!!
-#ifndef KEPLER_UNITTEST
-//#include "Core/EntryPoint.h"
 #endif
 //-----------------------------------------

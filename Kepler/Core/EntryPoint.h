@@ -25,7 +25,7 @@ int APIENTRY wWinMain(
 	int month = 4;
 	int day = 4;
 	KEPLER_CORE_WARNING("Initializing Log System");
-	KEPLER_CORE_INFO("Welcome to Kepler Engine, this code written in {0}/{1:02}/{2:02}", year, month, day);
+	KEPLER_CORE_INFO("Welcome to Kepler Engine, this code was written in {0}/{1:02}/{2:02}", year, month, day);
 	
 	app->Run();
 	
@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 	int month = 4;
 	int day = 4;
 	KEPLER_CORE_WARNING("Initializing Log System");
-	KEPLER_CORE_INFO("Welcome to Kepler Engine, this code written in {0}/{1:02}/{2:02}", year, month, day);
+	KEPLER_CORE_INFO("Welcome to Kepler Engine, this code was written in {0}/{1:02}/{2:02}", year, month, day);
 
 	auto app = kepler::CreateApplication();
 	app->Run();

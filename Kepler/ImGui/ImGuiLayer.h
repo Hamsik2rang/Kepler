@@ -13,6 +13,10 @@ namespace kepler {
 
 	class ImGuiLayer : public Layer
 	{
+	private:
+		void ShowDemo();
+		void SetDarkThemeColors();
+
 	public:
 		ImGuiLayer();
 		virtual ~ImGuiLayer();

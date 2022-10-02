@@ -16,7 +16,7 @@ namespace kepler {
 		, m_bDepthStateChanged{ false }
 		, m_bStencilStateChaged{ false }
 	{
-		
+
 	}
 
 	DX11State::~DX11State()
@@ -56,7 +56,7 @@ namespace kepler {
 	{
 		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
 		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
-		// ÀÌ¹Ì ÆÄÀÌÇÁ¶óÀÎ¿¡ µé¾î°¡ ÀÖ´Â ±âÁ¸ State Á¦°Å
+		// ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½î°¡ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ State ï¿½ï¿½ï¿½ï¿½
 		if (m_pRasterizerState)
 		{
 			pContext->RSSetState(nullptr);
@@ -97,7 +97,7 @@ namespace kepler {
 	{
 		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
 		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
-		// ÀÌ¹Ì ÆÄÀÌÇÁ¶óÀÎ¿¡ µé¾î°¡ ÀÖ´Â ±âÁ¸ State Á¦°Å
+		// ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½î°¡ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ State ï¿½ï¿½ï¿½ï¿½
 		if (m_pDepthStencilState)
 		{
 			pContext->OMSetDepthStencilState(nullptr, 0x00);
@@ -106,7 +106,7 @@ namespace kepler {
 		}
 
 		D3D11_DEPTH_STENCIL_DESC desc{};
-		// ±âÁ¸ descriptionÀÌ Á¸ÀçÇÑ´Ù¸é ÆÄÀÌÇÁ¶óÀÎ¿¡¼­ °¡Á®¿È
+		// ï¿½ï¿½ï¿½ï¿½ descriptionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if (m_pDepthStencilState)
 		{
 			m_pDepthStencilState->GetDesc(&desc);
@@ -148,7 +148,7 @@ namespace kepler {
 	{
 		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
 		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
-		// ÀÌ¹Ì ÆÄÀÌÇÁ¶óÀÎ¿¡ µé¾î°¡ ÀÖ´Â ±âÁ¸ State Á¦°Å
+		// ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½î°¡ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ State ï¿½ï¿½ï¿½ï¿½
 		if (m_pBlendState)
 		{
 			pContext->OMSetBlendState(nullptr, nullptr, 0x00);
@@ -296,7 +296,6 @@ namespace kepler {
 			CreateDepthStencilState();
 			// NOTE: Stencil test sudo code:
 			// if ( StencilRef & StencilReadMask StencilOP(Front/Back) Value & StencilReadMask)
-			// TODO: ÀûÀýÇÑ StencilRef¸¦ ³Ñ±â±â À§ÇÑ ¹æ¹ý °­±¸ÇÏ±â
 			pContext->OMSetDepthStencilState(m_pDepthStencilState, s_stencilDesc.stencilRef);
 
 			m_bDepthStateChanged = false;
@@ -305,7 +304,7 @@ namespace kepler {
 		if (m_bBlendStateChaged)
 		{
 			CreateBlendState();
-			// TODO: ÃßÈÄ MRT Áö¿ø ½Ã ·ÎÁ÷ÀÌ ¹Ù²î¾î¾ßÇÔ
+			// TODO: ï¿½ï¿½ï¿½ï¿½ MRT ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½ï¿½ï¿½ï¿½
 			pContext->OMSetBlendState(m_pBlendState, s_blendDesc.customFactor, s_blendDesc.sampleMask);
 
 			m_bBlendStateChaged = false;

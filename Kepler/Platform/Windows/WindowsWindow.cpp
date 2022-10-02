@@ -61,6 +61,16 @@ namespace kepler {
 		SetVSync(true);
 	}
 
+	void WindowsWindow::GetCursorPos(uint32_t& outXPos, uint32_t& outYPos)
+	{
+		POINT cursorPos;
+		::GetCursorPos(&cursorPos);
+		::ScreenToClient(m_hWnd, &cursorPos);
+		outXPos = cursorPos.x;
+		outYPos = cursorPos.y;
+	};
+
+
 	void WindowsWindow::Shutdown()
 	{
 		// TODO: 해제해야 할 윈도우 리소스가 있다면 이 곳에서 해제합니다.

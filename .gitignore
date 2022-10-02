@@ -396,3 +396,4 @@ MigrationBackup/
 # Custom ignore list
 Client/imgui.ini
 /bin-int
+.DS_Store

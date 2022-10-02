@@ -77,7 +77,7 @@ bool kepler::DX11Context::Init(const WindowData& data)
 
 	DXGI_SWAP_CHAIN_DESC scDesc{};
 	scDesc.BufferCount = 2;
-	scDesc.BufferDesc.Width = 0;
+	scDesc.BufferDesc.Width = 0;	// (Im YongsiK) Use DXGI_SCALING_NONE ?
 	scDesc.BufferDesc.Height = 0;
 	scDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	scDesc.BufferDesc.RefreshRate.Numerator = data.bVSync ? 60 : 0;
@@ -95,13 +95,9 @@ bool kepler::DX11Context::Init(const WindowData& data)
 #ifdef _DEBUG
 	//createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
-
-	// 추후 feature level 11.1 까지 지원할 것
 	const D3D_FEATURE_LEVEL featureLevels[]{
-		/*D3D_FEATURE_LEVEL_11_1,*/
+		D3D_FEATURE_LEVEL_11_1,
 		D3D_FEATURE_LEVEL_11_0,
-		D3D_FEATURE_LEVEL_10_1,
-		D3D_FEATURE_LEVEL_10_0
 	};
 	UINT featureLevelCount = ARRAYSIZE(featureLevels);
 

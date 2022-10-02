@@ -1,333 +1,139 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="framework.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Kepler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Base.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\EntryPoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Log.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Event\Event.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="kepch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Event\KeyEvent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Event\MouseEvent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Event\ApplicationEvent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform\Win32\WinAPI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform\Windows\WindowsWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Layer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\LayerStack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGui\ImGuiLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\InputCode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\StringUtility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\Assertion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\Timer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform\DirectX11\DX11Context.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\GraphicsContext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform\DirectX11\DX11API.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\GraphicsAPI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform\DirectX11\DX11Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Camera.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Buffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\VertexArray.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform\DirectX11\DX11VertexArray.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform\DirectX11\DX11Buffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform\DirectX11\DX11Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dependencies\stbimage\stb_image.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\OrthographicCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Renderer2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Audio\AudioSource.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Audio\Audio.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\RenderState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform\DirectX11\DX11State.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\PerspectiveCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\EditorCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\FrameBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform\DirectX11\DX11FrameBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\RenderLog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\RenderProfiler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility\Random.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Core\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Log.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="kepch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform\Win32\WinAPI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform\Windows\WindowsWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\LayerStack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImGuiLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\StringUtility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform\DirectX11\DX11Context.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\GraphicsContext.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\GraphicsAPI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform\DirectX11\DX11API.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform\DirectX11\DX11Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\VertexArray.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform\DirectX11\DX11VertexArray.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform\DirectX11\DX11Buffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Buffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform\DirectX11\DX11Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\OrthographicCamera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Renderer2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImGuiSource\imgui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImGuiSource\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImGuiSource\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImGuiSource\imgui_impl_dx11.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImGuiSource\imgui_impl_win32.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImGuiSource\imgui_tables.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImGuiSource\imgui_widgets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Audio\Audio.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\RenderState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform\DirectX11\DX11State.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\PerspectiveCamera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\FrameBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform\DirectX11\DX11FrameBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImPlotSource\implot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGui\ImPlotSource\implot_items.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\RenderLog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\RenderProfiler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility\Random.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Kepler.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="small.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Kepler.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Resources\Shaders\HLSL\Global\VSGlobal.hlsli" />
-    <None Include="Resources\Shaders\HLSL\Global\PSGlobal.hlsli" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Resources\Shaders\HLSL\VSTexture.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\PSTexture.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\VSSolid.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\PSSolid.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\VSTest.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\PSTest.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\VS2DTextureInst.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\PS2DTextureInst.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\VS2DSolidInst.hlsl" />
     <FxCompile Include="Resources\Shaders\HLSL\PS2DSolidInst.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\PS2DTextureInst.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\PSSolid.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\PSTest.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\PSTexture.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\VS2DSolidInst.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\VS2DTextureInst.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\VSSolid.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\VSTest.hlsl" />
+    <FxCompile Include="Resources\Shaders\HLSL\VSTexture.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Audio\Audio.cpp" />
+    <ClCompile Include="Core\Application.cpp" />
+    <ClCompile Include="Core\Input.cpp" />
+    <ClCompile Include="ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="Core\LayerStack.cpp" />
+    <ClCompile Include="Core\Log.cpp" />
+    <ClCompile Include="ImGui\ImGuiSource\imgui.cpp" />
+    <ClCompile Include="ImGui\ImGuiSource\imgui_demo.cpp" />
+    <ClCompile Include="ImGui\ImGuiSource\imgui_draw.cpp" />
+    <ClCompile Include="ImGui\ImGuiSource\imgui_impl_dx11.cpp" />
+    <ClCompile Include="ImGui\ImGuiSource\imgui_impl_win32.cpp" />
+    <ClCompile Include="ImGui\ImGuiSource\imgui_tables.cpp" />
+    <ClCompile Include="ImGui\ImGuiSource\imgui_widgets.cpp" />
+    <ClCompile Include="ImGui\ImPlotSource\implot.cpp" />
+    <ClCompile Include="ImGui\ImPlotSource\implot_items.cpp" />
+    <ClCompile Include="kepch.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11API.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11Buffer.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11Context.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11FrameBuffer.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11Shader.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11State.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11Texture.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11VertexArray.cpp" />
+    <ClCompile Include="Platform\Win32\WinAPI.cpp" />
+    <ClCompile Include="Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="Renderer\Buffer.cpp" />
+    <ClCompile Include="Renderer\EditorCamera.cpp" />
+    <ClCompile Include="Renderer\FrameBuffer.cpp" />
+    <ClCompile Include="Renderer\GraphicsContext.cpp" />
+    <ClCompile Include="Renderer\GraphicsAPI.cpp" />
+    <ClCompile Include="Renderer\OrthographicCamera.cpp" />
+    <ClCompile Include="Renderer\PerspectiveCamera.cpp" />
+    <ClCompile Include="Renderer\RenderLog.cpp" />
+    <ClCompile Include="Renderer\RenderProfiler.cpp" />
+    <ClCompile Include="Renderer\Renderer.cpp" />
+    <ClCompile Include="Renderer\Renderer2D.cpp" />
+    <ClCompile Include="Renderer\RenderState.cpp" />
+    <ClCompile Include="Renderer\Shader.cpp" />
+    <ClCompile Include="Renderer\Texture.cpp" />
+    <ClCompile Include="Renderer\VertexArray.cpp" />
+    <ClCompile Include="Utility\Random.cpp" />
+    <ClCompile Include="Utility\StringUtility.cpp" />
+    <ClCompile Include="Renderer\Sampler.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11Sampler.cpp" />
+    <ClCompile Include="Scene\Scene.cpp" />
+    <ClCompile Include="Scene\Entity.cpp" />
+    <ClCompile Include="Core\UUID.cpp" />
+    <ClCompile Include="Scene\ComponentType.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Audio\Audio.h" />
+    <ClInclude Include="Audio\AudioSource.hpp" />
+    <ClInclude Include="Core\Application.h" />
+    <ClInclude Include="Core\Assertion.h" />
+    <ClInclude Include="Core\Base.h" />
+    <ClInclude Include="Core\EntryPoint.h" />
+    <ClInclude Include="Core\Event\ApplicationEvent.hpp" />
+    <ClInclude Include="Core\Event\Event.hpp" />
+    <ClInclude Include="Core\Event\KeyEvent.hpp" />
+    <ClInclude Include="Core\Event\MouseEvent.hpp" />
+    <ClInclude Include="Core\Input.h" />
+    <ClInclude Include="Core\InputCode.h" />
+    <ClInclude Include="Core\Layer.hpp" />
+    <ClInclude Include="Core\LayerStack.h" />
+    <ClInclude Include="Core\Log.h" />
+    <ClInclude Include="Dependencies\stbimage\stb_image.h" />
+    <ClInclude Include="Platform\DirectX11\DX11Buffer.h" />
+    <ClInclude Include="Platform\DirectX11\DX11Context.h" />
+    <ClInclude Include="Platform\DirectX11\DX11API.h" />
+    <ClInclude Include="Platform\DirectX11\DX11FrameBuffer.h" />
+    <ClInclude Include="Platform\DirectX11\DX11Shader.h" />
+    <ClInclude Include="Platform\DirectX11\DX11State.h" />
+    <ClInclude Include="Platform\DirectX11\DX11Texture.h" />
+    <ClInclude Include="Platform\DirectX11\DX11VertexArray.h" />
+    <ClInclude Include="Renderer\Buffer.h" />
+    <ClInclude Include="Renderer\Camera.hpp" />
+    <ClInclude Include="Renderer\EditorCamera.h" />
+    <ClInclude Include="Renderer\FrameBuffer.h" />
+    <ClInclude Include="Renderer\GraphicsAPI.h" />
+    <ClInclude Include="Renderer\GraphicsContext.h" />
+    <ClInclude Include="Core\Window.h" />
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="ImGui\ImGuiLayer.h" />
+    <ClInclude Include="kepch.h" />
+    <ClInclude Include="Kepler.h" />
+    <ClInclude Include="Platform\Win32\WinAPI.h" />
+    <ClInclude Include="Platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="Renderer\OrthographicCamera.h" />
+    <ClInclude Include="Renderer\RenderLog.h" />
+    <ClInclude Include="Renderer\RenderProfiler.h" />
+    <ClInclude Include="Renderer\PerspectiveCamera.h" />
+    <ClInclude Include="Renderer\Renderer.h" />
+    <ClInclude Include="Renderer\Renderer2D.h" />
+    <ClInclude Include="Renderer\RenderState.h" />
+    <ClInclude Include="Renderer\Shader.h" />
+    <ClInclude Include="Renderer\Texture.h" />
+    <ClInclude Include="Renderer\VertexArray.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="Utility\Random.hpp" />
+    <ClInclude Include="Utility\StringUtility.h" />
+    <ClInclude Include="Utility\Timer.hpp" />
+    <ClInclude Include="Renderer\Sampler.h" />
+    <ClInclude Include="Platform\DirectX11\DX11Sampler.h" />
+    <ClInclude Include="Core\UUID.h" />
+    <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Scene\Component.hpp" />
+    <ClInclude Include="Scene\Entity.hpp" />
+    <ClInclude Include="Scene\ComponentType.h" />
+    <ClInclude Include="Scene\ScriptableEntity.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Kepler.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Kepler.ico" />
+    <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Shaders\HLSL\Global\PSGlobal.hlsli" />
+    <None Include="Resources\Shaders\HLSL\Global\VSGlobal.hlsli" />
   </ItemGroup>
 </Project>

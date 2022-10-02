@@ -41,13 +41,14 @@ namespace kepler {
 
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
-		ImGui::StyleColorsDark();
-
+		//ImGui::StyleColorsDark();
+		//SetDarkThemeColors();
+		ImGui::StyleColorsLight();
 		ImGuiStyle& style = ImGui::GetStyle();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
@@ -114,37 +115,79 @@ namespace kepler {
 	{
 		// GUI 예제 확인용
 		// GUI 붙이다 헷갈리는거 있을때 주석 풀고 데모 GUI 확인하세요.
-		//ImGui::PushFont(g_defaultFont);
-		//ImGuiIO& io = ImGui::GetIO();
-
-		//static bool bIsShownDemo = false;
-		//if (bIsShownDemo)
-		//{
-		//	ImGui::ShowDemoWindow(&bIsShownDemo);
-		//}
-
-		//static float f = 0.0f;
-
-		//ImGui::Begin("Hello Kepler!");
-		//ImGui::Text("This is Test..");
-		//ImGui::Checkbox("demo window", &bIsShownDemo);
-
-		//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-		//static ImVec4 clearColor(0.45f, 0.55f, 0.60f, 1.0f);
-		//ImGui::ColorEdit3("clear color", (float*)&clearColor);
-
-		//static int counter = 0;
-		//if (ImGui::Button("Button"))
-		//{
-		//	counter++;
-		//}
-		//ImGui::SameLine();
-		//ImGui::Text("counter = %d", counter);
-
-		//ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-		//ImGui::End();
-		//ImGui::PopFont();
+		ShowDemo();
 	}
+
+	
+
+	void ImGuiLayer::ShowDemo()
+	{
+		ImGui::PushFont(g_defaultFont);
+		ImGuiIO& io = ImGui::GetIO();
+
+		static bool bIsShownDemo = false;
+		if (bIsShownDemo)
+		{
+			ImGui::ShowDemoWindow(&bIsShownDemo);
+		}
+
+		static float f = 0.0f;
+
+		ImGui::Begin("Hello Kepler!");
+		ImGui::Text("Welcome to Kepler Engine!");
+		ImGui::Text("This is Test Panel.");
+		ImGui::Checkbox("demo window", &bIsShownDemo);
+
+		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+		static ImVec4 clearColor(0.45f, 0.55f, 0.60f, 1.0f);
+		ImGui::ColorEdit3("clear color", (float*)&clearColor);
+
+		static int counter = 0;
+		if (ImGui::Button("Button"))
+		{
+			counter++;
+		}
+		ImGui::SameLine();
+		ImGui::Text("counter = %d", counter);
+
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+		ImGui::End();
+		ImGui::PopFont();
+	}
+
+	void ImGuiLayer::SetDarkThemeColors()
+	{
+		auto& colors = ImGui::GetStyle().Colors;
+		colors[ImGuiCol_WindowBg] = ImVec4{ 0.1f, 0.105f, 0.11f, 1.0f };
+
+		// Headers
+		colors[ImGuiCol_Header] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
+		colors[ImGuiCol_HeaderHovered] = ImVec4{ 0.3f, 0.305f, 0.31f, 1.0f };
+		colors[ImGuiCol_HeaderActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+
+		// Buttons
+		colors[ImGuiCol_Button] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
+		colors[ImGuiCol_ButtonHovered] = ImVec4{ 0.3f, 0.305f, 0.31f, 1.0f };
+		colors[ImGuiCol_ButtonActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+
+		// Frame BG
+		colors[ImGuiCol_FrameBg] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
+		colors[ImGuiCol_FrameBgHovered] = ImVec4{ 0.3f, 0.305f, 0.31f, 1.0f };
+		colors[ImGuiCol_FrameBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+
+		// Tabs
+		colors[ImGuiCol_Tab] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+		colors[ImGuiCol_TabHovered] = ImVec4{ 0.38f, 0.3805f, 0.381f, 1.0f };
+		colors[ImGuiCol_TabActive] = ImVec4{ 0.28f, 0.2805f, 0.281f, 1.0f };
+		colors[ImGuiCol_TabUnfocused] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+		colors[ImGuiCol_TabUnfocusedActive] = ImVec4{ 0.2f, 0.205f, 0.21f, 1.0f };
+
+		// Title
+		colors[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+		colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+		colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+	}
+
 
 	LRESULT ImGuiLayer::ImGuiEventHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{

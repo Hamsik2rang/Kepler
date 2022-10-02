@@ -10,7 +10,6 @@ namespace kepler {
 		: m_pDepthStencilView{ nullptr }
 		, m_pRenderTargetViews{ nullptr }
 		, m_pTextures{ nullptr }
-		, m_pShaderResourceViews{ nullptr }
 	{
 		Init();
 	}
@@ -35,24 +34,6 @@ namespace kepler {
 			{
 				rtv->Release();
 				rtv = nullptr;
-			}
-		}
-
-		for (auto& srv : m_pShaderResourceViews)
-		{
-			if (srv)
-			{
-				srv->Release();
-				srv = nullptr;
-			}
-		}
-
-		for (auto& texture : m_pTextures)
-		{
-			if (texture)
-			{
-				texture->Release();
-				texture = nullptr;
 			}
 		}
 	}
@@ -133,6 +114,7 @@ namespace kepler {
 	{
 		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
 		pContext->ClearRenderTargetView(m_pColorBufferView, color);
+		
 		pContext->OMSetRenderTargets(1, &m_pColorBufferView, m_pDepthStencilView);
 	}
 
@@ -163,7 +145,7 @@ namespace kepler {
 
 	void DX11FrameBuffer::ClearGBuffer(uint8_t index, const float color[4])
 	{
-		KEPLER_CORE_ASSERT(index < 8, "G-Buffer index range is [0, 8).");
+		KEPLER_CORE_ASSERT(index >= 0 && index < 8, "G-Buffer index range is [0, 8).");
 
 		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
 		pContext->ClearRenderTargetView(m_pRenderTargetViews[index], color);
@@ -171,7 +153,9 @@ namespace kepler {
 
 	void DX11FrameBuffer::ClearGBuffer(uint8_t startSlot, uint8_t count, const float color[4])
 	{
+		KEPLER_CORE_ASSERT(startSlot >= 0 && startSlot < 8, "G-Buffer index range is [0, 8).");
 		KEPLER_CORE_ASSERT(startSlot + count < 8, "Index of G-Buffer cannot larger than 7.");
+		KEPLER_CORE_ASSERT(count < 7, "Maximum G-Buffer available count is 7.");
 
 		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
 		for (uint8_t i = startSlot; i < startSlot + count; i++)
@@ -195,87 +179,37 @@ namespace kepler {
 	void DX11FrameBuffer::BindGBuffer(uint8_t startSlot, uint8_t count)
 	{
 		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
-		pContext->OMSetRenderTargets(8, m_pRenderTargetViews, m_pDepthStencilView);
+		pContext->OMSetRenderTargets(count, &m_pRenderTargetViews[startSlot], m_pDepthStencilView);
 	}
 
 	void DX11FrameBuffer::UnbindGBuffer(uint8_t startSlot, uint8_t count)
 	{
-		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
-		pContext->OMSetRenderTargets(1, nullptr, nullptr);
+		// NOTE: null targetview를 전달할 경우 color buffer도 unbind될 수 있으므로 잠시 함수 비활성화합니다.		
+		//ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+		//pContext->OMSetRenderTargets(count, nullptr, nullptr);
 	}
 
 	void DX11FrameBuffer::AddGBuffer(uint8_t startSlot, uint8_t count)
 	{
-		KEPLER_CORE_ASSERT(startSlot < 8, "G-Buffer index range is [0, 8).");
+		KEPLER_CORE_ASSERT(startSlot >= 0 && startSlot < 8, "G-Buffer index range is [0, 8).");
 		KEPLER_CORE_ASSERT(startSlot + count < 8, "Index of G-Buffer cannot larger than 7.");
-		KEPLER_CORE_ASSERT(count < 8, "Maximum G-Buffer available count is 8.");
+		KEPLER_CORE_ASSERT(count < 7, "Maximum G-Buffer available count is 7.");
 
-		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
 		auto& window = Application::Get()->GetWindow();
 		uint32_t width = window.GetWidth();
 		uint32_t height = window.GetHeight();
 
-		D3D11_TEXTURE2D_DESC texDesc{};
-		texDesc.Width = width;
-		texDesc.Height = height;
-		texDesc.MipLevels = 1;
-		texDesc.ArraySize = 1;
-		texDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-		texDesc.SampleDesc.Count = 1;
-		texDesc.SampleDesc.Quality = 0;
-		texDesc.CPUAccessFlags = 0;
-		texDesc.Usage = D3D11_USAGE_DEFAULT;
-		texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-		texDesc.CPUAccessFlags = 0;
-		texDesc.MiscFlags = 0;
-
 		for (uint8_t i = startSlot; i < startSlot + count; i++)
 		{
-			HRESULT hr = pDevice->CreateTexture2D(&texDesc, nullptr, &m_pTextures[i]);
-			if (FAILED(hr))
-			{
-				KEPLER_CORE_ASSERT(false, "Fail to Create Texture for G-Buffer.");
-				break;
-			}
-		}
-
-		D3D11_RENDER_TARGET_VIEW_DESC rtvDesc{};
-		rtvDesc.Format = texDesc.Format;
-		rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-		rtvDesc.Texture2D.MipSlice = 0;
-
-		for (uint8_t i = startSlot; i < startSlot + count; i++)
-		{
-			HRESULT hr = pDevice->CreateRenderTargetView(m_pTextures[i], &rtvDesc, &m_pRenderTargetViews[i]);
-			if (FAILED(hr))
-			{
-				KEPLER_CORE_ASSERT(false, "Fail to Create Render Target for G-Buffer.");
-				break;
-			}
-		}
-
-		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-		srvDesc.Format = texDesc.Format;
-		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-		srvDesc.Texture2D.MipLevels = 1;
-		srvDesc.Texture2D.MostDetailedMip = 0;
-
-		for (uint8_t i = startSlot; i < startSlot + count; i++)
-		{
-			HRESULT hr = pDevice->CreateShaderResourceView(m_pTextures[i], &srvDesc, &m_pShaderResourceViews[i]);
-			if (FAILED(hr))
-			{
-				KEPLER_CORE_ASSERT(false, "Fail to Create Shader Resource View for G-Buffer.");
-				break;
-			}
+			CreateGBuffer(i, width, height);
 		}
 	}
 
 	void DX11FrameBuffer::DeleteGBuffer(uint8_t startSlot, uint8_t count)
 	{
-		KEPLER_CORE_ASSERT(startSlot < 8, "G-Buffer index range is [0, 8).");
+		KEPLER_CORE_ASSERT(startSlot >= 0 && startSlot < 8, "G-Buffer index range is [0, 8).");
 		KEPLER_CORE_ASSERT(startSlot + count < 8, "Index of G-Buffer cannot larger than 7.");
-		KEPLER_CORE_ASSERT(count < 8, "Maximum G-Buffer available count is 8.");
+		KEPLER_CORE_ASSERT(count < 7, "Maximum G-Buffer available count is 7.");
 
 		for (uint8_t i = startSlot; i < startSlot + count; i++)
 		{
@@ -286,14 +220,59 @@ namespace kepler {
 			}
 			if (m_pTextures[i])
 			{
-				m_pTextures[i]->Release();
 				m_pTextures[i] = nullptr;
 			}
-			if (m_pShaderResourceViews[i])
-			{
-				m_pShaderResourceViews[i]->Release();
-				m_pShaderResourceViews[i] = nullptr;
-			}
+		}
+	}
+
+	void DX11FrameBuffer::ResizeColorBuffer(uint32_t width, uint32_t height)
+	{
+		//TODO: 추후 구현
+	}
+
+	void DX11FrameBuffer::ResizeGBuffer(uint8_t startSlot, uint8_t count, uint32_t width, uint32_t height)
+	{
+		KEPLER_CORE_ASSERT(startSlot >= 0 && startSlot < 8, "G-Buffer index range is [0, 8).");
+		KEPLER_CORE_ASSERT(startSlot + count < 8, "Index of G-Buffer cannot larger than 7.");
+		KEPLER_CORE_ASSERT(count < 7, "Maximum G-Buffer available count is 7.");
+
+		for (uint8_t i = startSlot; i < startSlot + count; i++)
+		{
+			CreateGBuffer(i, width, height);
+		}
+	}
+
+	void DX11FrameBuffer::CreateGBuffer(uint8_t index, uint32_t width, uint32_t height)
+	{
+		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+		m_pTextures[index] = ITexture2D::Create(eTextureDataType::Float, width, height);
+	
+		D3D11_RENDER_TARGET_VIEW_DESC rtvDesc{};
+		rtvDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+		rtvDesc.Texture2D.MipSlice = 0;
+
+		ID3D11Texture2D* pTexture = reinterpret_cast<ID3D11Texture2D*>(m_pTextures[index]->GetTexture());
+		KEPLER_CORE_ASSERT(pTexture, "Fail to get Texture for initializeing G-Buffer");
+		HRESULT hr = pDevice->CreateRenderTargetView(pTexture, &rtvDesc, &m_pRenderTargetViews[index]);
+		if (FAILED(hr))
+		{
+			KEPLER_CORE_ASSERT(false, "Fail to Create Render Target for G-Buffer.");
+		}
+	}
+	
+	// (Im Yongsik)NOTE: void ptr을 리턴했을때 사용자가 그 포인터가 참조하는 내용을 없애버리면?
+	// void ptr을 리턴하는 게 안전하지 않아 보이는데
+	void* DX11FrameBuffer::GetBuffer(eFrameBufferType type, uint8_t index)
+	{
+		// TODO: 임시 코드이므로 추후 개선해야 함.
+		if (type == eFrameBufferType::Color)
+		{
+			return m_pTextures[index]->GetData();
+		}
+		else
+		{
+			return m_pDepthStencilView;
 		}
 	}
 }

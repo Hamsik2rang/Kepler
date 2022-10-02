@@ -1,10 +1,10 @@
-[submodule "Kepler/Dependencies/ImGui"]
+[submodule "ImGui"]
 	path = Kepler/Dependencies/ImGui
 	url = https://github.com/Hamsik2rang/ImGui
 	branch = docking
-[submodule "Kepler/Dependencies/spdlog"]
+[submodule "spdlog"]
 	path = Kepler/Dependencies/spdlog
 	url = https://github.com/Hamsik2rang/spdlog
-[submodule "Kepler/Dependencies/implot"]
+[submodule "implot"]
 	path = Kepler/Dependencies/implot
 	url = https://github.com/MistarJo/implot
