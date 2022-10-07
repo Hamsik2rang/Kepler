@@ -15,9 +15,9 @@ struct VS_INPUT
     float2  UV          : TEXCOORD0;
     uint    InstID      : SV_InstanceID;
     
-    float4  InstColor   : INST_COLOR0;
-    bool InstUVFlipX      : INST_BOOL0;
-    bool InstUVFlipY      : INST_BOOL1;
+    float4 InstColor    : INST_COLOR0;
+    bool InstUVFlipX    : INST_BOOL0;
+    bool InstUVFlipY    : INST_BOOL1;
 };
 
 struct VS_OUTPUT

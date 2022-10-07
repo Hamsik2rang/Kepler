@@ -6,7 +6,7 @@ void ResearchLayer::OnAttach()
 {
 	m_pImage.ReadFromFile("./Assets/Textures/image_1.JPG");
 
-	auto pTexture = kepler::ITexture2D::Create(kepler::ETextureDataType::Float, m_pImage.width, m_pImage.height, m_pImage.height);
+	auto pTexture = kepler::ITexture2D::Create(kepler::ETextureDataType::Float_RGBA32, m_pImage.width, m_pImage.height, m_pImage.height);
 	//pTexture->SetData(m_pImage.rowData, m_pImage.width, m_pImage.height);
 	pEntity = m_scene.CreateEntity();
 	pEntity->AddComponent<kepler::SpriteRendererComponent>(pTexture, kepler::Vec4f{ 1.0f, 1.0f, 1.0f, 1.0f });

@@ -189,6 +189,7 @@
     <ClInclude Include="Platform\DirectX11\DX11Buffer.h" />
     <ClInclude Include="Platform\DirectX11\DX11Context.h" />
     <ClInclude Include="Platform\DirectX11\DX11API.h" />
+    <ClInclude Include="Platform\DirectX11\DX11Debug.h" />
     <ClInclude Include="Platform\DirectX11\DX11FrameBuffer.h" />
     <ClInclude Include="Platform\DirectX11\DX11Sampler.h" />
     <ClInclude Include="Platform\DirectX11\DX11Shader.h" />
@@ -257,6 +258,7 @@
     <ClCompile Include="Platform\DirectX11\DX11API.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Buffer.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Context.cpp" />
+    <ClCompile Include="Platform\DirectX11\DX11Debug.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11FrameBuffer.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Sampler.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Shader.cpp" />

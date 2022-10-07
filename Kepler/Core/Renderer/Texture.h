@@ -10,7 +10,8 @@ namespace kepler {
 		Float_RGBA16,
 		Float_RGB32,
 		Float_RGBA32,
-		UNorm_RGBA8
+		UNorm_RGB8,
+		UNorm_RGBA8,
 	};
 
 	// Texture Interface

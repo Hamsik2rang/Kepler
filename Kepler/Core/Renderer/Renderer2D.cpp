@@ -417,6 +417,5 @@ namespace kepler {
 		drawCallsCount++;
 		trianglesCount += 2;
 		vertexCount += 4;
-
 	}
 }
