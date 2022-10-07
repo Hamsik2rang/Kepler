@@ -96,8 +96,7 @@ namespace kepler {
 		}
 
 		// 텍스처 리소스 설정 및 raw image 해제
-		uint32_t pitch = m_width * 4;
-		pDeviceContext->UpdateSubresource(m_pTexture, 0, nullptr, pRawImage, pitch, 0);
+		SetData(pRawImage, m_width, m_height, m_channel);
 		if (pRawImage)
 		{
 			stbi_image_free(pRawImage);
@@ -190,6 +189,7 @@ namespace kepler {
 		case ETextureDataType::Float_RGB32:
 			return DXGI_FORMAT_R32G32B32_FLOAT;
 		case ETextureDataType::UNorm_RGBA8:
+		case ETextureDataType::UNorm_RGB8:
 			return DXGI_FORMAT_R8G8B8A8_UNORM;
 			//...
 		}
