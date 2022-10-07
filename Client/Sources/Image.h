@@ -10,7 +10,7 @@ public:
 	int height;
 	int channel;
 
-	void* rowData;
+	void* rawData;
 	std::vector<kepler::Vec4f> pixels;
 
 	void ReadFromFile(const char* filepath);

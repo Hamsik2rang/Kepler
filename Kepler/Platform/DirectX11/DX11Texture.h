@@ -16,16 +16,17 @@ namespace kepler {
 
 		uint32_t m_width;
 		uint32_t m_height;
+		uint8_t m_channel;
 
 	public:
-		DX11Texture2D(const ETextureDataType type, const uint32_t width, const uint32_t height, const uint8_t channel = 0, const uint8_t bytePerTexel = 4);
+		DX11Texture2D(const ETextureDataType type, const uint32_t width, const uint32_t height);
 		DX11Texture2D(const ETextureDataType type, const std::string& filepath);
 
 		~DX11Texture2D();
 
 		// Inherited via ITexture2D
 		virtual void Bind(const uint32_t slot) override;
-		virtual void SetData(const void* pData, const uint32_t width, const uint32_t height) override;
+		virtual void SetData(const void* pData, const uint32_t width, const uint32_t height, const uint32_t channel) override;
 		inline virtual void* GetData() override { return m_pResourceView; }
 		inline virtual void* GetTexture() override { return m_pTexture; }
 		inline virtual ETextureDataType GetType() override { return m_type; }

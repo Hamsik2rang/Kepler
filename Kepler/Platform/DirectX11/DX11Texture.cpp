@@ -9,14 +9,16 @@
 namespace kepler {
 
 	static DXGI_FORMAT ConvertTextureDataType(const ETextureDataType type);
+	static uint8_t GetChannelFromTextureDataType(const ETextureDataType type);
 
 	// DX11Texture2D
-	DX11Texture2D::DX11Texture2D(const ETextureDataType type, const uint32_t width, const uint32_t height, const uint8_t channel, const uint8_t bytePerTexel)
+	DX11Texture2D::DX11Texture2D(const ETextureDataType type, const uint32_t width, const uint32_t height)
 		: m_pResourceView{ nullptr }
 		, m_pTexture{ nullptr }
 		, m_type{ type }
 		, m_width{ width }
 		, m_height{ height }
+		, m_channel{ GetChannelFromTextureDataType(type) }
 	{
 		// 임시 텍스처 혹은 렌더링 정보 저장용으로 주로 사용될 수 있음.
 		D3D11_TEXTURE2D_DESC texDesc{};
@@ -59,9 +61,9 @@ namespace kepler {
 		, m_type{ type }
 		, m_width{ 0 }
 		, m_height{ 0 }
+		, m_channel{ GetChannelFromTextureDataType(type) }
 	{
-		int channel = 0;
-		unsigned char* pRawImage = stbi_load(filepath.c_str(), reinterpret_cast<int*>(&m_width), reinterpret_cast<int*>(&m_height), &channel, 0);
+		unsigned char* pRawImage = stbi_load(filepath.c_str(), reinterpret_cast<int*>(&m_width), reinterpret_cast<int*>(&m_height), reinterpret_cast<int*>(& m_channel), 0);
 		if (!pRawImage)
 		{
 			KEPLER_CORE_ASSERT(false, "Fail to load ImageFile");
@@ -139,17 +141,42 @@ namespace kepler {
 		pDeviceContext->PSSetShaderResources(slot, 1, &m_pResourceView);
 	}
 
-	void DX11Texture2D::SetData(const void* pData, const uint32_t width, const uint32_t height)
+
+	//TODO: (Im Yongsik) 현재 UNormRGBA8 타입 데이터만 씌울 수 있도록 되어 있습니다. 개선이 필요합니다.
+	void DX11Texture2D::SetData(const void* pData, const uint32_t width, const uint32_t height, const uint32_t channel)
 	{
 		KEPLER_CORE_ASSERT(width == m_width && height == m_height, "Texture data size is not same with texture view");
 
-		m_width = width;
-		m_height = height;
-
-		// TODO: Access Violance
-		uint32_t pitch = m_width * 4;
-		auto pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
-		pDeviceContext->UpdateSubresource(m_pTexture, 0, nullptr, pData, pitch, 0);
+		// (Im Yongsik) DX11은 3채널을 지원하지 않으므로 4채널로 전환해야 함
+		if (channel == 3)
+		{
+			uint8_t RGBASize = 4;
+			m_channel = RGBASize;
+			uint8_t* pBuffer = new uint8_t[width * height * RGBASize];
+			for (int row = 0; row < height; row++)
+			{
+				for (int bufCol = 0, dataCol = 0; dataCol < width * channel; bufCol += RGBASize, dataCol += channel)
+				{
+					auto bufIndex = width * RGBASize * row + bufCol;
+					auto dataIndex = width * channel * row + dataCol;
+					// 왜 작동을 안할까?
+					pBuffer[bufIndex + 0] = ((uint8_t*)pData)[dataIndex + 0];
+					pBuffer[bufIndex + 1] = ((uint8_t*)pData)[dataIndex + 1];
+					pBuffer[bufIndex + 2] = ((uint8_t*)pData)[dataIndex + 2];
+					pBuffer[bufIndex + 3] = 255;
+				}
+			}
+			auto pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+			uint32_t pitch = RGBASize * width;
+			pDeviceContext->UpdateSubresource(m_pTexture, 0, nullptr, pBuffer, RGBASize * width, 0);
+			delete[] pBuffer;
+		}
+		else
+		{
+			uint32_t pitch = m_width * channel;
+			auto pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+			pDeviceContext->UpdateSubresource(m_pTexture, 0, nullptr, pData, pitch, 0);
+		}
 	}
 
 	DXGI_FORMAT ConvertTextureDataType(const ETextureDataType type)
@@ -168,4 +195,21 @@ namespace kepler {
 		}
 		return DXGI_FORMAT_UNKNOWN;
 	}
+
+	uint8_t GetChannelFromTextureDataType(const ETextureDataType type)
+	{
+		switch (type)
+		{
+		case ETextureDataType::Float_RGBA16:
+		case ETextureDataType::Float_RGBA32:
+		case ETextureDataType::UNorm_RGBA8:
+			return 4u;
+		case ETextureDataType::Float_RGB32:
+		case ETextureDataType::UNorm_RGB8:
+			return 3u;
+			//...
+		}
+		return 0u;
+	}
+
 }

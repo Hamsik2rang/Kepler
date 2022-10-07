@@ -46,6 +46,9 @@ namespace kepler {
 
 	void DX11Debug::CheckReferenceCount()
 	{
-		m_pDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+		if (m_pDebug)
+		{
+			m_pDebug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+		}
 	}
 }

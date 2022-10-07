@@ -4,18 +4,19 @@
 #include <Windows.h>
 #include <d3d11.h>
 
-class DX11Debug;
 
 namespace kepler {
+
+	class DX11Debug;
 
 	class DX11Context : public IGraphicsContext
 	{
 	private:
-		ID3D11Device*				m_pDevice;
-		ID3D11DeviceContext*		m_pDeviceContext;
-		IDXGISwapChain*				m_pSwapChain;
-		
-		DX11Debug*					m_pDebugger;
+		ID3D11Device* m_pDevice;
+		ID3D11DeviceContext* m_pDeviceContext;
+		IDXGISwapChain* m_pSwapChain;
+
+		DX11Debug* m_pDebugger;
 		D3D_FEATURE_LEVEL			m_featureLevel;
 
 		HWND m_hWnd;

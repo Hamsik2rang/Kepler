@@ -33,12 +33,12 @@ namespace kepler {
 		virtual uint32_t GetWidth() const = 0;
 
 		virtual void Bind(const uint32_t slot = 0) = 0;
-		virtual void SetData(const void* pData, const uint32_t size) = 0;
+		virtual void SetData(const void* pData, const uint32_t size, const uint32_t channel) = 0;
 		virtual void* GetData() = 0;
 		virtual void* GetTexture() = 0;
 		virtual ETextureDataType GetType() = 0;
 
-		static std::shared_ptr<ITexture1D> Create(const ETextureDataType type, const uint32_t width, const uint8_t channel, const uint8_t bytePerTexel);
+		static std::shared_ptr<ITexture1D> Create(const ETextureDataType type, const uint32_t width);
 	};
 	// Texture2D Interface
 	class ITexture2D : public ITexture
@@ -48,12 +48,12 @@ namespace kepler {
 		virtual uint32_t GetHeight() const = 0;
 
 		virtual void Bind(const uint32_t slot = 0) = 0;
-		virtual void SetData(const void* pData, const uint32_t width, const uint32_t height) = 0;
+		virtual void SetData(const void* pData, const uint32_t width, const uint32_t height, const uint32_t channel) = 0;
 		virtual void* GetData() = 0;
 		virtual void* GetTexture()= 0;
 		virtual ETextureDataType GetType() = 0;
 
-		static std::shared_ptr<ITexture2D> Create(const ETextureDataType type, const uint32_t width, const uint32_t height, const uint8_t channel = 0, const uint8_t bytePerTexel = 4);
+		static std::shared_ptr<ITexture2D> Create(const ETextureDataType type, const uint32_t width, const uint32_t height);
 		static std::shared_ptr<ITexture2D> Create(const ETextureDataType type, const std::string& filepath);
 	};
 
@@ -67,7 +67,7 @@ namespace kepler {
 		virtual uint32_t GetDepth() const = 0;
 
 		virtual void Bind(const uint32_t slot = 0) = 0;
-		virtual void SetData(const void* pData, const uint32_t size) = 0;
+		virtual void SetData(const void* pData, const uint32_t size, const uint32_t channel) = 0;
 		virtual void* GetData() = 0;
 		virtual void* GetTexture() = 0;
 		virtual ETextureDataType GetType() = 0;
@@ -75,8 +75,6 @@ namespace kepler {
 		static std::shared_ptr<ITexture3D> Create(const ETextureDataType type,
 			const uint32_t width,
 			const uint32_t height,
-			const uint32_t depth,
-			const uint8_t channel,
-			const uint8_t bytePerTexel);
+			const uint32_t depth);
 	};
 }

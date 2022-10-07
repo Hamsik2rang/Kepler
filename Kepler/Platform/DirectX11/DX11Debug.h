@@ -19,6 +19,4 @@ namespace kepler {
 		bool Init();
 		void CheckReferenceCount();
 	};
-
-
 }

@@ -10,7 +10,7 @@ public:
 	Client()
 		: Application(kepler::EGraphicsAPI::DirectX11)
 	{
-		PushLayer(new InstLayer);
+		PushLayer(new ResearchLayer);
 	}
 	~Client()
 	{
