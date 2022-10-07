@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Panels\HierarchyPanel.cpp" />
     <ClCompile Include="Sources\TelescopeApp.cpp" />
     <ClCompile Include="Sources\EditorLayer.cpp" />
   </ItemGroup>
@@ -151,6 +152,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\EditorLayer.h" />
+    <ClInclude Include="Sources\Panels\HierarchyPanel.h" />
+    <ClInclude Include="Sources\Panels\Panel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
