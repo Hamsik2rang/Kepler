@@ -7,7 +7,7 @@
 
 namespace kepler {
 
-	enum class eShaderType
+	enum class EShaderType
 	{
 		None = 0,
 		Vertex,
@@ -58,13 +58,13 @@ namespace kepler {
 		static void Add(const std::string& name, const std::shared_ptr<IShader>& shader);	// 로드한 쉐이더 프로그램을 table에 추가합니다
 	public:
 
-		static std::shared_ptr<IShader> Load(const eShaderType& type, const std::string& filepath);
-		static std::shared_ptr<IShader> Load(const eShaderType& type, const std::string& name, const std::string& filepath);
+		static std::shared_ptr<IShader> Load(const EShaderType& type, const std::string& filepath);
+		static std::shared_ptr<IShader> Load(const EShaderType& type, const std::string& name, const std::string& filepath);
 
 		static bool IsLoaded(const std::string& name);
 		static std::shared_ptr<IShader> GetShader(const std::string& name);
-		static std::shared_ptr<IShader> GetLastCachedShader(const eShaderType& type);		// 프로그램 타입에 따라 가장 마지막으로 bind된 쉐이더를 참조합니다
-		static void SetLastCachedShader(const eShaderType& type, const std::string& name);	// 쉐이더 Bind시 자동으로 호출됩니다. 일반적으로 사용자가 호출하지 않습니다.
+		static std::shared_ptr<IShader> GetLastCachedShader(const EShaderType& type);		// 프로그램 타입에 따라 가장 마지막으로 bind된 쉐이더를 참조합니다
+		static void SetLastCachedShader(const EShaderType& type, const std::string& name);	// 쉐이더 Bind시 자동으로 호출됩니다. 일반적으로 사용자가 호출하지 않습니다.
 	};
 	// Shader Interface
 	class IShader
@@ -86,10 +86,10 @@ namespace kepler {
 
 		virtual void SetName(const std::string& name) = 0;
 		virtual std::string GetName() const = 0;
-		virtual eShaderType GetType() const = 0;
+		virtual EShaderType GetType() const = 0;
 		virtual uint32_t GetInputElementSlot(const std::string& paramName, const uint32_t paramIndex = 0) const = 0;	// 쉐이더의 Input Layout을 기반으로 InputSlot을 찾아 반환합니다.
 
-		static std::shared_ptr<IShader> Create(const eShaderType& type, const std::string& filepath);
-		static std::shared_ptr<IShader> Create(const eShaderType& type, const std::string& name, const std::string& filepath);
+		static std::shared_ptr<IShader> Create(const EShaderType& type, const std::string& filepath);
+		static std::shared_ptr<IShader> Create(const EShaderType& type, const std::string& name, const std::string& filepath);
 	};
 }

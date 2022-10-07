@@ -27,7 +27,7 @@ namespace kepler {
 		std::vector<char*>			m_pByteBuffer;			// constant buffer와 매핑된 byte 메모리
 
 		std::string			m_name;
-		const eShaderType	m_type;
+		const EShaderType	m_type;
 
 		void Init(const std::string& filepath);
 		void Compile(ID3DBlob** ppOutBlob, const std::string& filepath, const std::string& entryPointName = "main");
@@ -40,8 +40,8 @@ namespace kepler {
 		void UpdateConstantBuffer(const int index);
 
 	public:
-		DX11Shader(const eShaderType& type, const std::string& filepath);
-		DX11Shader(const eShaderType& type, const std::string& name, const std::string& filepath);
+		DX11Shader(const EShaderType& type, const std::string& filepath);
+		DX11Shader(const EShaderType& type, const std::string& name, const std::string& filepath);
 
 		virtual ~DX11Shader() override;
 		// Inherited via IShader
@@ -58,7 +58,7 @@ namespace kepler {
 
 		inline virtual void SetName(const std::string& name) override { m_name = name; }
 		inline virtual std::string GetName() const override { return m_name; }
-		inline virtual eShaderType GetType() const override { return m_type; }
+		inline virtual EShaderType GetType() const override { return m_type; }
 		virtual uint32_t GetInputElementSlot(const std::string& paramName, const uint32_t paramIndex) const override;
 	};
 }

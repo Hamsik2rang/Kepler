@@ -26,7 +26,7 @@ namespace kepler {
 
 		virtual ~DX11State();
 
-		virtual void SetShaderState(const eShaderType& type, const std::shared_ptr<IShader>& pShader);
+		virtual void SetShaderState(const EShaderType& type, const std::shared_ptr<IShader>& pShader);
 		inline virtual void SetShaderState(ShaderStateDescription& desc) { s_shaderDesc = desc; m_bShaderStateChaged = true; }
 		inline virtual void SetRasterizerState(RasterizerStateDescription& desc) { s_rasterizerDesc = desc; m_bRasterizerStateChanged = true; }
 		inline virtual void SetDepthState(DepthStateDescription& desc) { s_depthDesc = desc; m_bDepthStateChanged = true; }

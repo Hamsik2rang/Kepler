@@ -7,7 +7,7 @@
 namespace kepler {
 
 	//////////// Shader ////////////
-	std::shared_ptr<IShader> IShader::Create(const eShaderType& type, const std::string& filepath)
+	std::shared_ptr<IShader> IShader::Create(const EShaderType& type, const std::string& filepath)
 	{
 		EGraphicsAPI api = IGraphicsAPI::GetAPI();
 		switch (api)
@@ -27,7 +27,7 @@ namespace kepler {
 		return nullptr;
 	}
 
-	std::shared_ptr<IShader> IShader::Create(const eShaderType& type, const std::string& name, const std::string& filepath)
+	std::shared_ptr<IShader> IShader::Create(const EShaderType& type, const std::string& name, const std::string& filepath)
 	{
 		EGraphicsAPI api = IGraphicsAPI::GetAPI();
 		switch (api)
@@ -55,7 +55,7 @@ namespace kepler {
 		s_shaderTable.insert(std::make_pair(name, shader));
 	}
 
-	std::shared_ptr<IShader> ShaderCache::Load(const eShaderType& type, const std::string& filepath)
+	std::shared_ptr<IShader> ShaderCache::Load(const EShaderType& type, const std::string& filepath)
 	{
 		size_t dirIndex = filepath.find_last_of('/');
 		size_t dotIndex = filepath.find_last_of('.');
@@ -66,7 +66,7 @@ namespace kepler {
 		return s_shaderTable[name];
 	}
 
-	std::shared_ptr<IShader> ShaderCache::Load(const eShaderType& type, const std::string& name, const std::string& filepath)
+	std::shared_ptr<IShader> ShaderCache::Load(const EShaderType& type, const std::string& name, const std::string& filepath)
 	{
 		std::shared_ptr<IShader> shader = IShader::Create(type, name, filepath);
 		Add(name, shader);

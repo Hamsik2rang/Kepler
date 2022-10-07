@@ -183,7 +183,7 @@ namespace kepler {
 		virtual const BlendStateDescription& GetBlendState() const { return s_blendDesc; }
 
 		virtual void SetShaderState(ShaderStateDescription& desc) = 0;
-		virtual void SetShaderState(const eShaderType& type, const std::shared_ptr<IShader>& pShader) = 0;
+		virtual void SetShaderState(const EShaderType& type, const std::shared_ptr<IShader>& pShader) = 0;
 		virtual void SetRasterizerState(RasterizerStateDescription& desc) = 0;
 		virtual void SetDepthState(DepthStateDescription& desc) = 0;
 		virtual void SetStencilState(StencilStateDescription& desc) = 0;

@@ -38,15 +38,15 @@ namespace kepler {
 		}
 	}
 
-	void DX11State::SetShaderState(const eShaderType& type, const std::shared_ptr<IShader>& pShader)
+	void DX11State::SetShaderState(const EShaderType& type, const std::shared_ptr<IShader>& pShader)
 	{
 		switch (type)
 		{
-		case eShaderType::Vertex:	s_shaderDesc.pVertexShader = pShader;	break;
-		case eShaderType::Hull:		s_shaderDesc.pHullShader = pShader;		break;
-		case eShaderType::Domain:	s_shaderDesc.pDomainShader = pShader;	break;
-		case eShaderType::Geometry:	s_shaderDesc.pGeometryShader = pShader; break;
-		case eShaderType::Pixel:	s_shaderDesc.pPixelShader = pShader;	break;
+		case EShaderType::Vertex:	s_shaderDesc.pVertexShader = pShader;	break;
+		case EShaderType::Hull:		s_shaderDesc.pHullShader = pShader;		break;
+		case EShaderType::Domain:	s_shaderDesc.pDomainShader = pShader;	break;
+		case EShaderType::Geometry:	s_shaderDesc.pGeometryShader = pShader; break;
+		case EShaderType::Pixel:	s_shaderDesc.pPixelShader = pShader;	break;
 		}
 
 		m_bShaderStateChaged = true;

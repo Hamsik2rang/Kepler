@@ -7,7 +7,7 @@
 
 namespace kepler {
 
-	DX11Shader::DX11Shader(const eShaderType& type, const std::string& filepath)
+	DX11Shader::DX11Shader(const EShaderType& type, const std::string& filepath)
 		: m_type{ type }
 		, m_pVoidShader{ nullptr }
 		, m_pReflection{ nullptr }
@@ -16,7 +16,7 @@ namespace kepler {
 		Init(filepath);
 	}
 
-	DX11Shader::DX11Shader(const eShaderType& type, const std::string& name, const std::string& filepath)
+	DX11Shader::DX11Shader(const EShaderType& type, const std::string& name, const std::string& filepath)
 		: m_type{ type }
 		, m_pVoidShader{ nullptr }
 		, m_name{ name }
@@ -43,12 +43,12 @@ namespace kepler {
 		{
 			switch (m_type)
 			{
-			case eShaderType::Vertex:	m_pVertexShader->Release();		break;
-			case eShaderType::Geometry: m_pGeometryShader->Release();	break;
-			case eShaderType::Pixel:	m_pPixelShader->Release();		break;
-			case eShaderType::Domain:	m_pDomainShader->Release();		break;
-			case eShaderType::Hull:		m_pHullShader->Release();		break;
-			case eShaderType::Compute:	m_pComputeShader->Release();	break;
+			case EShaderType::Vertex:	m_pVertexShader->Release();		break;
+			case EShaderType::Geometry: m_pGeometryShader->Release();	break;
+			case EShaderType::Pixel:	m_pPixelShader->Release();		break;
+			case EShaderType::Domain:	m_pDomainShader->Release();		break;
+			case EShaderType::Hull:		m_pHullShader->Release();		break;
+			case EShaderType::Compute:	m_pComputeShader->Release();	break;
 			}
 			m_pVertexShader = nullptr;
 		}
@@ -83,7 +83,7 @@ namespace kepler {
 		Compile(&pBlob, filepath);
 		Create(pBlob);
 		InitReflection(pBlob);
-		if (m_type == eShaderType::Vertex) 
+		if (m_type == EShaderType::Vertex) 
 		{
 			InitVertexLayout(pBlob);
 		}
@@ -104,22 +104,22 @@ namespace kepler {
 		std::string target{ "" };
 		switch (m_type)
 		{
-		case eShaderType::Vertex:
+		case EShaderType::Vertex:
 			target = "vs_5_0";
 			break;
-		case eShaderType::Geometry:
+		case EShaderType::Geometry:
 			target = "gs_5_0";
 			break;
-		case eShaderType::Pixel:
+		case EShaderType::Pixel:
 			target = "ps_5_0";
 			break;
-		case eShaderType::Hull:
+		case EShaderType::Hull:
 			target = "hs_5_0";
 			break;
-		case eShaderType::Domain:
+		case EShaderType::Domain:
 			target = "ds_5_0";
 			break;
-		case eShaderType::Compute:
+		case EShaderType::Compute:
 			target = "cs_5_0";
 			break;
 		default:
@@ -156,22 +156,22 @@ namespace kepler {
 		HRESULT hr = S_OK;
 		switch (m_type)
 		{
-		case eShaderType::Vertex:
+		case EShaderType::Vertex:
 			hr = pDevice->CreateVertexShader(pInBlob->GetBufferPointer(), pInBlob->GetBufferSize(), nullptr, &m_pVertexShader);
 			break;
-		case eShaderType::Geometry:
+		case EShaderType::Geometry:
 			hr = pDevice->CreateGeometryShader(pInBlob->GetBufferPointer(), pInBlob->GetBufferSize(), nullptr, &m_pGeometryShader);
 			break;
-		case eShaderType::Pixel:
+		case EShaderType::Pixel:
 			hr = pDevice->CreatePixelShader(pInBlob->GetBufferPointer(), pInBlob->GetBufferSize(), nullptr, &m_pPixelShader);
 			break;
-		case eShaderType::Domain:
+		case EShaderType::Domain:
 			hr = pDevice->CreateDomainShader(pInBlob->GetBufferPointer(), pInBlob->GetBufferSize(), nullptr, &m_pDomainShader);
 			break;
-		case eShaderType::Hull:
+		case EShaderType::Hull:
 			hr = pDevice->CreateHullShader(pInBlob->GetBufferPointer(), pInBlob->GetBufferSize(), nullptr, &m_pHullShader);
 			break;
-		case eShaderType::Compute:
+		case EShaderType::Compute:
 			hr = pDevice->CreateComputeShader(pInBlob->GetBufferPointer(), pInBlob->GetBufferSize(), nullptr, &m_pComputeShader);
 			break;
 		}
@@ -212,6 +212,7 @@ namespace kepler {
 			curDesc.SemanticIndex = paramDesc.SemanticIndex;
 			curDesc.InputSlot = paramIndex;
 			curDesc.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+
 			// TODO: Reflected된 변수의 InputClass를 구분하는 더 좋은 방법 찾아보기
 			// 현재 semantic name이 INST로 시작하는 경우에만 인스턴스 데이터로 규정하는데 
 			// 이 경우 실수로 쉐이더 코드의 데이터 이름이 잘못 설정되면 인식하지 못하게 됨.
@@ -228,7 +229,7 @@ namespace kepler {
 			}
 
 			// 0b0001
-			if (paramDesc.Mask == 1)		
+			if (paramDesc.Mask == 1)
 			{
 				if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_UINT32) curDesc.Format = DXGI_FORMAT_R32_UINT;
 				else if (paramDesc.ComponentType == D3D_REGISTER_COMPONENT_SINT32) curDesc.Format = DXGI_FORMAT_R32_SINT;
@@ -323,7 +324,7 @@ namespace kepler {
 					delete[] buffer;
 					return;
 				}
-					
+				
 				D3D11_SHADER_VARIABLE_DESC varDesc{};
 				HRESULT hr = pVariableReflection->GetDesc(&varDesc);
 				if (FAILED(hr))
@@ -362,13 +363,13 @@ namespace kepler {
 		ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 		switch (m_type)
 		{
-		case eShaderType::Vertex:	pDeviceContext->IASetInputLayout(m_pVertexLayout); 
+		case EShaderType::Vertex:	pDeviceContext->IASetInputLayout(m_pVertexLayout); 
 									pDeviceContext->VSSetShader(m_pVertexShader, nullptr, 0);	break;
-		case eShaderType::Geometry: pDeviceContext->GSSetShader(m_pGeometryShader, nullptr, 0);	break;
-		case eShaderType::Pixel:	pDeviceContext->PSSetShader(m_pPixelShader, nullptr, 0);	break;
-		case eShaderType::Domain:	pDeviceContext->DSSetShader(m_pDomainShader, nullptr, 0);	break;
-		case eShaderType::Hull:		pDeviceContext->HSSetShader(m_pHullShader, nullptr, 0);		break;
-		case eShaderType::Compute:	pDeviceContext->CSSetShader(m_pComputeShader, nullptr, 0);	break;
+		case EShaderType::Geometry: pDeviceContext->GSSetShader(m_pGeometryShader, nullptr, 0);	break;
+		case EShaderType::Pixel:	pDeviceContext->PSSetShader(m_pPixelShader, nullptr, 0);	break;
+		case EShaderType::Domain:	pDeviceContext->DSSetShader(m_pDomainShader, nullptr, 0);	break;
+		case EShaderType::Hull:		pDeviceContext->HSSetShader(m_pHullShader, nullptr, 0);		break;
+		case EShaderType::Compute:	pDeviceContext->CSSetShader(m_pComputeShader, nullptr, 0);	break;
 		}
 
 		IRenderState::Get()->SetShaderState(m_type, ShaderCache::GetShader(m_name));
@@ -380,13 +381,13 @@ namespace kepler {
 		ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
 		switch (m_type)
 		{
-		case eShaderType::Vertex:	pDeviceContext->IASetInputLayout(nullptr); 
+		case EShaderType::Vertex:	pDeviceContext->IASetInputLayout(nullptr); 
 									pDeviceContext->VSSetShader(nullptr, nullptr, 0);	break;
-		case eShaderType::Geometry: pDeviceContext->GSSetShader(nullptr, nullptr, 0);	break;
-		case eShaderType::Pixel:	pDeviceContext->PSSetShader(nullptr, nullptr, 0);	break;
-		case eShaderType::Domain:	pDeviceContext->DSSetShader(nullptr, nullptr, 0);	break;
-		case eShaderType::Hull:		pDeviceContext->HSSetShader(nullptr, nullptr, 0);	break;
-		case eShaderType::Compute:	pDeviceContext->CSSetShader(nullptr, nullptr, 0);	break;
+		case EShaderType::Geometry: pDeviceContext->GSSetShader(nullptr, nullptr, 0);	break;
+		case EShaderType::Pixel:	pDeviceContext->PSSetShader(nullptr, nullptr, 0);	break;
+		case EShaderType::Domain:	pDeviceContext->DSSetShader(nullptr, nullptr, 0);	break;
+		case EShaderType::Hull:		pDeviceContext->HSSetShader(nullptr, nullptr, 0);	break;
+		case EShaderType::Compute:	pDeviceContext->CSSetShader(nullptr, nullptr, 0);	break;
 		}
 
 		IRenderState::Get()->SetShaderState(m_type, nullptr);
@@ -450,12 +451,12 @@ namespace kepler {
 
 		switch (m_type)
 		{
-		case eShaderType::Vertex:	pDeviceContext->VSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
-		case eShaderType::Geometry: pDeviceContext->GSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
-		case eShaderType::Pixel:	pDeviceContext->PSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
-		case eShaderType::Domain:	pDeviceContext->DSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
-		case eShaderType::Hull:		pDeviceContext->HSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
-		case eShaderType::Compute:	pDeviceContext->CSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
+		case EShaderType::Vertex:	pDeviceContext->VSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
+		case EShaderType::Geometry: pDeviceContext->GSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
+		case EShaderType::Pixel:	pDeviceContext->PSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
+		case EShaderType::Domain:	pDeviceContext->DSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
+		case EShaderType::Hull:		pDeviceContext->HSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
+		case EShaderType::Compute:	pDeviceContext->CSSetConstantBuffers(index, 1, &m_ppConstantBuffers[index]);	break;
 		}
 	}
 
