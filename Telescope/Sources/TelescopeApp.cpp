@@ -10,7 +10,7 @@ public:
 	Editor()
 		: Application(kepler::EGraphicsAPI::DirectX11)
 	{
-		PushLayer(new EditorLayer);
+		PushLayer(new kepler::EditorLayer);
 	}
 
 	~Editor()

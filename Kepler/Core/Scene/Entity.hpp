@@ -18,7 +18,7 @@ namespace kepler {
 		UUID m_uuid;
 		std::vector<IComponent*> m_pComponents;
 		uint64_t m_componentFlag;
-		Scene* m_pScene;
+		Scene* m_scene;
 
 	public:
 		Entity(Scene* pScene);
@@ -60,7 +60,7 @@ namespace kepler {
 			}
 
 			auto index = TComponent::GetStaticIndex();
-			m_pScene->Remove(*this, index);
+			m_scene->Remove(*this, index);
 
 			auto flag = TComponent::GetStaticFlag();
 			m_componentFlag &= ~flag;
@@ -85,7 +85,7 @@ namespace kepler {
 			auto index = TComponent::GetStaticIndex();
 			m_pComponents.push_back(pComponent);
 			pComponent->SetOwner(this);
-			m_pScene->Register(this, pComponent, index);
+			m_scene->Register(this, pComponent, index);
 
 			auto flag = TComponent::GetStaticFlag();
 			m_componentFlag |= flag;
