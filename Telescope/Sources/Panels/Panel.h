@@ -12,6 +12,11 @@ namespace kepler {
 		UUID m_id;
 
 	public:
+		IPanel(Scene* pContext)
+			: m_pContext{ pContext }
+			, m_id{ UUID() }
+		{}
+
 		virtual void OnImGuiRender() = 0;
 		virtual void SetContext(Scene* pScene) = 0;
 		virtual const Scene* GetContext() const = 0;

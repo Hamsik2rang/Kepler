@@ -13,11 +13,12 @@ namespace kepler {
 		ImGuiDockNodeFlags m_dockspaceFlags;
 
 	public:
-		DockspacePanel()
+		DockspacePanel(Scene* pContext)
 			: m_bPadding{ false }
 			, m_bDockspaceOpen{ true }
 			, m_bDockspaceFull{ true }
 			, m_dockspaceFlags{ ImGuiDockNodeFlags_None }
+			, IPanel(pContext)
 		{}
 
 		virtual void OnImGuiRender() override;

@@ -15,12 +15,13 @@ namespace kepler {
 
 
 	public:
-		SceneViewPanel()
+		SceneViewPanel(Scene* pContext)
 			: m_bIsSceneFocuced{ false }
 			, m_viewportWidth{ 0.0f }
 			, m_viewportHeight{ 0.0f }
 			, m_lastViewportWidth{ 0.0f }
 			, m_lastViewportHeight{ 0.0f }
+			, IPanel(pContext)
 		{}
 
 		virtual void OnImGuiRender() override;

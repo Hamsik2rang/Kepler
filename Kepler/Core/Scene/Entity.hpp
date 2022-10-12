@@ -15,15 +15,22 @@ namespace kepler {
 	class Entity
 	{
 	private:
-		UUID m_uuid;
-		std::vector<IComponent*> m_pComponents;
-		uint64_t m_componentFlag;
-		Scene* m_scene;
+		UUID						m_uuid;
+		uint64_t					m_componentFlag;
+		Scene*						m_scene;
+		Entity*						m_pParent;
+		std::vector<Entity*>		m_pChildren;
+		std::vector<IComponent*>	m_pComponents;
 
 	public:
 		Entity(Scene* pScene);
 		Entity(Scene* pScene, const UUID& uuid);
 		~Entity();
+
+		void SetParentEntity(Entity* pEntity);
+		void AddChildEntity(Entity* pEntity);
+		inline Entity* GetParentEntity() { return m_pParent; }
+		inline std::vector<Entity*> GetChildrenEntity() { return m_pChildren; }
 
 		// \brief Entity의 UUID(Universally Unique ID)를 리턴합니다.
 		// \return Entity의 UUID

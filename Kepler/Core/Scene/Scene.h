@@ -56,6 +56,9 @@ namespace kepler {
 		// 포함된 모든 Entity와 Component도 함께 제거됩니다.
 		void Destroy();
 
+		// \brief Scene 안의 모든 오브젝트에 대해 동일한 함수를 적용합니다.
+		void Each(std::function<void(Entity*)> callback);
+
 		// \brief 탬플릿 파라미터로 전달받은 컴포넌트들을 모두 가진 모든 Entity를 리턴합니다.
 		// \tparam ...TComponent Entity가 가지고 있어야 하는 컴포넌트들
 		// \return 조건을 만족하는 Entity*의 std::vector 컨테이너
@@ -76,17 +79,5 @@ namespace kepler {
 			return view;
 		}
 
-		template <typename ... TComponent>
-		void Each(std::function<void(Entity*)> callback)
-		{
-			uint64_t flag = ConvertTypeToFlag<TComponent...>();
-			for (const auto entity : m_pEntityList)
-			{
-				if ((entity->GetComponentFlag() & flag) == flag)
-				{
-					callback(entity);
-				}
-			}
-		}
 	};
 }

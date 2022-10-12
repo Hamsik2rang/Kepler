@@ -35,6 +35,10 @@ namespace kepler {
 			, m_time{ 0.0f }
 			, m_bIsSceneFocuced{ false }
 			, m_pCubeEntity{ nullptr }
+			, m_dockspacePanel{ &m_scene }
+			, m_sceneViewPanel{ &m_scene }
+			, m_hierarchyPanel{ &m_scene }
+			, m_inspectorPanel{ &m_scene }
 		{}
 
 		virtual void OnAttach() override;

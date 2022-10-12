@@ -80,4 +80,12 @@ namespace kepler {
 			}
 		}
 	}
+
+	void Scene::Each(std::function<void(Entity*)> callback)
+	{
+		for (const auto entity : m_pEntityList)
+		{
+			callback(entity);
+		}
+	}
 }

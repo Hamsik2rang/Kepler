@@ -14,6 +14,7 @@ namespace kepler {
 		: m_scene{ pScene }
 		, m_uuid{ uuid }
 		, m_componentFlag{ 0u }
+		, m_pParent{ nullptr }
 	{
 
 	}
@@ -21,5 +22,19 @@ namespace kepler {
 	Entity::~Entity()
 	{
 
+	}
+
+	void Entity::SetParentEntity(Entity* pEntity)
+	{
+		m_pParent = pEntity;
+	}
+
+	void Entity::AddChildEntity(Entity* pEntity)
+	{
+		if (std::find(m_pChildren.begin(), m_pChildren.end(), pEntity) != m_pChildren.end())
+		{
+			return;
+		}
+		m_pChildren.push_back(pEntity);
 	}
 }
