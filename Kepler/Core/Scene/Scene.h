@@ -75,5 +75,18 @@ namespace kepler {
 
 			return view;
 		}
+
+		template <typename ... TComponent>
+		void Each(std::function<void(Entity*)> callback)
+		{
+			uint64_t flag = ConvertTypeToFlag<TComponent...>();
+			for (const auto entity : m_pEntityList)
+			{
+				if ((entity->GetComponentFlag() & flag) == flag)
+				{
+					callback(entity);
+				}
+			}
+		}
 	};
 }

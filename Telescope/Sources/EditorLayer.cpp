@@ -80,6 +80,7 @@ namespace kepler {
 		m_pCubeEntity = m_scene.CreateEntity();
 		m_pCubeEntity->AddComponent<TransformComponent>(Vec3f{ 0.0f, 0.0f, 4.0f }, Vec3f{ 0.0f, 0.0f, 0.0f }, Vec3f{ 1.0f, 1.0f, 1.0f });
 		m_pCubeEntity->AddComponent<MeshRendererComponent>(pCubeVA);
+		m_pCubeEntity->AddComponent<TagComponent>("Test Cube");
 
 		m_dockspacePanel.SetContext(&m_scene);
 		m_sceneViewPanel.SetContext(&m_scene);

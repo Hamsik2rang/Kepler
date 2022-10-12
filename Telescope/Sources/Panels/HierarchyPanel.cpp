@@ -7,9 +7,11 @@ namespace kepler {
 		ImGui::Begin("Hierarchy");
 
 		//...
-
-		ImGui::Text("Cube");
-		ImGui::Text("Cube(1)");
+		m_pContext->Each<TagComponent>([](Entity* pEntity)->void
+			{
+				TagComponent* tc = pEntity->GetComponent<TagComponent>();
+				ImGui::Text(tc->name.c_str());
+			});
 
 		ImGui::End();
 	}
