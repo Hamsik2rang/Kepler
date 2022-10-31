@@ -63,13 +63,13 @@ void EditorLayer::OnAttach()
 		23,20,22
 	};
 
-	std::shared_ptr<kepler::IVertexBuffer> pVB = kepler::IVertexBuffer::Create(vertices, sizeof(vertices), kepler::eBufferUsage::Default);
+	std::shared_ptr<kepler::IVertexBuffer> pVB = kepler::IVertexBuffer::Create(vertices, sizeof(vertices), kepler::EBufferUsage::Default);
 	pVB->SetLayout({
-		{"POSITION", 0, kepler::eShaderDataType::Float3, 0, sizeof(float) * 3},
-		{"COLOR", 0, kepler::eShaderDataType::Float4, sizeof(float) * 3, sizeof(float) * 4}
+		{"POSITION", 0, kepler::EShaderDataType::Float3, 0, sizeof(float) * 3},
+		{"COLOR", 0, kepler::EShaderDataType::Float4, sizeof(float) * 3, sizeof(float) * 4}
 		});
 
-	std::shared_ptr<kepler::IIndexBuffer> pIB = kepler::IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), kepler::eBufferUsage::Default);
+	std::shared_ptr<kepler::IIndexBuffer> pIB = kepler::IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), kepler::EBufferUsage::Default);
 
 	auto pCubeVA = kepler::IVertexArray::Create();
 	pCubeVA->AddVertexBuffer(pVB);
