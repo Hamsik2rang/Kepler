@@ -113,57 +113,17 @@ bool kepler::DX11Context::Init(const WindowData& data)
     blendDesc.RenderTarget[0].BlendEnable = true;
     blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
     blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-    
+
     blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
     blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_INV_DEST_ALPHA;
     blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
     blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
     blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-    
+
     m_pDevice->CreateBlendState(&blendDesc, &blendState);
     float blendFactor[4]{ 0.0f, 0.0f, 0.0f, 0.0f };
     uint32_t sampleMask = 0xffffffff;
     m_pImmediateContext->OMSetBlendState(blendState, blendFactor, sampleMask);
-
-    //// 깊이 버퍼를 초기화합니다.
-    //if (!InitDepthBuffer(data))
-    //{
-    //    KEPLER_CORE_ASSERT(false, "Fail to Initialize Depth Buffer");
-    //    return false;
-    //}
-    //
-    //// 깊이 버퍼를 초기화합니다.
-    //if (!InitDepthStencil(data))
-    //{
-    //    KEPLER_CORE_ASSERT(false, "Fail to Initialize Depth Stencil");
-    //    return false;
-    //}
-    //
-    //// 렌더링 대상 뷰와 깊이 스텐실 버퍼를 출력 렌더 파이프 라인에 바인딩합니다
-    //m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
-    //
-    //// 그려지는 폴리곤과 방법을 결정할 래스터 구조체를 설정합니다
-    //D3D11_RASTERIZER_DESC rasterDesc{};
-    //rasterDesc.AntialiasedLineEnable = false;
-    //rasterDesc.CullMode = D3D11_CULL_BACK;
-    //rasterDesc.DepthBias = 0;
-    //rasterDesc.DepthBiasClamp = 0.0f;
-    //rasterDesc.DepthClipEnable = true;
-    //rasterDesc.FillMode = D3D11_FILL_SOLID;
-    //rasterDesc.FrontCounterClockwise = false;
-    //rasterDesc.MultisampleEnable = false;
-    //rasterDesc.ScissorEnable = false;
-    //rasterDesc.SlopeScaledDepthBias = 0.0f;
-    //
-    //// 래스터 구조체에서 래스터 라이저 상태를 만듭니다
-    //if (FAILED(m_pDevice->CreateRasterizerState(&rasterDesc, &m_pRasterState)))
-    //{
-    //    KEPLER_CORE_ASSERT(false, "Fail to Create Raster State");
-    //    return false;
-    //}
-    //
-    //// 이제 래스터 라이저 상태를 설정합니다
-    //m_pImmediateContext->RSSetState(m_pRasterState);
 
     return true;
 }
