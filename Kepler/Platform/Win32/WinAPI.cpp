@@ -50,15 +50,19 @@ namespace kepler {
 		auto wTitle = utility::StringToWstring(title);
 		DWORD dwStyle = WS_OVERLAPPEDWINDOW;
 		
+		int dwFrameX = GetSystemMetrics(SM_CXFRAME);
+		int dwFrameY = GetSystemMetrics(SM_CYFRAME);
+		int dwCaptionY = GetSystemMetrics(SM_CYCAPTION);
+
 		HWND hWnd = nullptr;
 		hWnd = CreateWindowW(wTitle.c_str(),
 			wTitle.c_str(), 
 			WS_OVERLAPPEDWINDOW,
 			CW_USEDEFAULT, 
 			0, 
-			(DWORD)width, 
-			(DWORD)height, 
-			nullptr, 
+			(DWORD)width + (dwFrameX * 2),
+			(DWORD)height + (dwFrameY * 2) + dwCaptionY,
+			nullptr,
 			nullptr, 
 			g_hInst,
 			0);
