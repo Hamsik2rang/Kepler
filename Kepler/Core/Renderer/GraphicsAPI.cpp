@@ -5,21 +5,21 @@
 
 namespace kepler {
 
-	EGraphicsAPI IGraphicsAPI::s_API = EGraphicsAPI::DirectX11;
+EGraphicsAPI IGraphicsAPI::s_API = EGraphicsAPI::DirectX11;
 
-	IGraphicsAPI* IGraphicsAPI::Create()
+IGraphicsAPI* IGraphicsAPI::Create()
+{
+	switch (s_API)
 	{
-		switch (s_API)
-		{
-		case EGraphicsAPI::None: 
-			KEPLER_CORE_ASSERT(false, "EGraphicsAPI::None is not supported");
-			return nullptr;
-		case EGraphicsAPI::DirectX11:
-			return new DX11API;
-		}
-
-		KEPLER_CORE_ASSERT(false, "unknown API");
+	case EGraphicsAPI::None:
+		KEPLER_CORE_ASSERT(false, "EGraphicsAPI::None is not supported");
 		return nullptr;
+	case EGraphicsAPI::DirectX11:
+		return new DX11API;
 	}
+
+	KEPLER_CORE_ASSERT(false, "unknown API");
+	return nullptr;
+}
 
 }

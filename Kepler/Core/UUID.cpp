@@ -5,15 +5,15 @@
 
 namespace kepler {
 
-	UUID::UUID()
-		: m_uuid{ Random::Uint64() }
-	{
+UUID::UUID()
+	: m_uuid{ Random::Uint64() }
+{
 
-	}
+}
 
-	UUID::UUID(uint64_t id)
-		: m_uuid{ id }
-	{
+UUID::UUID(uint64_t id)
+	: m_uuid{ id }
+{
 
-	}
+}
 }

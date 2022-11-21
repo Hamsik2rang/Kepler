@@ -12,20 +12,20 @@
 
 
 namespace kepler {
-	// Logger Class
-	// 인스턴스 없이 전역 사용을 위해 전부 static으로 선언합니다.
-	class Log
-	{
-	private:
-		static std::shared_ptr<spdlog::logger> s_pCoreLogger;
-		static std::shared_ptr<spdlog::logger> s_pClientLogger;
+// Logger Class
+// 인스턴스 없이 전역 사용을 위해 전부 static으로 선언합니다.
+class Log
+{
+private:
+	static std::shared_ptr<spdlog::logger> s_pCoreLogger;
+	static std::shared_ptr<spdlog::logger> s_pClientLogger;
 
-	public:
-		static void Init();
-		
-		inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_pCoreLogger; }
-		inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_pClientLogger; }
-	};
+public:
+	static void Init();
+
+	inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_pCoreLogger; }
+	inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_pClientLogger; }
+};
 }
 
 // Core Log macros

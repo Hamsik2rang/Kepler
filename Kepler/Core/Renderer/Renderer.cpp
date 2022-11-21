@@ -11,63 +11,64 @@
 #include "Core/Renderer/Shader.h"
 
 namespace kepler {
-	Renderer* Renderer::s_pInstance = nullptr;
 
-	Renderer* Renderer::Get()
-	{
-		if (!s_pInstance)
-		{
-			s_pInstance = new Renderer;
-		}
-		return s_pInstance;
-	}
+Renderer* Renderer::s_pInstance = nullptr;
 
-	void Renderer::Init()
+Renderer* Renderer::Get()
+{
+	if (!s_pInstance)
 	{
-		if (s_pInstance)
-		{
-			return;
-		}
 		s_pInstance = new Renderer;
 	}
+	return s_pInstance;
+}
 
-	Renderer::Renderer()
-		: m_pGraphicsAPI{ IGraphicsAPI::Create() }
+void Renderer::Init()
+{
+	if (s_pInstance)
 	{
-		IRenderState::Create();
+		return;
 	}
+	s_pInstance = new Renderer;
+}
 
-	Renderer::~Renderer()
-	{
+Renderer::Renderer()
+	: m_pGraphicsAPI{ IGraphicsAPI::Create() }
+{
+	IRenderState::Create();
+}
 
-	}
+Renderer::~Renderer()
+{
 
-	void Renderer::SetViewport(const uint32_t width, const uint32_t height, const float minDepth, const float maxDepth)
-	{
-		m_pGraphicsAPI->SetViewport(width, height, minDepth, maxDepth);
-	}
+}
 
-	void Renderer::BeginScene(Camera& camera)
-	{
-		Mat44f view = camera.GetViewMatrix();
-		Mat44f proj = camera.GetProjectionMatrix();
-		Mat44f viewProj = camera.GetViewProjectionMatrix();
-		auto shaderDesc = IRenderState::Get()->GetShaderState();
+void Renderer::SetViewport(const uint32_t width, const uint32_t height, const float minDepth, const float maxDepth)
+{
+	m_pGraphicsAPI->SetViewport(width, height, minDepth, maxDepth);
+}
 
-		shaderDesc.pVertexShader->SetMatrix("g_View", view.Transpose());
-		shaderDesc.pVertexShader->SetMatrix("g_Projection", proj.Transpose());
-		shaderDesc.pVertexShader->SetMatrix("g_ViewProjection", viewProj.Transpose());
-	}
+void Renderer::BeginScene(Camera& camera)
+{
+	Mat44f view = camera.GetViewMatrix();
+	Mat44f proj = camera.GetProjectionMatrix();
+	Mat44f viewProj = camera.GetViewProjectionMatrix();
+	auto shaderDesc = IRenderState::Get()->GetShaderState();
 
-	void Renderer::EndScene()
-	{
-		
-	}
+	shaderDesc.pVertexShader->SetMatrix("g_View", view.Transpose());
+	shaderDesc.pVertexShader->SetMatrix("g_Projection", proj.Transpose());
+	shaderDesc.pVertexShader->SetMatrix("g_ViewProjection", viewProj.Transpose());
+}
 
-	void Renderer::Submit(std::shared_ptr<IVertexArray>& pVertexArray, const Mat44f& transform)
-	{
-		auto shaderDesc = IRenderState::Get()->GetShaderState();
-		shaderDesc.pVertexShader->SetMatrix("g_World", transform);
-		m_pGraphicsAPI->DrawIndexed(pVertexArray);
-	}
+void Renderer::EndScene()
+{
+
+}
+
+void Renderer::Submit(std::shared_ptr<IVertexArray>& pVertexArray, const Mat44f& transform)
+{
+	auto shaderDesc = IRenderState::Get()->GetShaderState();
+	shaderDesc.pVertexShader->SetMatrix("g_World", transform);
+	m_pGraphicsAPI->DrawIndexed(pVertexArray);
+}
 }

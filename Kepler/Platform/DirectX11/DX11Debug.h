@@ -5,18 +5,18 @@
 
 namespace kepler {
 
-	class DX11Debug
-	{
-	private:
-		ID3D11Debug* m_pDebug;
-		ID3D11InfoQueue* m_pInfoQueue;
+class DX11Debug
+{
+private:
+	ID3D11Debug* m_pDebug;
+	ID3D11InfoQueue* m_pInfoQueue;
 
 
-	public:
-		DX11Debug();
-		~DX11Debug();
+public:
+	DX11Debug();
+	~DX11Debug();
 
-		bool Init();
-		void CheckReferenceCount();
-	};
+	bool Init();
+	void CheckReferenceCount();
+};
 }

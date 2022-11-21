@@ -5,38 +5,38 @@
 
 namespace kepler {
 
-	namespace component {
-		extern const uint16_t componentCount;
-	}
+namespace component {
+extern const uint16_t componentCount;
+}
 
-	enum class EComponentType
-	{
-		IComponent = 0,
-		TagComponent,
-		TransformComponent,
+enum class EComponentType
+{
+	IComponent = 0,
+	TagComponent,
+	TransformComponent,
 
-		MeshRendererComponent,
-		SpriteRendererComponent,
+	MeshRendererComponent,
+	SpriteRendererComponent,
 
-		InvalidComponent // (Im Yongsik) 타입 개수 표시자의 역할이므로 type enum의 가장 마지막에 위치해야 합니다.
-	};
+	InvalidComponent // (Im Yongsik) 타입 개수 표시자의 역할이므로 type enum의 가장 마지막에 위치해야 합니다.
+};
 
-	enum ComponentIndex
-	{
-		TagIndex = 0,
-		TransformIndex,
-		MeshRendererIndex,
-		SpriteRendererIndex,
-	};
+enum ComponentIndex
+{
+	TagIndex = 0,
+	TransformIndex,
+	MeshRendererIndex,
+	SpriteRendererIndex,
+};
 
-	enum ComponentFlag : uint64_t
-	{
-		BaseFlag = 0,
-		TagFlag = BIT_UINT64(0),
-		TransformFlag = BIT_UINT64(1),
-		MeshRendererFlag = BIT_UINT64(2),
-		SpriteRendererFlag = BIT_UINT64(3),
-	};
+enum ComponentFlag : uint64_t
+{
+	BaseFlag = 0,
+	TagFlag = BIT_UINT64(0),
+	TransformFlag = BIT_UINT64(1),
+	MeshRendererFlag = BIT_UINT64(2),
+	SpriteRendererFlag = BIT_UINT64(3),
+};
 
 
 #define COMPONENT_CLASS_TYPE(type) \
@@ -51,31 +51,31 @@ namespace kepler {
 	static ComponentFlag GetStaticFlag() { return ComponentFlag::##flag; } \
 	virtual ComponentFlag GetFlag() const override { return GetStaticFlag(); }
 
-	template <typename ... TComponent>
-	struct TypeToFlag;
+template <typename ... TComponent>
+struct TypeToFlag;
 
-	template <>
-	struct TypeToFlag<>
+template <>
+struct TypeToFlag<>
+{
+	uint64_t  operator()() const
 	{
-		uint64_t  operator()() const
-		{
-			return 0;
-		}
-	};
-
-	template <typename TComponent, typename ... TOther>
-	struct TypeToFlag<TComponent, TOther...>
-	{
-		uint64_t operator()() const
-		{
-			uint64_t bitset = (uint64_t)TComponent::GetStaticFlag() | (uint64_t)TypeToFlag<TOther...>()();
-			return bitset;
-		}
-	};
-
-	template <typename ... TComponent>
-	ComponentFlag ConvertTypeToFlag()
-	{
-		return (ComponentFlag)TypeToFlag<TComponent...>()();
+		return 0;
 	}
+};
+
+template <typename TComponent, typename ... TOther>
+struct TypeToFlag<TComponent, TOther...>
+{
+	uint64_t operator()() const
+	{
+		uint64_t bitset = (uint64_t)TComponent::GetStaticFlag() | (uint64_t)TypeToFlag<TOther...>()();
+		return bitset;
+	}
+};
+
+template <typename ... TComponent>
+ComponentFlag ConvertTypeToFlag()
+{
+	return (ComponentFlag)TypeToFlag<TComponent...>()();
+}
 }

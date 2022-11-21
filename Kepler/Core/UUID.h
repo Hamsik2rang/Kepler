@@ -5,29 +5,29 @@
 
 namespace kepler {
 
-	class UUID
-	{
-	private:
-		uint64_t m_uuid;
+class UUID
+{
+private:
+	uint64_t m_uuid;
 
-	public:
-		UUID();
-		UUID(uint64_t id);
-		UUID(const UUID& uuid) = default;
+public:
+	UUID();
+	UUID(uint64_t id);
+	UUID(const UUID& uuid) = default;
 
-		inline operator uint64_t() const { return m_uuid; }
-	};
+	inline operator uint64_t() const { return m_uuid; }
+};
 }
 
 namespace std {
-	template <typename T> struct hash;
+template <typename T> struct hash;
 
-	template<>
-	struct hash<kepler::UUID>
+template<>
+struct hash<kepler::UUID>
+{
+	std::size_t operator()(const kepler::UUID& uuid) const
 	{
-		std::size_t operator()(const kepler::UUID& uuid) const
-		{
-			return (uint64_t)uuid;
-		}
-	};
+		return (uint64_t)uuid;
+	}
+};
 }
