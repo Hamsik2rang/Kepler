@@ -5,25 +5,25 @@
 #include "Platform/DirectX11/DX11VertexArray.h"
 
 namespace kepler {
-	std::shared_ptr<IVertexArray> IVertexArray::Create()
+std::shared_ptr<IVertexArray> IVertexArray::Create()
+{
+	EGraphicsAPI api = IGraphicsAPI::GetAPI();
+
+	switch (api)
 	{
-		EGraphicsAPI api = IGraphicsAPI::GetAPI();
-
-		switch (api)
-		{
-		case EGraphicsAPI::None:
-			{
-				KEPLER_ASSERT(false, "None Graphics API is not suppotted");
-				return nullptr;
-			}
-		case EGraphicsAPI::DirectX11:
-			{
-				return std::make_shared<DX11VertexArray>();
-			}
-			//...
-		}
-
-		KEPLER_ASSERT(false, "Invalid Graphics API");
+	case EGraphicsAPI::None:
+	{
+		KEPLER_ASSERT(false, "None Graphics API is not suppotted");
 		return nullptr;
 	}
+	case EGraphicsAPI::DirectX11:
+	{
+		return std::make_shared<DX11VertexArray>();
+	}
+	//...
+	}
+
+	KEPLER_ASSERT(false, "Invalid Graphics API");
+	return nullptr;
+}
 }

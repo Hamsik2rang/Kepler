@@ -4,11 +4,11 @@
 
 namespace kepler {
 
-	Entity::Entity(Scene* pScene)
-		: Entity(pScene, UUID())
-	{
+Entity::Entity(Scene* pScene)
+	: Entity(pScene, UUID())
+{
 
-	}
+}
 
 	Entity::Entity(Scene* pScene, const UUID& uuid)
 		: m_scene{ pScene }
@@ -17,10 +17,10 @@ namespace kepler {
 		, m_pParent{ nullptr }
 	{
 
-	}
+}
 
-	Entity::~Entity()
-	{
+Entity::~Entity()
+{
 
 	}
 
