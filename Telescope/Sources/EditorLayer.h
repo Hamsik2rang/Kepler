@@ -39,7 +39,8 @@ namespace kepler {
 			, m_sceneViewPanel{ &m_scene }
 			, m_hierarchyPanel{ &m_scene }
 			, m_inspectorPanel{ &m_scene }
-		{}
+		{
+		}
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;

@@ -25,7 +25,7 @@ private:
 	bool OnMouseScrolledEvent(MouseScrolledEvent& e);
 	bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& e);
 
-	void UpdatePosition();
+	void UpdateInputValue();
 
 public:
 	EditorCamera() = default;

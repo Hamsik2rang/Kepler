@@ -37,6 +37,7 @@ Application::Application(EGraphicsAPI api)
 	m_pImGuiLayer->OnAttach();
 
 	m_bIsRunning = true;
+	KEPLER_CORE_INFO("Display Frequency is {0}", m_pWindow->GetDisplayFrequency());
 }
 
 // Release Core resources
@@ -89,7 +90,7 @@ void Application::Run()
 	{
 		float curTime = m_timer.Elapsed();
 		float deltaTime = curTime - lastTime;
-		if (deltaTime < 1.0f / 60.0f)
+		if (deltaTime < 1.0f / static_cast<float>(m_pWindow->GetDisplayFrequency()))
 		{
 			continue;
 		}

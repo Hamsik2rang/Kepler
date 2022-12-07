@@ -79,13 +79,12 @@ void Scene::Remove(Entity* pEntity, ComponentIndex index)
 			break;
 		}
 	}
-
-	void Scene::Each(std::function<void(Entity*)> callback)
+}
+void Scene::Each(std::function<void(Entity*)> callback)
+{
+	for (const auto entity : m_pEntityList)
 	{
-		for (const auto entity : m_pEntityList)
-		{
-			callback(entity);
-		}
+		callback(entity);
 	}
 }
 }

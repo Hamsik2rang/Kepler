@@ -227,7 +227,7 @@ void DX11FrameBuffer::DeleteGBuffer(uint8_t startSlot, uint8_t count)
 
 void DX11FrameBuffer::ResizeColorBuffer(uint32_t width, uint32_t height)
 {
-	//TODO: 추후 구현
+	//TODO: Implement it
 }
 
 void DX11FrameBuffer::ResizeGBuffer(uint8_t startSlot, uint8_t count, uint32_t width, uint32_t height)
@@ -265,7 +265,7 @@ void DX11FrameBuffer::CreateGBuffer(uint8_t index, uint32_t width, uint32_t heig
 // void ptr을 리턴하는 게 안전하지 않아 보이는데
 void* DX11FrameBuffer::GetBuffer(EFrameBufferType type, uint8_t index)
 {
-	// TODO: 임시 코드이므로 추후 개선해야 함.
+	// TODO: It is temporary code. it must be improved.
 	if (type == EFrameBufferType::Color)
 	{
 		return m_pTextures[index]->GetData();
