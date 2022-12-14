@@ -1,24 +1,24 @@
+#include "InstLayer.h"
 #include "Kepler.h"
 #include "ResearchLayer.h"
-#include "InstLayer.h"
 
 #include <Core/EntryPoint.h>
 
 class Client : public kepler::Application
 {
 public:
-	Client()
-		: Application(kepler::EGraphicsAPI::DirectX11)
-	{
-		PushLayer(new ResearchLayer);
-	}
-	~Client()
-	{
+    Client()
+        : Application(kepler::EGraphicsAPI::DirectX11)
+    {
+        PushLayer(new ResearchLayer);
+    }
+    ~Client()
+    {
 
-	}
+    }
 };
 
 kepler::Application* kepler::CreateApplication()
 {
-	return new Client();
+    return new Client();
 }
