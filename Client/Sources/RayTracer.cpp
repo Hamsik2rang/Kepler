@@ -3,7 +3,7 @@
 RayTracer::RayTracer()
 	: m_pSphere{nullptr}
 {
-	m_pSphere = new Sphere(kepler::Vec3f{ 0.0f, 0.0f, 100.0f }, 0.25f);
+	m_pSphere = new Sphere(kepler::Vec3f{ 0.0f, 0.0f, 100.0f }, 0.25f, kepler::Vec4f{0.0f, 0.0f, 1.0f, 1.0f});
 }
 
 RayTracer::~RayTracer()

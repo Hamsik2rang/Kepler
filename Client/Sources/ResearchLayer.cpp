@@ -20,6 +20,9 @@ void ResearchLayer::OnDetach()
 
 void ResearchLayer::OnUpdate(float deltaTime)
 {
+	m_rayTracer.SetCenter(m_circleCenterPos);
+	m_rayTracer.SetRadius(m_circleRadius);
+
 	auto pSpriteRendererComponent = m_pEntity->GetComponent<kepler::SpriteRendererComponent>();
 	uint8_t* pBuffer = new uint8_t[WIDTH * HEIGHT * 4];
 	for (int row = 0; row < HEIGHT; row++)
@@ -69,19 +72,12 @@ void ResearchLayer::OnRender()
 
 void ResearchLayer::OnGUIRender()
 {
-	static float color[3] = { m_circleColor.r / 255.0f, m_circleColor.g / 255.0f, m_circleColor.b / 255.0f };
-
 	ImGui::Begin("Hi.");
 	ImGui::Text("This is circle draw test.");
-	ImGui::ColorEdit3("circle color", (float*)&color);
-	m_circleColor.r = (uint8_t)(color[0] * 255.0f);
-	m_circleColor.g = (uint8_t)(color[1] * 255.0f);
-	m_circleColor.b = (uint8_t)(color[2] * 255.0f);
+	ImGui::SliderFloat("x of center", &m_circleCenterPos.x, -2.0f, 2.0f);
+	ImGui::SliderFloat("y of center", &m_circleCenterPos.y, -2.0f, 2.0f);
 
-	ImGui::SliderFloat("x of center", &m_circleCenterPos.x, 0.0f, WIDTH);
-	ImGui::SliderFloat("y of center", &m_circleCenterPos.y, 0.0f, HEIGHT);
-
-	ImGui::SliderFloat("radius", &m_circleRadius, 0.0f, 360.0f);
+	ImGui::SliderFloat("radius", &m_circleRadius, 0.0f, 1.0f);
 
 	ImGui::End();
 }
