@@ -8,12 +8,13 @@ class RayTracer
 {
 private:
 	Sphere* m_pSphere;
+	kepler::Vec3f m_lightPos;
 public:
 	RayTracer();
 	~RayTracer();
 
-	kepler::Vec4f TraceRay(Ray& ray);
-	inline void SetCenter(kepler::Vec3f center) { m_pSphere->SetCenter(center); }
-	inline void SetRadius(float radius) { m_pSphere->SetRadius(radius); }
-	inline void SetColor(kepler::Vec4f color) { m_pSphere->SetColor(color); }
+	kepler::Vec3f TraceRay(Ray& ray);
+	Sphere* GetSphere() { return m_pSphere; }
+	kepler::Vec3f GetLightPos() const { return m_lightPos; }
+	void SetLightPos(kepler::Vec3f position) { m_lightPos = position; }
 };

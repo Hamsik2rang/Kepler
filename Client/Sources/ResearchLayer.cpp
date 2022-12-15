@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "ResearchLayer.h"
 
-#define WIDTH 1600
+#define WIDTH 1600	
 #define HEIGHT 900
 
 void ResearchLayer::OnAttach()
@@ -20,9 +20,6 @@ void ResearchLayer::OnDetach()
 
 void ResearchLayer::OnUpdate(float deltaTime)
 {
-	m_rayTracer.SetCenter(m_circleCenterPos);
-	m_rayTracer.SetRadius(m_circleRadius);
-
 	auto pSpriteRendererComponent = m_pEntity->GetComponent<kepler::SpriteRendererComponent>();
 	uint8_t* pBuffer = new uint8_t[WIDTH * HEIGHT * 4];
 	for (int row = 0; row < HEIGHT; row++)
@@ -43,10 +40,10 @@ void ResearchLayer::OnUpdate(float deltaTime)
 
 			Ray pixelRay{ kepler::Vec3f{curCol, curRow, 0.0f}, rayDir };
 
-			const kepler::Vec4f color = m_rayTracer.TraceRay(pixelRay);
-			pBuffer[curByteIndex + 0] = (uint8_t)(color.r * 255.0f);
-			pBuffer[curByteIndex + 1] = (uint8_t)(color.g * 255.0f);
-			pBuffer[curByteIndex + 2] = (uint8_t)(color.b * 255.0f);
+			const kepler::Vec3f color = m_rayTracer.TraceRay(pixelRay);
+			pBuffer[curByteIndex + 0] = (uint8_t)(std::min(color.r,1.0f) * 255.0f);
+			pBuffer[curByteIndex + 1] = (uint8_t)(std::min(color.g,1.0f) * 255.0f);
+			pBuffer[curByteIndex + 2] = (uint8_t)(std::min(color.b,1.0f) * 255.0f);
 			pBuffer[curByteIndex + 3] = 255;
 		}
 	}
@@ -72,12 +69,22 @@ void ResearchLayer::OnRender()
 
 void ResearchLayer::OnGUIRender()
 {
+	static float lightPos[3]{ 0.0f, 0.0f, -1.0f };
+	static float diffuse[3]{ 0.0f, 0.0f, 1.0f };
 	ImGui::Begin("Hi.");
 	ImGui::Text("This is circle draw test.");
-	ImGui::SliderFloat("x of center", &m_circleCenterPos.x, -2.0f, 2.0f);
-	ImGui::SliderFloat("y of center", &m_circleCenterPos.y, -2.0f, 2.0f);
+	ImGui::SliderFloat3("Center", (float*)&m_circleCenterPos, -2.0f, 2.0f);
+	ImGui::ColorEdit3("Circle color", (float*)&m_circleColor);
 
 	ImGui::SliderFloat("radius", &m_circleRadius, 0.0f, 1.0f);
+	ImGui::SliderFloat3("Light", lightPos, -2.0f, 2.0f);
+	ImGui::SliderFloat3("Diffuse", diffuse, 0.0f, 1.0f);
 
+	m_rayTracer.GetSphere()->SetCenter(m_circleCenterPos);
+	m_rayTracer.GetSphere()->SetRadius(m_circleRadius);
+	m_rayTracer.GetSphere()->SetColor(m_circleColor);
+
+	m_rayTracer.SetLightPos({ lightPos[0], lightPos[1], lightPos[2] });
+	m_rayTracer.GetSphere()->SetDiffuse({ diffuse[0], diffuse[1], diffuse[2] });
 	ImGui::End();
 }
