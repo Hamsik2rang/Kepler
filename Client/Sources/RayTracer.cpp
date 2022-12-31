@@ -9,7 +9,7 @@ RayTracer::RayTracer()
 	m_pSphere = new Sphere(
 		kepler::Vec3f{ 0.0f, 0.0f, 3.0f },
 		0.25f,
-		kepler::Vec3f{ 0.0f, 0.0f, 0.0f },
+		kepler::Vec3f{ 0.1f, 0.1f, 0.1f },
 		kepler::Vec3f{ 0.0f, 0.0f, 0.0f },
 		kepler::Vec3f{ 0.0f, 0.0f, 1.0f },
 		kepler::Vec3f{ 1.0f, 1.0f, 1.0f },
@@ -36,7 +36,6 @@ kepler::Vec3f RayTracer::TraceRay(Ray& ray)
 	}
 	else
 	{
-		//return m_pSphere->GetColor();
 		const kepler::Vec3f lightVector = (m_lightPos - hitProp.point).Normalize();
 
 		const float diffuse = std::max(kepler::Dot(hitProp.normal, lightVector), 0.0f);

@@ -36,14 +36,14 @@ void ResearchLayer::OnUpdate(float deltaTime)
 			const float curRow = (row * yScale) - 1.0f;
 
 			kepler::Vec3f origin{ curCol, curRow, 0.0f };
-			const auto rayDir = kepler::Vec3f::Front;
+			const auto rayDir = (kepler::Vec3f{ curCol, curRow, 0.0f } - kepler::Vec3f::Back).Normalize();
 
 			Ray pixelRay{ kepler::Vec3f{curCol, curRow, 0.0f}, rayDir };
 
 			const kepler::Vec3f color = m_rayTracer.TraceRay(pixelRay);
-			pBuffer[curByteIndex + 0] = (uint8_t)(std::min(color.r,1.0f) * 255.0f);
-			pBuffer[curByteIndex + 1] = (uint8_t)(std::min(color.g,1.0f) * 255.0f);
-			pBuffer[curByteIndex + 2] = (uint8_t)(std::min(color.b,1.0f) * 255.0f);
+			pBuffer[curByteIndex + 0] = (uint8_t)(std::max(0.0f, std::min(color.r, 1.0f)) * 255.0f);
+			pBuffer[curByteIndex + 1] = (uint8_t)(std::max(0.0f, std::min(color.g, 1.0f)) * 255.0f);
+			pBuffer[curByteIndex + 2] = (uint8_t)(std::max(0.0f, std::min(color.b, 1.0f)) * 255.0f);
 			pBuffer[curByteIndex + 3] = 255;
 		}
 	}
@@ -74,9 +74,8 @@ void ResearchLayer::OnGUIRender()
 	ImGui::Begin("Hi.");
 	ImGui::Text("This is circle draw test.");
 	ImGui::SliderFloat3("Center", (float*)&m_circleCenterPos, -2.0f, 2.0f);
-	ImGui::ColorEdit3("Circle color", (float*)&m_circleColor);
 
-	ImGui::SliderFloat("radius", &m_circleRadius, 0.0f, 1.0f);
+	ImGui::SliderFloat("Radius", &m_circleRadius, 0.0f, 1.0f);
 	ImGui::SliderFloat3("Light", lightPos, -2.0f, 2.0f);
 	ImGui::SliderFloat3("Diffuse", diffuse, 0.0f, 1.0f);
 
