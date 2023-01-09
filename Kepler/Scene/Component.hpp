@@ -144,7 +144,7 @@ namespace kepler {
 		void Bind()
 		{
 			Instantiate = []()->ScriptableEntity* { return new T; };
-			Destroy = []()->void { delete dynamic_cast<T*>(pInstance); pInstance = nullptr; }
+			Destroy = []()->void { delete dynamic_cast<T*>(pInstance); pInstance = nullptr; };
 		}
 	};
 }
