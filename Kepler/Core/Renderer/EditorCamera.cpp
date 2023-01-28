@@ -19,14 +19,14 @@ namespace kepler {
 	)
 		: m_pitch{ 0.0f }
 		, m_yaw{ 0.0f }
-		, m_lastCursorX{ -1.0f }
-		, m_lastCursorY{ -1.0f }
+		, m_lastCursorX{ 0.0f }
+		, m_lastCursorY{ 0.0f }
 		, m_rightInput{ 0 }
 		, m_frontInput{ 0 }
 		, m_upInput{ 0 }
 		, PerspectiveCamera(position, focalPoint, distance, fovY, aspect, nearClip, farClip)
 	{
-		CalcViewProjectionMatrix();
+
 	}
 
 	void EditorCamera::OnUpdate(float deltaTime)
@@ -35,9 +35,6 @@ namespace kepler {
 		Vec3f front = GetFront();
 		Vec3f right = GetRight();
 		Vec3f up = GetUp();
-		//Vec3f front = Vec3f::Front;
-		//Vec3f right = Vec3f::Right;
-		//Vec3f up = Vec3f::Up;
 
 		Vec3f deltaRight = right * static_cast<float>(m_rightInput);
 		Vec3f deltaUp = up * static_cast<float>(m_upInput);
@@ -105,8 +102,8 @@ namespace kepler {
 		if (Input::IsButtonDown(key::S)) m_frontInput--;
 		if (Input::IsButtonDown(key::A)) m_rightInput--;
 		if (Input::IsButtonDown(key::D)) m_rightInput++;
-		if (Input::IsButtonDown(key::E)) m_upInput++;
-		if (Input::IsButtonDown(key::Q)) m_upInput--;
+		if (Input::IsButtonDown(key::Q)) m_upInput++;
+		if (Input::IsButtonDown(key::E)) m_upInput--;
 	}
 
 	bool EditorCamera::OnMouseMovedEvent(MouseMovedEvent& e)
@@ -116,8 +113,17 @@ namespace kepler {
 			return false;
 		}
 
-		m_yaw += (e.GetX() - m_lastCursorX) * 0.5f;
-		m_pitch -= (e.GetY() - m_lastCursorY) * 0.5f;
+		m_yaw += (e.GetX() - m_lastCursorX);
+		m_pitch -= (e.GetY() - m_lastCursorY);
+
+		if (m_pitch > 89.0f)
+		{
+			m_pitch = 89.0f;
+		}
+		else if (m_pitch < -89.0f)
+		{
+			m_pitch = -89.0f;
+		}
 
 		m_lastCursorX = e.GetX();
 		m_lastCursorY = e.GetY();
