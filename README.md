@@ -50,4 +50,6 @@ Therefore, **just Clone this repository to your local workspace using git comman
 git clone https://github.com/Hamsik2rang/Kepler.git --recursive
 ```
 
+and, execute `setup.bat` to setup`.dll` libraries.  
+
 then you'll be ready to go!
