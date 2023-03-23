@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Core/Base.h"
-#include "Renderer/FrameBuffer.h"
-#include "Renderer/Texture.h"
+#include "Core/Renderer/FrameBuffer.h"
+#include "Core/Renderer/Texture.h"
 
 namespace kepler {
 
@@ -11,11 +11,11 @@ namespace kepler {
 	private:
 		static constexpr uint8_t s_maxGBufferCount = D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT;
 
-		ID3D11RenderTargetView*		m_pRenderTargetViews[s_maxGBufferCount];
+		ID3D11RenderTargetView* m_pRenderTargetViews[s_maxGBufferCount];
 		std::shared_ptr<ITexture2D> m_pTextures[s_maxGBufferCount];
 
-		ID3D11RenderTargetView*		m_pColorBufferView;
-		ID3D11DepthStencilView*		m_pDepthStencilView;
+		ID3D11RenderTargetView* m_pColorBufferView;
+		ID3D11DepthStencilView* m_pDepthStencilView;
 
 		void CreateGBuffer(uint8_t index, uint32_t width, uint32_t height);
 
@@ -43,6 +43,6 @@ namespace kepler {
 		virtual void ResizeColorBuffer(uint32_t width, uint32_t height) override;
 		virtual void ResizeGBuffer(uint8_t startSlot, uint8_t count, uint32_t width, uint32_t height) override;
 
-		virtual void* GetBuffer(eFrameBufferType type, uint8_t index) override;
+		virtual void* GetBuffer(EFrameBufferType type, uint8_t index) override;
 	};
 }

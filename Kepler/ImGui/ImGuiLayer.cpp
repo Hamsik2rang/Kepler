@@ -1,6 +1,6 @@
 #include "kepch.h"
 
-// ¿ÜºÎ ¿ÀÇÂ¼Ò½º ¶óÀÌºê·¯¸® Dear ImGui¸¦ ÀÌ¿ëÇÕ´Ï´Ù. ImGuiLayerÀÇ Ãß°¡ ±¸ÇöÀ» À§ÇÑ ÀÚ¼¼ÇÑ ¼³¸í°ú »ç¿ë¹ýÀº ¾Æ·¡ ¸µÅ©¸¦ ÂüÁ¶ÇÏ¼¼¿ä.
+// ï¿½Üºï¿½ ï¿½ï¿½ï¿½Â¼Ò½ï¿½ ï¿½ï¿½ï¿½Ìºê·¯ï¿½ï¿½ Dear ImGuiï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Õ´Ï´ï¿½. ImGuiLayerï¿½ï¿½ ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ú¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ·ï¿½ ï¿½ï¿½Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¼ï¿½ï¿½ï¿½.
 // https://github.com/ocornut/ImGui
 #include <imgui.h>
 #include <implot.h>
@@ -10,7 +10,7 @@
 #include "ImGuiLayer.h"
 #include "Core/Application.h"
 #include "Platform/Windows/WindowsWindow.h"
-#include "Renderer/GraphicsContext.h"
+#include "Core/Renderer/GraphicsContext.h"
 
 
 	// Forward declare message handler from imgui_impl_win32.cpp
@@ -34,7 +34,7 @@ namespace kepler {
 
 	void ImGuiLayer::OnAttach()
 	{
-		// ImGui context »ý¼º
+		// Create ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImPlot::CreateContext();
@@ -46,9 +46,9 @@ namespace kepler {
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
-		//ImGui::StyleColorsDark();
-		//SetDarkThemeColors();
-		ImGui::StyleColorsLight();
+		ImGui::StyleColorsDark();
+		SetDarkThemeColors();
+		//ImGui::StyleColorsLight();
 		ImGuiStyle& style = ImGui::GetStyle();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
@@ -61,7 +61,7 @@ namespace kepler {
 
 		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
 		ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
-		// ImGui ÃÊ±âÈ­
+		// ImGui ï¿½Ê±ï¿½È­
 		ImGui_ImplWin32_Init(hWnd);
 		ImGui_ImplDX11_Init(pDevice, pDeviceContext);
 
@@ -70,7 +70,7 @@ namespace kepler {
 
 	void ImGuiLayer::OnDetach()
 	{
-		// TODO: ÇØÁ¦ÇÒ ¸®¼Ò½ºµé ÀÖÀ¸¸é ÇØÁ¦
+		// TODO: write platform-independent code
 		ImGui_ImplDX11_Shutdown();
 		ImGui_ImplWin32_Shutdown();
 		ImPlot::DestroyContext();
@@ -89,7 +89,7 @@ namespace kepler {
 
 	void ImGuiLayer::Begin()
 	{
-		//ÇöÀç ÇÁ·¹ÀÓ¿¡ ´ëÇÑ ImGui ÄÁÅØ½ºÆ® ÃÊ±âÈ­
+		// Begin new ImGui frame
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
@@ -98,7 +98,7 @@ namespace kepler {
 
 	void ImGuiLayer::End()
 	{
-		// ÇöÀç ÇÁ·¹ÀÓ ImGui ÄÁÅØ½ºÆ® ¾È¿¡ ±×·ÁÁø ¸ðµç ·¹ÀÌ¾îµé ±×¸®±â
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ImGui ï¿½ï¿½ï¿½Ø½ï¿½Æ® ï¿½È¿ï¿½ ï¿½×·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
@@ -113,12 +113,11 @@ namespace kepler {
 
 	void ImGuiLayer::OnGUIRender()
 	{
-		// GUI ¿¹Á¦ È®ÀÎ¿ë
-		// GUI ºÙÀÌ´Ù Çò°¥¸®´Â°Å ÀÖÀ»¶§ ÁÖ¼® Ç®°í µ¥¸ð GUI È®ÀÎÇÏ¼¼¿ä.
+		// If you want to show demo code, resolve comment below.
 		ShowDemo();
 	}
 
-	
+
 
 	void ImGuiLayer::ShowDemo()
 	{

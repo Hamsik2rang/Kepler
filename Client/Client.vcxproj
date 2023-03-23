@@ -160,14 +160,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\ClientApp.cpp" />
-    <ClCompile Include="Sources\ExampleLayer.cpp" />
     <ClCompile Include="Sources\InstLayer.cpp" />
     <ClCompile Include="Sources\ParticleSystem.cpp" />
+    <ClCompile Include="Sources\RayTracer.cpp" />
+    <ClCompile Include="Sources\ResearchLayer.cpp" />
+    <ClCompile Include="Sources\Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sources\ExampleLayer.h" />
+    <ClInclude Include="Sources\Hittable.h" />
     <ClInclude Include="Sources\InstLayer.h" />
     <ClInclude Include="Sources\ParticleSystem.h" />
+    <ClInclude Include="Sources\Ray.h" />
+    <ClInclude Include="Sources\RayTracer.h" />
+    <ClInclude Include="Sources\ResearchLayer.h" />
+    <ClInclude Include="Sources\Sphere.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

@@ -1,25 +1,24 @@
-#include "Kepler.h"
-#include "ExampleLayer.h"
 #include "InstLayer.h"
+#include "Kepler.h"
+#include "ResearchLayer.h"
 
 #include <Core/EntryPoint.h>
 
 class Client : public kepler::Application
 {
 public:
-	Client()
-		: Application(kepler::eGraphicsAPI::DirectX11, kepler::WindowProperty(std::string("Test")))
-	{
-		PushLayer(new ExampleLayer);
-		PushOverlay(new kepler::RenderProfiler);
-	}
-	~Client()
-	{
+    Client()
+        : Application(kepler::EGraphicsAPI::DirectX11)
+    {
+        PushLayer(new ResearchLayer);
+    }
+    ~Client()
+    {
 
-	}
+    }
 };
 
 kepler::Application* kepler::CreateApplication()
 {
-	return new Client();
+    return new Client();
 }

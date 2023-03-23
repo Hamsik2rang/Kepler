@@ -18,8 +18,8 @@
 
 namespace kepler {
 
-	HINSTANCE g_hInst = nullptr;
-	int		 g_nCmdShow = SW_SHOWDEFAULT;
+	HINSTANCE g_hInst		= nullptr;
+	int		  g_nCmdShow	= SW_SHOWDEFAULT;
 
 	ATOM kepler::RegisterWindowClass(const std::string& title, WindowsCallback callback)
 	{
@@ -33,7 +33,7 @@ namespace kepler {
 		wcex.cbClsExtra = 0;
 		// 이벤트 핸들링을 위한 Userdata를 등록하기 위해 LONG_PTR 하나 만큼의 여분 메모리를 지정합니다.
 		// 아래의 kepler::InitInstance 함수에서 ::SetWindowLongPtr 함수로 포인터가 등록됩니다.
-		wcex.cbWndExtra = sizeof(LONG_PTR);		
+		wcex.cbWndExtra = sizeof(LONG_PTR);
 		wcex.hInstance = g_hInst;
 		wcex.hIcon = LoadIcon(g_hInst, MAKEINTRESOURCE(IDI_KEPLER));
 		wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
@@ -41,7 +41,7 @@ namespace kepler {
 		wcex.lpszMenuName = MAKEINTRESOURCEW(IDC_KEPLER);
 		wcex.lpszClassName = wTitle.c_str();
 		wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
-		
+
 		return ::RegisterClassExW(&wcex);
 	}
 
@@ -49,30 +49,46 @@ namespace kepler {
 	{
 		auto wTitle = utility::StringToWstring(title);
 		DWORD dwStyle = WS_OVERLAPPEDWINDOW;
-		
+
+		int dwFrameX = GetSystemMetrics(SM_CXFRAME);
+		int dwFrameY = GetSystemMetrics(SM_CYFRAME);
+		int dwCaptionY = GetSystemMetrics(SM_CYCAPTION);
+
 		HWND hWnd = nullptr;
 		hWnd = CreateWindowW(wTitle.c_str(),
-			wTitle.c_str(), 
+			wTitle.c_str(),
 			WS_OVERLAPPEDWINDOW,
-			CW_USEDEFAULT, 
-			0, 
-			(DWORD)width, 
-			(DWORD)height, 
-			nullptr, 
-			nullptr, 
+			CW_USEDEFAULT,
+			0,
+			(DWORD)width + (dwFrameX * 2),
+			(DWORD)height + (dwFrameY * 2) + dwCaptionY,
+			nullptr,
+			nullptr,
 			g_hInst,
 			0);
-		
+
 		return hWnd;
 	}
 
-	void kepler::ShowWindow(HWND hWnd) 
-	{ 
+	void kepler::ShowWindow(HWND hWnd)
+	{
 
 		::ShowWindow(hWnd, g_nCmdShow);
 		::UpdateWindow(hWnd);
 
 		HACCEL hAccelTable = LoadAccelerators(g_hInst, MAKEINTRESOURCE(IDC_KEPLER));
+	}
+
+	DWORD GetDisplayFrequency()
+	{
+		DEVMODEA devMode{};
+		
+		if (EnumDisplaySettingsA(nullptr, ENUM_CURRENT_SETTINGS, &devMode))
+		{
+			return devMode.dmDisplayFrequency;
+		}
+
+		return 0;
 	}
 
 	LRESULT WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -94,57 +110,57 @@ namespace kepler {
 		switch (msg)
 		{
 		case WM_COMMAND:
+		{
+			int wmId = LOWORD(wParam);
+			switch (wmId)
 			{
-				int wmId = LOWORD(wParam);
-				switch (wmId)
-				{
-				case IDM_ABOUT:
-					DialogBox(nullptr, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-					break;
-				case IDM_EXIT:
-					DestroyWindow(hWnd);
-					break;
-				default:
-					return DefWindowProc(hWnd, msg, wParam, lParam);
-				}
+			case IDM_ABOUT:
+				DialogBox(nullptr, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+				break;
+			case IDM_EXIT:
+				DestroyWindow(hWnd);
+				break;
+			default:
+				return DefWindowProc(hWnd, msg, wParam, lParam);
 			}
-			break;
+		}
+		break;
 		// Keyboard Events
 		case WM_KEYDOWN:
-			{
-				int repeatCount = LOWORD(lParam);
-				KeyPressedEvent lastEvent(static_cast<int>(wParam), repeatCount);
-				Input::SetButtonDown(static_cast<kepler::KeyCode>(wParam));
-				data->eventCallback(lastEvent);
-			}
-			break;
+		{
+			int repeatCount = LOWORD(lParam);
+			KeyPressedEvent lastEvent(static_cast<int>(wParam), repeatCount);
+			Input::SetButtonDown(static_cast<kepler::KeyCode>(wParam));
+			data->eventCallback(lastEvent);
+		}
+		break;
 		case WM_KEYUP:
-			{
-				KeyReleasedEvent lastEvent(static_cast<int>(wParam));
-				Input::SetButtonUp(static_cast<kepler::KeyCode>(wParam));
-				
-				data->eventCallback(lastEvent);
-			}
-			break;
+		{
+			KeyReleasedEvent lastEvent(static_cast<int>(wParam));
+			Input::SetButtonUp(static_cast<kepler::KeyCode>(wParam));
+
+			data->eventCallback(lastEvent);
+		}
+		break;
 
 		// Mouse Events
 		case WM_MOUSEMOVE:
-			{
-				POINT cursorPos;
-				::GetCursorPos(&cursorPos);
-				::ScreenToClient(hWnd, &cursorPos); // Screen(모니터)상의 좌표를 실제 Client(엔진 창)상의 좌표로 바꿉니다.
+		{
+			POINT cursorPos;
+			::GetCursorPos(&cursorPos);
+			::ScreenToClient(hWnd, &cursorPos); // Screen(모니터)상의 좌표를 실제 Client(엔진 창)상의 좌표로 바꿉니다.
 
-				MouseMovedEvent lastEvent(static_cast<float>(cursorPos.x), static_cast<float>(cursorPos.y));
-				data->eventCallback(lastEvent);
-			}
-			break;
+			MouseMovedEvent lastEvent(static_cast<float>(cursorPos.x), static_cast<float>(cursorPos.y));
+			data->eventCallback(lastEvent);
+		}
+		break;
 		case WM_MOUSEWHEEL:
-			{
-				short z = GET_WHEEL_DELTA_WPARAM(wParam);
-				MouseScrolledEvent lastEvent(z, 0.0f);
-				data->eventCallback(lastEvent);
-			}
-			break;
+		{
+			short z = GET_WHEEL_DELTA_WPARAM(wParam);
+			MouseScrolledEvent lastEvent(z, 0.0f);
+			data->eventCallback(lastEvent);
+		}
+		break;
 
 		// Mouse Button Events
 		// 임시로 마우스 클릭 버튼을 좌/중간(휠)/우 에 따라 각각 0, 1, 2의 정수를 매핑했습니다.
@@ -152,70 +168,70 @@ namespace kepler {
 		case WM_LBUTTONDOWN:
 		case WM_MBUTTONDOWN:
 		case WM_RBUTTONDOWN:
-			{
-				int pressedButton = static_cast<int>(wParam);
-				if (msg == WM_LBUTTONDOWN) { pressedButton = mouse::Left; }
-				if (msg == WM_MBUTTONDOWN) { pressedButton = mouse::Middle; }
-				if (msg == WM_RBUTTONDOWN) { pressedButton = mouse::Right; }
-				MouseButtonPressedEvent lastEvent(pressedButton);
-				Input::SetButtonDown(pressedButton);
-				data->eventCallback(lastEvent);
-			}
-			break;
+		{
+			int pressedButton = static_cast<int>(wParam);
+			if (msg == WM_LBUTTONDOWN) { pressedButton = mouse::Left; }
+			if (msg == WM_MBUTTONDOWN) { pressedButton = mouse::Middle; }
+			if (msg == WM_RBUTTONDOWN) { pressedButton = mouse::Right; }
+			MouseButtonPressedEvent lastEvent(pressedButton);
+			Input::SetButtonDown(pressedButton);
+			data->eventCallback(lastEvent);
+		}
+		break;
 		case WM_LBUTTONUP:
 		case WM_MBUTTONUP:
 		case WM_RBUTTONUP:
-			{
-				int releasedButton = static_cast<int>(wParam);
-				if (msg == WM_LBUTTONUP) { releasedButton = mouse::Left; }
-				if (msg == WM_MBUTTONUP) { releasedButton = mouse::Middle; }
-				if (msg == WM_RBUTTONUP) { releasedButton = mouse::Right; }
-				MouseButtonReleasedEvent laseEvent(releasedButton);
-				Input::SetButtonUp(releasedButton);
-				data->eventCallback(laseEvent);
-			}
-			break;
+		{
+			int releasedButton = static_cast<int>(wParam);
+			if (msg == WM_LBUTTONUP) { releasedButton = mouse::Left; }
+			if (msg == WM_MBUTTONUP) { releasedButton = mouse::Middle; }
+			if (msg == WM_RBUTTONUP) { releasedButton = mouse::Right; }
+			MouseButtonReleasedEvent laseEvent(releasedButton);
+			Input::SetButtonUp(releasedButton);
+			data->eventCallback(laseEvent);
+		}
+		break;
 
 		// Application Events
 		case WM_SETFOCUS:
-			{
-				// TODO:나중에 윈도우 여러개 띄우게 되면(또는 GUI Layer 추가 시) 그때 구현합니다.
-			}
-			break;
+		{
+			// TODO:나중에 윈도우 여러개 띄우게 되면(또는 GUI Layer 추가 시) 그때 구현합니다.
+		}
+		break;
 		case WM_KILLFOCUS:
-			{
-				// TODO:나중에 윈도우 여러개 띄우게 되면(또는 GUI Layer 추가 시) 그때 구현합니다.
-			}
-			break;
+		{
+			// TODO:나중에 윈도우 여러개 띄우게 되면(또는 GUI Layer 추가 시) 그때 구현합니다.
+		}
+		break;
 		case WM_SIZE:
-			{
-				RECT rcWinRect{};
-				::GetClientRect(hWnd, &rcWinRect);
-				// Screen상의 좌표를 Client상의 좌표로 변환합니다.
-				::ScreenToClient(hWnd, (POINT*)&rcWinRect.left);
-				::ScreenToClient(hWnd, (POINT*)&rcWinRect.right);
-				
-				uint32_t width = rcWinRect.right - rcWinRect.left;
-				uint32_t height = rcWinRect.bottom - rcWinRect.top;
-				
-				WindowResizeEvent lastEvent(width, height);
-				data->width = width;
-				data->height = height;
-				data->eventCallback(lastEvent);
-			}
-			break;
+		{
+			RECT rcWinRect{};
+			::GetClientRect(hWnd, &rcWinRect);
+			// Screen상의 좌표를 Client상의 좌표로 변환합니다.
+			::ScreenToClient(hWnd, (POINT*)&rcWinRect.left);
+			::ScreenToClient(hWnd, (POINT*)&rcWinRect.right);
+
+			uint32_t width = rcWinRect.right - rcWinRect.left;
+			uint32_t height = rcWinRect.bottom - rcWinRect.top;
+
+			WindowResizeEvent lastEvent(width, height);
+			data->width = width;
+			data->height = height;
+			data->eventCallback(lastEvent);
+		}
+		break;
 		case WM_MOVE:
-			{
-				// D3D에서는 필요없는 것 같아서 일단 놔둡니다..
-			}
-			break;
+		{
+			// D3D에서는 필요없는 것 같아서 일단 놔둡니다..
+		}
+		break;
 		case WM_CLOSE:
-			{
-				WindowCloseEvent lastEvent;
-				data->eventCallback(lastEvent);
-			}
-			// C++17 이전 버전에서 작동하지 않습니다.
-			[[fallthrough]];
+		{
+			WindowCloseEvent lastEvent;
+			data->eventCallback(lastEvent);
+		}
+		// C++17 이전 버전에서 작동하지 않습니다.
+		[[fallthrough]];
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			break;

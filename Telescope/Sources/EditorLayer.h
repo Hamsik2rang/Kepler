@@ -2,40 +2,51 @@
 
 
 #include <Kepler.h>
+#include "Panels/DockspacePanel.h"
+#include "Panels/HierarchyPanel.h"
+#include "Panels/SceneViewPanel.h"
+#include "Panels/ProjectPanel.h"
+#include "Panels/InspectorPanel.h"
+#include "Panels/GeneralPanel.h"
 
-class EditorLayer : public kepler::Layer
-{
-private:
-	kepler::EditorCamera m_camera;
+namespace kepler {
 
-	kepler::Entity* m_pCubeEntity;
-	kepler::Scene m_scene;
+	class EditorLayer : public Layer
+	{
+	private:
+		EditorCamera m_camera;
 
-	float m_time;
-	bool m_bIsSceneFocuced;
+		Entity* m_pCubeEntity;
+		Scene m_scene;
 
-	uint32_t m_viewportWidth;
-	uint32_t m_viewportHeight;
-	uint32_t m_lastViewportWidth;
-	uint32_t m_lastViewportHeight;
-public:
+		float m_time;
+		bool m_bIsSceneFocuced;
 
-	EditorLayer()
-		: Layer("Editor")
-		, m_camera{ kepler::EditorCamera{ kepler::Vec3f{ 0.0f, 1.0f, -6.0f }, kepler::Vec3f{ 0.0f, 1.0f, 0.0f }, 10.0f, 45.0f, 16.0f / 9.0f, 0.1f, 1000.0f } }
-		, m_time{ 0.0f }
-		, m_bIsSceneFocuced{false}
-		, m_viewportWidth{ 0 }
-		, m_viewportHeight{ 0 }
-		, m_lastViewportWidth{ 0 }
-		, m_lastViewportHeight{ 0 }
-		, m_pCubeEntity{ nullptr }
-	{}
+		DockspacePanel m_dockspacePanel;
+		SceneViewPanel m_sceneViewPanel;
+		HierarchyPanel m_hierarchyPanel;
+		InspectorPanel m_inspectorPanel;
 
-	virtual void OnAttach() override;
-	virtual void OnDetach() override;
-	virtual void OnUpdate(float deltaTime) override;
-	virtual void OnRender() override;
-	virtual void OnGUIRender() override;
-	virtual void OnEvent(kepler::Event& e) override;
-};
+	public:
+
+		EditorLayer()
+			: Layer("Editor")
+			, m_camera{ EditorCamera{ Vec3f{ 0.0f, 1.0f, -6.0f }, Vec3f{ 0.0f, 1.0f, 0.0f }, 10.0f, 45.0f, 16.0f / 9.0f, 0.1f, 1000.0f } }
+			, m_time{ 0.0f }
+			, m_bIsSceneFocuced{ false }
+			, m_pCubeEntity{ nullptr }
+			, m_dockspacePanel{ &m_scene }
+			, m_sceneViewPanel{ &m_scene }
+			, m_hierarchyPanel{ &m_scene }
+			, m_inspectorPanel{ &m_scene }
+		{
+		}
+
+		virtual void OnAttach() override;
+		virtual void OnDetach() override;
+		virtual void OnUpdate(float deltaTime) override;
+		virtual void OnRender() override;
+		virtual void OnGUIRender() override;
+		virtual void OnEvent(Event& e) override;
+	};
+}

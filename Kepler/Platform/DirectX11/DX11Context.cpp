@@ -1,36 +1,62 @@
 #include "kepch.h"
 
 #include "DX11Context.h"
-#include "Renderer/RenderState.h"
-#include "Renderer/Renderer.h"
-#include "Renderer/Renderer2D.h"
+#include "DX11Debug.h"
+#include "Core/Renderer/RenderState.h"
+#include "Core/Renderer/Renderer.h"
+#include "Core/Renderer/Renderer2D.h"
 
-kepler::DX11Context::DX11Context(const HWND hWnd)
+namespace kepler {
+
+DX11Context::DX11Context(const HWND hWnd)
 	: m_hWnd{ hWnd }
 	, m_bVSync{ false }
 	, m_pDevice{ nullptr }
 	, m_pDeviceContext{ nullptr }
 	, m_pSwapChain{ nullptr }
+	, m_pDebugger{ nullptr }
 	, m_featureLevel{ D3D_FEATURE_LEVEL_11_0 }
 {
 
 }
 
-void kepler::DX11Context::Cleanup()
+void DX11Context::Cleanup()
 {
 	// 종료 전 윈도우 모드로 설정하지 않으면 스왑 체인을 해제 할 때 예외가 발생합니다.
-	if (m_pSwapChain) { m_pSwapChain->SetFullscreenState(false, nullptr); }
-	if (m_pDeviceContext) { m_pDeviceContext->Release(); m_pDeviceContext = nullptr; }
-	if (m_pDevice) { m_pDevice->Release(); m_pDevice = nullptr; }
-	if (m_pSwapChain) { m_pSwapChain->Release(); m_pSwapChain = nullptr; }
+	if (m_pSwapChain)
+	{
+		m_pSwapChain->SetFullscreenState(false, nullptr);
+	}
+
+	if (m_pDeviceContext)
+	{
+		m_pDeviceContext->Release();
+		m_pDeviceContext = nullptr;
+	}
+	if (m_pSwapChain)
+	{
+		m_pSwapChain->Release();
+		m_pSwapChain = nullptr;
+	}
+	if (m_pDebugger)
+	{
+		m_pDebugger->CheckReferenceCount();
+		delete m_pDebugger;
+		m_pDebugger = nullptr;
+	}
+	if (m_pDevice)
+	{
+		m_pDevice->Release();
+		m_pDevice = nullptr;
+	}
 }
 
-kepler::DX11Context::~DX11Context()
+DX11Context::~DX11Context()
 {
 	Cleanup();
 }
 
-bool kepler::DX11Context::Init(const WindowData& data)
+bool DX11Context::Init(const WindowData& data)
 {
 	m_bVSync = data.bVSync;
 
@@ -121,10 +147,16 @@ bool kepler::DX11Context::Init(const WindowData& data)
 		return false;
 	}
 
+#ifdef _DEBUG
+	m_pDebugger = new DX11Debug;
+	m_pDebugger->Init();
+#endif
+
 	return true;
 }
 
-void kepler::DX11Context::SwapBuffer()
+void DX11Context::SwapBuffer()
 {
 	m_pSwapChain->Present((m_bVSync ? 1 : 0), 0);
+}
 }

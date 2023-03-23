@@ -9,38 +9,41 @@
 #include "Core/Input.h"
 #include "Core/InputCode.h"
 
+
+//----- Scene -----------------------------
+#include "Core/Scene/Entity.hpp"
+#include "Core/Scene/Component.hpp"
+#include "Core/Scene/Scene.h"
+#include "Core/Scene/ScriptableEntity.h"
 //-----------------------------------------
 
 //----- Renderer --------------------------
-#include "Renderer/Renderer.h"
-#include "Renderer/Renderer2D.h"
-#include "Renderer/RenderState.h"
-#include "Renderer/OrthographicCamera.h"
-#include "Renderer/PerspectiveCamera.h"
-#include "Renderer/EditorCamera.h"
-#include "Renderer/GraphicsAPI.h"
-#include "Renderer/Buffer.h"
-#include "Renderer/VertexArray.h"
-#include "Renderer/Shader.h"
-#include "Renderer/Texture.h"
-#include "Renderer/RenderProfiler.h"
+#include "Core/Renderer/Renderer.h"
+#include "Core/Renderer/Renderer2D.h"
+#include "Core/Renderer/RenderState.h"
+#include "Core/Renderer/OrthographicCamera.h"
+#include "Core/Renderer/PerspectiveCamera.h"
+#include "Core/Renderer/EditorCamera.h"
+#include "Core/Renderer/GraphicsAPI.h"
+#include "Core/Renderer/Buffer.h"
+#include "Core/Renderer/VertexArray.h"
+#include "Core/Renderer/Shader.h"
+#include "Core/Renderer/Texture.h"
+#include "Core/Renderer/RenderProfiler.h"
 //-----------------------------------------
 
 //----- Audio -----------------------------
-#include "Audio/Audio.h"
-#include "Audio/AudioSource.hpp"
+#include "Core/Audio/Audio.h"
+#include "Core/Audio/AudioSource.hpp"
 //-----------------------------------------
+
+//-----------------------------------------
+
 
 //----- Math ------------------------------
 #include "KeplerMath.h"
 //-----------------------------------------
 
-//----- Scene -----------------------------
-#include "Scene/Entity.hpp"
-#include "Scene/Component.hpp"
-#include "Scene/Scene.h"
-#include "Scene/ScriptableEntity.h"
-//-----------------------------------------
 
 //----- Platform --------------------------
 #include "Platform/Win32/WinAPI.h"

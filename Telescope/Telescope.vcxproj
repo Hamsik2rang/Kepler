@@ -141,6 +141,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Sources\Panels\GameViewPanel.cpp" />
+    <ClCompile Include="Sources\Panels\GeneralPanel.cpp" />
+    <ClCompile Include="Sources\Panels\HierarchyPanel.cpp" />
+    <ClCompile Include="Sources\Panels\InspectorPanel.cpp" />
+    <ClCompile Include="Sources\Panels\ProjectPanel.cpp" />
+    <ClCompile Include="Sources\Panels\DockspacePanel.cpp" />
+    <ClCompile Include="Sources\Panels\SceneViewPanel.cpp" />
     <ClCompile Include="Sources\TelescopeApp.cpp" />
     <ClCompile Include="Sources\EditorLayer.cpp" />
   </ItemGroup>
@@ -151,6 +158,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sources\EditorLayer.h" />
+    <ClInclude Include="Sources\Panels\GameViewPanel.h" />
+    <ClInclude Include="Sources\Panels\GeneralPanel.h" />
+    <ClInclude Include="Sources\Panels\HierarchyPanel.h" />
+    <ClInclude Include="Sources\Panels\InspectorPanel.h" />
+    <ClInclude Include="Sources\Panels\Panel.h" />
+    <ClInclude Include="Sources\Panels\ProjectPanel.h" />
+    <ClInclude Include="Sources\Panels\DockspacePanel.h" />
+    <ClInclude Include="Sources\Panels\SceneViewPanel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

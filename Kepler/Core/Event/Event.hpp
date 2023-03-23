@@ -7,90 +7,90 @@
 #include "Core/Base.h"
 
 namespace kepler {
-	
-	enum class eEventType
-	{
-		None = 0,
 
-		KeyPressed,
-		KeyReleased,
+enum class EEventType
+{
+	None = 0,
 
-		MouseMoved,
-		MouseScrolled,
-		MouseButtonPressed,
-		MouseButtonReleased,
+	KeyPressed,
+	KeyReleased,
 
-		WindowClosed,
-		WindowResize,
-		WindowFocus,
-		WindowLostFocus,
-		WindowMoved,
+	MouseMoved,
+	MouseScrolled,
+	MouseButtonPressed,
+	MouseButtonReleased,
 
-		AppTick,
-		AppUpdate,
-		AppRender,
-	};
+	WindowClosed,
+	WindowResize,
+	WindowFocus,
+	WindowLostFocus,
+	WindowMoved,
 
-	enum eEventCategory
-	{
-		None						= 0,		// 0b 0000 0000
-		EventCategoryApplication	= BIT(0),	// 0b 0000 0001
-		EventCategoryInput			= BIT(1),	// 0b 0000 0010
-		EventCategoryKeyboard		= BIT(2),	// 0b 0000 0100
-		EventCategoryMouse			= BIT(3),	// 0b 0000 1000
-		EventCategoryMouseButton	= BIT(4),	// 0b 0001 0000
-	};
+	AppTick,
+	AppUpdate,
+	AppRender,
+};
 
-#define EVENT_CLASS_TYPE(type) static eEventType GetStaticType() { return eEventType::##type; }\
-								virtual eEventType GetEventType() const override {return GetStaticType(); }\
+enum EventCategory
+{
+	None = 0,		// 0b 0000 0000
+	EventCategoryApplication = BIT(0),	// 0b 0000 0001
+	EventCategoryInput = BIT(1),	// 0b 0000 0010
+	EventCategoryKeyboard = BIT(2),	// 0b 0000 0100
+	EventCategoryMouse = BIT(3),	// 0b 0000 1000
+	EventCategoryMouseButton = BIT(4),	// 0b 0001 0000
+};
+
+#define EVENT_CLASS_TYPE(type) static EEventType GetStaticType() { return EEventType::##type; }\
+								virtual EEventType GetEventType() const override {return GetStaticType(); }\
 								virtual const char* GetName() const override { return #type; }
 
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
 
-	class Event
+class Event
+{
+	friend class EventDispatcher;
+
+protected:
+	bool m_bIsHandled = false;
+
+public:
+	virtual EEventType GetEventType() const = 0;
+	virtual const char* GetName() const = 0;
+	virtual int GetCategoryFlags() const = 0;
+	virtual std::string ToString() const { return std::string(GetName()); }
+
+	inline bool IsHandled() const { return m_bIsHandled; };
+	inline bool IsInCategory(EventCategory category) { return GetCategoryFlags() & category; }
+};
+
+class EventDispatcher
+{
+	template <typename T>
+	using EventFunc = std::function<bool(T&)>;
+private:
+	Event& m_event;
+
+public:
+	EventDispatcher(Event& event)
+		: m_event(event)
+	{}
+
+	template<typename T>
+	bool Dispatch(EventFunc<T> func)
 	{
-		friend class EventDispatcher;
-
-	protected:
-		bool m_bIsHandled = false;
-
-	public:
-		virtual eEventType GetEventType() const = 0;
-		virtual const char* GetName() const = 0;
-		virtual int GetCategoryFlags() const = 0;
-		virtual std::string ToString() const { return std::string(GetName()); }
-
-		inline bool IsHandled() const { return m_bIsHandled; };
-		inline bool IsInCategory(eEventCategory category) { return GetCategoryFlags() & category; }
-	};
-
-	class EventDispatcher
-	{
-		template <typename T>
-		using EventFunc = std::function<bool(T&)>;
-	private:
-		Event& m_event;
-	
-	public:
-		EventDispatcher(Event& event)
-			: m_event(event)
-		{}
-
-		template<typename T>
-		bool Dispatch(EventFunc<T> func)
+		if (m_event.GetEventType() == T::GetStaticType())
 		{
-			if (m_event.GetEventType() == T::GetStaticType())
-			{
-				m_event.m_bIsHandled = func(*(T*)&m_event);
-				return true;
-			}
-
-			return false;
+			m_event.m_bIsHandled = func(*(T*)&m_event);
+			return true;
 		}
-	};
 
-	inline std::ostream& operator<<(std::ostream& os, const Event& e)
-	{
-		return os << e.ToString();
+		return false;
 	}
+};
+
+inline std::ostream& operator<<(std::ostream& os, const Event& e)
+{
+	return os << e.ToString();
+}
 }

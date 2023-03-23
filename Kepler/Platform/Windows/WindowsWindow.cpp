@@ -1,8 +1,8 @@
 #include "kepch.h"
 
 #include "WindowsWindow.h"
-#include "Renderer/GraphicsContext.h"
-#include "Renderer/Renderer.h"
+#include "Core/Renderer/GraphicsContext.h"
+#include "Core/Renderer/Renderer.h"
 
 namespace kepler {
 	extern HINSTANCE	g_hInst;
@@ -80,7 +80,7 @@ namespace kepler {
 	void WindowsWindow::OnUpdate()
 	{
 		// TODO: Update Loop마다 해야할 작업들 작성
-		
+
 		// swap back buffer and front buffer
 		IGraphicsContext::Get()->SwapBuffer();
 	}

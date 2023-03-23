@@ -5,40 +5,40 @@
 
 #include "Core/LayerStack.h"
 #include "ImGui/ImGuiLayer.h"
-#include "Renderer/GraphicsAPI.h"
+#include "Core/Renderer/GraphicsAPI.h"
 #include "Utility/Timer.hpp"
 
 namespace kepler {
-	// Window Application
-	class Application
-	{
-	private:
-		static	Application*		s_pInstance;
+// Window Application
+class Application
+{
+private:
+	static	Application* s_pInstance;
 
-		std::unique_ptr<IWindow>	m_pWindow;
-		std::unique_ptr<ImGuiLayer> m_pImGuiLayer;
-		LayerStack					m_layerStack;
-		Timer						m_timer;
-		
-		bool m_bIsRunning;
+	std::unique_ptr<IWindow>	m_pWindow;
+	std::unique_ptr<ImGuiLayer> m_pImGuiLayer;
+	LayerStack					m_layerStack;
+	Timer						m_timer;
 
-	protected:
-		Application(eGraphicsAPI api, const WindowProperty& props = WindowProperty());
+	bool m_bIsRunning;
 
-	public:
-		~Application();
+protected:
+	Application(EGraphicsAPI api);
 
-		static Application* Get();
-		inline IWindow& GetWindow() { return *m_pWindow; }
+public:
+	~Application();
 
-		void OnEvent(Event& e);
+	static Application* Get();
+	inline IWindow& GetWindow() { return *m_pWindow; }
 
-		void PushLayer(Layer* layer);
-		void PushOverlay(Layer* overlay);
-		void Run();
+	void OnEvent(Event& e);
 
-		inline void Shutdown() { m_bIsRunning = false; }
-	};
-	// Defined in Client
-	Application* CreateApplication();
+	void PushLayer(Layer* layer);
+	void PushOverlay(Layer* overlay);
+	void Run();
+
+	inline void Shutdown() { m_bIsRunning = false; }
+};
+// Defined in Client
+Application* CreateApplication();
 }
