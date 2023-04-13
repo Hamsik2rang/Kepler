@@ -112,7 +112,7 @@ namespace kepler {
 		{
 			return false;
 		}
-
+		std::cout << e.GetX() << m_lastCursorX << std::endl;
 		m_yaw += (e.GetX() - m_lastCursorX);
 		m_pitch -= (e.GetY() - m_lastCursorY);
 

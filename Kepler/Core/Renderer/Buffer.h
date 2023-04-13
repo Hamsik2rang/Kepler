@@ -7,7 +7,7 @@
 namespace kepler {
 
 // 추상화된 쉐이더 데이터 타입
-enum class EShaderDataType
+enum class eShaderDataType
 {
 	None = 0,
 	Bool,
@@ -33,21 +33,21 @@ enum class EBufferUsage
 };
 
 // 추상화된 쉐이더 데이터 타입에 대한 타입 크기를 리턴하는 함수
-static uint32_t ShaderDataTypeSize(EShaderDataType type)
+static uint32_t ShaderDataTypeSize(eShaderDataType type)
 {
 	switch (type)
 	{
-	case EShaderDataType::Bool:		return 1;
-	case EShaderDataType::Float:	return 4;
-	case EShaderDataType::Float2:	return 4 * 2;
-	case EShaderDataType::Float3:	return 4 * 3;
-	case EShaderDataType::Float4:	return 4 * 4;
-	case EShaderDataType::Int:		return 4;
-	case EShaderDataType::Int2:		return 4 * 2;
-	case EShaderDataType::Int3:		return 4 * 3;
-	case EShaderDataType::Int4:		return 4 * 4;
-	case EShaderDataType::Float33:	return 4 * 3 * 3;
-	case EShaderDataType::Float44:	return 4 * 4 * 4;
+	case eShaderDataType::Bool:		return 1;
+	case eShaderDataType::Float:	return 4;
+	case eShaderDataType::Float2:	return 4 * 2;
+	case eShaderDataType::Float3:	return 4 * 3;
+	case eShaderDataType::Float4:	return 4 * 4;
+	case eShaderDataType::Int:		return 4;
+	case eShaderDataType::Int2:		return 4 * 2;
+	case eShaderDataType::Int3:		return 4 * 3;
+	case eShaderDataType::Int4:		return 4 * 4;
+	case eShaderDataType::Float33:	return 4 * 3 * 3;
+	case eShaderDataType::Float44:	return 4 * 4 * 4;
 	}
 
 	KEPLER_ASSERT(false, "Invalid Shader Datatype.");
@@ -61,10 +61,10 @@ struct BufferElement
 	uint32_t index;
 	uint32_t size;
 	uint32_t offset;
-	EShaderDataType type;
+	eShaderDataType type;
 
 	BufferElement() = default;
-	BufferElement(const std::string& _name, const uint32_t _index, EShaderDataType _type, uint32_t offset, uint32_t stride)
+	BufferElement(const std::string& _name, const uint32_t _index, eShaderDataType _type, uint32_t offset, uint32_t stride)
 		: name{ _name }
 		, index{ _index }
 		, type{ _type }
@@ -76,17 +76,17 @@ struct BufferElement
 	{
 		switch (type)
 		{
-		case EShaderDataType::Bool:
-		case EShaderDataType::Int:
-		case EShaderDataType::Float:	return 1;
-		case EShaderDataType::Int2:
-		case EShaderDataType::Float2:	return 2;
-		case EShaderDataType::Int3:
-		case EShaderDataType::Float3:
-		case EShaderDataType::Float33:	return 3; // FLOAT3 * 3
-		case EShaderDataType::Int4:
-		case EShaderDataType::Float4:
-		case EShaderDataType::Float44:	return 4; // FLOAT4(or VECTOR4) * 4
+		case eShaderDataType::Bool:
+		case eShaderDataType::Int:
+		case eShaderDataType::Float:	return 1;
+		case eShaderDataType::Int2:
+		case eShaderDataType::Float2:	return 2;
+		case eShaderDataType::Int3:
+		case eShaderDataType::Float3:
+		case eShaderDataType::Float33:	return 3; // FLOAT3 * 3
+		case eShaderDataType::Int4:
+		case eShaderDataType::Float4:
+		case eShaderDataType::Float44:	return 4; // FLOAT4(or VECTOR4) * 4
 		}
 
 		KEPLER_ASSERT(false, "Invalid Shader Datatype.");

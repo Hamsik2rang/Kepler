@@ -8,7 +8,7 @@
 
 namespace kepler {
 
-enum class EEventType
+enum class eEventType
 {
 	None = 0,
 
@@ -41,8 +41,8 @@ enum EventCategory
 	EventCategoryMouseButton = BIT(4),	// 0b 0001 0000
 };
 
-#define EVENT_CLASS_TYPE(type) static EEventType GetStaticType() { return EEventType::##type; }\
-								virtual EEventType GetEventType() const override {return GetStaticType(); }\
+#define EVENT_CLASS_TYPE(type) static eEventType GetStaticType() { return eEventType::##type; }\
+								virtual eEventType GetEventType() const override {return GetStaticType(); }\
 								virtual const char* GetName() const override { return #type; }
 
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
@@ -55,7 +55,7 @@ protected:
 	bool m_bIsHandled = false;
 
 public:
-	virtual EEventType GetEventType() const = 0;
+	virtual eEventType GetEventType() const = 0;
 	virtual const char* GetName() const = 0;
 	virtual int GetCategoryFlags() const = 0;
 	virtual std::string ToString() const { return std::string(GetName()); }

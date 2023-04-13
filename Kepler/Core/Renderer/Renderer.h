@@ -24,7 +24,7 @@ public:
 	static Renderer* Get();
 	static void Init();
 
-	inline EGraphicsAPI GetAPI() const { return m_pGraphicsAPI->GetAPI(); }
+	inline eGraphicsAPI GetAPI() const { return m_pGraphicsAPI->GetAPI(); }
 
 	void SetViewport(const uint32_t width, const uint32_t height, const float minDepth, const float maxDepth);
 

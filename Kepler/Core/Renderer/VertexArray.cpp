@@ -7,16 +7,16 @@
 namespace kepler {
 std::shared_ptr<IVertexArray> IVertexArray::Create()
 {
-	EGraphicsAPI api = IGraphicsAPI::GetAPI();
+	eGraphicsAPI api = IGraphicsAPI::GetAPI();
 
 	switch (api)
 	{
-	case EGraphicsAPI::None:
+	case eGraphicsAPI::None:
 	{
 		KEPLER_ASSERT(false, "None Graphics API is not suppotted");
 		return nullptr;
 	}
-	case EGraphicsAPI::DirectX11:
+	case eGraphicsAPI::DirectX11:
 	{
 		return std::make_shared<DX11VertexArray>();
 	}

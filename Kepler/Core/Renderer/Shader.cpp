@@ -9,15 +9,15 @@ namespace kepler {
 //////////// Shader ////////////
 std::shared_ptr<IShader> IShader::Create(const eShaderType& type, const std::string& filepath)
 {
-	EGraphicsAPI api = IGraphicsAPI::GetAPI();
+	eGraphicsAPI api = IGraphicsAPI::GetAPI();
 	switch (api)
 	{
-	case EGraphicsAPI::None:
+	case eGraphicsAPI::None:
 	{
 		KEPLER_ASSERT(false, "None Graphics API is not supported");
 		return nullptr;
 	}
-	case EGraphicsAPI::DirectX11:
+	case eGraphicsAPI::DirectX11:
 	{
 		return std::make_shared<DX11Shader>(type, filepath);
 	}
@@ -29,15 +29,15 @@ std::shared_ptr<IShader> IShader::Create(const eShaderType& type, const std::str
 
 std::shared_ptr<IShader> IShader::Create(const eShaderType& type, const std::string& name, const std::string& filepath)
 {
-	EGraphicsAPI api = IGraphicsAPI::GetAPI();
+	eGraphicsAPI api = IGraphicsAPI::GetAPI();
 	switch (api)
 	{
-	case EGraphicsAPI::None:
+	case eGraphicsAPI::None:
 	{
 		KEPLER_ASSERT(false, "None Graphics API is not supported");
 		return nullptr;
 	}
-	case EGraphicsAPI::DirectX11:
+	case eGraphicsAPI::DirectX11:
 	{
 		return std::make_shared<DX11Shader>(type, name, filepath);
 	}

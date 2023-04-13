@@ -6,17 +6,17 @@
 
 namespace kepler {
 
-std::shared_ptr<ITexture1D> ITexture1D::Create(const ETextureDataType type, const uint32_t length)
+std::shared_ptr<ITexture1D> ITexture1D::Create(const eTextureDataType type, const uint32_t length)
 {
-	EGraphicsAPI api = IGraphicsAPI::GetAPI();
+	eGraphicsAPI api = IGraphicsAPI::GetAPI();
 	switch (api)
 	{
-	case EGraphicsAPI::None:
+	case eGraphicsAPI::None:
 	{
 		KEPLER_ASSERT(false, "None Graphics API is not supported");
 		return nullptr;
 	}
-	case EGraphicsAPI::DirectX11:
+	case eGraphicsAPI::DirectX11:
 	{
 		//return std::make_shared<DX11Texture1D>(type, length);
 		return nullptr;
@@ -27,19 +27,19 @@ std::shared_ptr<ITexture1D> ITexture1D::Create(const ETextureDataType type, cons
 	return nullptr;
 }
 
-std::shared_ptr<ITexture2D> ITexture2D::Create(const ETextureDataType type,
+std::shared_ptr<ITexture2D> ITexture2D::Create(const eTextureDataType type,
 	const uint32_t width,
 	const uint32_t height)
 {
-	EGraphicsAPI api = IGraphicsAPI::GetAPI();
+	eGraphicsAPI api = IGraphicsAPI::GetAPI();
 	switch (api)
 	{
-	case EGraphicsAPI::None:
+	case eGraphicsAPI::None:
 	{
 		KEPLER_ASSERT(false, "None Graphics API is not supported");
 		return nullptr;
 	}
-	case EGraphicsAPI::DirectX11:
+	case eGraphicsAPI::DirectX11:
 	{
 		return std::make_shared<DX11Texture2D>(type, width, height);
 	}
@@ -49,17 +49,17 @@ std::shared_ptr<ITexture2D> ITexture2D::Create(const ETextureDataType type,
 	return nullptr;
 }
 
-std::shared_ptr<ITexture2D> ITexture2D::Create(const ETextureDataType type, const std::string& filepath)
+std::shared_ptr<ITexture2D> ITexture2D::Create(const eTextureDataType type, const std::string& filepath)
 {
-	EGraphicsAPI api = IGraphicsAPI::GetAPI();
+	eGraphicsAPI api = IGraphicsAPI::GetAPI();
 	switch (api)
 	{
-	case EGraphicsAPI::None:
+	case eGraphicsAPI::None:
 	{
 		KEPLER_ASSERT(false, "None Graphics API is not supported");
 		return nullptr;
 	}
-	case EGraphicsAPI::DirectX11:
+	case eGraphicsAPI::DirectX11:
 	{
 		return std::make_shared<DX11Texture2D>(type, filepath);
 	}
@@ -69,20 +69,20 @@ std::shared_ptr<ITexture2D> ITexture2D::Create(const ETextureDataType type, cons
 	return nullptr;
 }
 
-std::shared_ptr<ITexture3D> ITexture3D::Create(const ETextureDataType type,
+std::shared_ptr<ITexture3D> ITexture3D::Create(const eTextureDataType type,
 	const uint32_t width,
 	const uint32_t height,
 	const uint32_t depth)
 {
-	EGraphicsAPI api = IGraphicsAPI::GetAPI();
+	eGraphicsAPI api = IGraphicsAPI::GetAPI();
 	switch (api)
 	{
-	case EGraphicsAPI::None:
+	case eGraphicsAPI::None:
 	{
 		KEPLER_ASSERT(false, "None Graphics API is not supported");
 		return nullptr;
 	}
-	case EGraphicsAPI::DirectX11:
+	case eGraphicsAPI::DirectX11:
 	{
 		//return std::make_shared<DX11Texture3D>(type, width, height, depth);
 		return nullptr;

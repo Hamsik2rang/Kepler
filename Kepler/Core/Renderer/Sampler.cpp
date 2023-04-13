@@ -7,28 +7,28 @@
 namespace kepler {
 
 std::shared_ptr<ISampler> ISampler::Create(
-	ETexelComparer texelComparer,
-	ESamplerFilter minFilter,
-	ESamplerFilter magFilter,
-	ESamplerFilter mipFilter,
-	ESamplerAddress addressU,
-	ESamplerAddress addressV,
-	ESamplerAddress addressW,
-	ESamplerComparer comparer,
+	eTexelComparer texelComparer,
+	eSamplerFilter minFilter,
+	eSamplerFilter magFilter,
+	eSamplerFilter mipFilter,
+	eSamplerAddress addressU,
+	eSamplerAddress addressV,
+	eSamplerAddress addressW,
+	eSamplerComparer comparer,
 	float minLOD,
 	float maxLOD)
 {
-	EGraphicsAPI api = IGraphicsAPI::GetAPI();
+	eGraphicsAPI api = IGraphicsAPI::GetAPI();
 
 	switch (api)
 	{
-	case EGraphicsAPI::None:
+	case eGraphicsAPI::None:
 	{
 		KEPLER_CORE_ASSERT(false, "None Graphics API Not Supported.");
 		return nullptr;
 	}
 	break;
-	case EGraphicsAPI::DirectX11:
+	case eGraphicsAPI::DirectX11:
 	{
 		return std::make_shared<DX11Sampler>(texelComparer, minFilter, magFilter, mipFilter, addressU, addressV, addressW, comparer, minLOD, maxLOD);
 	}

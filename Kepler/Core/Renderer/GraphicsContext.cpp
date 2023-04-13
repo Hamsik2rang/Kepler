@@ -12,16 +12,16 @@ IGraphicsContext* IGraphicsContext::Create(const void* hWindow)
 	{
 		return s_pInstance;
 	}
-	EGraphicsAPI api = IGraphicsAPI::GetAPI();
+	eGraphicsAPI api = IGraphicsAPI::GetAPI();
 
 	switch (api)
 	{
-	case EGraphicsAPI::None:
+	case eGraphicsAPI::None:
 	{
 		KEPLER_CORE_ASSERT(false, "None API not supported");
 	}
 	break;
-	case EGraphicsAPI::DirectX11:
+	case eGraphicsAPI::DirectX11:
 	{
 		const HWND* phWnd = reinterpret_cast<const HWND*>(hWindow);
 		s_pInstance = new DX11Context(*phWnd);
