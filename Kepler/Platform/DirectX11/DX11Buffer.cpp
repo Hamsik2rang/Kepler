@@ -8,21 +8,21 @@
 namespace kepler {
 
 // 추상화된 쉐이더 데이터 타입을 DirectX11 쉐이더 데이터 타입으로 변경하는 함수
-static DXGI_FORMAT ShaderDataTypeToDXGIFormat(EShaderDataType type)
+static DXGI_FORMAT ShaderDataTypeToDXGIFormat(eShaderDataType type)
 {
 	switch (type)
 	{
-	case EShaderDataType::Bool:     return DXGI_FORMAT_R8_UINT;
-	case EShaderDataType::Float:    return DXGI_FORMAT_R32_FLOAT;
-	case EShaderDataType::Float2:   return DXGI_FORMAT_R32G32_FLOAT;
-	case EShaderDataType::Float3:   return DXGI_FORMAT_R32G32B32_FLOAT;
-	case EShaderDataType::Float4:   return DXGI_FORMAT_R32G32B32A32_FLOAT;
-	case EShaderDataType::Int:      return DXGI_FORMAT_R32_SINT;
-	case EShaderDataType::Int2:     return DXGI_FORMAT_R32G32_SINT;
-	case EShaderDataType::Int3:     return DXGI_FORMAT_R32G32B32_SINT;
-	case EShaderDataType::Int4:     return DXGI_FORMAT_R32G32B32A32_SINT;
-	case EShaderDataType::Float33:  return DXGI_FORMAT_R32G32B32_FLOAT;
-	case EShaderDataType::Float44:  return DXGI_FORMAT_R32G32B32A32_FLOAT;
+	case eShaderDataType::Bool:     return DXGI_FORMAT_R8_UINT;
+	case eShaderDataType::Float:    return DXGI_FORMAT_R32_FLOAT;
+	case eShaderDataType::Float2:   return DXGI_FORMAT_R32G32_FLOAT;
+	case eShaderDataType::Float3:   return DXGI_FORMAT_R32G32B32_FLOAT;
+	case eShaderDataType::Float4:   return DXGI_FORMAT_R32G32B32A32_FLOAT;
+	case eShaderDataType::Int:      return DXGI_FORMAT_R32_SINT;
+	case eShaderDataType::Int2:     return DXGI_FORMAT_R32G32_SINT;
+	case eShaderDataType::Int3:     return DXGI_FORMAT_R32G32B32_SINT;
+	case eShaderDataType::Int4:     return DXGI_FORMAT_R32G32B32A32_SINT;
+	case eShaderDataType::Float33:  return DXGI_FORMAT_R32G32B32_FLOAT;
+	case eShaderDataType::Float44:  return DXGI_FORMAT_R32G32B32A32_FLOAT;
 	}
 
 	KEPLER_ASSERT(false, "Invalid ShaderDataType");

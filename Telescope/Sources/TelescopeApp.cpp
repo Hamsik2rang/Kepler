@@ -8,7 +8,7 @@ class Editor : public kepler::Application
 {
 public:
 	Editor()
-		: Application(kepler::EGraphicsAPI::DirectX11)
+		: Application(kepler::eGraphicsAPI::DirectX11)
 	{
 		PushLayer(new kepler::EditorLayer);
 	}

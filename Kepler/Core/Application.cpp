@@ -15,7 +15,7 @@ namespace kepler {
 Application* Application::s_pInstance = nullptr;
 
 // Initialize Core resources
-Application::Application(EGraphicsAPI api)
+Application::Application(eGraphicsAPI api)
 {
 	kepler::Log::Init();
 	kepler::Audio::Init();

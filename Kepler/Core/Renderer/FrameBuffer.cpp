@@ -20,15 +20,15 @@ std::shared_ptr<IFrameBuffer> IFrameBuffer::Get()
 
 std::shared_ptr<IFrameBuffer> IFrameBuffer::Create()
 {
-	EGraphicsAPI api = IGraphicsAPI::GetAPI();
+	eGraphicsAPI api = IGraphicsAPI::GetAPI();
 	switch (api)
 	{
-	case EGraphicsAPI::None:
+	case eGraphicsAPI::None:
 	{
 		KEPLER_CORE_ASSERT(false, "None Graphics API is not supported.");
 	}
 	break;
-	case EGraphicsAPI::DirectX11:
+	case eGraphicsAPI::DirectX11:
 	{
 		s_pInstance = std::make_shared<DX11FrameBuffer>();
 	}

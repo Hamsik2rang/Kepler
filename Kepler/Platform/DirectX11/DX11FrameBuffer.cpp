@@ -245,7 +245,7 @@ void DX11FrameBuffer::ResizeGBuffer(uint8_t startSlot, uint8_t count, uint32_t w
 void DX11FrameBuffer::CreateGBuffer(uint8_t index, uint32_t width, uint32_t height)
 {
 	ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
-	m_pTextures[index] = ITexture2D::Create(ETextureDataType::Float_RGBA32, width, height);
+	m_pTextures[index] = ITexture2D::Create(eTextureDataType::Float_RGBA32, width, height);
 
 	D3D11_RENDER_TARGET_VIEW_DESC rtvDesc{};
 	rtvDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -263,10 +263,10 @@ void DX11FrameBuffer::CreateGBuffer(uint8_t index, uint32_t width, uint32_t heig
 
 // (Im Yongsik)NOTE: void ptr을 리턴했을때 사용자가 그 포인터가 참조하는 내용을 없애버리면?
 // void ptr을 리턴하는 게 안전하지 않아 보이는데
-void* DX11FrameBuffer::GetBuffer(EFrameBufferType type, uint8_t index)
+void* DX11FrameBuffer::GetBuffer(eFrameBufferType type, uint8_t index)
 {
 	// TODO: It is temporary code. it must be improved.
-	if (type == EFrameBufferType::Color)
+	if (type == eFrameBufferType::Color)
 	{
 		return m_pTextures[index]->GetData();
 	}

@@ -23,7 +23,7 @@ private:
 	bool m_bIsRunning;
 
 protected:
-	Application(EGraphicsAPI api);
+	Application(eGraphicsAPI api);
 
 public:
 	~Application();

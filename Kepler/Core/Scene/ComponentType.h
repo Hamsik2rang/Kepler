@@ -9,7 +9,7 @@ namespace component {
 extern const uint16_t componentCount;
 }
 
-enum class EComponentType
+enum class eComponentType
 {
 	IComponent = 0,
 	TagComponent,
@@ -40,8 +40,8 @@ enum ComponentFlag : uint64_t
 
 
 #define COMPONENT_CLASS_TYPE(type) \
-	static EComponentType GetStaticType() { return EComponentType::##type; } \
-	virtual EComponentType GetType() const override { return GetStaticType(); }
+	static eComponentType GetStaticType() { return eComponentType::##type; } \
+	virtual eComponentType GetType() const override { return GetStaticType(); }
 
 #define COMPONENT_CLASS_INDEX(index) \
 	static ComponentIndex GetStaticIndex() { return ComponentIndex::##index; } \

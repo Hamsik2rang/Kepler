@@ -20,7 +20,7 @@ private:
 	Entity* m_pOwner;
 
 public:
-	virtual EComponentType GetType() const = 0;
+	virtual eComponentType GetType() const = 0;
 	virtual ComponentIndex GetIndex() const = 0;
 	virtual ComponentFlag GetFlag() const = 0;
 

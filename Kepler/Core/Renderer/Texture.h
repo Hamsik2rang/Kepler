@@ -4,7 +4,7 @@
 
 namespace kepler {
 
-enum class ETextureDataType
+enum class eTextureDataType
 {
 	None = 0,
 	Float_RGBA16,
@@ -23,7 +23,7 @@ public:
 	virtual void Bind(uint32_t slot) = 0;
 	virtual void* GetData() = 0;
 	virtual void* GetTexture() = 0;
-	virtual ETextureDataType GetType() = 0;
+	virtual eTextureDataType GetType() = 0;
 };
 
 // Texture1D Interface
@@ -36,9 +36,9 @@ public:
 	virtual void SetData(const void* pData, const uint32_t size, const uint32_t channel) = 0;
 	virtual void* GetData() = 0;
 	virtual void* GetTexture() = 0;
-	virtual ETextureDataType GetType() = 0;
+	virtual eTextureDataType GetType() = 0;
 
-	static std::shared_ptr<ITexture1D> Create(const ETextureDataType type, const uint32_t width);
+	static std::shared_ptr<ITexture1D> Create(const eTextureDataType type, const uint32_t width);
 };
 // Texture2D Interface
 class ITexture2D : public ITexture
@@ -51,10 +51,10 @@ public:
 	virtual void SetData(const void* pData, const uint32_t width, const uint32_t height, const uint32_t channel) = 0;
 	virtual void* GetData() = 0;
 	virtual void* GetTexture() = 0;
-	virtual ETextureDataType GetType() = 0;
+	virtual eTextureDataType GetType() = 0;
 
-	static std::shared_ptr<ITexture2D> Create(const ETextureDataType type, const uint32_t width, const uint32_t height);
-	static std::shared_ptr<ITexture2D> Create(const ETextureDataType type, const std::string& filepath);
+	static std::shared_ptr<ITexture2D> Create(const eTextureDataType type, const uint32_t width, const uint32_t height);
+	static std::shared_ptr<ITexture2D> Create(const eTextureDataType type, const std::string& filepath);
 };
 
 // Texture3D Interface
@@ -70,9 +70,9 @@ public:
 	virtual void SetData(const void* pData, const uint32_t size, const uint32_t channel) = 0;
 	virtual void* GetData() = 0;
 	virtual void* GetTexture() = 0;
-	virtual ETextureDataType GetType() = 0;
+	virtual eTextureDataType GetType() = 0;
 
-	static std::shared_ptr<ITexture3D> Create(const ETextureDataType type,
+	static std::shared_ptr<ITexture3D> Create(const eTextureDataType type,
 		const uint32_t width,
 		const uint32_t height,
 		const uint32_t depth);

@@ -13,7 +13,7 @@ namespace kepler {
 
 		// Scene View Begin
 		ImGui::SetScrollY(0);
-		ID3D11ShaderResourceView* buffer = (ID3D11ShaderResourceView*)IFrameBuffer::Get()->GetBuffer(EFrameBufferType::Color, 0);
+		ID3D11ShaderResourceView* buffer = (ID3D11ShaderResourceView*)IFrameBuffer::Get()->GetBuffer(eFrameBufferType::Color, 0);
 		auto size = ImGui::GetWindowSize();
 		m_bIsSceneFocuced = ImGui::IsWindowFocused();
 		m_lastViewportWidth = m_viewportWidth;

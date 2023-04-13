@@ -8,11 +8,11 @@
 
 namespace kepler {
 
-static DXGI_FORMAT ConvertTextureDataType(const ETextureDataType type);
-static uint8_t GetChannelFromTextureDataType(const ETextureDataType type);
+static DXGI_FORMAT ConvertTextureDataType(const eTextureDataType type);
+static uint8_t GetChannelFromTextureDataType(const eTextureDataType type);
 
 // DX11Texture2D
-DX11Texture2D::DX11Texture2D(const ETextureDataType type, const uint32_t width, const uint32_t height)
+DX11Texture2D::DX11Texture2D(const eTextureDataType type, const uint32_t width, const uint32_t height)
 	: m_pResourceView{ nullptr }
 	, m_pTexture{ nullptr }
 	, m_type{ type }
@@ -55,7 +55,7 @@ DX11Texture2D::DX11Texture2D(const ETextureDataType type, const uint32_t width, 
 	}
 }
 
-DX11Texture2D::DX11Texture2D(const ETextureDataType type, const std::string& filepath)
+DX11Texture2D::DX11Texture2D(const eTextureDataType type, const std::string& filepath)
 	: m_pResourceView{ nullptr }
 	, m_pTexture{ nullptr }
 	, m_type{ type }
@@ -178,34 +178,34 @@ void DX11Texture2D::SetData(const void* pData, const uint32_t width, const uint3
 	}
 }
 
-DXGI_FORMAT ConvertTextureDataType(const ETextureDataType type)
+DXGI_FORMAT ConvertTextureDataType(const eTextureDataType type)
 {
 	switch (type)
 	{
-	case ETextureDataType::Float_RGBA16:
+	case eTextureDataType::Float_RGBA16:
 		return DXGI_FORMAT_R16G16B16A16_FLOAT;
-	case ETextureDataType::Float_RGBA32:
+	case eTextureDataType::Float_RGBA32:
 		return DXGI_FORMAT_R32G32B32A32_FLOAT;
-	case ETextureDataType::Float_RGB32:
+	case eTextureDataType::Float_RGB32:
 		return DXGI_FORMAT_R32G32B32_FLOAT;
-	case ETextureDataType::UNorm_RGBA8:
-	case ETextureDataType::UNorm_RGB8:
+	case eTextureDataType::UNorm_RGBA8:
+	case eTextureDataType::UNorm_RGB8:
 		return DXGI_FORMAT_R8G8B8A8_UNORM;
 		//...
 	}
 	return DXGI_FORMAT_UNKNOWN;
 }
 
-uint8_t GetChannelFromTextureDataType(const ETextureDataType type)
+uint8_t GetChannelFromTextureDataType(const eTextureDataType type)
 {
 	switch (type)
 	{
-	case ETextureDataType::Float_RGBA16:
-	case ETextureDataType::Float_RGBA32:
-	case ETextureDataType::UNorm_RGBA8:
+	case eTextureDataType::Float_RGBA16:
+	case eTextureDataType::Float_RGBA32:
+	case eTextureDataType::UNorm_RGBA8:
 		return 4u;
-	case ETextureDataType::Float_RGB32:
-	case ETextureDataType::UNorm_RGB8:
+	case eTextureDataType::Float_RGB32:
+	case eTextureDataType::UNorm_RGB8:
 		return 3u;
 		//...
 	}

@@ -135,16 +135,16 @@ void Renderer2D::Flush()
 		{
 			batchData.pTexture->Bind(0);
 			pIB->SetLayout({
-				{"INST_COLOR", 0, EShaderDataType::Float4, 0, sizeof(float) * 4},
+				{"INST_COLOR", 0, eShaderDataType::Float4, 0, sizeof(float) * 4},
 				// sizeof(bool) == 4 in HLSL
-				{"INST_BOOL", 0, EShaderDataType::Bool, sizeof(float) * 4, sizeof(int32_t)},
-				{"INST_BOOL", 1, EShaderDataType::Bool, sizeof(float) * 4 + sizeof(int32_t), sizeof(int32_t)}
+				{"INST_BOOL", 0, eShaderDataType::Bool, sizeof(float) * 4, sizeof(int32_t)},
+				{"INST_BOOL", 1, eShaderDataType::Bool, sizeof(float) * 4 + sizeof(int32_t), sizeof(int32_t)}
 				});
 		}
 		else
 		{
 			pIB->SetLayout({
-				{"INST_COLOR", 0, EShaderDataType::Float4, 0, sizeof(float) * 4}
+				{"INST_COLOR", 0, eShaderDataType::Float4, 0, sizeof(float) * 4}
 				});
 		}
 		drawCallsCount++;
@@ -260,7 +260,7 @@ void Renderer2D::DrawQuad(const Mat44f& transform, const Vec4f& color)
 
 	std::shared_ptr<IVertexBuffer> pVB = IVertexBuffer::Create(positions, sizeof(positions), EBufferUsage::Default);
 	pVB->SetLayout({
-		{ "POSITION", 0, kepler::EShaderDataType::Float3, 0, sizeof(float) * 3 }
+		{ "POSITION", 0, kepler::eShaderDataType::Float3, 0, sizeof(float) * 3 }
 		});
 	std::shared_ptr<IIndexBuffer> pIB = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), EBufferUsage::Default);
 	std::shared_ptr<IVertexArray> pVA = IVertexArray::Create();
@@ -345,8 +345,8 @@ void Renderer2D::DrawQuad(const Mat44f& transform, const std::shared_ptr<ITextur
 
 	std::shared_ptr<IVertexBuffer> pVB = IVertexBuffer::Create(positions, sizeof(positions), EBufferUsage::Default);
 	pVB->SetLayout({
-		{ "POSITION", 0, EShaderDataType::Float3, 0, sizeof(float) * 3 },
-		{ "TEXCOORD", 0, EShaderDataType::Float2, sizeof(float) * 3, sizeof(float) * 2}
+		{ "POSITION", 0, eShaderDataType::Float3, 0, sizeof(float) * 3 },
+		{ "TEXCOORD", 0, eShaderDataType::Float2, sizeof(float) * 3, sizeof(float) * 2}
 		});
 	std::shared_ptr<IIndexBuffer> pIB = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), EBufferUsage::Default);
 	std::shared_ptr<IVertexArray> pVA = IVertexArray::Create();
@@ -401,11 +401,11 @@ void Renderer2D::DrawNonBatchedQuad(const Vec2f& position, const float rotation,
 
 	std::shared_ptr<IVertexBuffer> pPosBuffer = IVertexBuffer::Create(positions, sizeof(positions), EBufferUsage::Default);
 	pPosBuffer->SetLayout({
-		{ "POSITION", 0, EShaderDataType::Float3, 0, sizeof(float) * 3 }
+		{ "POSITION", 0, eShaderDataType::Float3, 0, sizeof(float) * 3 }
 		});
 	std::shared_ptr<IVertexBuffer> pColorBuffer = IVertexBuffer::Create(colors, sizeof(colors), EBufferUsage::Default);
 	pColorBuffer->SetLayout({
-		{"COLOR", 0, EShaderDataType::Float4, 0, sizeof(Vec4f)}
+		{"COLOR", 0, eShaderDataType::Float4, 0, sizeof(Vec4f)}
 		});
 	std::shared_ptr<IIndexBuffer> pIB = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), EBufferUsage::Default);
 	std::shared_ptr<IVertexArray> pVA = IVertexArray::Create();
@@ -455,17 +455,17 @@ void Renderer2D::DrawNonBatchedQuad(const Vec2f& position, const float rotation,
 
 	std::shared_ptr<IVertexBuffer> pPosBuffer = IVertexBuffer::Create(positions, sizeof(positions), EBufferUsage::Default);
 	pPosBuffer->SetLayout({
-		{ "POSITION", 0, EShaderDataType::Float3, 0, sizeof(float) * 3 }
+		{ "POSITION", 0, eShaderDataType::Float3, 0, sizeof(float) * 3 }
 		});
 	std::shared_ptr<IVertexBuffer> pColorBuffer = IVertexBuffer::Create(colors, sizeof(colors), EBufferUsage::Default);
 
 	std::shared_ptr<IVertexBuffer> pUVBuffer = IVertexBuffer::Create(uvs, sizeof(uvs), EBufferUsage::Default);
 	pUVBuffer->SetLayout({
-		{ "TEXCOORD", 0, EShaderDataType::Float2, 0, sizeof(float) * 2}
+		{ "TEXCOORD", 0, eShaderDataType::Float2, 0, sizeof(float) * 2}
 
 		});
 	pColorBuffer->SetLayout({
-		{"COLOR", 0, EShaderDataType::Float4, 0, sizeof(Vec4f)}
+		{"COLOR", 0, eShaderDataType::Float4, 0, sizeof(Vec4f)}
 		});
 	std::shared_ptr<IIndexBuffer> pIB = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), EBufferUsage::Default);
 	std::shared_ptr<IVertexArray> pVA = IVertexArray::Create();

@@ -10,7 +10,7 @@ namespace kepler {
 
 //----- Enum Types--------------------
 // TODO: 추후 Stencil Comparer와 Depth Comparer가 다른 API를 엔진이 지원할 경우 별도로 분리해야 함
-enum class ECullMode
+enum class eCullMode
 {
 	None = 0,
 	Off,
@@ -18,7 +18,7 @@ enum class ECullMode
 	Back
 };
 
-enum class EFrameBufferComparer
+enum class eFrameBufferComparer
 {
 	None = 0,
 	Never,
@@ -30,10 +30,10 @@ enum class EFrameBufferComparer
 	GreaterOrEqual,
 	Always,
 };
-using EDepthComparer = EFrameBufferComparer;
-using EStencilComparer = EFrameBufferComparer;
+using eDepthComparer = eFrameBufferComparer;
+using eStencilComparer = eFrameBufferComparer;
 
-enum class EStencilOperator
+enum class eStencilOperator
 {
 	None = 0,
 	Keep,
@@ -46,7 +46,7 @@ enum class EStencilOperator
 	Decrease,
 };
 
-enum class EBlendFactor
+enum class eBlendFactor
 {
 	None = 0,
 	Zero,
@@ -68,7 +68,7 @@ enum class EBlendFactor
 	DualInvSrcAlpha
 };
 
-enum class EBlendOperator
+enum class eBlendOperator
 {
 	None = 0,
 	Add,
@@ -93,7 +93,7 @@ struct ShaderStateDescription
 //----- Rasterizer State--------------
 struct RasterizerStateDescription
 {
-	ECullMode cullMode;
+	eCullMode cullMode;
 	bool bIsFrontClockwise;
 	bool bWireFrame;
 	bool bScissssor;
@@ -113,7 +113,7 @@ struct DepthStateDescription
 	bool bDepthWrite;
 	uint8_t readMask;
 	uint8_t writeMask;
-	EDepthComparer comparer;
+	eDepthComparer comparer;
 };
 //------------------------------------
 
@@ -125,15 +125,15 @@ struct StencilStateDescription
 	uint8_t	writeMask;
 	uint32_t stencilRef;
 
-	EStencilOperator frontFailOperator;
-	EStencilOperator frontFailDepthOperator;
-	EStencilOperator frontPassOperator;
+	eStencilOperator frontFailOperator;
+	eStencilOperator frontFailDepthOperator;
+	eStencilOperator frontPassOperator;
 
-	EStencilOperator backFailOperation;
-	EStencilOperator backFailDepthOperation;
-	EStencilOperator backPassOperation;
+	eStencilOperator backFailOperation;
+	eStencilOperator backFailDepthOperation;
+	eStencilOperator backPassOperation;
 
-	EStencilComparer comparer;
+	eStencilComparer comparer;
 };
 //------------------------------------
 
@@ -148,13 +148,13 @@ struct BlendStateDescription
 		bool bBlendEnable;
 		uint8_t writeMask;
 
-		EBlendFactor srcColorFactor;
-		EBlendFactor destColorFactor;
-		EBlendFactor srcAlphaFactor;
-		EBlendFactor destAlphaFactor;
+		eBlendFactor srcColorFactor;
+		eBlendFactor destColorFactor;
+		eBlendFactor srcAlphaFactor;
+		eBlendFactor destAlphaFactor;
 
-		EBlendOperator colorBlendOperator;
-		EBlendOperator alphaBlendOperator;
+		eBlendOperator colorBlendOperator;
+		eBlendOperator alphaBlendOperator;
 	} renderTarget[8];
 	float customFactor[4];
 	uint32_t sampleMask;

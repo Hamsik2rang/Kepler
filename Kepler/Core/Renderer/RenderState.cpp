@@ -21,15 +21,15 @@ namespace kepler {
 			return s_pInstance;
 		}
 
-		EGraphicsAPI eAPI = IGraphicsAPI::GetAPI();
+		eGraphicsAPI eAPI = IGraphicsAPI::GetAPI();
 		switch (eAPI)
 		{
-		case EGraphicsAPI::None:
+		case eGraphicsAPI::None:
 			{
 				KEPLER_CORE_ASSERT(false, "None API not supported");
 			}
 			break;
-		case EGraphicsAPI::DirectX11:
+		case eGraphicsAPI::DirectX11:
 			{
 				s_pInstance = std::make_shared<DX11State>();
 			}
