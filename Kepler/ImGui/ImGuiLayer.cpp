@@ -46,9 +46,9 @@ namespace kepler {
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
-		ImGui::StyleColorsDark();
-		SetDarkThemeColors();
-		//ImGui::StyleColorsLight();
+		//ImGui::StyleColorsDark();
+		//SetDarkThemeColors();
+		ImGui::StyleColorsLight();
 		ImGuiStyle& style = ImGui::GetStyle();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
