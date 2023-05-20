@@ -26,6 +26,7 @@ private:
 	bool OnMouseButtonPressedEvent(MouseButtonPressedEvent& e);
 
 	void UpdateInputValue();
+	void UpdateRotateValue();
 
 public:
 	EditorCamera() = default;
