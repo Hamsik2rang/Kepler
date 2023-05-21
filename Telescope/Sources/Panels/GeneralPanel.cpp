@@ -2,9 +2,9 @@
 
 namespace kepler {
 
-	void GeneralPanel::OnImGuiRender()
-	{
+void GeneralPanel::OnImGuiRender()
+{
 
-	}
+}
 
 }
