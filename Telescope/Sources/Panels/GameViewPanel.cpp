@@ -1,9 +1,9 @@
 #include "GameViewPanel.h"
 
 namespace kepler {
-	
-	void GameViewPanel::OnImGuiRender()
-	{
 
-	}
+void GameViewPanel::OnImGuiRender()
+{
+
+}
 }
