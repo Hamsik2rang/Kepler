@@ -54,8 +54,8 @@ namespace kepler {
 
 	void DX11State::CreateRasterizerState()
 	{
-		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
-		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+		ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
+		ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 
 		if (m_pRasterizerState)
 		{
@@ -95,8 +95,8 @@ namespace kepler {
 
 	void DX11State::CreateDepthStencilState()
 	{
-		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
-		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+		ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
+		ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 		if (m_pDepthStencilState)
 		{
 			pContext->OMSetDepthStencilState(nullptr, 0x00);
@@ -144,8 +144,8 @@ namespace kepler {
 
 	void DX11State::CreateBlendState()
 	{
-		ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
-		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+		ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
+		ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 		if (m_pBlendState)
 		{
 			pContext->OMSetBlendState(nullptr, nullptr, 0x00);
@@ -269,7 +269,7 @@ namespace kepler {
 
 	void DX11State::Bind()
 	{
-		ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+		ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 		if (m_bShaderStateChaged)
 		{
 			// Bind Shader

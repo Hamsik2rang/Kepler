@@ -35,7 +35,7 @@ DX11Texture2D::DX11Texture2D(const eTextureDataType type, const uint32_t width, 
 	texDesc.CPUAccessFlags = 0;
 	texDesc.MiscFlags = 0;
 
-	ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+	ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
 
 	HRESULT hr = pDevice->CreateTexture2D(&texDesc, nullptr, &m_pTexture);
 	if (FAILED(hr))
@@ -84,8 +84,8 @@ DX11Texture2D::DX11Texture2D(const eTextureDataType type, const std::string& fil
 	texDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
 	texDesc.Usage = D3D11_USAGE_DEFAULT;
 
-	ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
-	ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
+	ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 
 	// 텍스처 생성
 	HRESULT hr = pDevice->CreateTexture2D(&texDesc, nullptr, &m_pTexture);
@@ -136,7 +136,7 @@ DX11Texture2D::~DX11Texture2D()
 
 void DX11Texture2D::Bind(const uint32_t slot)
 {
-	ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 	pDeviceContext->PSSetShaderResources(slot, 1, &m_pResourceView);
 }
 
@@ -165,7 +165,7 @@ void DX11Texture2D::SetData(const void* pData, const uint32_t width, const uint3
 				pBuffer[bufIndex + 3] = 255;
 			}
 		}
-		auto pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+		ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 		uint32_t pitch = RGBASize * width;
 		pDeviceContext->UpdateSubresource(m_pTexture, 0, nullptr, pBuffer, RGBASize * width, 0);
 		delete[] pBuffer;
@@ -173,7 +173,7 @@ void DX11Texture2D::SetData(const void* pData, const uint32_t width, const uint3
 	else
 	{
 		uint32_t pitch = m_width * channel;
-		auto pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+		ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 		pDeviceContext->UpdateSubresource(m_pTexture, 0, nullptr, pData, pitch, 0);
 	}
 }

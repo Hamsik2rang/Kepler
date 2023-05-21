@@ -152,7 +152,7 @@ void DX11Shader::Compile(ID3DBlob** ppOutBlob, const std::string& filepath, cons
 // 컴파일된 쉐이더 프로그램을 이용해 쉐이더 객체 생성
 void DX11Shader::Create(ID3DBlob* pInBlob)
 {
-	ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+	ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
 	HRESULT hr = S_OK;
 	switch (m_type)
 	{
@@ -197,7 +197,7 @@ void DX11Shader::InitReflection(ID3DBlob* pInBlob)
 // 리플렉션을 이용해 자동으로 초기화해줌
 void DX11Shader::InitVertexLayout(ID3DBlob* pInBlob)
 {
-	ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+	ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
 
 	D3D11_SHADER_DESC shaderDesc{};
 	m_pReflection->GetDesc(&shaderDesc);
@@ -269,7 +269,7 @@ void DX11Shader::InitVertexLayout(ID3DBlob* pInBlob)
 //쉐이더 리플렉션을 이용해 쉐이더 내 ConstantBuffer 정보 자동으로 불러오는 함수
 void DX11Shader::InitConstantBuffer()
 {
-	ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+	ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
 
 	// 쉐이더 디스크립션 받아오기
 	D3D11_SHADER_DESC shaderDesc{};
@@ -359,7 +359,7 @@ void DX11Shader::InitConstantBuffer()
 
 void DX11Shader::Bind()
 {
-	ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 	switch (m_type)
 	{
 	case eShaderType::Vertex:	pDeviceContext->IASetInputLayout(m_pVertexLayout);
@@ -377,7 +377,7 @@ void DX11Shader::Bind()
 // DirectX11의 경우 필수적으로 호출할 필요 없음
 void DX11Shader::Unbind()
 {
-	ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 	switch (m_type)
 	{
 	case eShaderType::Vertex:	pDeviceContext->IASetInputLayout(nullptr);
@@ -431,7 +431,7 @@ bool DX11Shader::GetConstantBufferDataInfo(const std::string& inParamName, int& 
 // constant buffer 갱신 함수
 void DX11Shader::UpdateConstantBuffer(const int index)
 {
-	ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 
 	// If constantbuffer isn't initialized dynamic usage
 	//pDeviceContext->UpdateSubresource(m_ppConstantBuffers[index], 0, nullptr, m_pBufferBytes[index], 0, 0);

@@ -104,7 +104,7 @@ DX11Sampler::DX11Sampler(
 	desc.MinLOD = minLOD;
 	desc.MaxLOD = maxLOD;
 
-	ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+	ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
 	HRESULT hr = pDevice->CreateSamplerState(&desc, &m_pSamplerState);
 	if (FAILED(hr))
 	{
@@ -123,13 +123,13 @@ DX11Sampler::~DX11Sampler()
 
 void DX11Sampler::Bind(uint32_t slot)
 {
-	ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 	pContext->PSSetSamplers(slot, 1, &m_pSamplerState);
 }
 
 void DX11Sampler::Unbind(uint32_t slot)
 {
-	ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 	pContext->PSSetSamplers(slot, 1, nullptr);
 }
 

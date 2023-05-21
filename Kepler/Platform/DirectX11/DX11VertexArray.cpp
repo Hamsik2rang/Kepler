@@ -15,7 +15,7 @@ DX11VertexArray::DX11VertexArray()
 
 void DX11VertexArray::Bind()
 {
-	ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 
 	for (uint32_t i = 0; i < m_pVertexBuffers.size(); i++)
 	{

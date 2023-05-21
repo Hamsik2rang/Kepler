@@ -34,8 +34,8 @@ DX11VertexBuffer::DX11VertexBuffer(const uint32_t size, EBufferUsage usage)
 	: m_layout{}
 	, m_pBuffer{ nullptr }
 {
-	ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
-	ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
+	ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 
 	// 별도의 정점데이터가 제공되지 않은 빈 buffer의 경우 언제든지 write될 수 있어야 하므로 dynamic usage로 생성
 	D3D11_BUFFER_DESC bufferDesc{};
@@ -58,8 +58,8 @@ DX11VertexBuffer::DX11VertexBuffer(const void* const vertices, const uint32_t si
 	: m_layout{}
 	, m_pBuffer{ nullptr }
 {
-	ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
-	ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
+	ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 
 	D3D11_BUFFER_DESC bufferDesc{};
 	bufferDesc.ByteWidth = size;
@@ -109,7 +109,7 @@ DX11VertexBuffer::~DX11VertexBuffer()
 // 렌더링 파이프라인에 바인딩
 void DX11VertexBuffer::Bind()
 {
-	ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 	auto& desc = IRenderState::Get()->GetShaderState();
 
 	// VertexBuffer의 레이아웃 내 element들이 어떻게 chunking되었는지에 따라 offset, stride 계산해 쉐이더 장치에 bind
@@ -126,7 +126,7 @@ void DX11VertexBuffer::Bind()
 // 렌더링 파이프라인에서 바인딩 해제
 void DX11VertexBuffer::Unbind()
 {
-	ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 
 	auto& desc = IRenderState::Get()->GetShaderState();
 
@@ -143,8 +143,8 @@ void DX11VertexBuffer::Unbind()
 // VertexBuffer의 정점 데이터 변경
 void DX11VertexBuffer::SetData(const void* data, uint32_t size)
 {
-	ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
-	ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
+	ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 
 	// TODO: 추후 마저 구현
 }
@@ -154,8 +154,8 @@ DX11IndexBuffer::DX11IndexBuffer(const uint32_t* const indices, const uint32_t c
 	: m_count{ count }
 	, m_pBuffer{ nullptr }
 {
-	ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
-	ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
+	ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 
 	D3D11_BUFFER_DESC bufferDesc{};
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -185,7 +185,7 @@ DX11IndexBuffer::~DX11IndexBuffer()
 // 렌더링 파이프라인에 바인딩
 void DX11IndexBuffer::Bind()
 {
-	ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 
 	pDeviceContext->IASetIndexBuffer(m_pBuffer, DXGI_FORMAT_R32_UINT, 0);
 }
@@ -193,8 +193,8 @@ void DX11IndexBuffer::Bind()
 // 렌더링 파이프라인에서 바인딩 해제
 void DX11IndexBuffer::Unbind()
 {
-	ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
-	ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
+	ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 
 	pDeviceContext->IASetIndexBuffer(nullptr, DXGI_FORMAT_R32_UINT, 0);
 }
@@ -205,8 +205,8 @@ DX11InstanceBuffer::DX11InstanceBuffer(const uint32_t size, const uint32_t count
 	, m_pBuffer{ nullptr }
 	, m_count{ count }
 {
-	ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
-	ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
+	ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 
 	// 별도의 인스턴스 데이터가 제공되지 않은 빈 buffer의 경우 언제든지 write될 수 있어야 하므로 dynamic usage로 생성
 	D3D11_BUFFER_DESC bufferDesc{};
@@ -230,8 +230,8 @@ DX11InstanceBuffer::DX11InstanceBuffer(const void* const data, const uint32_t si
 	, m_pBuffer{ nullptr }
 	, m_count{ count }
 {
-	ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
-	ID3D11DeviceContext* pDeviceContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
+	ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 
 	D3D11_BUFFER_DESC bufferDesc{};
 	bufferDesc.ByteWidth = size;
@@ -280,7 +280,7 @@ DX11InstanceBuffer::~DX11InstanceBuffer()
 
 void DX11InstanceBuffer::Bind()
 {
-	ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 
 	auto& shaderState = IRenderState::Get()->GetShaderState();
 	auto& pVertexShader = shaderState.pVertexShader;
@@ -297,7 +297,7 @@ void DX11InstanceBuffer::Bind()
 
 void DX11InstanceBuffer::Unbind()
 {
-	ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 
 	auto& shaderState = IRenderState::Get()->GetShaderState();
 	auto& pVertexShader = shaderState.pVertexShader;
