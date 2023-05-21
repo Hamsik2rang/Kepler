@@ -1,6 +1,6 @@
 #include "InstLayer.h"
 #include "Kepler.h"
-#include "ResearchLayer.h"
+#include "VulkanTestLayer.h"
 
 #include <Core/EntryPoint.h>
 
@@ -8,9 +8,9 @@ class Client : public kepler::Application
 {
 public:
     Client()
-        : Application(kepler::eGraphicsAPI::DirectX11)
+        : Application(kepler::eGraphicsAPI::Vulkan)
     {
-        PushLayer(new ResearchLayer);
+        PushLayer(new VulkanTestLayer);
     }
     ~Client()
     {
