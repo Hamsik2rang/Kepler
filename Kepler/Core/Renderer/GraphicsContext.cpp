@@ -1,6 +1,7 @@
 #include "kepch.h"
 #include "GraphicsContext.h"
 #include "Platform/DirectX11/DX11Context.h"
+#include "Platform/Vulkan/VulkanContext.h"
 
 namespace kepler {
 
@@ -23,10 +24,16 @@ IGraphicsContext* IGraphicsContext::Create(const void* hWindow)
 	break;
 	case eGraphicsAPI::DirectX11:
 	{
-		const HWND* phWnd = reinterpret_cast<const HWND*>(hWindow);
+		const HWND* phWnd = static_cast<const HWND*>(hWindow);
 		s_pInstance = new DX11Context(*phWnd);
 	}
 	break;
+	case eGraphicsAPI::Vulkan:
+	{
+		const HWND* phWnd = static_cast<const HWND*>(hWindow);
+		s_pInstance = new VulkanContext(*phWnd);
+	}
+	 break;
 	default:
 	{
 		KEPLER_CORE_ASSERT(false, "Invalid Graphics API");

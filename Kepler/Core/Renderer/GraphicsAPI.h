@@ -9,6 +9,7 @@ enum class eGraphicsAPI
 {
 	None = 0,
 	DirectX11 = 1,
+	Vulkan = 2,
 };
 
 class IGraphicsAPI
