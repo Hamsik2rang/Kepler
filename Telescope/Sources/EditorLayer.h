@@ -13,20 +13,6 @@ namespace kepler {
 
 class EditorLayer : public Layer
 {
-private:
-	EditorCamera m_camera;
-
-	Entity* m_pCubeEntity;
-	Scene m_scene;
-
-	float m_time;
-	bool m_bIsSceneFocuced;
-
-	DockspacePanel m_dockspacePanel;
-	SceneViewPanel m_sceneViewPanel;
-	HierarchyPanel m_hierarchyPanel;
-	InspectorPanel m_inspectorPanel;
-
 public:
 
 	EditorLayer()
@@ -47,5 +33,19 @@ public:
 	virtual void OnRender() override;
 	virtual void OnGUIRender() override;
 	virtual void OnEvent(Event& e) override;
+
+private:
+	EditorCamera m_camera;
+
+	Entity* m_pCubeEntity;
+	Scene m_scene;
+
+	float m_time;
+	bool m_bIsSceneFocuced;
+
+	DockspacePanel m_dockspacePanel;
+	SceneViewPanel m_sceneViewPanel;
+	HierarchyPanel m_hierarchyPanel;
+	InspectorPanel m_inspectorPanel;
 };
 }

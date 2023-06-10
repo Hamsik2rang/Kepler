@@ -38,6 +38,7 @@ void EditorCamera::OnUpdate(float deltaTime)
 
 	UpdateRotateValue();
 	UpdateInputValue();
+
 	Vec3f front = GetFront();
 	Vec3f right = GetRight();
 	Vec3f up = GetUp();

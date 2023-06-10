@@ -163,16 +163,6 @@ struct BlendStateDescription
 
 class IRenderState
 {
-private:
-	static std::shared_ptr<IRenderState> s_pInstance;
-
-protected:
-	static ShaderStateDescription		s_shaderDesc;
-	static RasterizerStateDescription	s_rasterizerDesc;
-	static DepthStateDescription		s_depthDesc;
-	static StencilStateDescription		s_stencilDesc;
-	static BlendStateDescription		s_blendDesc;
-
 public:
 	virtual ~IRenderState() = default;
 
@@ -193,5 +183,16 @@ public:
 
 	static std::shared_ptr<IRenderState> Create();
 	inline static std::shared_ptr<IRenderState> Get() { return s_pInstance; }
+
+protected:
+	static ShaderStateDescription		s_shaderDesc;
+	static RasterizerStateDescription	s_rasterizerDesc;
+	static DepthStateDescription		s_depthDesc;
+	static StencilStateDescription		s_stencilDesc;
+	static BlendStateDescription		s_blendDesc;
+
+private:
+	static std::shared_ptr<IRenderState> s_pInstance;
+
 };
 }

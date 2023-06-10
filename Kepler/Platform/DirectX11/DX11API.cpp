@@ -37,15 +37,23 @@ void DX11API::SetViewport(const uint32_t width, const uint32_t height, const flo
 void DX11API::DrawIndexed(const std::shared_ptr<IVertexArray>& pVertexArray)
 {
 	ID3D11DeviceContext* pImmediateContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
+	ID3DUserDefinedAnnotation* anno = nullptr;
+	pImmediateContext->QueryInterface(__uuidof(anno), reinterpret_cast<void**>(&anno));
+	anno->BeginEvent(L"Test Pass");
 	pVertexArray->Bind();
 	pImmediateContext->DrawIndexed(pVertexArray->GetIndexBuffer()->GetCount(), 0, 0);
+	anno->EndEvent();
 }
-
+	
 void DX11API::DrawIndexedInstanced(const std::shared_ptr<IVertexArray>& pVertexArray, const std::shared_ptr<IInstanceBuffer>& pInstanceBuffer)
 {
 	ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
+	ID3DUserDefinedAnnotation* anno = nullptr;
+	pContext->QueryInterface(__uuidof(anno), reinterpret_cast<void**>(&anno));
+	anno->BeginEvent(L"Test Pass");
 	pVertexArray->Bind();
 	pInstanceBuffer->Bind();
 	pContext->DrawIndexedInstanced(pVertexArray->GetIndexBuffer()->GetCount(), pInstanceBuffer->GetCount(), 0, 0, 0);
+	anno->EndEvent();
 }
 }

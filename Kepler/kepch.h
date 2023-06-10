@@ -34,8 +34,13 @@
 #ifdef KEPLER_GRAPHICS_API_DIRECTX
 #pragma comment(lib, "d3d11.lib")
 #include <d3d11.h>
+#include <d3d11_1.h>
 #include <dxgi.h>
 #include <d3dcompiler.h>
 #endif
 
+#ifdef KEPLER_GRAPHICS_API_VULKAN
+#pragma comment(lib, "vulkan-1.lib")
+#include <vulkan/vulkan.h>
+#endif
 // Dependencies

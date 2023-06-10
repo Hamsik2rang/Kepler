@@ -137,14 +137,24 @@ class NativeScriptableComponent : public IComponent
 {
 	ScriptableEntity* pInstance;
 
-	std::function<ScriptableEntity* ()> Instantiate;
-	std::function<void()> Destroy;
+	std::function<ScriptableEntity* ()> InstantiateFunction;
+	std::function<void()> DestroyFunction;
+
+	std::function<void()> OnCreateFunction;
+	std::function<void(float)> OnUpdateFunction;
+	std::function<void()> OnDestroyFunction;
 
 	template <typename T>
 	void Bind()
 	{
-		Instantiate = []()->ScriptableEntity* { return new T; };
-		Destroy = []()->void { delete dynamic_cast<T*>(pInstance); pInstance = nullptr; };
+		InstantiateFunction = [&]()->void { pInstance = new T(); };
+		DestroyFunction		= [&]()->void { delete dynamic_cast<T*>(pInstance); pInstance = nullptr; };
+
+		OnCreateFunction	= [](ScriptableEntity* _pInstance)					{ static_cast<T*>(_pInstance)->OnCreate(); };
+		OnUpdateFunction	= [](ScriptableEntity* _pInstance, float deltaTime)	{ static_cast<T*>(_pInstance)->OnUpdate(); };
+		OnDestroyFunction	= [](ScriptableEntity* _pInstance)					{ static_cast<T*>(_pInstance)->OnDestroy(); };
+
+
 	}
 };
 }
