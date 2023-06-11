@@ -2,6 +2,7 @@
 
 #include "GraphicsAPI.h"
 #include "Platform/DirectX11/DX11API.h"
+#include "Platform/Vulkan/VulkanAPI.h"
 
 namespace kepler {
 
@@ -16,6 +17,8 @@ IGraphicsAPI* IGraphicsAPI::Create()
 		return nullptr;
 	case eGraphicsAPI::DirectX11:
 		return new DX11API;
+	case eGraphicsAPI::Vulkan:
+		return new VulkanAPI;
 	}
 
 	KEPLER_CORE_ASSERT(false, "unknown API");

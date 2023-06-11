@@ -28,7 +28,7 @@ DX11Debug::~DX11Debug()
 
 bool DX11Debug::Init()
 {
-	auto pDevice = IGraphicsContext::Get()->GetDevice();
+	ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
 	if (SUCCEEDED(pDevice->QueryInterface(__uuidof(ID3D11Debug), (void**)&m_pDebug)))
 	{
 		if (SUCCEEDED(pDevice->QueryInterface(__uuidof(ID3D11InfoQueue), (void**)&m_pInfoQueue)))

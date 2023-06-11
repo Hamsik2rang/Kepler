@@ -2,12 +2,12 @@
 
 namespace kepler {
 
-	void InspectorPanel::OnImGuiRender()
-	{
-		ImGui::Begin("Inspector");
+void InspectorPanel::OnImGuiRender()
+{
+	ImGui::Begin("Inspector");
 
-		ImGui::Text("There will be an Inspector Panel");
+	ImGui::Text("There will be an Inspector Panel");
 
-		ImGui::End();
-	}
+	ImGui::End();
+}
 }

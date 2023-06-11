@@ -1,18 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="Resources\Shaders\HLSL\PS2DSolidInst.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\PS2DTextureInst.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\PSSolid.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\PSTest.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\PSTexture.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\VS2DSolidInst.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\VS2DTextureInst.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\VSSolid.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\VSTest.hlsl" />
-    <FxCompile Include="Resources\Shaders\HLSL\VSTexture.hlsl" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Core\Audio\Audio.cpp" />
     <ClCompile Include="Core\Application.cpp" />
     <ClCompile Include="Core\Input.cpp" />
@@ -63,6 +51,10 @@
     <ClCompile Include="Core\UUID.cpp" />
     <ClCompile Include="Core\Scene\ComponentType.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Debug.cpp" />
+    <ClCompile Include="Platform\Vulkan\VulkanAPI.cpp" />
+    <ClCompile Include="Platform\Vulkan\VulkanContext.cpp" />
+    <ClCompile Include="Platform\Vulkan\VulkanDebug.cpp" />
+    <ClCompile Include="Platform\Vulkan\VulkanState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Audio\Audio.h" />
@@ -126,6 +118,10 @@
     <ClInclude Include="Core\Scene\ComponentType.h" />
     <ClInclude Include="Core\Scene\ScriptableEntity.h" />
     <ClInclude Include="Platform\DirectX11\DX11Debug.h" />
+    <ClInclude Include="Platform\Vulkan\VulkanAPI.h" />
+    <ClInclude Include="Platform\Vulkan\VulkanContext.h" />
+    <ClInclude Include="Platform\Vulkan\VulkanDebug.h" />
+    <ClInclude Include="Platform\Vulkan\VulkanState.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kepler.rc" />
@@ -133,9 +129,5 @@
   <ItemGroup>
     <Image Include="Kepler.ico" />
     <Image Include="small.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Shaders\HLSL\Global\PSGlobal.hlsli" />
-    <None Include="Resources\Shaders\HLSL\Global\VSGlobal.hlsli" />
   </ItemGroup>
 </Project>

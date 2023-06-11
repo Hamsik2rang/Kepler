@@ -41,9 +41,9 @@ DX11FrameBuffer::~DX11FrameBuffer()
 void DX11FrameBuffer::Init()
 {
 	// Create Color Buffer(Main Render Target)
-	ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
-	ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
-	IDXGISwapChain* pSwapChain = IGraphicsContext::Get()->GetSwapChain();
+	ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
+	ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
+	IDXGISwapChain* pSwapChain = static_cast<IDXGISwapChain*>(IGraphicsContext::Get()->GetSwapChain());
 
 	ID3D11Texture2D* pBackBuffer = nullptr;
 	HRESULT hr = pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
@@ -112,7 +112,7 @@ void DX11FrameBuffer::Init()
 
 void DX11FrameBuffer::ClearColor(const float color[4])
 {
-	ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 	pContext->ClearRenderTargetView(m_pColorBufferView, color);
 
 	pContext->OMSetRenderTargets(1, &m_pColorBufferView, m_pDepthStencilView);
@@ -120,7 +120,7 @@ void DX11FrameBuffer::ClearColor(const float color[4])
 
 void DX11FrameBuffer::ClearDepthStencil(bool bDepthClear, bool bStencilClear, const float depth, const uint8_t stencil)
 {
-	ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 	uint32_t clearFlag = 0;
 	if (bDepthClear)
 	{
@@ -136,7 +136,7 @@ void DX11FrameBuffer::ClearDepthStencil(bool bDepthClear, bool bStencilClear, co
 
 void DX11FrameBuffer::ClearGBuffer(const float color[4])
 {
-	ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 	for (auto& rtv : m_pRenderTargetViews)
 	{
 		pContext->ClearRenderTargetView(rtv, color);
@@ -147,7 +147,7 @@ void DX11FrameBuffer::ClearGBuffer(uint8_t index, const float color[4])
 {
 	KEPLER_CORE_ASSERT(index >= 0 && index < 8, "G-Buffer index range is [0, 8).");
 
-	ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 	pContext->ClearRenderTargetView(m_pRenderTargetViews[index], color);
 }
 
@@ -157,7 +157,7 @@ void DX11FrameBuffer::ClearGBuffer(uint8_t startSlot, uint8_t count, const float
 	KEPLER_CORE_ASSERT(startSlot + count < 8, "Index of G-Buffer cannot larger than 7.");
 	KEPLER_CORE_ASSERT(count < 7, "Maximum G-Buffer available count is 7.");
 
-	ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 	for (uint8_t i = startSlot; i < startSlot + count; i++)
 	{
 		pContext->ClearRenderTargetView(m_pRenderTargetViews[i], color);
@@ -166,19 +166,19 @@ void DX11FrameBuffer::ClearGBuffer(uint8_t startSlot, uint8_t count, const float
 
 void DX11FrameBuffer::BindColorBuffer()
 {
-	ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 	pContext->OMSetRenderTargets(1, &m_pColorBufferView, m_pDepthStencilView);
 }
 
 void DX11FrameBuffer::UnbindColorBuffer()
 {
-	ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 	pContext->OMSetRenderTargets(1, nullptr, nullptr);
 }
 
 void DX11FrameBuffer::BindGBuffer(uint8_t startSlot, uint8_t count)
 {
-	ID3D11DeviceContext* pContext = IGraphicsContext::Get()->GetDeviceContext();
+	ID3D11DeviceContext* pContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 	pContext->OMSetRenderTargets(count, &m_pRenderTargetViews[startSlot], m_pDepthStencilView);
 }
 
@@ -244,7 +244,7 @@ void DX11FrameBuffer::ResizeGBuffer(uint8_t startSlot, uint8_t count, uint32_t w
 
 void DX11FrameBuffer::CreateGBuffer(uint8_t index, uint32_t width, uint32_t height)
 {
-	ID3D11Device* pDevice = IGraphicsContext::Get()->GetDevice();
+	ID3D11Device* pDevice = static_cast<ID3D11Device*>(IGraphicsContext::Get()->GetDevice());
 	m_pTextures[index] = ITexture2D::Create(eTextureDataType::Float_RGBA32, width, height);
 
 	D3D11_RENDER_TARGET_VIEW_DESC rtvDesc{};

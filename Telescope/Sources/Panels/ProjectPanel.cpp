@@ -2,12 +2,12 @@
 
 namespace kepler {
 
-	void kepler::ProjectPanel::OnImGuiRender()
-	{
-		ImGui::Begin("Project");
+void kepler::ProjectPanel::OnImGuiRender()
+{
+	ImGui::Begin("Project");
 
-		//...
+	//...
 
-		ImGui::End();
-	}
+	ImGui::End();
+}
 }

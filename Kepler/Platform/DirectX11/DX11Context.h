@@ -25,9 +25,9 @@ private:
 public:
 	DX11Context(const HWND hWnd);
 
-	inline virtual ID3D11Device* GetDevice() override { return m_pDevice; }
-	inline virtual ID3D11DeviceContext* GetDeviceContext() override { return m_pDeviceContext; }
-	inline virtual IDXGISwapChain* GetSwapChain() override { return m_pSwapChain; }
+	inline virtual void* GetDevice() override { return m_pDevice; }
+	inline virtual void* GetDeviceContext() override { return m_pDeviceContext; }
+	inline virtual void* GetSwapChain() override { return m_pSwapChain; }
 
 	// Inherited via IRenderer
 	~DX11Context();

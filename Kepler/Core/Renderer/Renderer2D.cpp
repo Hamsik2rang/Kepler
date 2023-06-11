@@ -74,20 +74,20 @@ void Renderer2D::Init()
 		// Renderer2D는 엔진 내장 쉐이더를 이용해 간단히 그려줌.
 
 		// Solid Shader - 텍스처 없이 간단한 사각형을 그릴 때 사용
-		ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VS2DSolidInst.hlsl");
-		ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PS2DSolidInst.hlsl");
+		ShaderCache::Load(eShaderType::Vertex, "../Resources/Shaders/HLSL/VS2DSolidInst.hlsl");
+		ShaderCache::Load(eShaderType::Pixel, "../Resources/Shaders/HLSL/PS2DSolidInst.hlsl");
 
 		// Texture Shader - 텍스처가 주어진 사각형을 그릴 때 사용
-		ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VS2DTextureInst.hlsl");
-		ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PS2DTextureInst.hlsl");
+		ShaderCache::Load(eShaderType::Vertex, "../Resources/Shaders/HLSL/VS2DTextureInst.hlsl");
+		ShaderCache::Load(eShaderType::Pixel, "../Resources/Shaders/HLSL/PS2DTextureInst.hlsl");
 
 		// Non-Batch Solid Shader
-		ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSSolid.hlsl");
-		ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PSSolid.hlsl");
+		ShaderCache::Load(eShaderType::Vertex, "../Resources/Shaders/HLSL/VSSolid.hlsl");
+		ShaderCache::Load(eShaderType::Pixel, "../Resources/Shaders/HLSL/PSSolid.hlsl");
 
 		// Non-Batch Texture Shader
-		ShaderCache::Load(eShaderType::Vertex, "../Kepler/Resources/Shaders/HLSL/VSTexture.hlsl");
-		ShaderCache::Load(eShaderType::Pixel, "../Kepler/Resources/Shaders/HLSL/PSTexture.hlsl");
+		ShaderCache::Load(eShaderType::Vertex, "../Resources/Shaders/HLSL/VSTexture.hlsl");
+		ShaderCache::Load(eShaderType::Pixel, "../Resources/Shaders/HLSL/PSTexture.hlsl");
 	}
 }
 

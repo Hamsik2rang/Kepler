@@ -8,3 +8,6 @@
 [submodule "implot"]
 	path = Kepler/Dependencies/implot
 	url = https://github.com/MistarJo/implot
+[submodule "KeplerMath"]
+	path = Kepler/Dependencies/KeplerMath
+	url = https://github.com/hamsik2rang/keplermath
