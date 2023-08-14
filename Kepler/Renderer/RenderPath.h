@@ -59,6 +59,6 @@ class DeferredRenderPath
 public:
 
 private:
-}
+};
 
 }

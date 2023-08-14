@@ -28,7 +28,6 @@
     <ClCompile Include="Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="Utility\Random.cpp" />
     <ClCompile Include="Utility\StringUtility.cpp" />
-    <ClCompile Include="Core\Renderer\Sampler.cpp" />
     <ClCompile Include="Platform\DirectX11\DX11Sampler.cpp" />
     <ClCompile Include="Core\Scene\Scene.cpp" />
     <ClCompile Include="Core\Scene\Entity.cpp" />
@@ -39,8 +38,6 @@
     <ClCompile Include="Platform\Vulkan\VulkanContext.cpp" />
     <ClCompile Include="Platform\Vulkan\VulkanDebug.cpp" />
     <ClCompile Include="Platform\Vulkan\VulkanState.cpp" />
-    <ClCompile Include="Core\Renderer\RenderPass.cpp" />
-    <ClCompile Include="Core\Renderer\RenderPath.cpp" />
     <ClCompile Include="Renderer\Buffer.cpp" />
     <ClCompile Include="Renderer\EditorCamera.cpp" />
     <ClCompile Include="Renderer\FrameBuffer.cpp" />
@@ -96,7 +93,6 @@
     <ClInclude Include="Utility\Random.hpp" />
     <ClInclude Include="Utility\StringUtility.h" />
     <ClInclude Include="Utility\Timer.hpp" />
-    <ClInclude Include="Core\Renderer\Sampler.h" />
     <ClInclude Include="Platform\DirectX11\DX11Sampler.h" />
     <ClInclude Include="Core\UUID.h" />
     <ClInclude Include="Core\Scene\Scene.h" />
@@ -109,8 +105,6 @@
     <ClInclude Include="Platform\Vulkan\VulkanContext.h" />
     <ClInclude Include="Platform\Vulkan\VulkanDebug.h" />
     <ClInclude Include="Platform\Vulkan\VulkanState.h" />
-    <ClInclude Include="Core\Renderer\RenderPass.h" />
-    <ClInclude Include="Core\Renderer\RenderPath.h" />
     <ClInclude Include="Renderer\Buffer.h" />
     <ClInclude Include="Renderer\Camera.hpp" />
     <ClInclude Include="Renderer\EditorCamera.h" />
@@ -132,6 +126,8 @@
     <ClInclude Include="Renderer\VertexArray.h" />
     <ClInclude Include="Audio\Audio.h" />
     <ClInclude Include="Audio\AudioSource.hpp" />
+    <ClInclude Include="Renderer\RenderPass\ForwardRenderPass.h" />
+    <ClInclude Include="Core\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Kepler.rc" />

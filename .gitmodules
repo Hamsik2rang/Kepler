@@ -11,3 +11,6 @@
 [submodule "Kepler/Dependencies/KeplerMath"]
 	path = Kepler/Dependencies/KeplerMath
 	url = https://github.com/hamsik2rang/KeplerMath
+[submodule "assimp"]
+	path = Kepler/Dependencies/assimp
+	url = https://github.com/hamsik2rang/assimp

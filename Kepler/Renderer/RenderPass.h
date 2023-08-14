@@ -30,14 +30,7 @@ private:
 	static IRenderPass* Create(eRenderPassType type);
 };
 
-class ForwardRenderPass : public IRenderPass
-{
-public:
-	ForwardRenderPass();
-	~ForwardRenderPass();
 
-private:
-};
 
 class DeferredRenderPass : public IRenderPass
 {

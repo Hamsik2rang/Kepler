@@ -184,6 +184,7 @@
     <ClInclude Include="Core\Layer.hpp" />
     <ClInclude Include="Core\LayerStack.h" />
     <ClInclude Include="Core\Log.h" />
+    <ClInclude Include="Core\Mesh.h" />
     <ClInclude Include="Core\UUID.h" />
     <ClInclude Include="Dependencies\stbimage\stb_image.h" />
     <ClInclude Include="Platform\DirectX11\DX11Buffer.h" />
@@ -219,6 +220,7 @@
     <ClInclude Include="Renderer\Renderer2D.h" />
     <ClInclude Include="Renderer\RenderLog.h" />
     <ClInclude Include="Renderer\RenderPass.h" />
+    <ClInclude Include="Renderer\RenderPass\ForwardRenderPass.h" />
     <ClInclude Include="Renderer\RenderPath.h" />
     <ClInclude Include="Renderer\RenderProfiler.h" />
     <ClInclude Include="Renderer\RenderState.h" />

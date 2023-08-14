@@ -1,6 +1,9 @@
 #include "kepch.h"
 #include "RenderPass.h"
 
+#include "RenderPass/ForwardRenderPass.h"
+#include "RenderPass/DeferredRenderPass.h"
+
 
 namespace kepler {
 
