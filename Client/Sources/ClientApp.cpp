@@ -8,7 +8,7 @@ class Client : public kepler::Application
 {
 public:
     Client()
-        : Application(kepler::eGraphicsAPI::Vulkan)
+        : Application(kepler::eGraphicsAPI::DirectX11)
     {
         PushLayer(new VulkanTestLayer);
     }

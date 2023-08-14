@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Core/Renderer/Texture.h"
+#include "Renderer/Texture.h"
 #include "DX11Texture.h"
-#include "Core/Renderer/Shader.h"
+#include "Renderer/Shader.h"
 
 namespace kepler {
 // Texture1D, Texture3D는 나중에 필요할 때 구현합시다.

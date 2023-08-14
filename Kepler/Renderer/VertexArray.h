@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Core/Base.h"
-#include "Buffer.h"
+#include "Renderer/Buffer.h"
 
 namespace kepler {
 

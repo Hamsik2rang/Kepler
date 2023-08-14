@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Core/Renderer/GraphicsAPI.h"
-
+#include "Renderer/GraphicsAPI.h"
 
 namespace kepler {
 

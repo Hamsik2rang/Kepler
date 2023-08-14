@@ -10,7 +10,6 @@
 
 namespace kepler {
 
-	class Scene;
 
 	class Entity
 	{

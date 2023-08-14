@@ -1,7 +1,5 @@
 #include "kepch.h"
 
-// �ܺ� ���¼ҽ� ���̺귯�� Dear ImGui�� �̿��մϴ�. ImGuiLayer�� �߰� ������ ���� �ڼ��� ����� ������ �Ʒ� ��ũ�� �����ϼ���.
-// https://github.com/ocornut/ImGui
 #include <imgui.h>
 #include <implot.h>
 #include "backends/imgui_impl_dx11.h"
@@ -10,7 +8,7 @@
 #include "ImGuiLayer.h"
 #include "Core/Application.h"
 #include "Platform/Windows/WindowsWindow.h"
-#include "Core/Renderer/GraphicsContext.h"
+#include "Renderer/GraphicsContext.h"
 
 
 	// Forward declare message handler from imgui_impl_win32.cpp

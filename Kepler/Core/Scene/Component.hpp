@@ -5,8 +5,8 @@
 
 #include "Core/Base.h"
 #include "KeplerMath.h"
-#include "Core/Renderer/VertexArray.h"
-#include "Core/Renderer/Texture.h"
+#include "Renderer/VertexArray.h"
+#include "Renderer/Texture.h"
 #include "ComponentType.h"
 
 

@@ -4,6 +4,15 @@
 #include "Core/Base.h"
 
 namespace kepler {
+VulkanDebug::VulkanDebug()
+{
+
+}
+
+VulkanDebug::~VulkanDebug()
+{
+
+}
 
 VKAPI_ATTR VkBool32 VKAPI_CALL VulkanDebug::DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData)
 {
@@ -31,29 +40,30 @@ bool VulkanDebug::SetupDebugMessenger(VkInstance instance)
 {
 	VkDebugUtilsMessengerCreateInfoEXT createInfo{};
 	createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
-	createInfo.messageSeverity = 
-		VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT | 
-		VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | 
-		VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | 
+	createInfo.messageSeverity =
+		VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT |
+		VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
+		VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
 		VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
 
-	createInfo.messageType = 
-		VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | 
-		VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | 
+	createInfo.messageType =
+		VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
+		VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
 		VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
-	
+
 	createInfo.pfnUserCallback = VulkanDebug::DebugCallback;
 	createInfo.pUserData = nullptr; // Optional
 
 	if (createDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &m_debugMessenger) != VK_SUCCESS)
 	{
+		KEPLER_CORE_CRITICAL("Cannot create Vulak debug messenger.");
 		return false;
 	}
 
 	return true;
 }
 
-bool VulkanDebug::DestroyDebugMessenger(VkInstance instance)
+void VulkanDebug::DestroyDebugMessenger(VkInstance instance)
 {
 	destroyDebugUtilsMessengerEXT(instance, m_debugMessenger, nullptr);
 }

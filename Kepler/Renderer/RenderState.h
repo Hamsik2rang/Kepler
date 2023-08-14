@@ -3,8 +3,8 @@
 #include <memory>
 
 #include "Core/Base.h"
-#include "Shader.h"
-#include "FrameBuffer.h"
+#include "Renderer/Shader.h"
+#include "Renderer/FrameBuffer.h"
 
 namespace kepler {
 

@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Core/Base.h"
-#include "Core/Renderer/GraphicsAPI.h"
-#include "Core/Renderer/VertexArray.h"
-#include "Core/Renderer/Camera.hpp"
+#include "Renderer/GraphicsAPI.h"
+#include "Renderer/VertexArray.h"
+#include "Renderer/Camera.hpp"
 #include "Core/Window.h"
 
 #include "KeplerMath.h"
+#include "RenderPass.h"
 
 
 namespace kepler {
@@ -15,6 +16,8 @@ class Renderer
 {
 private:
 	static Renderer* s_pInstance;
+	static IRenderPass* s_pForwardRenderPass;
+	//static IRenderPass* s_pDeferredRenderPass;
 	IGraphicsAPI* m_pGraphicsAPI;
 
 	Renderer();

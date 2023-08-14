@@ -5,7 +5,7 @@
 
 extern kepler::Application* kepler::CreateApplication();
 
-#ifdef KEPLER_GRAPHICS_API_DIRECTX
+#ifdef _WIN32
 #include <Windows.h>
 
 int APIENTRY wWinMain(

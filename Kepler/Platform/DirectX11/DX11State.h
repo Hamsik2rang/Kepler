@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Renderer/RenderState.h"
+#include "Renderer/RenderState.h"
 #include "DX11FrameBuffer.h"
 
 namespace kepler {

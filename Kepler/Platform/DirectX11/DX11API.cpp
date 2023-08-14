@@ -1,7 +1,7 @@
 #include "kepch.h"
 
 #include "DX11API.h"
-#include "Core/Renderer/GraphicsContext.h"
+#include "Renderer/GraphicsContext.h"
 #include "Platform/DirectX11/DX11Context.h"
 #include "Core/Application.h"
 

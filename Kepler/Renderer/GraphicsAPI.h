@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Base.h"
-#include "Core/Renderer/VertexArray.h"
+#include "Renderer/VertexArray.h"
 
 namespace kepler {
 

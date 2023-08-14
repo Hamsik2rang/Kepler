@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/Renderer/Buffer.h"
+#include "Renderer/Buffer.h"
 
 namespace kepler {
 

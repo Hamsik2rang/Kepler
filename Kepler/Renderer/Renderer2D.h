@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Core/Renderer/GraphicsAPI.h"
-#include "Core/Renderer/OrthographicCamera.h"
-#include "Core/Renderer/Texture.h"
-#include "Core/Renderer/Shader.h"
-#include "Core/Renderer/RenderLog.h"
+#include "Renderer/GraphicsAPI.h"
+#include "Renderer/OrthographicCamera.h"
+#include "Renderer/Texture.h"
+#include "Renderer/Shader.h"
+#include "Renderer/RenderLog.h"
 
 #include "KeplerMath.h"
 

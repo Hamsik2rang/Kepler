@@ -2,9 +2,9 @@
 
 #include "DX11Context.h"
 #include "DX11Debug.h"
-#include "Core/Renderer/RenderState.h"
-#include "Core/Renderer/Renderer.h"
-#include "Core/Renderer/Renderer2D.h"
+#include "Renderer/RenderState.h"
+#include "Renderer/Renderer.h"
+#include "Renderer/Renderer2D.h"
 
 namespace kepler {
 

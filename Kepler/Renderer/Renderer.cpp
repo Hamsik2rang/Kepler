@@ -5,10 +5,10 @@
 #include "Platform/Windows/WindowsWindow.h"
 #include "Platform/DirectX11/DX11Context.h"
 #include "Platform/DirectX11/DX11API.h"
-#include "Core/Renderer/Camera.hpp"
-#include "Core/Renderer/RenderState.h"
+#include "Renderer/Camera.hpp"
+#include "Renderer/RenderState.h"
 
-#include "Core/Renderer/Shader.h"
+#include "Renderer/Shader.h"
 
 namespace kepler {
 
@@ -36,6 +36,7 @@ Renderer::Renderer()
 	: m_pGraphicsAPI{ IGraphicsAPI::Create() }
 {
 	IRenderState::Create();
+
 }
 
 Renderer::~Renderer()

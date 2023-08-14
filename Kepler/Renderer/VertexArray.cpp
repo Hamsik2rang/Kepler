@@ -1,7 +1,7 @@
 #include "kepch.h"
 
 #include "VertexArray.h"
-#include "Core/Renderer/GraphicsAPI.h"
+#include "Renderer/GraphicsAPI.h"
 #include "Platform/DirectX11/DX11VertexArray.h"
 
 namespace kepler {

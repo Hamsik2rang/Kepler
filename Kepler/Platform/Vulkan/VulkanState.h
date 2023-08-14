@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Base.h"
-#include "Core/Renderer/RenderState.h"
+#include "Renderer/RenderState.h"
 
 namespace kepler {
 

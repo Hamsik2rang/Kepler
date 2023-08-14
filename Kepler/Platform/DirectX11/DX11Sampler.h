@@ -2,7 +2,7 @@
 
 #include <d3d11.h>
 
-#include "Core/Renderer/Sampler.h"
+#include "Renderer/Sampler.h"
 
 namespace kepler {
 

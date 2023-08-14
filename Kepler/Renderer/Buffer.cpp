@@ -2,7 +2,7 @@
 
 #include "Buffer.h"
 #include "Platform/DirectX11/DX11Buffer.h"
-#include "Core/Renderer/GraphicsAPI.h"
+#include "Renderer/GraphicsAPI.h"
 
 namespace kepler {
 

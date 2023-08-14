@@ -5,7 +5,7 @@
 
 #include "Core/LayerStack.h"
 #include "ImGui/ImGuiLayer.h"
-#include "Core/Renderer/GraphicsAPI.h"
+#include "Renderer/GraphicsAPI.h"
 #include "Utility/Timer.hpp"
 
 namespace kepler {

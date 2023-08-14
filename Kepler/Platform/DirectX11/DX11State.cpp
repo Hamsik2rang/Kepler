@@ -2,7 +2,7 @@
 
 #include "DX11State.h"
 #include "DX11FrameBuffer.h"
-#include "Core/Renderer/GraphicsContext.h"
+#include "Renderer/GraphicsContext.h"
 
 namespace kepler {
 

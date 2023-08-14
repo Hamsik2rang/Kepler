@@ -7,6 +7,9 @@ namespace kepler {
 class VulkanDebug
 {
 public:
+	VulkanDebug();
+	~VulkanDebug();
+
 	static VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(
 		VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
 		VkDebugUtilsMessageTypeFlagsEXT messageType,

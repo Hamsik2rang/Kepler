@@ -10,31 +10,27 @@ Entity::Entity(Scene* pScene)
 
 }
 
-	Entity::Entity(Scene* pScene, const UUID& uuid)
-		: m_scene{ pScene }
-		, m_uuid{ uuid }
-		, m_componentFlag{ 0u }
-		, m_pParent{ nullptr }
-	{
-
-}
+Entity::Entity(Scene* pScene, const UUID& uuid)
+	: m_scene{ pScene }
+	, m_uuid{ uuid }
+	, m_componentFlag{ 0u }
+	, m_pParent{ nullptr }
+{}
 
 Entity::~Entity()
+{}
+
+void Entity::SetParentEntity(Entity* pEntity)
 {
+	m_pParent = pEntity;
+}
 
-	}
-
-	void Entity::SetParentEntity(Entity* pEntity)
+void Entity::AddChildEntity(Entity* pEntity)
+{
+	if (std::find(m_pChildren.begin(), m_pChildren.end(), pEntity) != m_pChildren.end())
 	{
-		m_pParent = pEntity;
+		return;
 	}
-
-	void Entity::AddChildEntity(Entity* pEntity)
-	{
-		if (std::find(m_pChildren.begin(), m_pChildren.end(), pEntity) != m_pChildren.end())
-		{
-			return;
-		}
-		m_pChildren.push_back(pEntity);
-	}
+	m_pChildren.push_back(pEntity);
+}
 }
