@@ -75,7 +75,6 @@ public:
 	EVENT_CLASS_CATEGORY(EventCategoryMouseButton | EventCategoryInput)
 };
 
-
 class MouseButtonPressedEvent : public MouseButtonEvent
 {
 public:

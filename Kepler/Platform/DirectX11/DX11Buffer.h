@@ -11,8 +11,8 @@ private:
 	BufferLayout		m_layout;
 
 public:
-	DX11VertexBuffer(const uint32_t size, EBufferUsage usage);
-	DX11VertexBuffer(const void* const vertices, const uint32_t size, EBufferUsage usage);
+	DX11VertexBuffer(const uint32_t size, eBufferUsage usage);
+	DX11VertexBuffer(const void* const vertices, const uint32_t size, eBufferUsage usage);
 	~DX11VertexBuffer();
 
 	// Inherited via IVertexBuffer
@@ -47,8 +47,8 @@ private:
 	BufferLayout	m_layout;
 
 public:
-	DX11InstanceBuffer(const uint32_t size, const uint32_t count, EBufferUsage usage);
-	DX11InstanceBuffer(const void* const data, const uint32_t size, const uint32_t count, EBufferUsage usage);
+	DX11InstanceBuffer(const uint32_t size, const uint32_t count, eBufferUsage usage);
+	DX11InstanceBuffer(const void* const data, const uint32_t size, const uint32_t count, eBufferUsage usage);
 	~DX11InstanceBuffer();
 
 	virtual void Bind() override;

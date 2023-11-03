@@ -6,7 +6,7 @@
 
 namespace kepler {
 
-std::shared_ptr<IVertexBuffer> IVertexBuffer::Create(const uint32_t size, EBufferUsage usage)
+std::shared_ptr<IVertexBuffer> IVertexBuffer::Create(const uint32_t size, eBufferUsage usage)
 {
 	eGraphicsAPI api = IGraphicsAPI::GetAPI();
 	switch (api)
@@ -27,7 +27,7 @@ std::shared_ptr<IVertexBuffer> IVertexBuffer::Create(const uint32_t size, EBuffe
 	return nullptr;
 }
 
-std::shared_ptr<IVertexBuffer> IVertexBuffer::Create(const void* const vertices, uint32_t size, EBufferUsage usage)
+std::shared_ptr<IVertexBuffer> IVertexBuffer::Create(const void* const vertices, uint32_t size, eBufferUsage usage)
 {
 	eGraphicsAPI api = IGraphicsAPI::GetAPI();
 	switch (api)
@@ -48,7 +48,7 @@ std::shared_ptr<IVertexBuffer> IVertexBuffer::Create(const void* const vertices,
 	return nullptr;
 }
 
-std::shared_ptr<IIndexBuffer> IIndexBuffer::Create(const uint32_t* const indices, const uint32_t count, EBufferUsage usage)
+std::shared_ptr<IIndexBuffer> IIndexBuffer::Create(const uint32_t* const indices, const uint32_t count, eBufferUsage usage)
 {
 	eGraphicsAPI api = IGraphicsAPI::GetAPI();
 	switch (api)
@@ -69,7 +69,7 @@ std::shared_ptr<IIndexBuffer> IIndexBuffer::Create(const uint32_t* const indices
 	return nullptr;
 }
 
-std::shared_ptr<IInstanceBuffer> IInstanceBuffer::Create(const uint32_t count, const uint32_t size, EBufferUsage usage)
+std::shared_ptr<IInstanceBuffer> IInstanceBuffer::Create(const uint32_t count, const uint32_t size, eBufferUsage usage)
 {
 	eGraphicsAPI api = IGraphicsAPI::GetAPI();
 	switch (api)
@@ -89,7 +89,7 @@ std::shared_ptr<IInstanceBuffer> IInstanceBuffer::Create(const uint32_t count, c
 	return nullptr;
 }
 
-std::shared_ptr<IInstanceBuffer> IInstanceBuffer::Create(const void* const data, const uint32_t count, const uint32_t size, EBufferUsage usage)
+std::shared_ptr<IInstanceBuffer> IInstanceBuffer::Create(const void* const data, const uint32_t count, const uint32_t size, eBufferUsage usage)
 {
 	eGraphicsAPI api = IGraphicsAPI::GetAPI();
 	switch (api)

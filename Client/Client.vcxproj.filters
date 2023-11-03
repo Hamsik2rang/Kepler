@@ -39,4 +39,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Assets\Shaders\HLSL\VSSupernova.hlsl" />
+    <FxCompile Include="Assets\Shaders\HLSL\PSSupernova.hlsl" />
+  </ItemGroup>
 </Project>

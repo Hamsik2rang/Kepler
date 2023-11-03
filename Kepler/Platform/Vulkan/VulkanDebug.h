@@ -15,7 +15,7 @@ public:
 		VkDebugUtilsMessageTypeFlagsEXT messageType,
 		const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
 		void* pUserData);
-
+	void PopulateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 	bool SetupDebugMessenger(VkInstance instance);
 	void DestroyDebugMessenger(VkInstance instance);
 private:

@@ -128,7 +128,7 @@ void Renderer2D::Flush()
 			batchData.pInstBuffer,
 			static_cast<UINT>(batchData.sizePerInstance * batchData.instanceCount),
 			static_cast<UINT>(batchData.instanceCount),
-			EBufferUsage::Default
+			eBufferUsage::Default
 		);
 
 		if (batchData.pTexture)
@@ -258,11 +258,11 @@ void Renderer2D::DrawQuad(const Mat44f& transform, const Vec4f& color)
 		0, 2, 3
 	};
 
-	std::shared_ptr<IVertexBuffer> pVB = IVertexBuffer::Create(positions, sizeof(positions), EBufferUsage::Default);
+	std::shared_ptr<IVertexBuffer> pVB = IVertexBuffer::Create(positions, sizeof(positions), eBufferUsage::Default);
 	pVB->SetLayout({
 		{ "POSITION", 0, kepler::eShaderDataType::Float3, 0, sizeof(float) * 3 }
 		});
-	std::shared_ptr<IIndexBuffer> pIB = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), EBufferUsage::Default);
+	std::shared_ptr<IIndexBuffer> pIB = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), eBufferUsage::Default);
 	std::shared_ptr<IVertexArray> pVA = IVertexArray::Create();
 	pVA->AddVertexBuffer(pVB);
 	pVA->SetIndexBuffer(pIB);
@@ -343,12 +343,12 @@ void Renderer2D::DrawQuad(const Mat44f& transform, const std::shared_ptr<ITextur
 		0, 2, 3
 	};
 
-	std::shared_ptr<IVertexBuffer> pVB = IVertexBuffer::Create(positions, sizeof(positions), EBufferUsage::Default);
+	std::shared_ptr<IVertexBuffer> pVB = IVertexBuffer::Create(positions, sizeof(positions), eBufferUsage::Default);
 	pVB->SetLayout({
 		{ "POSITION", 0, eShaderDataType::Float3, 0, sizeof(float) * 3 },
 		{ "TEXCOORD", 0, eShaderDataType::Float2, sizeof(float) * 3, sizeof(float) * 2}
 		});
-	std::shared_ptr<IIndexBuffer> pIB = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), EBufferUsage::Default);
+	std::shared_ptr<IIndexBuffer> pIB = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), eBufferUsage::Default);
 	std::shared_ptr<IVertexArray> pVA = IVertexArray::Create();
 	pVA->AddVertexBuffer(pVB);
 	pVA->SetIndexBuffer(pIB);
@@ -399,15 +399,15 @@ void Renderer2D::DrawNonBatchedQuad(const Vec2f& position, const float rotation,
 		0, 2, 3
 	};
 
-	std::shared_ptr<IVertexBuffer> pPosBuffer = IVertexBuffer::Create(positions, sizeof(positions), EBufferUsage::Default);
+	std::shared_ptr<IVertexBuffer> pPosBuffer = IVertexBuffer::Create(positions, sizeof(positions), eBufferUsage::Default);
 	pPosBuffer->SetLayout({
 		{ "POSITION", 0, eShaderDataType::Float3, 0, sizeof(float) * 3 }
 		});
-	std::shared_ptr<IVertexBuffer> pColorBuffer = IVertexBuffer::Create(colors, sizeof(colors), EBufferUsage::Default);
+	std::shared_ptr<IVertexBuffer> pColorBuffer = IVertexBuffer::Create(colors, sizeof(colors), eBufferUsage::Default);
 	pColorBuffer->SetLayout({
 		{"COLOR", 0, eShaderDataType::Float4, 0, sizeof(Vec4f)}
 		});
-	std::shared_ptr<IIndexBuffer> pIB = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), EBufferUsage::Default);
+	std::shared_ptr<IIndexBuffer> pIB = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), eBufferUsage::Default);
 	std::shared_ptr<IVertexArray> pVA = IVertexArray::Create();
 	pVA->AddVertexBuffer(pPosBuffer);
 	pVA->AddVertexBuffer(pColorBuffer);
@@ -453,13 +453,13 @@ void Renderer2D::DrawNonBatchedQuad(const Vec2f& position, const float rotation,
 		0, 2, 3
 	};
 
-	std::shared_ptr<IVertexBuffer> pPosBuffer = IVertexBuffer::Create(positions, sizeof(positions), EBufferUsage::Default);
+	std::shared_ptr<IVertexBuffer> pPosBuffer = IVertexBuffer::Create(positions, sizeof(positions), eBufferUsage::Default);
 	pPosBuffer->SetLayout({
 		{ "POSITION", 0, eShaderDataType::Float3, 0, sizeof(float) * 3 }
 		});
-	std::shared_ptr<IVertexBuffer> pColorBuffer = IVertexBuffer::Create(colors, sizeof(colors), EBufferUsage::Default);
+	std::shared_ptr<IVertexBuffer> pColorBuffer = IVertexBuffer::Create(colors, sizeof(colors), eBufferUsage::Default);
 
-	std::shared_ptr<IVertexBuffer> pUVBuffer = IVertexBuffer::Create(uvs, sizeof(uvs), EBufferUsage::Default);
+	std::shared_ptr<IVertexBuffer> pUVBuffer = IVertexBuffer::Create(uvs, sizeof(uvs), eBufferUsage::Default);
 	pUVBuffer->SetLayout({
 		{ "TEXCOORD", 0, eShaderDataType::Float2, 0, sizeof(float) * 2}
 
@@ -467,7 +467,7 @@ void Renderer2D::DrawNonBatchedQuad(const Vec2f& position, const float rotation,
 	pColorBuffer->SetLayout({
 		{"COLOR", 0, eShaderDataType::Float4, 0, sizeof(Vec4f)}
 		});
-	std::shared_ptr<IIndexBuffer> pIB = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), EBufferUsage::Default);
+	std::shared_ptr<IIndexBuffer> pIB = IIndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t), eBufferUsage::Default);
 	std::shared_ptr<IVertexArray> pVA = IVertexArray::Create();
 	pVA->AddVertexBuffer(pPosBuffer);
 	pVA->AddVertexBuffer(pUVBuffer);

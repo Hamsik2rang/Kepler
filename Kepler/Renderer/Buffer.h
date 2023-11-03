@@ -23,7 +23,7 @@ enum class eShaderDataType
 	Matrix = Float44
 };
 // Buffer Usage
-enum class EBufferUsage
+enum class eBufferUsage
 {
 	Default = 0,
 	Static,
@@ -144,8 +144,8 @@ public:
 	virtual void SetLayout(const BufferLayout& bufferLayout) = 0;
 	virtual const BufferLayout& GetLayout() const = 0;
 
-	static std::shared_ptr<IVertexBuffer> Create(const uint32_t size, EBufferUsage usage);
-	static std::shared_ptr<IVertexBuffer> Create(const void* const vertices, const uint32_t size, EBufferUsage usage);
+	static std::shared_ptr<IVertexBuffer> Create(const uint32_t size, eBufferUsage usage);
+	static std::shared_ptr<IVertexBuffer> Create(const void* const vertices, const uint32_t size, eBufferUsage usage);
 };
 
 // Index Buffer Interface
@@ -159,7 +159,7 @@ public:
 
 	virtual uint32_t GetCount() const = 0;
 
-	static std::shared_ptr<IIndexBuffer> Create(const uint32_t* const indices, const uint32_t count, EBufferUsage usage);
+	static std::shared_ptr<IIndexBuffer> Create(const uint32_t* const indices, const uint32_t count, eBufferUsage usage);
 };
 
 // Instance Buffer Interface
@@ -180,13 +180,13 @@ public:
 	//! \param size : 인스턴스 데이터의 전체 크기.
 	//! \param count : 인스턴스 개체 수.
 	//! \param usage : Buffer usage(default/dynamic/static/staging).
-	static std::shared_ptr<IInstanceBuffer> Create(const uint32_t size, const uint32_t count, EBufferUsage usage);
+	static std::shared_ptr<IInstanceBuffer> Create(const uint32_t size, const uint32_t count, eBufferUsage usage);
 
 	//! 현재 Graphics API에 맞는 Instance Buffer를 생성합니다.
 	//! \param data : 인스턴스 데이터
 	//! \param size : 인스턴스 데이터의 전체 크기.
 	//! \param count : 인스턴스 개체 수.
 	//! \param usage : Buffer usage(default/dynamic/static/staging).
-	static std::shared_ptr<IInstanceBuffer> Create(const void* const data, const uint32_t size, const uint32_t count, EBufferUsage usage);
+	static std::shared_ptr<IInstanceBuffer> Create(const void* const data, const uint32_t size, const uint32_t count, eBufferUsage usage);
 };
 }

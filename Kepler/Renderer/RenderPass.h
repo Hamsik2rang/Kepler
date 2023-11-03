@@ -31,14 +31,4 @@ private:
 };
 
 
-
-class DeferredRenderPass : public IRenderPass
-{
-public:
-	DeferredRenderPass();
-	~DeferredRenderPass();
-
-private:
-};
-
 }

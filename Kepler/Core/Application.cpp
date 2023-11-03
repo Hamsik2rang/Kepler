@@ -100,6 +100,11 @@ void Application::Run()
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+			while (PeekMessage(&msg, nullptr, WM_KEYDOWN, WM_KEYDOWN, PM_REMOVE))
+			{
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
 		}
 		// clear Render Target and Depth Stencil Buffer
 		float color[4]{ 0.1f, 0.1f, 0.1f, 1.0f };

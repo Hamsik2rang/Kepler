@@ -29,6 +29,7 @@
 #include "Renderer/VertexArray.h"
 #include "Renderer/Shader.h"
 #include "Renderer/Texture.h"
+#include "Renderer/Sampler.h"
 #include "Renderer/RenderProfiler.h"
 //-----------------------------------------
 

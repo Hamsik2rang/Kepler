@@ -36,9 +36,9 @@ VKAPI_ATTR VkBool32 VKAPI_CALL VulkanDebug::DebugCallback(VkDebugUtilsMessageSev
 	return VK_FALSE;
 }
 
-bool VulkanDebug::SetupDebugMessenger(VkInstance instance)
+void VulkanDebug::PopulateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo)
 {
-	VkDebugUtilsMessengerCreateInfoEXT createInfo{};
+	createInfo = {};
 	createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
 	createInfo.messageSeverity =
 		VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT |
@@ -53,6 +53,12 @@ bool VulkanDebug::SetupDebugMessenger(VkInstance instance)
 
 	createInfo.pfnUserCallback = VulkanDebug::DebugCallback;
 	createInfo.pUserData = nullptr; // Optional
+}
+
+bool VulkanDebug::SetupDebugMessenger(VkInstance instance)
+{
+	VkDebugUtilsMessengerCreateInfoEXT createInfo{};
+	PopulateDebugMessengerCreateInfo(createInfo);
 
 	if (createDebugUtilsMessengerEXT(instance, &createInfo, nullptr, &m_debugMessenger) != VK_SUCCESS)
 	{

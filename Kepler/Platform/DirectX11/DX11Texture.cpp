@@ -167,7 +167,7 @@ void DX11Texture2D::SetData(const void* pData, const uint32_t width, const uint3
 		}
 		ID3D11DeviceContext* pDeviceContext = static_cast<ID3D11DeviceContext*>(IGraphicsContext::Get()->GetDeviceContext());
 		uint32_t pitch = RGBASize * width;
-		pDeviceContext->UpdateSubresource(m_pTexture, 0, nullptr, pBuffer, RGBASize * width, 0);
+		pDeviceContext->UpdateSubresource(m_pTexture, 0, nullptr, pBuffer, pitch, 0);
 		delete[] pBuffer;
 	}
 	else

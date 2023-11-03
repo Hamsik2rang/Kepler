@@ -30,7 +30,7 @@ static DXGI_FORMAT ShaderDataTypeToDXGIFormat(eShaderDataType type)
 }
 
 /////////// VertexBuffer Member Functions ///////////
-DX11VertexBuffer::DX11VertexBuffer(const uint32_t size, EBufferUsage usage)
+DX11VertexBuffer::DX11VertexBuffer(const uint32_t size, eBufferUsage usage)
 	: m_layout{}
 	, m_pBuffer{ nullptr }
 {
@@ -54,7 +54,7 @@ DX11VertexBuffer::DX11VertexBuffer(const uint32_t size, EBufferUsage usage)
 	}
 }
 
-DX11VertexBuffer::DX11VertexBuffer(const void* const vertices, const uint32_t size, EBufferUsage usage)
+DX11VertexBuffer::DX11VertexBuffer(const void* const vertices, const uint32_t size, eBufferUsage usage)
 	: m_layout{}
 	, m_pBuffer{ nullptr }
 {
@@ -69,20 +69,20 @@ DX11VertexBuffer::DX11VertexBuffer(const void* const vertices, const uint32_t si
 
 	switch (usage)
 	{
-	case EBufferUsage::Default:
-	case EBufferUsage::Static:
+	case eBufferUsage::Default:
+	case eBufferUsage::Static:
 		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 		bufferDesc.CPUAccessFlags = 0;
 		break;
-	case EBufferUsage::Immutable:
+	case eBufferUsage::Immutable:
 		bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
 		bufferDesc.CPUAccessFlags = 0;
 		break;
-	case EBufferUsage::Dynamic:
+	case eBufferUsage::Dynamic:
 		bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 		bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		break;
-	case EBufferUsage::Staging:
+	case eBufferUsage::Staging:
 		bufferDesc.Usage = D3D11_USAGE_STAGING;
 		bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
 		break;
@@ -200,7 +200,7 @@ void DX11IndexBuffer::Unbind()
 }
 
 /////////// InstanceBuffer Member Functions ///////////
-DX11InstanceBuffer::DX11InstanceBuffer(const uint32_t size, const uint32_t count, const EBufferUsage usage)
+DX11InstanceBuffer::DX11InstanceBuffer(const uint32_t size, const uint32_t count, const eBufferUsage usage)
 	: m_layout{}
 	, m_pBuffer{ nullptr }
 	, m_count{ count }
@@ -225,7 +225,7 @@ DX11InstanceBuffer::DX11InstanceBuffer(const uint32_t size, const uint32_t count
 	}
 }
 
-DX11InstanceBuffer::DX11InstanceBuffer(const void* const data, const uint32_t size, const uint32_t count, const EBufferUsage usage)
+DX11InstanceBuffer::DX11InstanceBuffer(const void* const data, const uint32_t size, const uint32_t count, const eBufferUsage usage)
 	: m_layout{}
 	, m_pBuffer{ nullptr }
 	, m_count{ count }
@@ -241,20 +241,20 @@ DX11InstanceBuffer::DX11InstanceBuffer(const void* const data, const uint32_t si
 
 	switch (usage)
 	{
-	case EBufferUsage::Default:
-	case EBufferUsage::Static:
+	case eBufferUsage::Default:
+	case eBufferUsage::Static:
 		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 		bufferDesc.CPUAccessFlags = 0;
 		break;
-	case EBufferUsage::Immutable:
+	case eBufferUsage::Immutable:
 		bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
 		bufferDesc.CPUAccessFlags = 0;
 		break;
-	case EBufferUsage::Dynamic:
+	case eBufferUsage::Dynamic:
 		bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 		bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		break;
-	case EBufferUsage::Staging:
+	case eBufferUsage::Staging:
 		bufferDesc.Usage = D3D11_USAGE_STAGING;
 		bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
 		break;

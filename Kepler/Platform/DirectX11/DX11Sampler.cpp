@@ -39,27 +39,27 @@ DX11Sampler::DX11Sampler(
 	{
 	case eSamplerFilter::None:
 	case eSamplerFilter::Point:			break;
-	case eSamplerFilter::Anisotropic:	filterFlags |= BIT(7);
+	case eSamplerFilter::Anisotropic:	filterFlags |= BIT(6);
 		[[fallthrough]];
-	case eSamplerFilter::Linear:		filterFlags |= BIT(5); break;
+	case eSamplerFilter::Linear:		filterFlags |= BIT(4); break;
 	}
 
 	switch (magFilter)
 	{
 	case eSamplerFilter::None:
 	case eSamplerFilter::Point:			break;
-	case eSamplerFilter::Anisotropic:	filterFlags |= BIT(7);
+	case eSamplerFilter::Anisotropic:	filterFlags |= BIT(6);
 		[[fallthrough]];
-	case eSamplerFilter::Linear:		filterFlags |= BIT(3); break;
+	case eSamplerFilter::Linear:		filterFlags |= BIT(2); break;
 	}
 
 	switch (mipFilter)
 	{
 	case eSamplerFilter::None:
 	case eSamplerFilter::Point:			break;
-	case eSamplerFilter::Anisotropic:	filterFlags |= BIT(7);
+	case eSamplerFilter::Anisotropic:	filterFlags |= BIT(6);
 		[[fallthrough]];
-	case eSamplerFilter::Linear:		filterFlags |= BIT(1); break;
+	case eSamplerFilter::Linear:		filterFlags |= BIT(0); break;
 	}
 
 	desc.Filter = (D3D11_FILTER)filterFlags;

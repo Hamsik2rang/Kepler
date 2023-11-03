@@ -413,8 +413,9 @@ bool DX11Shader::GetConstantBufferDataInfo(const std::string& inParamName, int& 
 		HRESULT hr = pVariableReflection->GetDesc(&varDesc);
 		if (FAILED(hr))
 		{
-			KEPLER_CORE_ASSERT(false, "Fail to get shader variable reflection data");
-			break;
+			//KEPLER_CORE_ASSERT(false, "Fail to get shader variable reflection data");
+			//break;
+			continue;
 		}
 		outIndex = index;
 		outOffset = varDesc.StartOffset;
@@ -467,7 +468,7 @@ void DX11Shader::SetInt(const std::string& paramName, int value)
 	GetConstantBufferDataInfo(paramName, index, offset);
 	if (index < 0)
 	{
-		KEPLER_WARNING("Invalid shader parameter");
+		KEPLER_ASSERT(false, "Invalid shader parameter");
 		return;
 	}
 	// 해당 메모리에 값을 쓴 후 constant buffer update
@@ -483,7 +484,7 @@ void DX11Shader::SetFloat(const std::string& paramName, float value)
 	GetConstantBufferDataInfo(paramName, index, offset);
 	if (index < 0)
 	{
-		KEPLER_WARNING("Invalid shader parameter");
+		KEPLER_ASSERT(false, "Invalid shader parameter");
 		return;
 	}
 	// 해당 메모리에 값을 쓴 후 constant buffer update
@@ -499,7 +500,7 @@ void DX11Shader::SetFloat3(const std::string& paramName, const Vec3f& value)
 	GetConstantBufferDataInfo(paramName, index, offset);
 	if (index < 0)
 	{
-		KEPLER_WARNING("Invalid shader parameter");
+		KEPLER_ASSERT(false, "Invalid shader parameter");
 		return;
 	}
 	// 해당 메모리에 값을 쓴 후 constant buffer update
@@ -515,7 +516,7 @@ void DX11Shader::SetFloat4(const std::string& paramName, const Vec4f& value)
 	GetConstantBufferDataInfo(paramName, index, offset);
 	if (index < 0)
 	{
-		KEPLER_WARNING("Invalid shader parameter");
+		KEPLER_ASSERT(false, "Invalid shader parameter");
 		return;
 	}
 	// 해당 메모리에 값을 쓴 후 constant buffer update
@@ -531,7 +532,7 @@ void DX11Shader::SetVector(const std::string& paramName, const Vec4f& value)
 	GetConstantBufferDataInfo(paramName, index, offset);
 	if (index < 0)
 	{
-		KEPLER_WARNING("Invalid shader parameter");
+		KEPLER_ASSERT(false, "Invalid shader parameter");
 		return;
 	}
 	// 해당 메모리에 값을 쓴 후 constant buffer update
@@ -547,7 +548,7 @@ void DX11Shader::SetMatrix(const std::string& paramName, const Mat44f& value)
 	GetConstantBufferDataInfo(paramName, index, offset);
 	if (index < 0)
 	{
-		KEPLER_WARNING("Invalid shader parameter");
+		KEPLER_ASSERT(false, "Invalid shader parameter");
 		return;
 	}
 	// 해당 메모리에 값을 쓴 후 constant buffer update
@@ -563,7 +564,7 @@ void DX11Shader::SetArray(const std::string& paramName, const void* pValue, cons
 	GetConstantBufferDataInfo(paramName, index, offset);
 	if (index < 0)
 	{
-		KEPLER_WARNING("Invalid shader parameter");
+		KEPLER_ASSERT(false, "Invalid shader parameter");
 		return;
 	}
 	// 해당 메모리 값을 쓴 후 constant buffer update
