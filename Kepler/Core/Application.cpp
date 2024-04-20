@@ -101,35 +101,38 @@ void Application::Run()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		// clear Render Target and Depth Stencil Buffer
-		float color[4]{ 0.1f, 0.1f, 0.1f, 1.0f };
-		IFrameBuffer::Get()->ClearGBuffer(color);
-		IFrameBuffer::Get()->ClearColor(color);
-		IFrameBuffer::Get()->ClearDepthStencil(true, true, 1.0f, 0);
-		// Update all layer(and overlay)s
-		for (Layer* layer : m_layerStack)
+		else
 		{
-			layer->OnUpdate(deltaTime);
-		}
-		// Render all layer(and overlay)s
-		for (Layer* layer : m_layerStack)
-		{
-			layer->OnRender();
-		}
+			// clear Render Target and Depth Stencil Buffer
+			float color[4]{ 0.1f, 0.1f, 0.1f, 1.0f };
+			IFrameBuffer::Get()->ClearGBuffer(color);
+			IFrameBuffer::Get()->ClearColor(color);
+			IFrameBuffer::Get()->ClearDepthStencil(true, true, 1.0f, 0);
+			// Update all layer(and overlay)s
+			for (Layer* layer : m_layerStack)
+			{
+				layer->OnUpdate(deltaTime);
+			}
+			// Render all layer(and overlay)s
+			for (Layer* layer : m_layerStack)
+			{
+				layer->OnRender();
+			}
 
-		// GUI Update
-		m_pImGuiLayer->Begin();
-		for (Layer* layer : m_layerStack)
-		{
-			layer->OnGUIRender();
+			// GUI Update
+			m_pImGuiLayer->Begin();
+			for (Layer* layer : m_layerStack)
+			{
+				layer->OnGUIRender();
+			}
+
+			// TODO: 추후에 Editor Layer가 구현되어 LayerStack안에 들어가면 제거 
+			m_pImGuiLayer->OnGUIRender();
+
+			m_pImGuiLayer->End();
+			// Window Update
+			m_pWindow->OnUpdate();
 		}
-
-		// TODO: 추후에 Editor Layer가 구현되어 LayerStack안에 들어가면 제거 
-		m_pImGuiLayer->OnGUIRender();
-
-		m_pImGuiLayer->End();
-		// Window Update
-		m_pWindow->OnUpdate();
 	}
 }
 }
